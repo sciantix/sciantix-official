@@ -13,7 +13,7 @@
         "doi:10.1016/0022-3115(73)90001-9"
       ],
       "dcterms:title": "Isothermal grain growth kinetics in sintered UO2 pellets",
-      "dcterms:description": "Measurements of grain growth rates have been made on twelve types of UO2 specimens, mainly at temperatures between 1300 and 1500°C. Initial pellet densities were between 94 and 99% theoretical and, since the grain growth anneals were carried out in flowing hydrogen, the materials were stoichiometric throughout the tests. A small amount of work was also carried out at lower temperatures. The results have been interpreted in terms of a rate equation, due to Burke, which supposes that grain growth continues only until some limiting grain size has been attained. It has been shown that the limiting grain size is itself temperature dependent, increasing with increasing temperature. Measurements of grain growth made on irradiated UO2 can be correlated with the out-of-reactor measurements if it is assumed that the limiting grain size at any temperature decreases with increasing burn-up. The calculated time to attain the limiting grain size at ratings around 20 W/gU is less than 50 days. It also follows that the limiting grain size, at a given temperature, will decrease with increasing rating, a fact which needs to be borne in mind when estimating fuel temperatures from grain size measurements.",
+      "dcterms:description": "Grain growth rates measured on twelve types of UO2 specimen, mainly between 1300 and 1500 °C, interpreted with a Burke-type rate equation in which growth continues only up to a temperature-dependent limiting grain size. The correlation is extended to irradiated UO2 by letting the limiting size decrease with burn-up.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "J. B. Ainscough",
@@ -47,7 +47,7 @@
         "doi:10.1016/j.jnucmat.2016.10.051"
       ],
       "dcterms:title": "Analysis of transient fission gas behaviour in oxide fuel using BISON and TRANSURANUS",
-      "dcterms:description": "The modelling of fission gas behaviour is a crucial aspect of nuclear fuel performance analysis in view of the related effects on the thermo-mechanical performance of the fuel rod, which can be particularly significant during transients. In particular, experimental observations indicate that substantial fission gas release (FGR) can occur on a small time scale during transients (burst release). To accurately reproduce the rapid kinetics of the burst release process in fuel performance calculations, a model that accounts for non-diffusional mechanisms such as fuel micro-cracking is needed. In this work, we present and assess a model for transient fission gas behaviour in oxide fuel, which is applied as an extension of conventional diffusion-based models to introduce the burst release effect. The concept and governing equations of the model are presented, and the sensitivity of results to the newly introduced parameters is evaluated through an analytic sensitivity analysis. The model is assessed for application to integral fuel rod analysis by implementation in two structurally different fuel performance codes: BISON (multi-dimensional finite element code) and TRANSURANUS (1.5D code). Model assessment is based on the analysis of 19 light water reactor fuel rod irradiation experiments from the OECD/NEA IFPE (International Fuel Performance Experiments) database, all of which are simulated with both codes. The results point out an improvement in both the quantitative predictions of integral fuel rod FGR and the qualitative representation of the FGR kinetics with the transient model relative to the canonical, purely diffusion-based models of the codes. The overall quantitative improvement of the integral FGR predictions in the two codes is comparable. Moreover, calculated radial profiles of xenon concentration after irradiation are investigated and compared to experimental data, illustrating the underlying representation of the physical mechanisms of burst release.",
+      "dcterms:description": "Presents and assesses a model for transient fission gas behaviour in oxide fuel that introduces burst release on top of conventional diffusion-based models. Implemented in BISON and TRANSURANUS and assessed against 19 LWR fuel rod irradiation experiments from the OECD/NEA IFPE database.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0002-6771-9461",
@@ -87,7 +87,7 @@
         "https://publications.jrc.ec.europa.eu/repository/handle/JRC83894"
       ],
       "dcterms:title": "Improvement of computer codes used for fuel behaviour simulation (FUMEX-III): report of a coordinated research project 2008-2012",
-      "dcterms:description": "It is fundamental to the future of nuclear power that reactors can be run safely and economically to compete with other forms of power generation. As a consequence, it is essential to develop the understanding of fuel performance and to embody that knowledge in codes to provide best estimate predictions of fuel behaviour. This in turn leads to a better understanding of fuel performance, a reduction in operating margins, flexibility in fuel management and improved operating economics. The IAEA has therefore embarked on a series of programmes addressing different aspects of fuel behaviour modelling with the following objectives: 1. To assess the maturity and prediction capabilities of fuel performance codes, and to support interaction and information exchange between countries with code development and application needs (FUMEX series); 2. To build a database of well defined experiments suitable for code validation in association with the OECD Nuclear Energy Agency (OECD/NEA); 3. To transfer a mature fuel modelling code to developing countries, to support teams in these countries in their efforts to adapt the code to the requirements of particular reactors, and to provide guidance on applying the code to reactor operation and safety assessments; 4. To provide guidelines for code quality assurance, code licensing and code application to fuel licensing.",
+      "dcterms:description": "Final report of the IAEA FUMEX-III coordinated research project. Assesses the maturity and predictive capability of participating fuel performance codes, supports the associated OECD/NEA validation database, and gives guidance on code quality assurance and licensing.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "S. Boneva",
@@ -109,6 +109,16 @@
         "V. Likhanskii",
         "https://orcid.org/0000-0002-9754-4535",
         "A. Marino",
+        "https://orcid.org/0000-0003-2812-506X",
+        "G. Rossiter",
+        "A. Schubert",
+        "M. Sperlich",
+        "V. Tulkki",
+        "J. A. Turnbull",
+        "Z. Umidova",
+        "https://orcid.org/0000-0001-9560-6598",
+        "https://orcid.org/0000-0001-7734-3632",
+        "V. Zborovskij",
         "J. Zhang"
       ],
       "dcterms:publisher": "International Atomic Energy Agency",
@@ -139,7 +149,7 @@
         "doi:10.1016/j.jnucmat.2025.156116"
       ],
       "dcterms:title": "On a physics-based model of grain-boundary bubbles overpressurisation and its effects on fuel fragmentation",
-      "dcterms:description": "Overpressurisation of gas-filled bubbles and pores is considered the main driver of oxide fuel fragmentation and fission gas release into the rod free volume of irradiated fuel during transients. In this framework, advanced modelling of fission gas behaviour is crucial to enhance the predictive capabilities of fuel performance codes. This study develops a physics-based model for fission gas release from grain boundaries in UO 2 fuel and implements it into SCIANTIX, an open-source code developed at Politecnico di Milano to simulate fission gas behaviour in nuclear fuels. The model first describes gas release through continuous bubble networks at the grain face, exploiting data from irradiated fuel. It then focuses on gas release from damaged grain boundaries, applying fracture mechanics to predict micro-cracking induced by bubble overpressurisation. Finite elements simulations are performed using ABAQUS software, in order to assess stress intensification as a function of bubble density, shape, and size. The model is assessed against three separate-effect experiment datasets, including annealing tests and grain-face observations via scanning electron microscopy, demonstrating promising predictive capabilities for gaseous swelling and fission gas release. This work provides a valuable tool for improving fission gas behaviour modelling through a physics-based approach and lays the groundwork for future extensions to the high burn-up structure, offering a framework for a more comprehensive description of fuel fragmentation.",
+      "dcterms:description": "Physics-based model of the overpressurisation of grain-boundary bubbles and pores, considered a main driver of oxide fuel fragmentation and fission gas release during transients, together with its assessment.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0009-0000-2638-8419",
@@ -181,7 +191,7 @@
         "doi:10.1016/j.jnucmat.2015.08.022"
       ],
       "dcterms:title": "Towards the inclusion of open fabrication porosity in a fission gas release model",
-      "dcterms:description": "A model is proposed for fission product release in oxide fuels that takes into account the open porosity in a mechanistic manner. Its mathematical framework, assumptions and limitations are presented. It is based on the model for open porosity in the sintering process of crystalline solids. More precisely, a grain is represented by a tetrakaidecahedron and the open porosity is represented by a continuous cylinder along the grain edges. It has been integrated in the TRANSURANUS fuel performance code and applied to the first case of the first FUMEX project as well as to neptunium and americium containing pins irradiated during the SUPERFACT experiment and in the JOYO reactor. The results for LWR and FBR fuels are consistent with the experimental data and the predictions of previous empirical models when the thermal mechanisms are the main drivers of the release, even without using a fitting parameter. They also show a different but somewhat expected behaviour when very high porosity fuels are irradiated at a very low burn-up and at low temperature.",
+      "dcterms:description": "Proposes a mechanistic model for fission product release in oxide fuel that accounts for open fabrication porosity, adapting the description of open porosity used for the sintering of crystalline solids. Presents the mathematical framework, assumptions and limitations.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "A. Claisse",
@@ -214,7 +224,7 @@
         "NEA-1705"
       ],
       "dcterms:title": "IFPE/CAGR-UOX-SWELL: Fuel swelling data obtained from the AGR/Halden Ramp Test Programme",
-      "dcterms:description": "An extensive study of fuel swelling in oxide fuel has been performed on fuel which has been ramp-tested in the Halden Heavy Boiling Water Reactor. The ramp-tests were performed to study the mechanisms of PCI in Advanced Gas-cooled Reactor fuel (AGR) but the initial clad deformation measurements were later supplemented by the use of Transmission Electron Microscopy (TEM) and Scanning Electron Microscopy (SEM).The driving force for PCI arises from a combination of pellet thermal expansion and the creation of fission gas porosity during a temperature/rating transient. Fuel specimens from thirteen ramped rods and two control-reference rods have been examined using TEM and SEM. Swelling measurements have been made at four or five radial locations in the fuel. At least six full grain boundaries were used for the inter-granular study at each location and three complete trans-granular fractures employed for the intra-granular bubbles. In the latter case, the trans-granular regions were examined under very high magnifications to reveal pores as small as 20-25 nm diameter. The SEM study comprises nearly three thousand micrographs. The microscope study was augmented by use of the ENIGMA fuel modelling code to obtain estimates of the local temperatures and conditions from which the SEM/TEM samples were obtained.",
+      "dcterms:description": "OECD/NEA IFPE database entry collecting fuel swelling data measured on oxide fuel ramp-tested in the Halden reactor within the AGR/Halden ramp test programme. Distributed as NEA-1705.",
       "dcterms:format": "Multi-format data package (ASCII, TIFF, PDF, Excel)",
       "dcterms:creator": [
         "OECD Nuclear Energy Agency"
@@ -250,7 +260,7 @@
         "urn:isbn:9780521113601"
       ],
       "dcterms:title": "Verification and Validation in Scientific Computing",
-      "dcterms:description": "Advances in scientific computing have made modelling and simulation an important part of the decision-making process in engineering, science, and public policy. This book provides a comprehensive and systematic development of the basic concepts, principles, and procedures for verification and validation of models and simulations. The emphasis is placed on models that are described by partial differential and integral equations and the simulations that result from their numerical solution. The methods described can be applied to a wide range of technical fields, from the physical sciences, engineering and technology and industry, through to environmental regulations and safety, product and plant safety, financial investing, and governmental regulations. This book will be genuinely welcomed by researchers, practitioners, and decision makers in a broad range of fields, who seek to improve the credibility and reliability of simulation results. It will also be appropriate either for university courses or for independent study.",
+      "dcterms:description": "Textbook giving a systematic treatment of the concepts, principles and procedures of verification and validation for modelling and simulation in engineering, science and public policy.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "W. L. Oberkampf",
@@ -284,7 +294,7 @@
         "doi:10.1016/j.nucengdes.2012.12.002"
       ],
       "dcterms:title": "Physics-based modelling of fission gas swelling and release in UO2 applied to integral fuel rod analysis",
-      "dcterms:description": "A physics-based model is developed for analysing the coupled phenomena of fission gas swelling and release in UO2 fuel during irradiation. The model is featured by a level of complexity suitable for application to integral fuel rod analysis and consistent with the uncertainties pertaining to some parameters. The emphasis is on the modelling of the grain-face gas bubble development and the related dependence of the fission gas swelling and release on the local hydrostatic stress, which is of special importance for the analysis of the fuel behaviour during power ramps and pellet-cladding mechanical interaction conditions. The applicability of the new model to integral fuel rod analysis is verified through implementation and testing in the TRANSURANUS fuel rod analysis code. In the frame of the IAEA co-ordinated research project on Fuel Modelling at Extended Burn-up FUMEX-III, the model is applied to the simulation of irradiation experiments from the OECD/NEA International Fuel Performance Experiments database. The comparison of the results with the available experimental data of fission gas swelling and release at moderate burn-up is presented as a first step of validation, pointing out an encouraging predictive accuracy for different irradiation conditions, without any fitting applied to the model parameters.",
+      "dcterms:description": "Develops a physics-based model of the coupled phenomena of fission gas swelling and release in UO2 during irradiation, at a level of complexity suitable for integral fuel rod analysis and consistent with the uncertainties of the parameters involved.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0003-2812-506X",
@@ -321,7 +331,7 @@
         "doi:10.1016/j.jnucmat.2020.152042"
       ],
       "dcterms:title": "SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes",
-      "dcterms:description": "Bridging lower length-scale calculations with the engineering-scale simulations of fuel performance codes requires the development of dedicated intermediate-scale codes. In this work, we present SCIANTIX, an open source 0D stand-alone computer code designed to be included/coupled as a module in existing fuel performance codes. The models currently available in SCIANTIX cover intra- and inter-granular inert gas behaviour in UO2, and high burnup structure formation as well. Showcases of validation in both constant and transient conditions are presented in this work. As for the numerical treatment of the model equations, SCIANTIX is developed with full numerical consistency and entirely verified with the method of manufactured solutions – verification of different numerical solvers is also showcased in this work.",
+      "dcterms:description": "Presents SCIANTIX, an open-source 0D stand-alone code for fission gas behaviour designed to be coupled as a module within existing fuel performance codes, bridging lower length-scale calculations and engineering-scale simulation.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0003-2256-8409",
@@ -359,7 +369,7 @@
         "doi:10.1016/j.jnucmat.2018.02.024"
       ],
       "dcterms:title": "A model describing intra-granular fission gas behaviour in oxide fuel for advanced engineering tools",
-      "dcterms:description": "The description of intra-granular fission gas behaviour is a fundamental part of any model for the prediction of fission gas release and swelling in nuclear fuel. In this work we present a model describing the evolution of intra-granular fission gas bubbles in terms of bubble number density and average size, coupled to gas release to grain boundaries. The model considers the fundamental processes of single gas atom diffusion, gas bubble nucleation, re-solution and gas atom trapping at bubbles. The model is derived from a detailed cluster dynamics formulation, yet it consists of only three differential equations in its final form; hence, it can be efficiently applied in engineering fuel performance codes while retaining a physical basis. We discuss improvements relative to previous single-size models for intra-granular bubble evolution. We validate the model against experimental data, both in terms of bubble number density and average bubble radius. Lastly, we perform an uncertainty and sensitivity analysis by propagating the uncertainties in the parameters to model results.",
+      "dcterms:description": "Presents a model describing the evolution of intra-granular fission gas bubbles in oxide fuel in terms of bubble number density and average size, intended for use in engineering-scale fuel performance tools.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0003-2256-8409",
@@ -402,7 +412,7 @@
         "doi:10.1016/J.NUCENGDES.2024.113741"
       ],
       "dcterms:title": "A multi-fidelity multi-scale methodology to accelerate development of fuel performance codes",
-      "dcterms:description": "Multi-scale methodologies have been developed and applied successfully in the frame of nuclear fuel performance analyses, but the complexity of the tools involved hinders their extensive application. Gaps in modelling capabilities of specific input/outputs in particular limits code-to-code communication. In this work, we propose a multi-fidelity methodology to tackle this issue. The application presented here concerns the inclusion of a meso-scale module describing fission gas behaviour (SCIANTIX) in a fuel performance code (FRAPCON). A critical input parameter of the meso-scale module, the local hydro-static stress in the fuel, is not predicted by such fuel performance code, hence limiting this coupling. This gap is filled by using a second fuel performance code (TRANSURANUS) to construct a virtual dataset of local hydro-static stress values, on which an artificial neural network is trained and included in the FRAPCON/SCIANTIX coupled suite. This multi-fidelity methodology is demonstrated by simulating the Risø AN3 irradiation experiment.",
+      "dcterms:description": "Proposes a multi-fidelity methodology for coupling a meso-scale fission gas module (SCIANTIX) to a fuel performance code (FRAPCON) when a required input, the local hydrostatic stress, is not predicted by that code. A neural network trained on TRANSURANUS results fills the gap; demonstrated on the Risø AN3 irradiation experiment.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0003-2256-8409",
@@ -438,7 +448,7 @@
         "https://www.oecd-nea.org/jcms/pl_107583/recommendations-on-fuel-properties-for-fuel-performance-codes"
       ],
       "dcterms:title": "Recommendations on Fuel Properties for Fuel Performance Codes",
-      "dcterms:description": "Under the guidance of the Nuclear Energy Agency's Nuclear Science Committee (NSC) and the mandate of the Working Party on Scientific Issues of the Fuel Cycle (WPFC), the Expert Group on Innovative Fuels Elements (EGIFE) has been established with the objective of conducting joint and comparative studies to support the development of innovative fuels such as homogeneous and heterogeneous fuels, accelerator-driven systems (ADS) fuels, and oxide, metal, nitride and carbide fuels, all of which can be implemented in advanced nuclear fuel cycles with fast reactors. The scope of the expert group covers innovative fuel fabrication techniques, irradiation performance of innovative fuels, characterisation and post-irradiation examination methods and predictive codes for innovative fuel fabrication and performance. This report presents recommendations on oxide and metal fuel properties for fuel performance codes that have been established by the experts in this field and based on selected data.",
+      "dcterms:description": "Report of the NEA Expert Group on Innovative Fuel Elements (EGIFE), under the Working Party on Scientific Issues of the Fuel Cycle. Presents recommended oxide and metal fuel property correlations for use in fuel performance codes, established from selected data.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "OECD Nuclear Energy Agency"
@@ -470,7 +480,7 @@
         "doi:10.1016/j.jnucmat.2018.08.019"
       ],
       "dcterms:title": "Fission gas release from UO2 nuclear fuel: a review",
-      "dcterms:description": "Gaseous fission product generation, transport, and release can have a large impact on nuclear fuel performance, degrading fuel and fuel–cladding gap properties. Over the past several decades much progress has been made in understanding the key mechanisms of fission gas behavior through investigations with bulk reactor experiments and simplified analytical models. Concurrently, new mechanisms have come to light that can have a strong influence on gas release, especially the unexpected acceleration of fission gas release under high burn-up conditions. Additionally, novel modeling techniques, such as atomistic, mesoscale, and multiscale methods have joined the arsenal of investigative tools. In this review, existing research on the basic mechanisms of fission gas release during normal reactor operation is summarized, and critical areas where further work is needed are identified and discussed.",
+      "dcterms:description": "Review of the generation, transport and release of gaseous fission products in UO2 fuel. Summarises the basic mechanisms of fission gas release during normal operation, including the accelerated release observed at high burn-up, and identifies areas needing further work.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "J. Rest",
@@ -617,7 +627,7 @@
         "BLG-907"
       ],
       "dcterms:title": "Contribution to the modelling of fission gas release in light water reactor fuel",
-      "dcterms:description": "Doctoral thesis on fission gas release modelling in LWR fuel; source of the fuel densification correlation implemented in SCIANTIX.",
+      "dcterms:description": "Doctoral thesis on the modelling of fission gas release in light water reactor fuel.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0001-9560-6598"
@@ -649,7 +659,7 @@
         "doi:10.1016/j.jnucmat.2018.12.037"
       ],
       "dcterms:title": "A review of fuel performance modelling",
-      "dcterms:description": "Nuclear fuel performance codes or models exist for many fuel types and are used for a variety of purposes ranging from design optimization, experiment planning and interpretation to safety analysis. In the current review, we focus on the most relevant simulation tools for the nuclear industry and disregard those that were developed only for very specific applications. As a result, we consider only codes for LWR fuel, since they represent the dominant form for civil energy production. \\nWe start by reviewing the simulation tools available in the different parts of the world. This is followed by a historical summary of the main developments in each aspect of the codes, ranging from thermal , mechanical and chemical performance to neutronics modelling and microstructural changes. In the next section we review the current trends that include the applications to new fuel types as well as the implementation of advanced modelling techniques, code coupling for multi-physics applications and finally uncertainty and sensitivity analysis. In the final section of the review, we summarise discuss the strategy for code verification and validation along with the corresponding data and briefly enumerate the remaining challenges.",
+      "dcterms:description": "Review of the fuel performance codes most relevant to the nuclear industry, restricted to LWR fuel. Covers the tools available worldwide, the historical development of their thermal, mechanical, chemical, neutronic and microstructural models, current trends including multi-physics coupling and uncertainty analysis, and verification and validation strategy.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0001-9560-6598",
@@ -686,7 +696,7 @@
         "doi:10.1016/j.jnucmat.2003.10.008"
       ],
       "dcterms:title": "The development of grain-face porosity in irradiated oxide fuel",
-      "dcterms:description": "The predominant mode of fission gas release occurs through atomic diffusion to the grain boundaries. In oxide fuels the fission gases initially precipitate as an array of small lenticular bubbles of circular projection. The arrival of additional gas and vacancies causes these bubbles to grow and coalesce into fewer, larger bubbles. Depending on the irradiation conditions and temperatures, these bubbles may develop either as circular lenticular pores or as extended multi-lobed pores. Eventually the pores may intersect the grain edges where pathways may be formed which enable the gas to migrate to the outer geometry of the fuel and hence to the gap and the pin free volume. Recent extensive PIE campaigns on irradiated fuels have provided a large database of inter-granular porosity development and, from these, models of bubble growth, coalescence, morphological relaxation and venting have been developed.",
+      "dcterms:description": "Describes the development of gas-filled porosity on grain faces in irradiated oxide fuel, from the initial precipitation of small lenticular bubbles through their growth and coalescence, in the context of fission gas release by atomic diffusion to grain boundaries.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "R. J. White"
@@ -721,7 +731,7 @@
         "R&T/NG/EXT/REP/0206/02"
       ],
       "dcterms:title": "A Summary of Swelling Data Obtained from the AGR/Halden Ramp Test Programme",
-      "dcterms:description": "An extensive study of fuel swelling in oxide fuel has been performed on fuel which has been ramp-tested in the Halden Heavy Boiling Water Reactor. The ramp-tests were performed to study the mechanisms of PCI in Advanced Gas-cooled Reactor fuel (AGR) but the initial clad deformation measurements were later supplemented by the use of Transmission Electron Microscopy (TEM) and Scanning Electron Microscopy (SEM). The driving force for PCI arises from a combination of pellet thermal expansion and the creation of fission gas porosity during a temperature/rating transient. Fuel specimens from thirteen ramped rods and two control-reference rods have been examined using TEM and SEM. Swelling measurements have been made at four or five radial locations in the fuel. At least six full grain boundaries were used for the inter-granular study at each location and three complete trans-granular fractures employed for the intra-granular bubbles. In the latter case, the trans-granular regions were examined under very high magnifications to reveal pores as small as 20-25 nm diameter. The SEM study comprises nearly three thousand micrographs. The microscope study was augmented by use of the ENIGMA fuel modelling code to obtain estimates of the local temperatures and conditions from which the SEM/TEM samples were obtained.",
+      "dcterms:description": "Summarises fuel swelling measurements on oxide fuel ramp-tested in the Halden reactor within the AGR/Halden ramp test programme, originally undertaken to study pellet-cladding interaction mechanisms in AGR fuel.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "R. J. White",
@@ -757,7 +767,7 @@
         "doi:10.1016/0022-3115(83)90176-9"
       ],
       "dcterms:title": "A new fission-gas release model",
-      "dcterms:description": "The release of unstable fission products from irradiated UO2 fuel is shown to be a sensitive function of many inter-related factors. The poly-granular-aggregate model for unstable gas release assumes that the release of fission products from the interior regions of UO2 fuel occurs, firstly, by direct diffusion to grain boundaries and, secondly, by gaseous diffusive transfer through an intermittently open grain-edge tunnel network. During the early stages of irradiation a saturated network of grain-face lenticular porosity is established by the precipitation of stable fission-gas atoms. Lenticular bubbles which nucleate near to the grain edges—junctions of the three grains—will move to a lower free energy configuration on those edges and take up a triangulated cigar shape. Continued stable gas collection inflates these bubbles to a point of interlinkage beyond which point the fission gases are vented and tunnel collapse, by means of surface diffusion away from regions of high curvature, into a string of cigar-shaped bubbled occurs. This process is repeated many times until the resulting grain-edge tunnel “pinches off” in the centre of the tunnel resulting in bubbles at the grain corners—the junction of four grains. The re-inflation of these grain-corner bubbles—tetrahedra with spherical faces—results in a permanently interlinked network of tunnels which are unconditionally stable and can resist further collapse. Using simple arguments, we demonstrate that the interlinkage times for bubble strings and the pinch-off times for tunnels effectively delay the passage of fission products from the fuel interior to the exterior and that this mechanism may be viewed as an effective diffusion process. The arrival rate of atoms into the tunnel network may be by direct diffusion or indirectly from the grain-face lenticular porosity. In the latter case some radioactive decay may have occurred, depending on the length of time spent in that porosity. The nett arrival rate into the grain-edge or corner porosity—both direct and indirect—is treated as an effective generation rate. Because the swelling rate of fuel depends on this growth and collapse of porosity it is clear that the swelling rate and hence ultimately the release rate of unstable fission products depends critically on the stable fission-gas release. In turn, the release of stable fission gases depends on the irradiation-induced resolution-controlled diffusion from the UO2 grains. A model incorporating the Speight-Turnbull stable gas release model, the grain edge-corner swelling model and the Tucker-White percolation diffusion model from a polygranual aggregate is shown to account well for the experimental findings of Turnbull and Friskney on release rates of I131, I133, Xe133, Xe138, Kr88 from 1.46% enriched stoichiometric UO2. It is shown that uncertainties in ratings of ± 5% and in fuel temperature of ± 25°C are unlikely to seriously limit the accuracy of the predictions for unstable release rates, and it is proposed that the model be used to reinterpret the Turnbull-Friskney experiments to yield “second generation” estimates of diffusion coefficients.",
+      "dcterms:description": "Presents the poly-granular-aggregate model for the release of unstable fission products from irradiated UO2, in which release occurs by direct diffusion to grain boundaries and by transfer through an intermittently open grain-edge tunnel network. Compared against the Turnbull-Friskney release-rate experiments.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "R. J. White",
@@ -790,7 +800,7 @@
         "doi:10.1016/j.jnucmat.2023.154744"
       ],
       "dcterms:title": "The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments",
-      "dcterms:description": "SCIANTIX is a 0D, open-source code designed to model inert gas behaviour within nuclear fuel at the scale of the grain. The code predominantly employs mechanistic approaches based on kinetic rate-theory models to calculate engineering quantities, such as fission gas release and gaseous fuel swelling. Since its release, SCIANTIX has undergone significant improvements, including the incorporation of new modelling and numerical capabilities. The code architecture has been revamped, embracing an object-oriented structure improving the overall efficiency and usability. This work provides a concise overview of the current state of the SCIANTIX code, highlighting recent updates and advancements. Each SCIANTIX model is presented along with the corresponding separate-effect validation database, which is used to assess its accuracy and predictions.",
+      "dcterms:description": "Reports the status of SCIANTIX, a 0D open-source code modelling inert gas behaviour in nuclear fuel at grain scale through kinetic rate-theory models, together with recent upgrades, separate-effect validation and planned developments.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0002-9139-2454",
@@ -826,7 +836,7 @@
         "doi:10.1016/j.jnucmat.2024.155305"
       ],
       "dcterms:title": "Integral-scale validation of the SCIANTIX code for Light Water Reactor fuel rods",
-      "dcterms:description": "Mechanistic multi-scale modelling holds the potential to inform fuel performance codes by incorporating high-fidelity models, algorithms, parameters, and material properties. In this context, meso-scale codes emerge as valuable tools for developing detailed models and performing separate verification and validation steps. This work focuses on SCIANTIX, an open-source 0D meso-scale code designed to describe the behaviour of gaseous and volatile fission products in nuclear oxide fuel. The code predominantly employs engineering physics-based behavioural models featuring computational times that align with typical fuel performance code requirements. Given the numerical foundation of the code, it is applicable to both stationary and transient conditions. Following a recent work outlining the standalone SCIANTIX (version 2.0) performance and its separate-effect validation database, we present its performance when coupled with fuel performance codes to simulate light water reactor fuel rods. The experiments selected for the comparative analysis constitute an initial integral validation database. The comparison focuses on conventional engineering quantities of interest, such as integral fission gas release, demonstrating the satisfactory performance of the code. Additionally, it highlights the potential advantages of multi-scale modelling over conventional semi-empirical approaches.",
+      "dcterms:description": "Reports the integral-scale validation of SCIANTIX coupled with fuel performance codes to simulate light water reactor fuel rods, comparing integral fission gas release against an initial integral validation database.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0002-9139-2454",
@@ -868,7 +878,7 @@
         "INIS RN:21003206"
       ],
       "dcterms:title": "The diffusion coefficient for fission gas atoms in uranium dioxide",
-      "dcterms:description": "A re-appraisal of the diffusion coefficient for xenon and krypton atoms in uranium dioxide is made based on recent data published in the open literature. In particular the application to high burn-up fuel is considered. A re-evaluation is made of experiments carried out at AERE Harwell and reported by Turnbull, Friskney, Findley, Johnson and Walter, (J. Nucl. Mat. vol. 107, nos 2 and 3, June 1982), and the impact of this on the application of a revised diffusion coefficient is discussed. In particular with a mechanistic approach the release of fission gases can only be correlated with the product (S/V) * √D, where S/V is the specific surface area and D is the diffusion coefficient. The paper shows that when applied to both stable and radioactive fission gas release measurements from non-interlinked fuel, the revised values of D give values of S/V in better agreement with calculated geometric values than previously obtained. The paper continues by calculating values of the diffusion coefficient from out-of-pile annealing studies on fuel covering a range of burn-up. The values obtained at high burn-up are compared with values deduced from the elegant EPMA measurements performed on retained xenon in power ramped fuel rods published by Walker and Lassmann, (J. Nucl. Mat. vol. 138, 1986). (author). ",
+      "dcterms:description": "Re-appraises the diffusion coefficient of xenon and krypton in uranium dioxide from published data, with particular attention to its application to high burn-up fuel, and re-evaluates earlier AERE Harwell experiments.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "J. A. Turnbull",
@@ -902,7 +912,7 @@
         "doi:10.1016/0022-3115(71)90075-4"
       ],
       "dcterms:title": "The re-solution of fission-gas atoms from bubbles during the irradiation of UO2 at an elevated temperature",
-      "dcterms:description": "Uranium dioxide irradiated at a low temperature was annealed to form a uniform distribution of fission-gas bubbles. Some specimens were re-irradiated to a low dose at 1200 °C and the bubble distributions compared with and without this second irradiation. The enrichments of the starting materials were chosen such that specimens received two different doses for the same neutron exposure. Whereas in the higher-dose specimens the original bubble population was completely dispersed, the lower-dose specimens contained remnants of the original bubbles. From these observations an evaluation has been made of the efficiency of the re-solution process. The distribution of fission-gas during irradiation is discussed in the light of the present results.",
+      "dcterms:description": "Reports annealing and re-irradiation experiments on UO2 containing a uniform distribution of fission-gas bubbles, comparing bubble distributions with and without a second low-dose irradiation in order to characterise re-solution.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "J. A. Turnbull"
@@ -934,7 +944,7 @@
         "doi:10.1016/0022-3697(58)90053-2"
       ],
       "dcterms:title": "Theory of diffusion-limited precipitation",
-      "dcterms:description": "A simple theory for diffusion-limited general precipitation from a supersaturated solution upon an array of particles is described. We calculate the time-dependence of the unprecipitated fraction of the excess solute for small spherical, spheroidal, and cylindrical particles. This fraction has the form exp(—btn) for small t. If the particles grow from initially negligible dimensions with constant eccentricity, and the growth is entirely diffusion-limited, we find n=32 for all spheroids, including rods and disks as well as spheres. This contrasts with earlier evaluations, which gave n=52 for disks and n = 2 for rods and which are incorrect. We find n = 1 for cylindrical particles. Also, n is 1 for small disks and rods, of finite initial dimensions, that remain highly eccentric and do not alter their longer dimensions appreciably during growth. Regardless of particle shape, the unprecipitated fraction is given approximately by [G exp(—at)] when the fraction is less than 12. We also give an exact solution of the time-dependent diffusion equation for the growth of a spheroidal particle in an infinite medium, and we show that under strictly diffusion-limited conditions the particle grows with constant eccentricity and that its dimensions are proportional to √t.",
+      "dcterms:description": "Develops a theory of diffusion-limited precipitation from a supersaturated solution onto an array of particles, giving the time dependence of the unprecipitated solute fraction for small spherical, spheroidal and cylindrical particles.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "F. S. Ham"
@@ -966,7 +976,7 @@
         "doi:10.1016/j.jnucmat.2006.03.010"
       ],
       "dcterms:title": "Re-solution of fission gas - A review: Part I. Intragranular bubbles",
-      "dcterms:description": "Theories of fission-fragment-driven re-solution of fission-gas atoms from intragranular bubbles in irradiated UO2 nuclear fuel are reviewed. Two mechanisms of re-solution are generally accepted: the heterogeneous process destroys entire bubbles in the path of fission fragments and returns the gas to the solid as individual atoms; the homogeneous process re-solves fission-gas atoms singly by scattering collisions with fission fragments and uranium recoils whose paths intersect the bubbles. Coupling of these two re-solution models with the bubble nucleation analogs determines the size and number density of the intragranular bubble population. Two approaches are reviewed: the single-size theory, in which all bubbles are accorded one size, and the bubble distribution theory, which seeks to determine the variation of bubble number density with size.",
+      "dcterms:description": "Reviews the theories of fission-fragment-driven re-solution of fission gas atoms from intragranular bubbles in irradiated UO2, covering the heterogeneous and homogeneous mechanisms and the single-size and bubble-distribution approaches to the resulting bubble population.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "D. R. Olander",
@@ -1000,15 +1010,15 @@
         "doi:10.1016/0022-3115(79)90035-7"
       ],
       "dcterms:title": "Grain-boundary diffusion in uranium dioxide: The correlation between sintering and creep and a reinterpretation of creep mechanism",
-      "dcterms:description": "Previously published data on the final stage sintering kinetics of stoichiometric uranium dioxide are correlated with a reinterpretation of low-stress creep behaviour of identical material (data on both processes by the present authors). For both processes the rate-controlling diffusional flux is considered to be that of uranium ions along grain boundaries. The effective diffusion coefficient for uranium ion diffusion along grain boundaries is estimated. Comparisons are made between this value and those previously measured by radio-tracer methods.",
+      "dcterms:description": "Correlates published final-stage sintering kinetics of stoichiometric uranium dioxide with a reinterpretation of low-stress creep data on the same material, identifying the rate-controlling diffusional flux common to both processes.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
-        "A. B. Reynolds",
-        "C. Burton"
+        "G. L. Reynolds",
+        "B. Burton"
       ],
       "dcterms:publisher": "Elsevier",
       "dcterms:bibliographicCitation": [
-        "Reynolds, A. B., & Burton, C. (1979). Grain-boundary diffusion in uranium dioxide: The correlation between sintering and creep and a reinterpretation of creep mechanism. Journal of Nuclear Materials, 82, 22-25."
+        "Reynolds, G. L., & Burton, B. (1979). Grain-boundary diffusion in uranium dioxide: The correlation between sintering and creep and a reinterpretation of creep mechanism. Journal of Nuclear Materials, 82, 22-25."
       ],
       "dcterms:issued": "1979",
       "dcterms:accessRights": "Restricted Access",
@@ -1033,7 +1043,7 @@
         "doi:10.1016/j.net.2021.10.028"
       ],
       "dcterms:title": "On the use of spectral algorithms for the prediction of short-lived volatile fission product release: Methodology for bounding numerical error",
-      "dcterms:description": "Recent developments on spectral diffusion algorithms, i.e., algorithms which exploit the projection of the solution on the eigenfunctions of the Laplacian operator, demonstrated their effective applicability in fast transient conditions. Nevertheless, the numerical error introduced by these algorithms, together with the uncertainties associated with model parameters, may impact the reliability of the predictions on short-lived volatile fission product release from nuclear fuel. In this work, we provide an upper bound on the numerical error introduced by the presented spectral diffusion algorithm, in both constant and time-varying conditions, depending on the number of modes and on the time discretization. The definition of this upper bound allows introducing a methodology to a priori bound the numerical error on short-lived volatile fission product retention.",
+      "dcterms:description": "Examines spectral diffusion algorithms, which project the solution onto the eigenfunctions of the Laplacian, for predicting short-lived volatile fission product release. Derives an upper bound on the numerical error in constant and time-varying conditions, as a function of the number of modes and of the time discretisation.",
       "dcterms:format": "application/pdf",
       "dcterms:creator": [
         "https://orcid.org/0000-0002-9139-2454",
