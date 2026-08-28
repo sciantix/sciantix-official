@@ -118,7 +118,7 @@ def main():
         results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
 
     print("\n=== RESULTS ===")
-    for name, ok, msg in results:
+    for name, ok, msg, *_ in results:
         status = "PASS" if ok else "FAIL"
         print(f"{name:<60} {status}")
 
@@ -126,10 +126,25 @@ def main():
     generate_html_report(results, regression_root)
 
     # exit code handling
-    failed = [name for name, ok, msg in results if not ok]
-    
+    failed = [name for name, ok, msg, *_ in results if not ok]
+
+    ### NEO4MAT - SCIANTIX-DIVA
+    # The semantic export runs outside the physics check, so a metadata problem
+    # never marks a physics case FAILED. It must still be visible and must still
+    # fail the run, or an export that breaks on every case looks like success.
+    from regression.core.generic_runner import SEMANTIC_FAILURES
+    if SEMANTIC_FAILURES:
+        print(f"\n=== SEMANTIC EXPORT: {len(SEMANTIC_FAILURES)} FAILED ===")
+        for name, error in SEMANTIC_FAILURES:
+            print(f"{name:<60} {error}")
+        print("Physics results above are unaffected: the metadata export runs "
+              "outside the physics check.")
+    ###
+
     if failed:
         sys.exit(1)
+    if SEMANTIC_FAILURES:
+        sys.exit(2)
 
     sys.exit(0)
 

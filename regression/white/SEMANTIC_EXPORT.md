@@ -90,6 +90,8 @@ Since the White case study is the one declared in NEO4MAT deliverable ID4.6.1.1,
 
 **What provenance the artifacts carry.** A SHA-256 and a byte size for every input and output file, the repository URL, the branch, the project branch URL, the documentation URL and the SCIANTIX version. All of these are stable across runs.
 
+**A metadata problem never fails a physics test, but it never passes silently either.** The export runs outside the physics try/except in `regression/core/generic_runner.py`, so a broken exporter cannot mark a passing simulation as `FAILED`. Failures are collected instead and reported at the end of the run under `=== SEMANTIC EXPORT: n FAILED ===`; the runner then exits with code **2** (physics failures exit **1**, a clean run exits **0**). A run in which the export fails on all 43 cases therefore cannot be mistaken for success.
+
 **A missing experimental value is not a regression failure.** A case absent from
 `data/ig_swelling.txt` is exported without `validationTarget` and prints a warning. The semantic export runs outside the physics `try` block in `regression/core/generic_runner.py`, so a metadata problem is never reported as a failed physics test.
 

@@ -10,16 +10,25 @@ from regression.core.common import clean_case_dir, run_sciantix, load_output, lo
 from regression.core.compare import compare_outputs
 
 
+### NEO4MAT - SCIANTIX-DIVA
+# Semantic-export failures are collected here rather than turned into test
+# failures. A metadata problem must not make a physics test report FAILED — but
+# it must not vanish either, so runner.py reports the count and exits non-zero.
+SEMANTIC_FAILURES = []
+###
+
+
 def run_single_case(args):
     """
     Worker function for parallel execution.
     Args:
         args: tuple (group_name, name, case_path, mode_gold)
     Returns:
-        (test_id, ok, error_msg)
+        (test_id, ok, error_msg, semantic_error)
     """
     group_name, name, case, mode_gold = args
     test_id = f"{group_name}/{name}"
+    semantic_error = None
 
     try:
         # run phase
@@ -35,7 +44,8 @@ def run_single_case(args):
                         export_white_case_semantic_outputs,
                     )
                     export_white_case_semantic_outputs(case)
-                except Exception as semantic_error:
+                except Exception as error:
+                    semantic_error = f"{type(error).__name__}: {error}"
                     print(f"WARNING: semantic export failed for {test_id} -> {semantic_error}")
             ###
 
@@ -45,7 +55,7 @@ def run_single_case(args):
         if mode_gold in (1, 3):
             shutil.copy(os.path.join(case, "output.txt"),
                         os.path.join(case, "output_gold.txt"))
-            return (test_id, True, None)
+            return (test_id, True, None, semantic_error)
 
         # compare
         out = load_output(case)
@@ -53,12 +63,12 @@ def run_single_case(args):
 
         ok = compare_outputs(out, gold, abs_tol=1e-8, rel_tol=1e-6)
         if not ok:
-            return (test_id, False, "Mismatch with gold standard")
-        
-        return (test_id, True, None)
+            return (test_id, False, "Mismatch with gold standard", semantic_error)
+
+        return (test_id, True, None, semantic_error)
 
     except Exception as e:
-        return (test_id, False, str(e))
+        return (test_id, False, str(e), semantic_error)
 
 
 def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
@@ -111,8 +121,9 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
 
             export_white_experimental_measurements(base)
             export_variable_catalog(base)
-        except Exception as semantic_error:
-            print(f"WARNING: semantic catalog export failed -> {semantic_error}")
+        except Exception as error:
+            print(f"WARNING: semantic catalog export failed -> {error}")
+            SEMANTIC_FAILURES.append((f"{group_name}/<catalogs>", f"{type(error).__name__}: {error}"))
     ###
 
     results = []
@@ -125,11 +136,15 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
                 results.append(res)
                 if not res[1]:
                     print(f"FAILED: {res[0]} -> {res[2]}")
+                if res[3]:
+                    SEMANTIC_FAILURES.append((res[0], res[3]))
     else:
         for task in tasks:
             res = run_single_case(task)
             results.append(res)
             if not res[1]:
                 print(f"FAILED: {res[0]} -> {res[2]}")
+            if res[3]:
+                SEMANTIC_FAILURES.append((res[0], res[3]))
 
     return results
