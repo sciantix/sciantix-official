@@ -56,7 +56,7 @@ def generate_html_report(results, output_dir):
             <tbody>
     """
     
-    for name, ok, msg in results:
+    for name, ok, msg, *_ in results:
         status_class = "pass" if ok else "fail"
         status_text = "PASS" if ok else "FAIL"
         message = msg if msg else ""

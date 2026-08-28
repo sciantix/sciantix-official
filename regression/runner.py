@@ -88,21 +88,37 @@ def main():
         ("gpr", "test_GPR"),
     ]
 
-    if not explicit_selection and not args.all:
-        args.all = True
+    ### NEO4MAT - SCIANTIX-DIVA
+    # Default group set is the White (2004) case study, which is the only case
+    # study declared in NEO4MAT deliverable ID4.6.1.1. Running the suite with no
+    # arguments therefore reproduces exactly the declared deliverable.
+    # Use --all for the complete SCIANTIX regression suite, or any individual
+    # group flag (--baker, --kashibe, ...) as before.
+    default_groups = ["white"]
+    ###
 
+    if not explicit_selection and not args.all:
+        for group in default_groups:
+            setattr(args, group, True)
+
+    selected = []
     for group, prefix in runners:
-        # Check if this group is requested
         # The arg name might differ from group name (e.g. pulse vs analytics)
         arg_name = group if group != "analytics" else "pulse"
-        
-        should_run = args.all or getattr(args, arg_name, False)
-        
-        if should_run:
-            results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
+        if args.all or getattr(args, arg_name, False):
+            selected.append((group, prefix))
+
+    if not explicit_selection and not args.all:
+        print(f"Running default group set (NEO4MAT case study): "
+              f"{', '.join(g for g, _ in selected)}. Use --all for the full suite.")
+    else:
+        print(f"Running groups: {', '.join(g for g, _ in selected)}")
+
+    for group, prefix in selected:
+        results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
 
     print("\n=== RESULTS ===")
-    for name, ok, msg in results:
+    for name, ok, msg, *_ in results:
         status = "PASS" if ok else "FAIL"
         print(f"{name:<60} {status}")
 
@@ -110,10 +126,25 @@ def main():
     generate_html_report(results, regression_root)
 
     # exit code handling
-    failed = [name for name, ok, msg in results if not ok]
-    
+    failed = [name for name, ok, msg, *_ in results if not ok]
+
+    ### NEO4MAT - SCIANTIX-DIVA
+    # The semantic export runs outside the physics check, so a metadata problem
+    # never marks a physics case FAILED. It must still be visible and must still
+    # fail the run, or an export that breaks on every case looks like success.
+    from regression.core.generic_runner import SEMANTIC_FAILURES
+    if SEMANTIC_FAILURES:
+        print(f"\n=== SEMANTIC EXPORT: {len(SEMANTIC_FAILURES)} FAILED ===")
+        for name, error in SEMANTIC_FAILURES:
+            print(f"{name:<60} {error}")
+        print("Physics results above are unaffected: the metadata export runs "
+              "outside the physics check.")
+    ###
+
     if failed:
         sys.exit(1)
+    if SEMANTIC_FAILURES:
+        sys.exit(2)
 
     sys.exit(0)
 
