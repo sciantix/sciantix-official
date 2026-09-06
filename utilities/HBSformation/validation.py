@@ -63,12 +63,20 @@ PIE_TEMPERATURE = 900.0                                                  # K
 # ---------------------------------------------------------------------------
 
 def option1_kjma(burnup, temperature=None, porosity=None, grain_radius=None):
-    """Case 1: KJMA, Barani et al. (2020), no incubation burnup."""
+    """Case 1: KJMA, Barani et al. (2020), no incubation burnup.
+
+    `burnup` here is the EFFECTIVE burnup: SCIANTIX drives this option from
+    sciantix_variable["Effective burnup"] (HighBurnupStructureFormation.C, the
+    `option == 1 || option == 2` branch), not from the local burnup.
+    """
     return 1.0 - math.exp(-2.77e-7 * math.pow(max(burnup, 0.0), 3.54))
 
 
 def option2_kjma_incubation(burnup, temperature=None, porosity=None, grain_radius=None):
-    """Case 2: the same KJMA shifted by bu_inc = 15 MWd/kgU, Biswas & Aagesen (2025)."""
+    """Case 2: the same KJMA shifted by bu_inc = 15 MWd/kgU, Biswas & Aagesen (2025).
+
+    `burnup` is the EFFECTIVE burnup, as for option 1.
+    """
     excess = burnup - 15.0
     if excess <= 0.0:
         return 0.0
@@ -80,6 +88,9 @@ def option3_dislocation(burnup, temperature, porosity=None, grain_radius=None):
 
     rho_d(bu,T) = A bu^n [A_inf + (1 - A_inf)/(1 + exp((T - Tc)/dT))], then
     alpha = 1 - exp(-K (max(rho_d - rho_crit, 0)/rho_scale)^gamma).
+
+    `burnup` is the LOCAL burnup: this option carries its own thermal suppression in
+    the sigmoid, so SCIANTIX deliberately does not also feed it the effective burnup.
     """
     if burnup <= 0.0:
         return 0.0
@@ -91,17 +102,36 @@ def option3_dislocation(burnup, temperature, porosity=None, grain_radius=None):
 
 def option4_landau(burnup, temperature, porosity=FABRICATION_POROSITY,
                    grain_radius=GRAIN_RADIUS):
-    """Case 4: the Landau functional of this directory."""
+    """Case 4: the Landau functional of this directory.
+
+    `burnup` is the LOCAL burnup, for the same reason as option 3: the temperature
+    dependence is already carried by G(T) in Eq. (2).  Unlike options 1-3 this one
+    also reads the state of the fuel -- the porosity enters Eq. (2) and the grain
+    radius is the ceiling of Eq. (9).  The other three accept and ignore them, so
+    the four share one signature.
+    """
     return hbs_state(burnup, temperature, porosity=porosity,
                      grain_radius_m=grain_radius).restructured_fraction
 
 
+# (number, label, callable, colour, linestyle, driven by the EFFECTIVE burnup).
+#
+# The last field is not cosmetic.  SCIANTIX drives options 1 and 2 from
+# sciantix_variable["Effective burnup"] and options 3 and 4 from ["Burnup"], so
+# scoring all four at the same number would not be scoring what SCIANTIX computes.
+# On this dataset the two differ on 10 of the 42 rows, by up to 39.2 GWd/tU at the
+# hot centre positions of Std-73.
 OPTIONS = (
-    (1, "KJMA, Barani (2020)", option1_kjma, "tab:blue", ":"),
-    (2, "KJMA + bu_inc = 15", option2_kjma_incubation, "tab:orange", "-"),
-    (3, "rho_d, Veshchunov (2009)", option3_dislocation, "tab:green", "-."),
-    (4, "Landau functional", option4_landau, "k", "-"),
+    (1, "KJMA, Barani (2020)", option1_kjma, "tab:blue", ":", True),
+    (2, "KJMA + bu_inc = 15", option2_kjma_incubation, "tab:orange", "-", True),
+    (3, "rho_d, Veshchunov (2009)", option3_dislocation, "tab:green", "-.", False),
+    (4, "Landau functional", option4_landau, "k", "-", False),
 )
+
+
+def burnup_for(row, uses_effective_burnup):
+    """The burnup SCIANTIX would feed this option at this EBSD point."""
+    return row["burnup_effective"] if uses_effective_burnup else row["burnup"]
 
 # How each option relates to the 8 PIE points -- needed to read the table honestly.
 #
@@ -153,7 +183,10 @@ def report(rows):
     print()
     print("  option                          RMSE      R2        relation to this data")
     print("  " + "-" * 74)
-    for number, label, model, _, _ in OPTIONS:
+    # PIE_BURNUP is a local burnup and no effective one exists for these 8 points.
+    # At the assumed T = 900 K, below the 1273.15 K cut-off of EffectiveBurnup.C, the
+    # two coincide, so options 1 and 2 are fed the right number here by construction.
+    for number, label, model, _, _, _ in OPTIONS:
         predicted = [model(b, PIE_TEMPERATURE) for b in PIE_BURNUP]
         print("  %d  %-27s %.4f    %+.4f   %s"
               % (number, label, rmse(PIE_FRACTION, predicted),
@@ -169,7 +202,7 @@ def report(rows):
     print("     bu      measured |   opt1     opt2     opt3     opt4   |  opt4 - meas.")
     print("    " + "-" * 68)
     for burnup, observed in zip(PIE_BURNUP, PIE_FRACTION):
-        predicted = [model(burnup, PIE_TEMPERATURE) for _, _, model, _, _ in OPTIONS]
+        predicted = [model(burnup, PIE_TEMPERATURE) for _, _, model, _, _, _ in OPTIONS]
         print("    %6.2f   %.4f   |  %.4f   %.4f   %.4f   %.4f  |  %+.4f"
               % (burnup, observed, predicted[0], predicted[1], predicted[2],
                  predicted[3], predicted[3] - observed))
@@ -216,14 +249,23 @@ def report(rows):
     fraction_rows = [r for r in rows if not math.isnan(r["f10"])]
     print("  restructured fraction X, %d points" % len(fraction_rows))
     print("  " + "-" * 74)
-    for number, label, model, _, _ in OPTIONS:
+    for number, label, model, _, _, effective in OPTIONS:
         observed = [r["f10"] / 100.0 for r in fraction_rows]
-        predicted = [model(r["burnup"], r["temperature"], r["porosity"], r["grain_radius"])
+        predicted = [model(burnup_for(r, effective), r["temperature"],
+                           r["porosity"], r["grain_radius"])
                      for r in fraction_rows]
         status = "CALIBRATED on it" if number == 4 else ""
-        print("  %d  %-27s RMSE %.4f   R2 %+.4f   %s"
-              % (number, label, rmse(observed, predicted),
-                 r_squared(observed, predicted), status))
+        print("  %d  %-27s RMSE %.4f   R2 %+.4f   %-16s %s"
+              % (number, label, rmse(observed, predicted), r_squared(observed, predicted),
+                 status, "at bu_eff" if effective else "at bu_local"))
+    changed = sum(1 for r in fraction_rows
+                  if abs(r["burnup_effective"] - r["burnup"]) > 1e-9)
+    print()
+    print("  Options 1 and 2 are scored at the EFFECTIVE burnup, which is what SCIANTIX")
+    print("  feeds them; options 3 and 4 at the local burnup, which is what SCIANTIX")
+    print("  feeds those.  The two differ on %d of these %d points, at the hot centre"
+          % (changed, len(fraction_rows)))
+    print("  positions where TRANSURANUS suppresses the burnup accumulation.")
 
     print()
     theta_obs = [r["theta_obs"] for r in rows]
@@ -263,7 +305,7 @@ def plot(rows):
     # ---- figure 1: the three observables against burnup --------------------
     figure, axes = plt.subplots(1, 3, figsize=(15.4, 4.5), layout="constrained")
 
-    for number, label, model, colour, style in OPTIONS:
+    for number, label, model, colour, style, _ in OPTIONS:
         width = 2.4 if number == 4 else 1.5
         axes[0].plot(burnups, [model(b, PIE_TEMPERATURE) for b in burnups],
                      style, color=colour, lw=width, label="%d  %s" % (number, label))
@@ -321,7 +363,7 @@ def plot(rows):
     # ---- figure 2: parity, each point at its own local temperature ---------
     figure, axes = plt.subplots(1, 3, figsize=(13.5, 4.6), layout="constrained")
 
-    for number, label, model, colour, _ in OPTIONS:
+    for number, label, model, colour, _, _ in OPTIONS:
         predicted = [model(b, PIE_TEMPERATURE) for b in PIE_BURNUP]
         marker = "o" if number == 4 else "^"
         size = 9 if number == 4 else 6

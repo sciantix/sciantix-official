@@ -138,17 +138,17 @@ unrestructured matrix: the **measured** median of `AMis2Mean`.
 | symbol | value | unit | provenance |
 |---|---|---|---|
 | `b` | 3.889087296526011e-10 | m | Djonovic thesis |
-| `nu` | 0.31 | - | — |
-| `f(nu) = (1 - nu/2)/(1 - nu)` | 1.22464 | - | Hansen, Mater. Sci. Eng. 81 (1986) 141 |
+| `f(nu) = (1 - nu/2)/(1 - nu)` | 1.213–1.225 over 500–1200 K | - | Hansen, Mater. Sci. Eng. 81 (1986) 141; ν from Eq. (2) |
 | `gamma_max` | 1.100 × 1.545 = 1.6995 | J/m² | Zhang et al., MD on UO₂/CeO₂, [110] |
 | `theta_max` | π − 2.723 = 0.418593 (23.984°) | rad | idem |
 | `theta_HAGB` | 10 | deg | LAGB/HAGB boundary |
 | `theta_u` | 2.20 | deg | median `AMis2Mean`, **measured** |
 | G coefficients of Eq. (2) | 82.52, 94.91, 0.95275, 2.88078, 15.49419, 1.009549, 1.182e-5, 6.671e-8 | mixed | NEA/NSC/R(2024)1 p. 124 |
+| ν coefficients of Eq. (2) | 0.32051, 0.31882, 1.03223, 0.69962, 7.52905, 1.017906, 6.420e-5, 1.506e-8 | mixed | idem |
 | `n` | 2 | - | Gourdet & Montheillet (2003), range 1–3 |
-| `beta` | 28.104160337164743 | - | `calibrate.py`, joint fit |
-| `k` | 0.050248987145961488 | - | idem |
-| `rho_c` | 227863317789911.31 | m⁻² | idem; `rho_c^(-1/2)` = 0.066 µm |
+| `beta` | 28.034712072083792 | - | `calibrate.py`, joint fit |
+| `k` | 0.050215095823109124 | - | idem |
+| `rho_c` | 222356318283554.03 | m⁻² | idem; `rho_c^(-1/2)` = 0.067 µm |
 | `P`, `x`, `q` | from SCIANTIX; 0.05, 0, 0 by default | -, -, - | inputs of Eq. (2) |
 | `R_grain` | from SCIANTIX; 5 µm by default | m | ceiling of Eq. (9) |
 
@@ -169,15 +169,15 @@ J(k, beta, rho_c) = <(Theta_pred - Theta_obs)^2>/var(Theta)
                   + w <(r_pred - r_obs)^2>/var(r)
 ```
 
-dimensionless and symmetric in the two observables, minimized by `differential_evolution` over `(k, beta, log10 rho_c)` from several seeds.
+dimensionless and symmetric in the two observables, minimized by `differential_evolution` over `(k, beta, log10 rho_c)` from several seeds. The restructured fraction is deliberately **not** in the objective (`--fraction-weight 0` by default): it stays a prediction of the calibrated model, which is what makes its R² worth quoting.
 
 | w | beta | k | rho_c [m⁻²] | RMSE Θ [°] | RMSE r_n [µm] |
 |---|---|---|---|---|---|
-| 0 | 130.48 | 15.657 | 3.48e18 | 1.7220 | **4.5104** |
-| 0.01 | 26.80 | 0.0420 | 2.32e14 | 1.7229 | 0.1131 |
-| **0.05** | **28.10** | **0.0502** | **2.28e14** | **1.7395** | **0.0968** |
-| 0.2 | 30.03 | 0.0733 | 2.08e14 | 1.8350 | 0.0677 |
-| 1 | 30.86 | 0.1089 | 1.66e14 | 1.9762 | 0.0501 |
+| 0 | 131.50 | 21.654 | 4.12e18 | 1.7221 | **4.5104** |
+| 0.01 | 26.69 | 0.0418 | 2.26e14 | 1.7233 | 0.1143 |
+| **0.05** | **28.03** | **0.0502** | **2.22e14** | **1.7405** | **0.0975** |
+| 0.2 | 30.02 | 0.0740 | 2.02e14 | 1.8383 | 0.0675 |
+| 1 | 30.84 | 0.1095 | 1.61e14 | 1.9781 | 0.0500 |
 
 `w = 0.05` costs 1 % of RMSE(Θ) against `w = 0.01` and buys a radius the model can actually be held to.
 
@@ -191,31 +191,34 @@ dimensionless and symmetric in the two observables, minimized by `differential_e
 |---|---|---|---|---|
 | 20 | 1.7378e14 | 0.0000 | — | 0.000000 |
 | 40 | 4.7863e14 | 0.0000 | — | 0.000000 |
-| 45.6089 | 6.3591e14 | 0.1303 | 5.0000 | 0.000000 |
-| 46.0589 | 6.5057e14 | 0.4169 | 3.5222 | 0.000000 |
-| 50 | 7.9433e14 | 1.3730 | 1.0799 | 0.000000 |
-| 60 | 1.3183e15 | 3.1895 | 0.4762 | 0.126863 |
-| 70 | 2.1878e15 | 5.3455 | 0.2909 | 0.403267 |
-| 80 | 3.6308e15 | 8.1746 | 0.1946 | 0.765971 |
-| 100 | 1.0000e16 | 10.0000 | 0.1534 | ≈1 |
+| 45.3845 | 6.2872e14 | 0.1291 | 5.0000 | 0.000000 |
+| 45.8345 | 6.4322e14 | 0.4132 | 3.5366 | 0.000000 |
+| 50 | 7.9433e14 | 1.4026 | 1.0525 | 0.000000 |
+| 60 | 1.3183e15 | 3.2035 | 0.4720 | 0.128659 |
+| 70 | 2.1878e15 | 5.3521 | 0.2892 | 0.404120 |
+| 80 | 3.6308e15 | 8.1739 | 0.1938 | 0.765889 |
+| 100 | 1.0000e16 | 10.0000 | 0.1527 | ≈1 |
 
 Three burnups mark the changes of regime, at T = 600 K and P = 0.05:
 
 | event | condition | bu [GWd/tU] |
 |---|---|---|
-| transition threshold | `C2 = 0`, Θ leaves zero | **45.5589** |
-| restructuring starts | `Theta = theta_u` ⟹ X leaves zero | **54.5939** |
-| fully restructured | `Theta = theta_HAGB` ⟹ X reaches its cap | **85.1879** |
+| transition threshold | `C2 = 0`, Θ leaves zero | **45.3345** |
+| restructuring starts | `Theta = theta_u` ⟹ X leaves zero | **54.4816** |
+| fully restructured | `Theta = theta_HAGB` ⟹ X reaches its cap | **85.2012** |
 
-Temperature enters only through `G(T)`, weakly but monotonically in the right direction —
-heat suppresses restructuring:
+All three move with the porosity, which enters both elastic constants of Eq. (2): at the
+1.18 % porosity of the regression case they sit at 41.7 / 52.1 / 84.0 GWd/tU.
+
+Temperature enters only through `G(T)` and `nu(T)`, weakly but monotonically in the right
+direction — heat suppresses restructuring:
 
 | T [K] | 500 | 600 | 800 | 1000 | 1200 |
 |---|---|---|---|---|---|
-| Θ(60 GWd/tU) [°] | 3.218 | 3.190 | 3.115 | 3.014 | 2.879 |
-| X(60 GWd/tU) | 0.1306 | 0.1269 | 0.1173 | 0.1043 | 0.0870 |
+| Θ(60 GWd/tU) [°] | 3.236 | 3.204 | 3.121 | 3.013 | 2.871 |
+| X(60 GWd/tU) | 0.1329 | 0.1287 | 0.1181 | 0.1042 | 0.0860 |
 
-In the HBS range `r_n` is 0.15–0.48 µm, consistent with the measured ECD50%/2.
+In the HBS range `r_n` is 0.15–0.47 µm, consistent with the measured ECD50%/2.
 
 ---
 
@@ -224,9 +227,9 @@ In the HBS range `r_n` is 0.15–0.48 µm, consistent with the measured ECD50%/2
 `--validate` against `data/ebsd_zacharie_onofri.csv`:
 
 ```
-mean misorientation  Theta   N = 41   RMSE = 1.7395 deg   R2 = 0.7772
-restructured fraction X      N = 27   RMSE = 0.2003       R2 = 0.7411
-subgrain radius       r_n    N = 14   RMSE = 0.0968 um    R2 = 0.5384
+mean misorientation  Theta   N = 41   RMSE = 1.7405 deg   R2 = 0.7769
+restructured fraction X      N = 27   RMSE = 0.2000       R2 = 0.7421
+subgrain radius       r_n    N = 14   RMSE = 0.0975 um    R2 = 0.5317
 ```
 
 Point selection, identical to the calibration:
@@ -260,20 +263,31 @@ On the
 
 | threshold | 1 KJMA | 2 KJMA + bu_inc | 3 rho_d | **4 Landau** |
 |---|---|---|---|---|
-| 1 % | 19.5 | 34.5 | 51.2 | **49.4** |
-| 10 % | 37.8 | 52.8 | 54.8 | **55.1** |
-| 50 % | 64.2 | 79.3 | 72.3 | **72.8** |
-| 90 % | 90.1 | 105.2 | 112.3 | **84.3** |
-| 99 % | 109.7 | 124.6 | 161.7 | **86.5** |
+| 1 % | 19.5 | 34.5 | 51.2 | **52.9** |
+| 10 % | 37.8 | 52.8 | 54.8 | **57.0** |
+| 50 % | 64.2 | 79.3 | 72.3 | **71.7** |
+| 90 % | 90.1 | 105.2 | 112.3 | **82.1** |
+| 99 % | 109.7 | 124.6 | 161.7 | **84.0** 
 
-[TBC]
 Through the onset option 4 sits essentially on top of option 3, which is an independently
 calibrated model — the useful cross-check. The two part company at the top end: the lever
 rule of Eq. (10) **saturates**, because Θ reaches the 10° cap and X is then exactly 1,
-whereas the KJMA forms approach 1 asymptotically. Under the previous calibration that
-saturation produced a −7.9 % transient dip in the HBS porosity; with Eq. (2) and the refit
-the dip is gone (+0.0 %), and option 2 is now the only one that shows one (−2.9 %). All four
-options end within 0.17 % of the same porosity.
+whereas the KJMA forms approach 1 asymptotically.
+
+Downstream that shows up as a **transient dip in the HBS porosity** right after the corner:
+
+| | 1 KJMA | 2 KJMA + bu_inc | 3 rho_d | **4 Landau** |
+|---|---|---|---|---|
+| overshoot | 0.151897 at 106.8 | 0.160076 at 117.0 | none | **0.151631 at 84.2** |
+| dip after it | −0.6 % | −3.0 % | +0.0 % | **−6.3 %**, to 0.142139 at 100.1 |
+| final | 0.165361 | 0.165306 | 0.165592 | 0.165415 |
+
+All four end within 0.17 % of the same porosity, so the dip is a transient, not a different
+end state. It is the porosity model's response to `dalpha_r/dt` falling to zero abruptly:
+porosity case 3 drives pore nucleation from that derivative, so a hard corner in `alpha_r`
+starves nucleation while the existing pores keep coarsening. Option 4 has the hardest corner
+of the four and therefore the deepest dip; option 3, whose `alpha_r` never actually
+saturates, has none at all.
 
 ![formation options](figures/formation_options.png)
 
@@ -294,7 +308,7 @@ T = 900 K:
 | 1 KJMA, Barani (2020) | 0.1562 | +0.352 | constants from literature |
 | 2 KJMA + bu_inc = 15 | 0.1095 | +0.682 | literature constants, selected here |
 | 3 rho_d, Veshchunov (2009) | **0.0498** | **+0.934** | **fitted on these 8 points** |
-| 4 Landau functional | 0.1851 | +0.090 | never seen them (out-of-sample) |
+| 4 Landau functional | 0.1848 | +0.094 | never seen them (out-of-sample) |
 
 **Option 4 is the worst of the four here**, and that should be stated plainly rather than
 explained away. Two things qualify it.
@@ -312,9 +326,8 @@ explained away. Two things qualify it.
 | 90.68 | 0.7566 | 1.0000 | **+0.2434** |
 | 129.77 | 1.0002 | 1.0000 | −0.0002 |
 
-[TBC]
 Three of the eight points carry a residual above +0.10, and all three sit at 84–91 MWd/kgU,
-where the lever rule has already saturated — Θ reaches θ_HAGB at 85.5 MWd/kgU at this
+where the lever rule has already saturated — Θ reaches θ_HAGB at 85.6 MWd/kgU at this
 temperature and porosity — while the data is still at 0.62–0.76. This is the same hard
 saturation visible in `compare_formation_options.py`, and it is the model's most
 questionable feature. `validation.py` derives this paragraph from the numbers rather than
@@ -338,17 +351,17 @@ Restructured fraction, 27 points:
 
 | option | RMSE | R² |
 |---|---|---|
-| 1 KJMA, Barani (2020) | 0.2773 | +0.504 |
-| 2 KJMA + bu_inc = 15 | 0.2613 | +0.560 |
-| 3 rho_d, Veshchunov (2009) | 0.2206 | +0.686 |
-| 4 Landau functional | **0.2003** | **+0.741** |
+| 1 KJMA, Barani (2020) — at bu_eff | 0.2476 | +0.605 |
+| 2 KJMA + bu_inc = 15 — at bu_eff | 0.2618 | +0.558 |
+| 3 rho_d, Veshchunov (2009) — at bu_local | 0.2206 | +0.686 |
+| 4 Landau functional — at bu_local | **0.2000** | **+0.742** |
 
 and the two quantities only option 4 produces:
 
 | observable | N | RMSE | R² |
 |---|---|---|---|
-| mean misorientation Θ | 41 | 1.7395 ° | +0.777 |
-| subgrain radius r_n | 14 | 0.0968 µm | +0.538 |
+| mean misorientation Θ | 41 | 1.7405 ° | +0.777 |
+| subgrain radius r_n | 14 | 0.0975 µm | +0.532 |
 
 So each model wins on its own data, which is the expected and uninteresting part. The
 substantive result is that option 4 buys the misorientation and the subgrain size — which
@@ -425,6 +438,45 @@ stress — come from TRANSURANUS runs of the same rods.
 
 ---
 
+## Which burnup, and which quantities come from SCIANTIX
+
+| option | variable read | where |
+|---|---|---|
+| 1, 2 — KJMA | `sciantix_variable["Effective burnup"]` | `HighBurnupStructureFormation.C`, `option == 1 \|\| option == 2` |
+| 3 — ρ_d Veshchunov | `sciantix_variable["Burnup"]` | same file, `option == 3` |
+| 4 — Landau | `sciantix_variable["Burnup"]` | same file, `option == 4` |
+
+`EffectiveBurnup.C` integrates the specific power but **stops accumulating above 1273.15 K** (Khvostov, Holt-style).
+
+### Poisson ratio: taken from NEA, like the shear modulus
+
+The same NEA page carries a correlation for ν in the shape of Eq. (2), and it is now used:
+there is no reason to correlate one elastic constant and hold the other at a single value.
+It enters through `f(nu) = (1 - nu/2)/(1 - nu)`, a prefactor common to `A1` and `A2` in
+Eq. (4):
+
+| T [K] | P | ν(NEA) | f(ν) | f(0.31), the old constant | ratio |
+|---|---|---|---|---|---|
+| 600 | 0.05 | 0.29935 | 1.21362 | 1.22464 | 0.991 |
+| 723 | 0.0118 | 0.31007 | 1.22471 | 1.22464 | **1.000** |
+| 900 | 0.05 | 0.29556 | 1.20978 | 1.22464 | 0.988 |
+| 1200 | 0.05 | 0.29259 | 1.20680 | 1.22464 | 0.985 |
+
+### Porosity
+
+- `sciantix_variable["Porosity"]` starts at `1 - rho_fuel/10960` from the initial conditions
+  and is then moved only by `Densification.C`. It is the **as-fabricated/densification**
+  porosity of the unrestructured matrix.
+- `sciantix_variable["HBS porosity"]` is a distinct variable, written by
+  `HighBurnupStructurePorosity.C`. **Nothing adds it into `Porosity`.**
+- `SetMatrix.C` uses each with its own matrix: `Porosity` for the Young's modulus of the
+  `UO2` matrix, `HBS porosity` for that of the `UO2HBS` matrix.
+
+Eq. (2) uses `Porosity`: the Landau functional describes the
+**unrestructured matrix** transforming, and the HBS porosity is a property of the product phase. 
+
+---
+
 ## References
 
 - Nogita & Une, *Nucl. Instrum. Methods B* **91** (1994) 301–306.
@@ -438,10 +490,3 @@ stress — come from TRANSURANUS runs of the same rods.
 - Muramatsu, Takahashi et al. (2014) — nucleation criterion and phase field.
 - Zacharie-Aubrun et al., *J. Appl. Phys.* **132** (2022) 195903.
 - Onofri et al., *J. Nucl. Mater.* **615** (2025) 155981.
-
-[TBC] Wheter there are quantites as grain boundary energy which are already defined in SCIANTIX (in that case take that value.)
-dUE ESEMPI:
-matrix_.setPoissonRatio((0.32051 * (1 - q) + 0.31882 * q) * (1.0 - 1.03223 * sciantix_variable["Porosity"].getFinalValue()) * (1.0 + 0.69962 * x - 7.52905 * pow(x, 2.0)) * (1.017906 - 6.420 * pow(10, - 5.0) * history_variable["Temperature"].getFinalValue() + 1.506 * pow(10, - 8.0) * pow(history_variable["Temperature"].getFinalValue(), 2.0))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
-	
-GRAIN BOUNDARY ENERGY = SURFACE TENSION? = 0.7 N/m
-Porosity should be in sciantix the total porosity? how it is related to the hbs one?
