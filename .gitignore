@@ -96,3 +96,13 @@ Testing/
 bin/
 out/
 *.png
+
+# ...except the HBS-formation figures, which document
+# iHighBurnupStructureFormation = 4 and are regenerated from that directory by
+# compare_formation_options.py, validation.py and calibrate.py --front
+!utilities/HBSformation/figures/*.png
+
+# ...and the HBS regression figures carrying the Landau overlay, written by
+# regression/hbs/plot.py --landau.  The manuscript figures next to them are
+# tracked already and are not touched by that mode.
+!regression/hbs/figures/*_landau.png
