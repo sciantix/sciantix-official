@@ -100,7 +100,9 @@ def load_targets(path=None):
     theta = pack(rows, [theta_measured(r) for r in rows])
     with_size = [r for r in rows if not math.isnan(measured_radius(r))]
     size = pack(with_size, [measured_radius(r) for r in with_size])
-    return theta, size
+    with_fraction = [r for r in rows if not math.isnan(r["f10"])]
+    fraction = pack(with_fraction, [r["f10"] / 100.0 for r in with_fraction])
+    return theta, size, fraction
 
 
 def predict(parameters, targets):
@@ -136,8 +138,8 @@ def build_parameters(vector, n_families, fixed_rho_c=None):
                            k_sweep=float(k_sweep), rho_c=float(rho_c))
 
 
-def objective(vector, theta, size, weight, variance_theta, variance_radius,
-              n_families, fixed_rho_c):
+def objective(vector, theta, size, fraction, weight, fraction_weight,
+              variance_theta, variance_radius, variance_fraction, n_families, fixed_rho_c):
     parameters = build_parameters(vector, n_families, fixed_rho_c)
     theta_model, _, _ = predict(parameters, theta)
     _, radius_model, _ = predict(parameters, size)
@@ -146,14 +148,20 @@ def objective(vector, theta, size, weight, variance_theta, variance_radius,
     cost = float(np.mean((theta_model - theta["y"]) ** 2) / variance_theta)
     if weight > 0.0:
         cost += weight * float(np.mean((radius_model - size["y"]) ** 2) / variance_radius)
+    if fraction_weight > 0.0:
+        _, _, fraction_model = predict(parameters, fraction)
+        cost += fraction_weight * float(
+            np.mean((fraction_model - fraction["y"]) ** 2) / variance_fraction)
     return cost
 
 
-def fit(theta, size, weight=WEIGHT_DEFAULT, seeds=SEEDS_DEFAULT, n_families=N_FAMILIES,
-        fixed_rho_c=None, maxiter=800, popsize=25, verbose=True):
+def fit(theta, size, fraction, weight=WEIGHT_DEFAULT, fraction_weight=0.0,
+        seeds=SEEDS_DEFAULT, n_families=N_FAMILIES, fixed_rho_c=None,
+        maxiter=800, popsize=25, verbose=True):
     """Repeated global search. Returns (best ModelParameters, best cost, all runs)."""
     variance_theta = float(theta["y"].var())
     variance_radius = float(size["y"].var())
+    variance_fraction = float(fraction["y"].var())
     bounds = [BOUNDS_K, BOUNDS_BETA]
     if fixed_rho_c is None:
         bounds.append(BOUNDS_LOG10_RHO_C)
@@ -162,7 +170,8 @@ def fit(theta, size, weight=WEIGHT_DEFAULT, seeds=SEEDS_DEFAULT, n_families=N_FA
     for seed in range(seeds):
         result = differential_evolution(
             objective, bounds,
-            args=(theta, size, weight, variance_theta, variance_radius, n_families, fixed_rho_c),
+            args=(theta, size, fraction, weight, fraction_weight, variance_theta,
+                  variance_radius, variance_fraction, n_families, fixed_rho_c),
             seed=seed, tol=1e-12, maxiter=maxiter, popsize=popsize)
         parameters = build_parameters(result.x, n_families, fixed_rho_c)
         runs.append((float(result.fun), parameters))
@@ -173,8 +182,8 @@ def fit(theta, size, weight=WEIGHT_DEFAULT, seeds=SEEDS_DEFAULT, n_families=N_FA
     return runs[0][1], runs[0][0], runs
 
 
-def scores(parameters, theta, size):
-    """RMSE and R2 of the two fitted observables."""
+def scores(parameters, theta, size, fraction=None):
+    """RMSE and R2 of the fitted observables, and of the fraction when given."""
     theta_model, _, _ = predict(parameters, theta)
     _, radius_model, _ = predict(parameters, size)
 
@@ -185,8 +194,12 @@ def scores(parameters, theta, size):
 
     rmse_theta, r2_theta = metrics(theta["y"], theta_model)
     rmse_radius, r2_radius = metrics(size["y"], radius_model)
-    return dict(rmse_theta=rmse_theta, r2_theta=r2_theta,
-                rmse_radius=rmse_radius, r2_radius=r2_radius)
+    result = dict(rmse_theta=rmse_theta, r2_theta=r2_theta,
+                  rmse_radius=rmse_radius, r2_radius=r2_radius)
+    if fraction is not None:
+        _, _, fraction_model = predict(parameters, fraction)
+        result["rmse_fraction"], result["r2_fraction"] = metrics(fraction["y"], fraction_model)
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -247,7 +260,7 @@ def print_reference_table(parameters, temperature=REFERENCE_TEMPERATURE,
     print("BU_SATURATION = %.4f     # GWd/tU   Theta = theta_HAGB: X reaches its cap" % saturation)
 
 
-def plot_front(theta, size, weights, seeds, n_families, maxiter, popsize,
+def plot_front(theta, size, fraction, weights, seeds, n_families, maxiter, popsize,
                path=None):
     """RMSE(Theta) against RMSE(r_n) as the size weight is scanned."""
     import matplotlib
@@ -261,7 +274,7 @@ def plot_front(theta, size, weights, seeds, n_families, maxiter, popsize,
     points = []
     for weight in weights:
         print("  w = %g" % weight)
-        parameters, _, _ = fit(theta, size, weight, seeds, n_families,
+        parameters, _, _ = fit(theta, size, fraction, weight, 0.0, seeds, n_families,
                                maxiter=maxiter, popsize=popsize, verbose=False)
         score = scores(parameters, theta, size)
         points.append((weight, parameters, score))
@@ -295,6 +308,12 @@ def main(argv=None):
     parser.add_argument("--weight", type=float, default=WEIGHT_DEFAULT, metavar="W",
                         help="weight of the size term in the objective (default %g; "
                              "0 fits Theta alone)" % WEIGHT_DEFAULT)
+    parser.add_argument("--fraction-weight", dest="fraction_weight", type=float,
+                        default=0.0, metavar="W",
+                        help="weight of the restructured fraction in the objective "
+                             "(default 0: the fraction is a PREDICTION of the calibrated "
+                             "model, not a target). Raising it buys very little -- see the "
+                             "'Where the fraction error comes from' section of README.md")
     parser.add_argument("--seeds", type=int, default=SEEDS_DEFAULT, metavar="N",
                         help="independent global searches (default %d)" % SEEDS_DEFAULT)
     parser.add_argument("--n", type=float, default=N_FAMILIES, metavar="N",
@@ -318,10 +337,12 @@ def main(argv=None):
         print_reference_table(shipped)
         return 0
 
-    theta, size = load_targets()
+    theta, size, fraction = load_targets()
     print("Joint calibration of the Landau HBS-formation model")
-    print("  Theta  N = %2d   sizes  N = %2d   weight w = %g   seeds = %d   n = %g"
-          % (len(theta["y"]), len(size["y"]), arguments.weight, arguments.seeds, arguments.n))
+    print("  Theta  N = %2d   sizes  N = %2d   fractions  N = %2d"
+          % (len(theta["y"]), len(size["y"]), len(fraction["y"])))
+    print("  w = %g (sizes)   w_f = %g (fraction)   seeds = %d   n = %g"
+          % (arguments.weight, arguments.fraction_weight, arguments.seeds, arguments.n))
     fixed_rho_c = None
     if arguments.fix_rho_c is not None:
         fixed_rho_c = arguments.fix_rho_c ** -2.0
@@ -330,13 +351,14 @@ def main(argv=None):
     print()
 
     if arguments.front:
-        plot_front(theta, size, [0.0, 0.01, 0.05, 0.2, 1.0], arguments.seeds, arguments.n,
-                   arguments.maxiter, arguments.popsize)
+        plot_front(theta, size, fraction, [0.0, 0.01, 0.05, 0.2, 1.0], arguments.seeds,
+                   arguments.n, arguments.maxiter, arguments.popsize)
         return 0
 
-    parameters, cost, _ = fit(theta, size, arguments.weight, arguments.seeds, arguments.n,
+    parameters, cost, _ = fit(theta, size, fraction, arguments.weight,
+                              arguments.fraction_weight, arguments.seeds, arguments.n,
                               fixed_rho_c, arguments.maxiter, arguments.popsize)
-    score = scores(parameters, theta, size)
+    score = scores(parameters, theta, size, fraction)
 
     print()
     print("  best   J = %.6f" % cost)
@@ -350,6 +372,10 @@ def main(argv=None):
           % (len(theta["y"]), score["rmse_theta"], score["r2_theta"]))
     print("    r_n     N = %2d   RMSE = %.4f um    R2 = %.4f"
           % (len(size["y"]), score["rmse_radius"] * 1e6, score["r2_radius"]))
+
+    print("    X       N = %2d   RMSE = %.4f       R2 = %.4f   (in the objective at w_f = %g)"
+          % (len(fraction["y"]), score["rmse_fraction"], score["r2_fraction"],
+             arguments.fraction_weight))
 
     shipped_score = scores(shipped, theta, size)
     print()

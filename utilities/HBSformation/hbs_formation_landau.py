@@ -34,15 +34,25 @@ EQUATIONS
   (1)  dislocation density -- Nogita & Une (1994)
        rho_tot(bu) = 10^(2.2e-2*bu + 13.8)                              [m^-2]
 
-  (2)  shear modulus -- NEA Recommendations on fuel properties (2025),
-       Nuclear Science NEA/NSC/R(2024)1, p. 124
+  (2)  elastic constants -- NEA Recommendations on fuel properties (2025),
+       Nuclear Science NEA/NSC/R(2024)1, p. 124.  Both have the same four-factor
+       shape: composition, porosity, deviation from stoichiometry, temperature.
+       q = plutonium fraction (0 for UO2), P = porosity, x = deviation from
+       stoichiometry.  Neither depends on burnup: the whole burnup dependence of
+       the functional enters through rho_tot alone.
+
        G(T,P,x,q) = 1e9 * [82.52*(1-q) + 94.91*q]
                         * (1 - P)^2 / (1 + 0.95275*P)
                         * (1 - 2.88078*x + 15.49419*x^2)
                         * (1.009549 - 1.182e-5*T - 6.671e-8*T^2)        [Pa]
-       q = plutonium fraction (0 for UO2), P = porosity, x = deviation from
-       stoichiometry.  G does NOT depend on burnup: the whole burnup dependence
-       of the functional enters through rho_tot alone.
+
+       nu(T,P,x,q) = [0.32051*(1-q) + 0.31882*q]
+                   * (1 - 1.03223*P)
+                   * (1 + 0.69962*x - 7.52905*x^2)
+                   * (1.017906 - 6.420e-5*T + 1.506e-8*T^2)             [-]
+
+       f(nu) = (1 - nu/2)/(1 - nu), the edge/screw average of the dislocation
+       line energy prefactor (Hansen 1986), enters A1 and A2 of Eq. (4).
 
   (3)  wall geometry -- dislocations at spacing d give theta = b/d, so a wall
        carrying n families has line length L = n*theta/b, and the low-angle
@@ -159,17 +169,12 @@ from dataclasses import dataclass, field
 # ---------------------------------------------------------------------------
 
 # --- elastic constants -----------------------------------------------------
-POISSON_RATIO = 0.31             # -
 BURGERS = 3.889087296526011e-10  # m      Burgers vector, Djonovic thesis
 
-# Hansen, Mater. Sci. Eng. 81 (1986) 141-161: average over edge and screw
-# character of the dislocation line energy prefactor.
-F_NU = (1.0 - 0.5 * POISSON_RATIO) / (1.0 - POISSON_RATIO)   # -  = 1.2246...
-
-# --- shear modulus, Eq. (2): NEA/NSC/R(2024)1 p. 124 -----------------------
-# The correlation is quoted in GPa.  SCIANTIX stores the shear modulus of the
-# matrix in MPa and therefore writes a factor 1e3; the Landau functional works
-# in Pa, so the prefactor here is 1e9.
+# --- shear modulus and Poisson ratio, Eq. (2): NEA/NSC/R(2024)1 p. 124 -----
+# Both correlations have the same four-factor shape.  The shear modulus is quoted
+# in GPa: SCIANTIX stores the modulus of the matrix in MPa and therefore writes a
+# factor 1e3, while the Landau functional works in Pa, so the prefactor here is 1e9.
 G_UO2 = 82.52                    # GPa    UO2 end member
 G_PUO2 = 94.91                   # GPa    PuO2 end member
 G_POROSITY_COEFF = 0.95275       # -
@@ -178,6 +183,15 @@ G_STOICH_QUADRATIC = 15.49419    # -
 G_TEMP_CONSTANT = 1.009549       # -
 G_TEMP_LINEAR = 1.182e-5         # 1/K
 G_TEMP_QUADRATIC = 6.671e-8      # 1/K2
+
+NU_UO2 = 0.32051                 # -      UO2 end member
+NU_PUO2 = 0.31882                # -      PuO2 end member
+NU_POROSITY_COEFF = 1.03223      # -
+NU_STOICH_LINEAR = 0.69962       # -
+NU_STOICH_QUADRATIC = 7.52905    # -
+NU_TEMP_CONSTANT = 1.017906      # -
+NU_TEMP_LINEAR = 6.420e-5        # 1/K
+NU_TEMP_QUADRATIC = 1.506e-8     # 1/K2
 
 # Default state of the fuel when the caller does not say otherwise.  SCIANTIX
 # passes its own sciantix_variable["Porosity"] and ["Stoichiometry deviation"].
@@ -221,9 +235,9 @@ GRAIN_RADIUS = 5.0e-6           # m
 # Theta plus 14 points of ECD50% (weight 0.05 on the size term), rho_tot of
 # Nogita, G of Eq. (2), n = 2.
 N_FAMILIES = 2.0                        # -
-BETA = 28.104160337164743               # -
-K_SWEEP = 0.05024898714596149           # -
-RHO_C = 227863317789911.3               # m^-2
+BETA = 28.034712072083792               # -
+K_SWEEP = 0.050215095823109124          # -
+RHO_C = 222356318283554.03              # m^-2
 
 # --- Nogita & Une (1994), Eq. (1) ------------------------------------------
 NOGITA_SLOPE = 2.2e-2           # 1/(GWd/tU)
@@ -235,9 +249,11 @@ NOGITA_INTERCEPT = 13.8         # log10(m^-2)
 # nucleation), System.C (production split) -- and alpha = 1 exactly would produce
 # inf/NaN.  The cap is applied HERE as well as in the C++, so that the two
 # implementations agree bit for bit and the port stays verifiable.
+# How the other formation options handle the same thing:
+#   option 3  caps at exactly this value, f_max = 1 - 1e-9, in the same way;
+#   options 1 and 2  do NOT cap.  They evaluate alpha_r = 1 - exp(-K (bu - bu_inc)^n)
+#     and rely on the exponential never reaching zero.
 ALPHA_MAX = 1.0 - 1.0e-9        # -
-
-#[TBC] control how it is dealt in the other approaches in SCIANTIX.
 
 # Burnup unit conversion used by SCIANTIX: MWd/kgUO2 -> MWd/kgU = GWd/tU.
 # Not used by this script (which takes GWd/tU directly); quoted because the C++
@@ -307,6 +323,36 @@ def shear_modulus(temperature, porosity=FABRICATION_POROSITY,
     return 1.0e9 * composition * porosity_factor * stoichiometry_factor * temperature_factor
 
 
+def poisson_ratio(temperature, porosity=FABRICATION_POROSITY,
+                  stoichiometry_deviation=0.0, plutonium_fraction=PLUTONIUM_FRACTION):
+    """Eq. (2) -- Poisson ratio [-]. NEA/NSC/R(2024)1 p. 124.
+
+    Same four-factor shape as `shear_modulus`, and taken from the same table rather
+    than held at a single value: it enters the functional through f(nu), and there is
+    no reason to take one elastic constant from the correlation and not the other.
+    Note the sign of the quadratic temperature term, which is + here and - for G.
+    """
+    composition = NU_UO2 * (1.0 - plutonium_fraction) + NU_PUO2 * plutonium_fraction
+    porosity_factor = 1.0 - NU_POROSITY_COEFF * porosity
+    stoichiometry_factor = (1.0 + NU_STOICH_LINEAR * stoichiometry_deviation
+                            - NU_STOICH_QUADRATIC * stoichiometry_deviation ** 2)
+    temperature_factor = (NU_TEMP_CONSTANT
+                          - NU_TEMP_LINEAR * temperature
+                          + NU_TEMP_QUADRATIC * temperature * temperature)
+    return composition * porosity_factor * stoichiometry_factor * temperature_factor
+
+
+def line_energy_prefactor(temperature, porosity=FABRICATION_POROSITY,
+                          stoichiometry_deviation=0.0,
+                          plutonium_fraction=PLUTONIUM_FRACTION):
+    """f(nu) = (1 - nu/2)/(1 - nu), Eq. (2). Hansen, Mater. Sci. Eng. 81 (1986) 141.
+
+    The average over edge and screw character of the dislocation line energy.
+    """
+    nu = poisson_ratio(temperature, porosity, stoichiometry_deviation, plutonium_fraction)
+    return (1.0 - 0.5 * nu) / (1.0 - nu)
+
+
 def wall_geometry(rho_tot, parameters=DEFAULT_PARAMETERS):
     """Eq. (3) -- geometry of a fully developed low-angle boundary wall.
 
@@ -331,10 +377,11 @@ def landau_coefficients(temperature, rho_tot, porosity=FABRICATION_POROSITY,
     rho_lagb_max, s_over_v_max, dr_over_r_max = wall_geometry(rho_tot, parameters)
 
     gb2 = shear_modulus(temperature, porosity, stoichiometry_deviation) * BURGERS * BURGERS
+    f_nu = line_energy_prefactor(temperature, porosity, stoichiometry_deviation)
 
     # Eq. (4): the two logarithmic cut-offs of the dislocation line energy.
-    a1 = F_NU / (4.0 * math.pi) * math.log(math.pow(parameters.rho_c, -0.5) / BURGERS)
-    a2 = F_NU / (4.0 * math.pi) * math.log(math.pow(rho_tot, -0.5) / BURGERS)
+    a1 = f_nu / (4.0 * math.pi) * math.log(math.pow(parameters.rho_c, -0.5) / BURGERS)
+    a2 = f_nu / (4.0 * math.pi) * math.log(math.pow(rho_tot, -0.5) / BURGERS)
 
     # Eq. (5): the four contributions.
     e1 = rho_tot * a1 * gb2                          # order eta^0
@@ -441,6 +488,7 @@ DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 # Column names of `data/ebsd_zacharie_onofri.csv`, kept verbatim from the source
 # spreadsheets so that the file stays a faithful copy of them.
 COL_BURNUP = "Calculated radial burnup (GWd/tU)"
+COL_BURNUP_EFFECTIVE = "Calculated radial effective burnup (GWd/tU)"
 COL_TEMPERATURE = "Calculated radial temperature (°C)"
 COL_F1 = "Restructured fraction at 1° (%)"
 COL_F10 = "Restructured fraction at 10° (%)"
@@ -471,6 +519,10 @@ def load_ebsd(path=DATA_FILE):
     used respectively in Eq. (2) and as the ceiling of Eq. (9).  Both are given
     for the Zacharie rods and absent for the Onofri ones, where the module
     defaults are substituted.
+
+    `burnup` is the local burnup, which is what this model uses; `burnup_effective`
+    is the same TRANSURANUS run's effective burnup, carried for the comparison with
+    the KJMA options of SCIANTIX, which are driven by that one instead.
     """
     rows = []
     with open(path, newline="", encoding="utf-8") as handle:
@@ -481,6 +533,11 @@ def load_ebsd(path=DATA_FILE):
             rows.append({
                 "label": "%s/%s" % (record["Dataset"], record["Label"]),
                 "burnup": _number(record[COL_BURNUP]),
+                # The effective burnup of the same TRANSURANUS run.  Carried because
+                # the KJMA formation options of SCIANTIX (1 and 2) are driven by
+                # sciantix_variable["Effective burnup"], not by the local burnup that
+                # drives options 3 and 4.
+                "burnup_effective": _number(record[COL_BURNUP_EFFECTIVE]),
                 "temperature": _number(record[COL_TEMPERATURE]) + 273.15,
                 "f1": _number(record[COL_F1]),
                 "f10": _number(record[COL_F10]),
@@ -609,24 +666,24 @@ REFERENCE_TABLE = [
     (20.0, 173780082874937.62, 0.0, math.nan, 0.0),
     (30.0, 288403150312661.2, 0.0, math.nan, 0.0),
     (40.0, 478630092322638.0, 0.0, math.nan, 0.0),
-    (45.5589, 634301589938357.0, 0.0, math.nan, 0.0),
-    (45.6089, 635910212997685.1, 0.13031534605173756, 5e-06, 0.0),
-    (46.0589, 650572647544605.1, 0.416915846936457, 3.5222225700178947e-06, 0.0),
-    (50.0, 794328234724282.1, 1.373001192993058, 1.07991039659151e-06, 0.0),
-    (54.5939, 1002457108948565.5, 2.2000029888558466, 6.815109473417169e-07, 3.831866469711943e-07),
-    (60.0, 1318256738556410.0, 3.1895298189389254, 4.762050613721779e-07, 0.12686279729986222),
-    (70.0, 2187761623949551.8, 5.345484380154122, 2.909038943748294e-07, 0.4032672282248875),
-    (80.0, 3630780547701017.5, 8.17457655975603, 1.9464912857634274e-07, 0.7659713538148757),
-    (85.1879, 4722084996293270.0, 10.0, 1.609929333231328e-07, ALPHA_MAX),
-    (100.0, 1e+16, 10.0, 1.5343145285146573e-07, ALPHA_MAX),
-    (150.0, 1.2589254117941714e+17, 10.0, 1.4720366616641143e-07, ALPHA_MAX),
+    (45.3345, 627132055414374.2, 0.0, math.nan, 0.0),
+    (45.3845, 628722496147280.4, 0.12914281276521825, 5e-06, 0.0),
+    (45.8345, 643219200649759.0, 0.41317530807404307, 3.5365559841703567e-06, 0.0),
+    (50.0, 794328234724282.1, 1.4025884942362492, 1.052458933215846e-06, 0.0),
+    (54.4816, 996770554375121.1, 2.199992266381402, 6.782980184437709e-07, 0.0),
+    (60.0, 1318256738556410.0, 3.2035428579875136, 4.7199458322471803e-07, 0.12865934076762992),
+    (70.0, 2187761623949551.8, 5.352137206048668, 2.892195962507429e-07, 0.40412015462162404),
+    (80.0, 3630780547701017.5, 8.173933215729898, 1.9376608613313474e-07, 0.7658888738115254),
+    (85.2012, 4725267508797604.0, 10.0, 1.6024966852063487e-07, ALPHA_MAX),
+    (100.0, 1e+16, 10.0, 1.5270293064598372e-07, ALPHA_MAX),
+    (150.0, 1.2589254117941714e+17, 10.0, 1.4647934440239476e-07, ALPHA_MAX),
 ]
 
 # The three burnups at which the model changes regime, at T = 600 K, P = 0.05.
 # Re-derived by bisection in `--selftest`.
-BU_THRESHOLD = 45.5589      # GWd/tU   C2 = 0: Theta leaves zero
-BU_ONSET = 54.5939          # GWd/tU   Theta = theta_u: X leaves zero
-BU_SATURATION = 85.1879     # GWd/tU   Theta = theta_HAGB: X reaches its cap
+BU_THRESHOLD = 45.3345      # GWd/tU   C2 = 0: Theta leaves zero
+BU_ONSET = 54.4816          # GWd/tU   Theta = theta_u: X leaves zero
+BU_SATURATION = 85.2012     # GWd/tU   Theta = theta_HAGB: X reaches its cap
 
 # State the reference table and the boundaries are computed in.
 REFERENCE_TEMPERATURE = 600.0    # K
@@ -778,16 +835,19 @@ def selftest(verbose=True):
     # 9. the exact bridge to the stored energy of Muramatsu et al. (2014), Eq. 8:
     #    E_s = rho_tot*G*b^2/2, so C0/E_s = f(nu)*ln(rho_c^(-1/2)/b)/(2 pi),
     #    a constant at every burnup and temperature.
-    expected_ratio = F_NU * math.log(math.pow(RHO_C, -0.5) / BURGERS) / (2.0 * math.pi)
-    ratios = []
-    for burnup in (10.0, 40.0, 80.0, 150.0):
-        for temperature in (600.0, 1000.0):
+    #    f(nu) now varies with the state, so the ratio is constant in burnup at fixed
+    #    (T, P, x) rather than everywhere: the check is per temperature.
+    worst_ratio = 0.0
+    for temperature in (600.0, 1000.0):
+        expected_ratio = (line_energy_prefactor(temperature)
+                          * math.log(math.pow(RHO_C, -0.5) / BURGERS) / (2.0 * math.pi))
+        for burnup in (10.0, 40.0, 80.0, 150.0):
             state = hbs_state(burnup, temperature)
             stored = state.rho_tot * state.shear_modulus * BURGERS ** 2 / 2.0
-            ratios.append(state.c0 / stored)
-    spread = max(abs(r - expected_ratio) / expected_ratio for r in ratios)
-    check("C0 / E_s(Muramatsu Eq. 8) = %.4f, constant" % expected_ratio, spread < 1e-14,
-          "max relative spread %.2e" % spread)
+            worst_ratio = max(worst_ratio,
+                              abs(state.c0 / stored - expected_ratio) / expected_ratio)
+    check("C0 / E_s(Muramatsu Eq. 8) = f(nu) ln(rho_c^-1/2 / b) / 2pi, constant in burnup",
+          worst_ratio < 1e-14, "max relative spread %.2e" % worst_ratio)
 
     # 10. the numpy wrapper carries no physics of its own
     try:

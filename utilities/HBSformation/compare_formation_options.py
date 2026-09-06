@@ -143,12 +143,14 @@ def report(results):
     peaks, dips, finals = [], [], []
     for option, _, _ in OPTIONS:
         bu, por = results[option]["bu_U"], results[option]["porosity"]
-        window = [i for i in range(len(bu)) if 60.0 <= bu[i] <= 140.0]
-        high = max(window, key=lambda i: por[i])
-        after = [i for i in window if i > high]
-        low = min(after, key=lambda i: por[i]) if after else high
-        peaks.append("%.6f at %.1f" % (por[high], bu[high]))
-        dips.append("%+.1f %%" % (100.0 * (por[low] - por[high]) / por[high]) if por[high] else "-")
+        high, low = overshoot(bu, por)
+        if high is None:
+            peaks.append("none")
+            dips.append("+0.0 %")
+        else:
+            peaks.append("%.6f at %.1f" % (por[high], bu[high]))
+            dips.append("%+.1f %% to %.6f at %.1f"
+                        % (100.0 * (por[low] - por[high]) / por[high], por[low], bu[low]))
         finals.append("%.6f" % por[-1])
     for name, cells in (("local max", peaks), ("dip after it", dips), ("final", finals)):
         print("  %-12s |  " % name + " | ".join("%-27s" % c for c in cells))
@@ -157,6 +159,44 @@ def report(results):
     print()
     print("  the four options end within %.2f %% of the same porosity"
           % (100.0 * (max(spread) - min(spread)) / min(spread)))
+
+
+def overshoot(bu, por, tolerance=1.0e-4, floor_fraction=0.05):
+    """(peak index, following trough index) of the porosity overshoot, or (None, None).
+
+    Not the maximum over a window.  In every one of these runs the porosity ends
+    HIGHER than the overshoot, so the maximum of any window wide enough to contain the
+    corner lands on the window's own right edge and the dip measures as exactly zero -
+    which is what this function is here to stop reporting.
+
+    What is wanted is the highest point that the curve later falls below: among the
+    indices whose value is undercut afterwards, the one with the largest porosity, and
+    then the minimum that follows it.  `floor_fraction` ignores the numerical ripple
+    of the moment solver at the start, where the porosity is still a rounding error.
+    """
+    ceiling = max(por)
+    if ceiling <= 0.0:
+        return None, None
+    floor = floor_fraction * ceiling
+
+    # suffix minimum, so the scan below stays linear
+    suffix_min = [0.0] * len(por)
+    running = por[-1]
+    for i in range(len(por) - 1, -1, -1):
+        running = min(running, por[i])
+        suffix_min[i] = running
+
+    peak = None
+    for i in range(len(por) - 1):
+        if por[i] <= floor:
+            continue
+        if suffix_min[i + 1] < por[i] * (1.0 - tolerance):
+            if peak is None or por[i] > por[peak]:
+                peak = i
+    if peak is None:
+        return None, None
+    trough = min(range(peak + 1, len(por)), key=lambda i: por[i])
+    return peak, trough
 
 
 def plot(results, path):
