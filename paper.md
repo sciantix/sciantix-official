@@ -64,7 +64,7 @@ Since its first release, SCIANTIX has contributed to a growing and international
 
 Beyond bibliometric indicators, SCIANTIX has been integrated as meso-scale module within established fuel performance frameworks including coupling with TRANSURANUS and OFFBEAT. Its adoption within these engineering-scale environments demonstrates practical use beyond stand-alone research applications. SCIANTIX has also been applied in European research projects addressing advanced fuel concepts, helium behaviour and burnup structure evolution. Its verified numerical solvers and regression-testing infrastructure support reproducible research and independent validation, evidencing realized and continuing impact within the nuclear fuel modelling community.
 
-SCIANTIX has also contributed to European research projects addressing advanced fuel concepts, helium behaviour, and high-burnup structure evolution. Its continued development within collaborative initiatives such as R2CA, PATRICIA, OperaHPC, and TRANSPARANT further demonstrates sustained community engagement and ongoing scientific relevance.
+SCIANTIX has also contributed to European research projects addressing advanced fuel concepts, helium behaviour, and high-burnup structure evolution. Its continued development within collaborative initiatives such as R2CA, PATRICIA, OperaHPC, and TRANSPARENT further demonstrates sustained community engagement and ongoing scientific relevance.
 
 # AI usage disclosure
 
