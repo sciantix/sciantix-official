@@ -317,11 +317,11 @@ double Solver::det(int N, double A[])
     }
 }
 
-void Solver::Laplace5x5(double *A_matrix, double *b_matrix)
+void Solver::Laplace5x5(double* A_matrix, double* b_matrix)
 {
     const int n = 5;
-    double A[n][n];
-    double b[n];
+    double    A[n][n];
+    double    b[n];
 
     for (int i = 0; i < n; ++i)
     {
@@ -332,7 +332,7 @@ void Solver::Laplace5x5(double *A_matrix, double *b_matrix)
 
     for (int k = 0; k < n; ++k)
     {
-        int max_row = k;
+        int    max_row = k;
         double max_val = fabs(A[k][k]);
         for (int i = k + 1; i < n; ++i)
         {
