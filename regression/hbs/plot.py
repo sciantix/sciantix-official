@@ -26,6 +26,17 @@ cluster-dynamics moments, which the semi-empirical case does not populate, and
 are drawn from test_UO2HBS alone.
 
 Experimental data and literature model curves live in ``regression/hbs/data``.
+
+``--landau`` adds a third configuration, ``test_UO2HBS_landau``
+(iHighBurnupStructureFormation = 4, the Landau functional), as an extra overlay on
+every figure, and produces two more:
+
+    plot_alpha_r.png        restructured volume fraction, the three cases together
+    plot_hbs_state.png      mean misorientation and subgrain radius, Landau only
+
+Everything is then written with a ``_landau`` suffix, so the manuscript figures
+beside them are untouched. Use it to see whether swapping the formation model
+perturbs the downstream porosity model.
 """
 
 import os
@@ -45,6 +56,7 @@ DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 FIG_DIR = os.path.join(SCRIPT_DIR, "figures")
 LIVE_CASE = os.path.join(SCRIPT_DIR, "test_UO2HBS")
 REFERENCE_CASE = os.path.join(SCRIPT_DIR, "test_UO2HBS_0")
+LANDAU_CASE = os.path.join(SCRIPT_DIR, "test_UO2HBS_landau")
 
 # Burnup is written in MWd/kgUO2 and plotted in MWd/kgHM.
 UO2_TO_HM = 0.8814
@@ -57,6 +69,7 @@ SOLID_FP_COEFF = 0.00303
 
 LABEL_LIVE = "SCIANTIX, this work"
 LABEL_REFERENCE = "SCIANTIX, semi-empirical"
+LABEL_LANDAU = "SCIANTIX, Landau formation"
 
 # =============================================================================
 # Plot style
@@ -78,6 +91,7 @@ COLOR_UNE_LOW = "#8e44ad"
 COLOR_UNE_STRONG = "#e377c2"
 COLOR_WALKER = "#1a3c6e"
 COLOR_ALPHA = "#f39c12"
+COLOR_LANDAU = "#000000"   # Landau formation - test_UO2HBS_landau
 COLOR_LASSMANN_FIT = "#6a0dad"
 
 MARKER_SIZE = 5
@@ -112,8 +126,26 @@ def new_axes(xlabel, ylabel):
     return fig, ax
 
 
+# Set by main() when --landau is given: the extra case to overlay, and the
+# suffix that keeps its figures away from the manuscript ones.
+LANDAU = None
+SUFFIX = ""
+
+
+def overlay_landau(ax, key, style="--", linewidth=None):
+    """Add the Landau case to an axis, if --landau is active and it has that column."""
+    if LANDAU is None or LANDAU.get(key) is None:
+        return
+    ax.plot(LANDAU["burnup"], LANDAU[key], style, color=COLOR_LANDAU,
+            linewidth=linewidth if linewidth is not None else LINEWIDTH_MODEL,
+            label=LABEL_LANDAU)
+
+
 def save(fig, filename):
     os.makedirs(FIG_DIR, exist_ok=True)
+    if SUFFIX:
+        stem, ext = os.path.splitext(filename)
+        filename = stem + SUFFIX + ext
     out = os.path.join(FIG_DIR, filename)
     fig.savefig(out, dpi=DPI, bbox_inches="tight")
     plt.close(fig)
@@ -176,6 +208,9 @@ def load_case(case_dir):
     case["swe_igs"] = col("Intragranular gas solution swelling (/)")
     case["swe_igb"] = col("Intragranular gas bubble swelling (/)")
     case["fima"] = col("FIMA (%)")
+    # Produced by the Landau formation model only (option 4).
+    case["theta"] = col("Mean misorientation (deg)")
+    case["subgrainRadius"] = col("Subgrain radius (m)")
 
     # Cluster-dynamics moments of the pore size distribution
     M2 = col("Xe atoms per HBS pore - variance (at^2/pore)")
@@ -233,6 +268,7 @@ def plot_pore_density(live, reference):
                 linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
     ax.plot(live["burnup"], live["poreDensity"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
+    overlay_landau(ax, "poreDensity")
     ax.set_xlim(0, 210)
     ax.legend(loc="upper right")
     save(fig, "plot_pore_density.png")
@@ -267,6 +303,7 @@ def plot_porosity(live, reference):
                 linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
     ax.plot(live["burnup"], live["porosity"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
+    overlay_landau(ax, "porosity")
     if live["sigma_xi"] is not None:
         ax.fill_between(live["burnup"],
                         np.maximum(live["porosity"] - live["sigma_xi"], 0.0),
@@ -296,6 +333,7 @@ def plot_pore_radius(live, reference):
                 linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
     ax.plot(live["burnup"], live["poreRadius"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
+    overlay_landau(ax, "poreRadius")
     if live["sigma_R"] is not None:
         ax.fill_between(live["burnup"],
                         np.maximum(live["poreRadius"] - live["sigma_R"], 0.0),
@@ -330,6 +368,10 @@ def plot_xe_depletion(live, reference):
              linewidth=LINEWIDTH_REF, label=LABEL_LIVE + ", HBS")
     ax1.plot(live["burnup"], (live["xe_ig"] + live["xe_igHBS"]) / XE_EQUIVALENT, "-",
              color="#2c2c2c", linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE + " (total)")
+    if LANDAU is not None and LANDAU["xe_igHBS"] is not None:
+        ax1.plot(LANDAU["burnup"], (LANDAU["xe_ig"] + LANDAU["xe_igHBS"]) / XE_EQUIVALENT,
+                 "--", color=COLOR_LANDAU, linewidth=LINEWIDTH_MODEL,
+                 label=LABEL_LANDAU + " (total)")
     ax1.set_xlabel("Burnup (MWd/kgHM)")
     ax1.set_ylabel("Xe in grains (wt%)")
     ax1.set_xlim(0, 200)
@@ -366,6 +408,11 @@ def plot_fuel_swelling(live, reference):
     ax1.plot(live["burnup"], live["swe_igb"], "-.", color=COLOR_CURRENT,
              linewidth=LINEWIDTH_REF, label="Intra-granular gas in bubbles")
     total_live = live["swe_igs"] + live["swe_igb"] + SOLID_FP_COEFF * live["fima"]
+    if LANDAU is not None:
+        total_landau = (LANDAU["swe_igs"] + LANDAU["swe_igb"]
+                        + SOLID_FP_COEFF * LANDAU["fima"])
+        ax1.plot(LANDAU["burnup"], total_landau, "--", color=COLOR_LANDAU,
+                 linewidth=LINEWIDTH_MODEL, label=LABEL_LANDAU + " (total)")
     ax1.plot(live["burnup"], total_live, "-", color="#1a365d",
              linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE + " (total)")
 
@@ -479,7 +526,59 @@ def plot_xe_inventory(live):
     save(fig, "plot_xe_inventory.png")
 
 
+def plot_alpha_r(live, reference):
+    """Restructured volume fraction: the driver every downstream model reads."""
+    fig, ax = new_axes(X_LABEL_BU, r"Restructured volume fraction $\alpha_r$ (/)")
+    if reference is not None:
+        ax.plot(reference["burnup"], reference["alpha"], "-", color=COLOR_REFERENCE,
+                linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
+    ax.plot(live["burnup"], live["alpha"], "-", color=COLOR_CURRENT,
+            linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
+    overlay_landau(ax, "alpha")
+    ax.set_xlim(0, 210)
+    ax.set_ylim(0, 1.05)
+    ax.legend(loc="lower right")
+    save(fig, "plot_alpha_r.png")
+
+
+def plot_hbs_state(case):
+    """Mean misorientation and subgrain radius: produced by the Landau model only."""
+    if case is None or case.get("theta") is None:
+        print("No substructure columns in the Landau case: state plot skipped")
+        return
+    fig, ax1 = plt.subplots()
+    ax1.set_xlabel(X_LABEL_BU)
+    ax1.set_ylabel(r"Mean misorientation $\Theta$ (deg)", color=COLOR_LANDAU)
+    ax1.plot(case["burnup"], case["theta"], "-", color=COLOR_LANDAU,
+             linewidth=LINEWIDTH_MODEL, label=r"$\Theta$")
+    ax1.tick_params(axis="y", labelcolor=COLOR_LANDAU)
+    ax1.set_xlim(0, 210)
+    ax1.set_ylim(0, 11)
+    ax1.axhline(10.0, ls=":", lw=0.9, color=COLOR_LANDAU)
+    ax1.annotate(r"$\theta_{HAGB}$, $\eta = 1$", xy=(150, 10.0), xytext=(150, 10.2),
+                 fontsize=9, color=COLOR_LANDAU)
+
+    ax2 = ax1.twinx()
+    ax2.set_ylabel(r"Subgrain radius $r_n$ ($\mu$m)", color=COLOR_CURRENT)
+    radius = np.where(case["subgrainRadius"] > 0, case["subgrainRadius"] * 1e6, np.nan)
+    ax2.plot(case["burnup"], radius, "-", color=COLOR_CURRENT,
+             linewidth=LINEWIDTH_MODEL, label=r"$r_n$")
+    ax2.tick_params(axis="y", labelcolor=COLOR_CURRENT)
+    ax2.set_ylim(0, 1.2)
+    save(fig, "plot_hbs_state.png")
+
+
 def main():
+    global LANDAU, SUFFIX
+
+    if "--landau" in sys.argv:
+        LANDAU = load_case(LANDAU_CASE)
+        if LANDAU is None:
+            print("Run the HBS cases first: python3 -m regression.runner --hbs")
+            return
+        # A suffix, so the manuscript figures beside these are untouched.
+        SUFFIX = "_landau"
+
     live = load_case(LIVE_CASE)
     if live is None:
         print("Run the HBS cases first: python3 -m regression.runner --hbs")
@@ -505,6 +604,10 @@ def main():
         plot_xe_inventory(live)
     else:
         print("No xenon inventory columns in the live case: inventory plot skipped")
+
+    if LANDAU is not None:
+        plot_alpha_r(live, reference)
+        plot_hbs_state(LANDAU)
 
 
 if __name__ == "__main__":

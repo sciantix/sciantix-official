@@ -97,6 +97,8 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  * @param toOutputCracking Flag for outputting cracking information.
  * @param toOutputGrainBoundary Flag for outputting grain boundary information.
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
+ * @param toOutputLandauSubstructure Flag for the substructure outputs of the Landau formation model
+ *        (iHighBurnupStructureFormation = 4): mean misorientation and subgrain radius.
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
@@ -107,6 +109,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputCracking,
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
+                                                         bool   toOutputLandauSubstructure,
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent)
 {
@@ -323,6 +326,19 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[201],
                          Sciantix_variables[201],
                          toOutputHighBurnupStructure),
+        // Produced by iHighBurnupStructureFormation = 4 only (Landau functional): the
+        // order parameter of the transition and the subgrain size that follows from
+        // the same wall geometry. The other formation options leave them at zero.
+        SciantixVariable("Mean misorientation",
+                         "(deg)",
+                         Sciantix_variables[202],
+                         Sciantix_variables[202],
+                         toOutputLandauSubstructure),
+        SciantixVariable("Subgrain radius",
+                         "(m)",
+                         Sciantix_variables[203],
+                         Sciantix_variables[203],
+                         toOutputLandauSubstructure),
         SciantixVariable("Intragranular similarity ratio", "(/)", Sciantix_variables[64], Sciantix_variables[64], 0),
         SciantixVariable("Gap oxygen partial pressure", "(MPa)", 0.0, 0.0, toOutputStoichiometryDeviation),
         SciantixVariable("Stoichiometry deviation",

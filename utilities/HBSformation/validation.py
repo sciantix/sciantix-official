@@ -104,11 +104,12 @@ def option4_landau(burnup, temperature, porosity=FABRICATION_POROSITY,
                    grain_radius=GRAIN_RADIUS):
     """Case 4: the Landau functional of this directory.
 
-    `burnup` is the LOCAL burnup, for the same reason as option 3: the temperature
-    dependence is already carried by G(T) in Eq. (2).  Unlike options 1-3 this one
-    also reads the state of the fuel -- the porosity enters Eq. (2) and the grain
-    radius is the ceiling of Eq. (9).  The other three accept and ignore them, so
-    the four share one signature.
+    `burnup` is the LOCAL burnup, for the same reason as option 3.  The
+    temperature and the porosity are accepted for the shared signature but do not
+    reach the restructured fraction: since the grain-boundary surface term was
+    dropped, f(nu)*G*b^2 cancels in eta^2 = -C2/(2 C4) and the three outputs
+    depend on the local burnup alone.  The grain radius still matters, as the
+    ceiling of Eq. (9), but only to the subgrain radius.
     """
     return hbs_state(burnup, temperature, porosity=porosity,
                      grain_radius_m=grain_radius).restructured_fraction
@@ -192,10 +193,20 @@ def report(rows):
               % (number, label, rmse(PIE_FRACTION, predicted),
                  r_squared(PIE_FRACTION, predicted), PIE_STATUS[number]))
     print()
+    # Ranked rather than asserted, so this paragraph cannot go stale the next time
+    # calibrate.py moves the parameters.
+    ranked = sorted(
+        ((rmse(PIE_FRACTION, [model(b, PIE_TEMPERATURE) for b in PIE_BURNUP]), number)
+         for number, _, model, _, _, _ in OPTIONS))
+    place = [number for _, number in ranked].index(4) + 1
     print("  Only option 3 was fitted on these points, and it is the one that wins:")
     print("  that is a fit being scored on its own training data.  Option 4 has never")
-    print("  seen them, so its number is an honest out-of-sample check -- and it is")
-    print("  the worst of the four in aggregate.")
+    print("  seen them, so its number is an honest out-of-sample check -- and it comes")
+    ahead = [str(number) for _, number in ranked[:place - 1]]
+    print("  %s of the four on RMSE (%s)%s."
+          % (("first", "second", "third", "last")[place - 1],
+             ", ".join("%d: %.4f" % (number, value) for value, number in ranked),
+             ", behind options %s" % " and ".join(ahead) if ahead else ""))
     print()
     print("  Where option 4's error actually is:")
     print()
@@ -230,12 +241,15 @@ def report(rows):
     else:
         print("  No single point dominates: every residual is below +0.10.")
     print()
-    print("  Read with care: these 8 points carry NO resolved temperature -- 900 K is")
-    print("  assumed for all of them.  The EBSD data shows that in exactly this burnup")
-    print("  band the temperature is a first-order variable: at 76-84 MWd/kgU the")
-    print("  measured fraction runs from 0.20 (T ~ 860 K) to 1.00 (T ~ 665 K).  A model")
-    print("  with a real temperature dependence is therefore being scored against")
-    print("  points whose temperature is a guess.")
+    print("  These 8 points carry NO resolved temperature -- 900 K is assumed for all")
+    print("  of them.  That used to confound the comparison; it no longer does for")
+    print("  option 4, whose outputs depend on the local burnup alone, so the assumed")
+    print("  temperature cannot flatter or penalise it.  It still confounds option 3,")
+    print("  which reads T through its rho_d correlation.  What the assumption does")
+    print("  cost is the other half of the story: the EBSD data shows that in exactly")
+    print("  this burnup band the measured fraction runs from 0.20 (T ~ 860 K) to 1.00")
+    print("  (T ~ 665 K) at 76-84 MWd/kgU, and no option here reproduces a spread that")
+    print("  wide -- option 4 now not at all.")
 
     print()
     print("=" * 78)
@@ -312,8 +326,10 @@ def plot(rows):
     axes[0].plot(PIE_BURNUP, PIE_FRACTION, "o", ms=8, color="white",
                  markeredgecolor="k", markeredgewidth=1.4, zorder=5,
                  label="PIE, Gerczak (2018) / Noirot (2015)")
-    # the EBSD points are coloured by their local temperature: the scatter at fixed
-    # burnup is not noise, it is the temperature dependence
+    # the EBSD points are coloured by their local temperature.  The scatter at
+    # fixed burnup IS largely that temperature -- and no curve here follows it:
+    # option 4 depends on the local burnup alone, options 1 and 2 likewise, and
+    # only option 3 reads T at all.
     temperatures = [r["temperature"] for r in rows]
     low, high = min(temperatures), max(temperatures)
     fraction_rows = [r for r in rows if not math.isnan(r["f10"])]
@@ -353,8 +369,8 @@ def plot(rows):
         axis.set_xlabel("local burnup  [MWd/kgU]")
         axis.set_xlim(0, 165)
     figure.suptitle("HBS formation, validation against experimental data. "
-                    "EBSD squares are coloured by their own local temperature; "
-                    "the curves are at 900 K")
+                    "EBSD squares are coloured by their own local temperature, "
+                    "which only option 3 responds to")
     bar = figure.colorbar(scatter, ax=axes, fraction=0.022, pad=0.015)
     bar.set_label("EBSD local temperature  [K]")
     first = os.path.join(FIGURES, "validation.png")
