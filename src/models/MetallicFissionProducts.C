@@ -48,9 +48,9 @@ void Simulation::MetallicFissionProducts()
     // k_gb:    precipitazione ai bordi grano
 
     const double k_intra_0 = 1.0 * scaling_factors["MFP precipitation rate intragranular"].getValue();
-    const double dG_intra = 1.0 * scaling_factors["MFP intra activation energy"].getValue();
-    const double k_gb_0 = 1.0 * scaling_factors["MFP precipitation rate grain boundary"].getValue();
-    const double dG_gb = 1.0 * scaling_factors["MFP grain boundary activation energy"].getValue();
+    const double dG_intra  = 1.0 * scaling_factors["MFP intra activation energy"].getValue();
+    const double k_gb_0    = 1.0 * scaling_factors["MFP precipitation rate grain boundary"].getValue();
+    const double dG_gb     = 1.0 * scaling_factors["MFP grain boundary activation energy"].getValue();
 
     // Irradiation-induced re-solution of metallic precipitates.
     //
@@ -70,10 +70,10 @@ void Simulation::MetallicFissionProducts()
     //
     // The coefficient is then scaled with the local fission rate.
 
-    const double k_res_ref = 3.085078e-6;      // s^-1
-    const double fission_rate_ref = 1.48e19;  // fission rate used in the calibration
-    const double k_res = k_res_ref * (fission_rate / fission_rate_ref) * scaling_factors["MFP resolution rate"].getValue();
-
+    const double k_res_ref        = 3.085078e-6;  // s^-1
+    const double fission_rate_ref = 1.48e19;      // fission rate used in the calibration
+    const double k_res =
+        k_res_ref * (fission_rate / fission_rate_ref) * scaling_factors["MFP resolution rate"].getValue();
 
     // CONCENTRAZIONE TOTALE Cm
 
@@ -95,12 +95,11 @@ void Simulation::MetallicFissionProducts()
     // final_value è protected -> devo usare la funzione pubblica addValue
     sciantix_variable["Cm"].addValue(produzione);
 
-
     // SETUP: VALORI INIZIALI DEL TIMESTEP
 
-    double Cm_matrix_old = sciantix_variable["Cm matrix"].getInitialValue();
+    double Cm_matrix_old       = sciantix_variable["Cm matrix"].getInitialValue();
     double Cm_precip_intra_old = sciantix_variable["Cm precipitated intragranular"].getInitialValue();
-    double Cm_precip_gb_old = sciantix_variable["Cm precipitated grain boundary"].getInitialValue();
+    double Cm_precip_gb_old    = sciantix_variable["Cm precipitated grain boundary"].getInitialValue();
 
     double N_iniziale_intra = sciantix_variable["Intragranular 5MPs concentration"].getInitialValue();
     double N_iniziale_inter = sciantix_variable["Intergranular 5MPs concentration"].getInitialValue();
@@ -119,8 +118,6 @@ void Simulation::MetallicFissionProducts()
     // It is consistent with the literature indication that metallic dimers
     // can act as precursors of metallic precipitates in UO2.
     const double n_floor = 2.0;
-
-
 
     // EQUILIBRIUM CONCENTRATION AND SUPERSATURATION
     //
@@ -153,12 +150,12 @@ void Simulation::MetallicFissionProducts()
     // rappresenta Mo-Tc-Ru-Rh-Pd come una singola specie, C_eq(T) deve essere
     // interpretata come effective equilibrium concentration del modello 5MP.
 
-    const double T_eq_ref = 2173.15;         // K = 1900 degC
-    const double x_eq_ref = 6.0e-5;          // 0.006 at.%
-    const double a_UO2_ref = 547.5e-12;      // m
+    const double T_eq_ref    = 2173.15;                    // K = 1900 degC
+    const double x_eq_ref    = 6.0e-5;                     // 0.006 at.%
+    const double a_UO2_ref   = 547.5e-12;                  // m
     const double N_sites_UO2 = 4.0 / pow(a_UO2_ref, 3.0);  // m^-3
-    const double C_eq_ref = x_eq_ref * N_sites_UO2;        // ~1.462e24 at/m3
-    const double H_sol_eff = 1.14;           // eV
+    const double C_eq_ref    = x_eq_ref * N_sites_UO2;     // ~1.462e24 at/m3
+    const double H_sol_eff   = 1.14;                       // eV
 
     double C_eq = C_eq_ref;
 
@@ -170,7 +167,7 @@ void Simulation::MetallicFissionProducts()
     // prima dei trasferimenti per nucleazione e precipitazione.
     double Cm_matrix_for_nucleation = std::max(Cm_matrix_old + produzione, 0.0);
 
-    double supersaturation = 0.0;
+    double supersaturation     = 0.0;
     double log_supersaturation = 0.0;
 
     if (C_eq > 0.0)
@@ -192,7 +189,6 @@ void Simulation::MetallicFissionProducts()
     if (T > 0.0 && log_supersaturation > 1.0e-12)
         delta_mu = kB * T * log_supersaturation;
 
-
     // HETEROGENEOUS NUCLEATION SITES - INTRAGRANULAR
     //
     // Per la popolazione intragranulare manteniamo, in questa prima modifica,
@@ -205,17 +201,17 @@ void Simulation::MetallicFissionProducts()
 
     // Dislocation density
     // Ref: Modelling dislocation density evolution of UO2 under irradiation
-    const double lambda = 15e-9;  // m, characteristic spacing between effective nucleation sites
-    double dislocation_density = 0.0;
+    const double lambda              = 15e-9;  // m, characteristic spacing between effective nucleation sites
+    double       dislocation_density = 0.0;
 
     double burnup = sciantix_variable["Burnup"].getFinalValue();
 
-    const double A = 6.545e12;
-    const double n = 1.151;
+    const double A     = 6.545e12;
+    const double n     = 1.151;
     const double A_inf = 0.608;
-    const double T_c = 1109.0;
-    const double dT = 25.8;
-    const double fT = A_inf + (1.0 - A_inf) / (1.0 + exp((T - T_c) / dT));
+    const double T_c   = 1109.0;
+    const double dT    = 25.8;
+    const double fT    = A_inf + (1.0 - A_inf) / (1.0 + exp((T - T_c) / dT));
 
     if (burnup <= 0.0 || T <= 0.0)
         dislocation_density = 0.0;
@@ -228,10 +224,9 @@ void Simulation::MetallicFissionProducts()
     // su dislocazioni e bolle, stimati tramite analisi delle immagini.
     // Questi pesi vengono mantenuti invariati in questa prima implementazione.
     const double f_dislocation = 0.67;
-    const double f_bubbles = 0.33;
+    const double f_bubbles     = 0.33;
 
     double siti_intra = f_dislocation * dislocation_sites + f_bubbles * bubble_sites_intra;
-
 
     // CNT-INSPIRED SUPERSATURATION-DEPENDENT NUCLEATION BARRIER
     //
@@ -263,19 +258,16 @@ void Simulation::MetallicFissionProducts()
 
     const double B_nucleation_ref = 1.0e6;  // eV K^2
 
-    double B_nucleation =
-        B_nucleation_ref * scaling_factors["MFP nucleation energy barrier"].getValue();
+    double B_nucleation = B_nucleation_ref * scaling_factors["MFP nucleation energy barrier"].getValue();
 
-    double k_nucl =
-        1.0 * scaling_factors["MFP nucleation rate"].getValue();  // s^-1
+    double k_nucl = 1.0 * scaling_factors["MFP nucleation rate"].getValue();  // s^-1
 
     double dG_nucleation = 0.0;  // eV
     double k_nucleazione = 0.0;  // s^-1
 
     if (T > 0.0 && log_supersaturation > 1.0e-12)
     {
-        dG_nucleation =
-            B_nucleation / (T * T * log_supersaturation * log_supersaturation);
+        dG_nucleation = B_nucleation / (T * T * log_supersaturation * log_supersaturation);
 
         double nucleation_exponent = dG_nucleation / (kB * T);
 
@@ -287,8 +279,6 @@ void Simulation::MetallicFissionProducts()
     }
 
     double S_intra = siti_intra * k_nucleazione;  // [m^-3 s^-1]
-
-
 
     // HETEROGENEOUS NUCLEATION SITES - GRAIN BOUNDARY
     //
@@ -322,24 +312,20 @@ void Simulation::MetallicFissionProducts()
 
     double siti_inter = grain_boundary_surface_to_volume / (lambda * lambda);
 
-
     // La nucleazione GB usa la stessa supersaturazione della matrice ma mantiene
     // prefattore e coefficiente di barriera separati.
 
     double B_nucleation_inter =
-        B_nucleation_ref *
-        scaling_factors["MFP nucleation energy barrier grain boundary"].getValue();
+        B_nucleation_ref * scaling_factors["MFP nucleation energy barrier grain boundary"].getValue();
 
-    double k_nucl_inter =
-        1.0 * scaling_factors["MFP nucleation rate grain boundary"].getValue();  // s^-1
+    double k_nucl_inter = 1.0 * scaling_factors["MFP nucleation rate grain boundary"].getValue();  // s^-1
 
     double dG_nucleation_inter = 0.0;  // eV
     double k_nucleazione_inter = 0.0;  // s^-1
 
     if (T > 0.0 && log_supersaturation > 1.0e-12)
     {
-        dG_nucleation_inter =
-            B_nucleation_inter / (T * T * log_supersaturation * log_supersaturation);
+        dG_nucleation_inter = B_nucleation_inter / (T * T * log_supersaturation * log_supersaturation);
 
         double nucleation_exponent_inter = dG_nucleation_inter / (kB * T);
 
@@ -351,14 +337,12 @@ void Simulation::MetallicFissionProducts()
 
     double S_inter = siti_inter * k_nucleazione_inter;  // [m^-3 s^-1]
 
-
     // 5MP EFFECTIVE ATOMIC VOLUME
-  
+
     // Volume atomico efficace pesato per una 5MP.
     // Utilizzato anche nel codice Python di calibrazione per mantenere
     // coerenza tra conversione concentrazione-volume e calcolo del raggio.
     const double V_eff_5M = 1.44123e-29;  // effective atomic volume of 5MP [m3/atom]
-
 
     // PRECIPITATION COEFFICIENTS
 
@@ -375,14 +359,14 @@ void Simulation::MetallicFissionProducts()
     // Protezione numerica: un eventuale piccolo valore negativo di C_precip
     // generato dal solver non deve entrare nella radice cubica.
     double Cm_precip_intra_safe_old = std::max(Cm_precip_intra_old, 0.0);
-    double Cm_precip_gb_safe_old = std::max(Cm_precip_gb_old, 0.0);
+    double Cm_precip_gb_safe_old    = std::max(Cm_precip_gb_old, 0.0);
 
-    double radius_intra_old = pow((3.0 * Cm_precip_intra_safe_old * V_eff_5M) / (4.0 * M_PI * N_intra_safe_old), 1.0 / 3.0);
+    double radius_intra_old =
+        pow((3.0 * Cm_precip_intra_safe_old * V_eff_5M) / (4.0 * M_PI * N_intra_safe_old), 1.0 / 3.0);
     double radius_gb_old = pow((3.0 * Cm_precip_gb_safe_old * V_eff_5M) / (4.0 * M_PI * N_inter_safe_old), 1.0 / 3.0);
 
     double k_intra = k_intra_0 * exp(-dG_intra / (kB * T)) * 4.0 * M_PI * N_intra_safe_old * radius_intra_old;
-    double k_gb = k_gb_0 * exp(-dG_gb / (kB * T)) * 4.0 * M_PI * N_inter_safe_old * radius_gb_old;
-
+    double k_gb    = k_gb_0 * exp(-dG_gb / (kB * T)) * 4.0 * M_PI * N_inter_safe_old * radius_gb_old;
 
     // 1. AGGIORNAMENTO N
     // Eulero implicito:
@@ -395,7 +379,6 @@ void Simulation::MetallicFissionProducts()
     double N_candidate_intra = (N_iniziale_intra + S_intra * dt) / (1.0 + k_nucleazione * dt);
     double N_candidate_inter = (N_iniziale_inter + S_inter * dt) / (1.0 + k_nucleazione_inter * dt);
 
-
     // 2. NUMERO DI NUOVE PARTICELLE RICHIESTE
 
     // Non permettiamo una diminuzione di N in questo modello:
@@ -403,7 +386,6 @@ void Simulation::MetallicFissionProducts()
 
     double dN_intra_requested = std::max(N_candidate_intra - N_iniziale_intra, 0.0);
     double dN_inter_requested = std::max(N_candidate_inter - N_iniziale_inter, 0.0);
-
 
     // 3. CRITICAL NUCLEUS SIZE AND MASS REQUIRED BY NUCLEATION
 
@@ -456,15 +438,13 @@ void Simulation::MetallicFissionProducts()
     // in the nucleation rate.
     double massa_nucleata_intra_requested = n_crit_intra * dN_intra_requested;
     double massa_nucleata_inter_requested = n_crit_inter * dN_inter_requested;
-    double massa_nucleata_tot_requested = massa_nucleata_intra_requested + massa_nucleata_inter_requested;
-
+    double massa_nucleata_tot_requested   = massa_nucleata_intra_requested + massa_nucleata_inter_requested;
 
     // 4. MASSA DISPONIBILE
 
     // La nucleazione può utilizzare solamente gli atomi presenti
     // nella matrice più quelli prodotti durante il timestep.
     double massa_disponibile = std::max(Cm_matrix_old + produzione, 0.0);
-
 
     // 5. LIMITAZIONE DELLA NUCLEAZIONE PER CONSERVAZIONE DELLA MASSA
 
@@ -481,7 +461,6 @@ void Simulation::MetallicFissionProducts()
 
     double massa_nucleata_intra = massa_nucleata_intra_requested * nucleation_scale;
     double massa_nucleata_inter = massa_nucleata_inter_requested * nucleation_scale;
-
 
     // N finale viene ricalcolato dalla massa realmente trasferita.
     //
@@ -502,7 +481,6 @@ void Simulation::MetallicFissionProducts()
 
     double N_intra_final = N_iniziale_intra + dN_intra_actual;
     double N_inter_final = N_iniziale_inter + dN_inter_actual;
-
 
     // 6. THERMODYNAMICALLY DRIVEN PRECIPITATION + 3x3 SYSTEM FOR Cm
 
@@ -540,17 +518,14 @@ void Simulation::MetallicFissionProducts()
     // Se C_matrix_pre <= C_eq, entrambi i coefficienti di precipitazione
     // vengono posti a zero per il timestep corrente.
 
-    double Cm_matrix_pre_solve =
-        Cm_matrix_old + produzione - massa_nucleata_intra - massa_nucleata_inter;
+    double Cm_matrix_pre_solve = Cm_matrix_old + produzione - massa_nucleata_intra - massa_nucleata_inter;
 
-    double precipitation_excess_old =
-        std::max(Cm_matrix_pre_solve - C_eq, 0.0);
+    double precipitation_excess_old = std::max(Cm_matrix_pre_solve - C_eq, 0.0);
 
     bool precipitation_active = (precipitation_excess_old > 0.0);
 
     double k_intra_precip = precipitation_active ? k_intra : 0.0;
-    double k_gb_precip = precipitation_active ? k_gb : 0.0;
-
+    double k_gb_precip    = precipitation_active ? k_gb : 0.0;
 
     // IMPLICIT 3x3 MASS BALANCE
     // Quando la precipitazione e' attiva:
@@ -602,22 +577,13 @@ void Simulation::MetallicFissionProducts()
     A_matrix[7] = 0.0;
     A_matrix[8] = 1.0 + k_res * dt;
 
-    b_matrix[0] =
-        Cm_matrix_pre_solve
-        + (k_intra_precip + k_gb_precip) * C_eq * dt;
+    b_matrix[0] = Cm_matrix_pre_solve + (k_intra_precip + k_gb_precip) * C_eq * dt;
 
-    b_matrix[1] =
-        Cm_precip_intra_old
-        + massa_nucleata_intra
-        - k_intra_precip * C_eq * dt;
+    b_matrix[1] = Cm_precip_intra_old + massa_nucleata_intra - k_intra_precip * C_eq * dt;
 
-    b_matrix[2] =
-        Cm_precip_gb_old
-        + massa_nucleata_inter
-        - k_gb_precip * C_eq * dt;
+    b_matrix[2] = Cm_precip_gb_old + massa_nucleata_inter - k_gb_precip * C_eq * dt;
 
     solver.Laplace3x3(A_matrix, b_matrix);
-
 
     // 7. CONTROLLO NUMERICO
 
@@ -627,8 +593,13 @@ void Simulation::MetallicFissionProducts()
     // eventuali problemi fisici o numerici del sistema.
 
     if (!std::isfinite(b_matrix[0]) || !std::isfinite(b_matrix[1]) || !std::isfinite(b_matrix[2]))
-        std::cerr << "ERROR MFP: non-finite concentration | T = " << T << " | dt = " << dt << " | production = " << produzione << " | C_eq = " << C_eq << " | C_matrix_pre = " << Cm_matrix_pre_solve << " | precipitation_active = " << precipitation_active << " | S = " << supersaturation << " | DeltaMu = " << delta_mu << " | ncrit_intra = " << n_crit_intra << " | ncrit_GB = " << n_crit_inter << " | k_intra = " << k_intra_precip << " | k_gb = " << k_gb_precip << " | k_res = " << k_res << " | N_intra = " << N_intra_final << " | N_inter = " << N_inter_final << std::endl;
-
+        std::cerr << "ERROR MFP: non-finite concentration | T = " << T << " | dt = " << dt
+                  << " | production = " << produzione << " | C_eq = " << C_eq
+                  << " | C_matrix_pre = " << Cm_matrix_pre_solve << " | precipitation_active = " << precipitation_active
+                  << " | S = " << supersaturation << " | DeltaMu = " << delta_mu << " | ncrit_intra = " << n_crit_intra
+                  << " | ncrit_GB = " << n_crit_inter << " | k_intra = " << k_intra_precip
+                  << " | k_gb = " << k_gb_precip << " | k_res = " << k_res << " | N_intra = " << N_intra_final
+                  << " | N_inter = " << N_inter_final << std::endl;
 
     // 8. SALVATAGGIO DEI RISULTATI FINALI
 
@@ -638,7 +609,6 @@ void Simulation::MetallicFissionProducts()
 
     sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(N_intra_final);
     sciantix_variable["Intergranular 5MPs concentration"].setFinalValue(N_inter_final);
-
 
     // 9. n UPDATE - INTRAGRANULAR
 
@@ -653,7 +623,6 @@ void Simulation::MetallicFissionProducts()
         n_media_intra = b_matrix[1] / N_intra_final;
 
     sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media_intra);
-
 
     // 10. n UPDATE - INTERGRANULAR
 
