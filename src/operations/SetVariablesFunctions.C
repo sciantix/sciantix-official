@@ -329,16 +329,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         // Produced by iHighBurnupStructureFormation = 4 only (Landau functional): the
         // order parameter of the transition and the subgrain size that follows from
         // the same wall geometry. The other formation options leave them at zero.
-        SciantixVariable("Mean misorientation",
-                         "(deg)",
-                         Sciantix_variables[202],
-                         Sciantix_variables[202],
-                         toOutputLandauSubstructure),
-        SciantixVariable("Subgrain radius",
-                         "(m)",
-                         Sciantix_variables[203],
-                         Sciantix_variables[203],
-                         toOutputLandauSubstructure),
+        SciantixVariable(
+            "Mean misorientation", "(deg)", Sciantix_variables[202], Sciantix_variables[202], toOutputLandauSubstructure),
+        SciantixVariable(
+            "Subgrain radius", "(m)", Sciantix_variables[203], Sciantix_variables[203], toOutputLandauSubstructure),
         SciantixVariable("Intragranular similarity ratio", "(/)", Sciantix_variables[64], Sciantix_variables[64], 0),
         SciantixVariable("Gap oxygen partial pressure", "(MPa)", 0.0, 0.0, toOutputStoichiometryDeviation),
         SciantixVariable("Stoichiometry deviation",
