@@ -88,5 +88,6 @@ Testing/
 
 bin/
 out/
-*.pngvenv/
+*.png
+venv/
 .venv/

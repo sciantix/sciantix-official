@@ -2,15 +2,15 @@
 
 File di riferimento: `src/models/MetallicFissionProducts.C`
 
-Flag di attivazione: `iCm` (in `input_settings.txt`)
+Flag di attivazione: `iFMP` oppure `iCm` (in `input_settings.txt`) — sono due flag indipendenti che abilitano lo stesso modello fisico: `iFMP` abilita il modello e l'output aggregato `"Metal produced"`, `iCm` abilita il modello e gli output diagnostici dettagliati (`Cm`, `Cm matrix`, precipitati intra/GB, popolazioni N e n).
 
 ## 1. Obiettivo fisico del modello
 
-Durante l'irraggiamento del combustibile UO$_2$, i prodotti di fissione metallici Mo, Tc, Ru, Rh e Pd vengono progressivamente generati con un tasso proporzionale al fission rate.
+Durante l'irraggiamento del combustibile UO2, i prodotti di fissione metallici Mo, Tc, Ru, Rh e Pd vengono progressivamente generati con un tasso proporzionale al fission rate.
 
 Nel modello i cinque elementi non vengono seguiti separatamente, ma sono rappresentati come un'unica specie metallica efficace, indicata come 5MP-forming inventory. Gli atomi prodotti possono:
 
-- rimanere dispersi nella matrice di UO$_2$;
+- rimanere dispersi nella matrice di UO2;
 - formare precipitati intragranulari;
 - formare precipitati ai bordi di grano;
 - rientrare nella matrice attraverso irradiation-induced re-solution.
@@ -65,6 +65,7 @@ y_{\mathrm{5MP}} = 0.578 \qquad \mathrm{atoms/fission}.
 
 $$
 
+[EC: Prodhel non è un codice CEA? l'hai trovato in letteratura?]
 Il valore deriva dalla composizione PRODHEL del combustibile considerato:
 
 $$
@@ -171,6 +172,8 @@ H_{\mathrm{sol}}^{\mathrm{eff}}
 1.14\ \mathrm{eV}.
 
 $$
+
+[EC: riferimento bibliografico o calibrazione? penso la prima]
 
 Il riferimento di concentrazione deriva dal limite superiore di solubilità del Mo in $UO_2$ stechiometrico a 1900 °C, mentre 1.14 eV è usato come effective solution enthalpy per la specie metallica lumped.
 
@@ -298,6 +301,8 @@ A_\infty
 {1+\exp[(T-T_c)/\Delta T]}.
 
 $$
+
+[EC: da dove proviene? ricordo che avevamo inserito assieme la dislocation density calcolata da veschnuov.]
 
 I parametri utilizzati sono:
 
@@ -613,7 +618,7 @@ $$
 
 rappresenta la dipendenza della sink strength da numero e dimensione delle particelle.
 
-Poiché $NR$ ha dimensioni $m^{-2}$, il prefattore $k_0$ ha dimensioni $m^{-2}/s$, così che il coefficiente complessivo $k_j$ abbia dimensioni $s^{-1}$.
+[EC: penso sia solo un typo, era riportato $m^{-2}/s$] Poiché $NR$ ha dimensioni $m^{-2}$, il prefattore $k_0$ deve avere dimensioni $m^{2}/s$ (una diffusività), così che il coefficiente complessivo $k_j = k_0 \exp(\ldots) \cdot 4\pi NR$ abbia dimensioni $s^{-1}$.
 
 ---
 
@@ -989,7 +994,7 @@ $$
 12. calcola $k_{\mathrm{res}}$ dal fission rate;
 13. risolve il sistema implicito 3×3 per matrice, precipitati intra e precipitati GB;
 14. calcola $n_{\mathrm{intra}}$ e $n_{\mathrm{GB}}$;
-15. ricostruisce $R_{\mathrm{intra}}$ e $R_{\mathrm{GB}}$;
+15. [EC: modificato questo punto]calcola $R_{\mathrm{intra}}$ e $R_{\mathrm{GB}}$ del passo *precedente* (lagged), usati per costruire i coefficienti di precipitazione $k_{\mathrm{intra}}$/$k_{\mathrm{GB}}$ — nota: $R$ non viene ricalcolato dopo il solve del sistema 3×3 e non è salvato come variabile di output; può essere derivato offline da $n$ tramite $R = (3n\Omega/4\pi)^{1/3}$;
 16. salva lo stato aggiornato per il timestep successivo.
 
 ---
