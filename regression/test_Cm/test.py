@@ -75,16 +75,37 @@ def plot_mass_balance() -> None:
     time_h, cm_intra = load_columns(OUTPUT_FILE, "Time (h)", "Cm precipitated intragranular (at/m3)")
     time_h, cm_gb    = load_columns(OUTPUT_FILE, "Time (h)", "Cm precipitated grain boundary (at/m3)")
 
-    fig, ax = plt.subplots(figsize=(9, 6))
-    ax.plot(time_h, cm,       label="Cm total",       color="black",  linewidth=2)
-    ax.plot(time_h, cm_mat,   label="Cm matrix",      color="blue",   linewidth=1.5)
-    ax.plot(time_h, cm_intra, label="Cm prec. intra", color="green",  linewidth=1.5)
-    ax.plot(time_h, cm_gb,    label="Cm prec. GB",    color="red",    linewidth=1.5)
-    ax.set_xlabel("Time (h)")
-    ax.set_ylabel("Concentration (at/m3)")
-    ax.set_title("Metallic fission products — mass balance")
-    ax.legend()
-    ax.grid(True, which="both", linestyle=":", linewidth=0.8)
+    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+
+    # Pannello 1: Cm total
+    axs[0, 0].plot(time_h, cm, color='black')
+    axs[0, 0].set_title('Cm total')
+    axs[0, 0].set_xlabel('Time (h)')
+    axs[0, 0].set_ylabel('Concentration (at/m3)')
+    axs[0, 0].grid(True, linestyle=':')
+
+    # Pannello 2: Cm matrix
+    axs[0, 1].plot(time_h, cm_mat, color='blue')
+    axs[0, 1].set_title('Cm matrix')
+    axs[0, 1].set_xlabel('Time (h)')
+    axs[0, 1].set_ylabel('Concentration (at/m3)')
+    axs[0, 1].grid(True, linestyle=':')
+
+    # Pannello 3: Cm prec. intra
+    axs[1, 0].plot(time_h, cm_intra, color='green')
+    axs[1, 0].set_title('Cm prec. intra')
+    axs[1, 0].set_xlabel('Time (h)')
+    axs[1, 0].set_ylabel('Concentration (at/m3)')
+    axs[1, 0].grid(True, linestyle=':')
+
+    # Pannello 4: Cm prec. GB
+    axs[1, 1].plot(time_h, cm_gb, color='red')
+    axs[1, 1].set_title('Cm prec. GB')
+    axs[1, 1].set_xlabel('Time (h)')
+    axs[1, 1].set_ylabel('Concentration (at/m3)')
+    axs[1, 1].grid(True, linestyle=':')
+
+    fig.suptitle('Metallic fission products — mass balance', fontsize=14)
     fig.tight_layout()
     fig.savefig(TEST_DIR / "Cm_mass_balance.png", dpi=180)
     print("Saved: Cm_mass_balance.png", flush=True)
@@ -112,7 +133,8 @@ def plot_N_n() -> None:
     fig.savefig(TEST_DIR / "5MPs_N_n.png", dpi=180)
     print("Saved: 5MPs_N_n.png", flush=True)
 
-def plot_N_n() -> None:
+
+def plot_N_n_gb() -> None:
     time_h, N_gb = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular 5MPs concentration (5MP/m3)")
     time_h, n_gb = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular atom per 5MP (at/5MP)")
 
@@ -133,7 +155,7 @@ def plot_N_n() -> None:
     fig.tight_layout()
     fig.savefig(TEST_DIR / "5MPs_N_n_gb.png", dpi=180)
     print("Saved: 5MPs_N_n_gb.png", flush=True)
-    
+
 
 def plot_consistency() -> None:
     time_h, cm_intra = load_columns(OUTPUT_FILE, "Time (h)", "Cm precipitated intragranular (at/m3)")
@@ -152,14 +174,15 @@ def plot_consistency() -> None:
     fig.savefig(TEST_DIR / "consistency_N_n.png", dpi=180)
     print("Saved: consistency_N_n.png", flush=True)
 
+
 def plot_consistency_gb() -> None:
-    time_h, cm_gb = load_columns(OUTPUT_FILE, "Time (h)", "Cm precipitated intergranular (at/m3)")
-    time_h, N_gb        = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular 5MPs concentration (5MP/m3)")
-    time_h, n_gb        = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular atom per 5MP (at/5MP)")
+    time_h, cm_gb = load_columns(OUTPUT_FILE, "Time (h)", "Cm precipitated grain boundary (at/m3)")
+    time_h, N_gb  = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular 5MPs concentration (5MP/m3)")
+    time_h, n_gb  = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular atom per 5MP (at/5MP)")
 
     fig, ax = plt.subplots(figsize=(9, 6))
-    ax.plot(time_h, N_gb * n_gb,      label="N_gb · n_gb", color="blue",  linewidth=2)
-    ax.plot(time_h, cm_gb,   label="Cm prec. intragranular", color="green", linewidth=1.5, linestyle="--")
+    ax.plot(time_h, N_gb * n_gb, label="N_gb · n_gb", color="blue",  linewidth=2)
+    ax.plot(time_h, cm_gb,       label="Cm prec. intragranular", color="green", linewidth=1.5, linestyle="--")
     ax.set_xlabel("Time (h)")
     ax.set_ylabel("Concentration_gb (at/m3)")
     ax.set_title("Consistency check: N_gb·n_gb vs Cm precipitated intergranular")
@@ -168,6 +191,7 @@ def plot_consistency_gb() -> None:
     fig.tight_layout()
     fig.savefig(TEST_DIR / "consistency_N_n_gb.png", dpi=180)
     print("Saved: consistency_N_n_gb.png", flush=True)
+
 
 def check_mass_conservation() -> None:
     time_h, cm       = load_columns(OUTPUT_FILE, "Time (h)", "Cm (at/m3)")
@@ -195,6 +219,8 @@ if __name__ == "__main__":
     run_sciantix()
     plot_mass_balance()
     plot_N_n()
+    plot_N_n_gb()
     plot_consistency()
+    plot_consistency_gb()
     plt.close('all')
     check_mass_conservation()

@@ -1,0 +1,2 @@
+run,sf_k_intra,sf_k_GB,sf_k_nucl,sf_k_res,sf_dG_nucleation,sf_dG_intra,sf_dG_GB,sf_dG_nucleation_gb,sf_k_nucl_gb,calibration_label,exception_type,exception_message
+41,3.608060007458441e-15,3.608060007458441e-15,1.0,1.0,253.83842319250107,1.0,1.0,253.83842319250107,1.0,sobol,PermissionError,[Errno 13] Permission denied: 'overview.txt'

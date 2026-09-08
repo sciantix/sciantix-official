@@ -180,6 +180,14 @@ class Solver : virtual public InputVariable
     void Laplace3x3(double A[], double b[]);
 
     /**
+     * @brief Solves a system of five linear equations according to Cramer's method.
+     *
+     * @param A The coefficient matrix.
+     * @param b The constant terms vector.
+     */
+    void Laplace5x5(double A[], double b[]);
+
+    /**
      * @brief Computes the determinant of a NxN matrix according to Cramer's method.
      *
      * @param N The size of the matrix.

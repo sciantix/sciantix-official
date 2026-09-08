@@ -283,6 +283,12 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[12] = 1.0;
         // VB 11.07.2026
         Sciantix_scaling_factors[13] = 1.0;
+        // VB 08.08.2026
+        Sciantix_scaling_factors[14] = 1.0;
+        Sciantix_scaling_factors[15] = 1.0;
+        // VB 19.08.2026
+        Sciantix_scaling_factors[16] = 1.0;
+        Sciantix_scaling_factors[17] = 1.0;
 
         input_scaling_factors >> std::ws;
         if (input_scaling_factors.peek() != EOF)
@@ -309,6 +315,22 @@ void InputReading(int                  Sciantix_options[],
             Sciantix_scaling_factors[13] =
                 ReadOneParameter("sf_mfp_nucleation_energy_barrier", input_scaling_factors, input_check);
         // END VB 11.07.2026
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[14] =
+                ReadOneParameter("sf_mfp_intra_activation_energy", input_scaling_factors, input_check);
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[15] =
+                ReadOneParameter("sf_mfp_grain_boundary_activation_energy", input_scaling_factors, input_check);
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[16] =
+                ReadOneParameter("sf_mfp_nucleation_energy_barrier_grain_boundary", input_scaling_factors, input_check);
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[17] =
+                ReadOneParameter("sf_mfp_nucleation_rate_grain_boundary", input_scaling_factors, input_check);
     }
     else
     {
@@ -329,7 +351,14 @@ void InputReading(int                  Sciantix_options[],
         // END EC 04.06.2026
         // VB 11.07.2026
         Sciantix_scaling_factors[13] = 1.0;
-        // VB 11.07.2026
+        // END VB 11.07.2026
+        // VB 08.08.2026
+        Sciantix_scaling_factors[14] = 1.0;
+        Sciantix_scaling_factors[15] = 1.0;
+        // END VB 08.08.2026
+        Sciantix_scaling_factors[16] = 1.0;
+        Sciantix_scaling_factors[17] = 1.0;
+        // END VB 19.08.2026
     }
 
     input_check.close();

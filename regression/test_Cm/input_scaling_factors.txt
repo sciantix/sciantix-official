@@ -18,11 +18,19 @@
 # scaling factor - dummy
 1.0
 # scaling factor - MFP nucleation rate
-1.0
-# scaling factor - MFP precipitation rate intragranular (k_intra)
-1.0
-# scaling factor - MFP precipitation rate grain boundary (k_gb)
+4.980333299845e-15
+# scaling factor - MFP precipitation rate intragranular (k_intra_0)
+4.980333299845e-15
+# scaling factor - MFP precipitation rate grain boundary (k_gb_0)
 1.0
 # scaling factor - MFP resolution rate (k_res)
-1.0
+2.665764962509e+02
 # scaling factor - MFP nucleation energy barrier (dG_nucleation)
+1.0
+# scaling factor - MFP intra activation energy (dG_intra)
+1.0
+# scaling factor - MFP grain boundary activation energy (dG_gb)
+2.665764962509e+02
+# scaling factor - MFP nucleation energy barrier grain boundary 
+1.0
+# scaling factor - MFP nucleation rate grain boundary

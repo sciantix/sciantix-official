@@ -317,6 +317,61 @@ double Solver::det(int N, double A[])
     }
 }
 
+void Solver::Laplace5x5(double *A_matrix, double *b_matrix)
+{
+    const int n = 5;
+    double A[n][n];
+    double b[n];
+
+    for (int i = 0; i < n; ++i)
+    {
+        b[i] = b_matrix[i];
+        for (int j = 0; j < n; ++j)
+            A[i][j] = A_matrix[i * n + j];
+    }
+
+    for (int k = 0; k < n; ++k)
+    {
+        int max_row = k;
+        double max_val = fabs(A[k][k]);
+        for (int i = k + 1; i < n; ++i)
+        {
+            if (fabs(A[i][k]) > max_val)
+            {
+                max_val = fabs(A[i][k]);
+                max_row = i;
+            }
+        }
+
+        if (max_row != k)
+        {
+            for (int j = 0; j < n; ++j)
+                std::swap(A[k][j], A[max_row][j]);
+            std::swap(b[k], b[max_row]);
+        }
+
+        for (int i = k + 1; i < n; ++i)
+        {
+            double factor = A[i][k] / A[k][k];
+            for (int j = k; j < n; ++j)
+                A[i][j] -= factor * A[k][j];
+            b[i] -= factor * b[k];
+        }
+    }
+
+    double x[n];
+    for (int i = n - 1; i >= 0; --i)
+    {
+        double sum = b[i];
+        for (int j = i + 1; j < n; ++j)
+            sum -= A[i][j] * x[j];
+        x[i] = sum / A[i][i];
+    }
+
+    for (int i = 0; i < n; ++i)
+        b_matrix[i] = x[i];
+}
+
 void Solver::Laplace(int N, double A[], double b[])
 {
     int    dim  = N * N;
