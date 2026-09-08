@@ -156,10 +156,10 @@ void Simulation::HighBurnupStructureFormation()
             // that eta runs over the full [0, 1] and
             //     eta = 1  <=>  Theta = theta_HAGB  <=>  rho_ord = rho_tot
             // all coincide, at 91.32 GWd/tU.
-            double theta_hagb = 10.0;                   // (deg)   LAGB/HAGB boundary
+            double theta_hagb = 10.0;                       // (deg)   LAGB/HAGB boundary
             double theta_max  = theta_hagb * M_PI / 180.0;  // (rad) = 0.174533
-            double theta_u    = 2.20;                   // (deg)   measured median AMis2Mean
-            double burgers    = 3.889087296526011e-10;  // (m)     Djonovic thesis
+            double theta_u    = 2.20;                       // (deg)   measured median AMis2Mean
+            double burgers    = 3.889087296526011e-10;      // (m)     Djonovic thesis
 
             parameter.push_back(n_families);
             parameter.push_back(beta);
@@ -293,10 +293,10 @@ void Simulation::HighBurnupStructureFormation()
         // StoichiometryDeviation() runs after this model, so this is the value of
         // the previous time step. It is immaterial: as shown below, it cancels out
         // of the three outputs entirely and survives only in C0.
-        double x_dev       = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+        double x_dev = sciantix_variable["Stoichiometry deviation"].getFinalValue();
         // GrainGrowth() also runs after this model, so this is the grain radius at
         // the start of the step. It is used only as the ceiling of Eq. (9).
-        double R_grain     = sciantix_variable["Grain radius"].getFinalValue();
+        double R_grain = sciantix_variable["Grain radius"].getFinalValue();
 
         // (1) dislocation density -- Nogita & Une (1994)
         //     log10(rho_tot) = 2.2e-2 * bu + 13.8, bu in MWd/kgU = GWd/tU
@@ -328,10 +328,10 @@ void Simulation::HighBurnupStructureFormation()
         double a2 = f_nu / (4.0 * M_PI) * std::log(std::pow(rho_tot, -0.5) / burgers);  // screened in the wall
 
         // (5)-(6) the partition, collected into F = C0 + C2 eta^2 + C4 eta^4
-        double c0 = rho_tot * a1 * gb2;                          // free dislocations
-        double c2 = rho_lagb_max * (a2 - a1) * gb2               // condensed into walls
-                    - rho_tot * dr_over_r_max * a1 * gb2;        // sweep, second order
-        double c4 = rho_lagb_max * dr_over_r_max * a1 * gb2;     // sweep, fourth order
+        double c0 = rho_tot * a1 * gb2;                       // free dislocations
+        double c2 = rho_lagb_max * (a2 - a1) * gb2            // condensed into walls
+                    - rho_tot * dr_over_r_max * a1 * gb2;     // sweep, second order
+        double c4 = rho_lagb_max * dr_over_r_max * a1 * gb2;  // sweep, fourth order
 
         // (7) stationary point: eta^2 = -C2/(2 C4), zero where C2 >= 0. No guard is
         //     needed on virgin fuel: the functional gives C2 > 0 at bu = 0 on its own.
@@ -367,9 +367,9 @@ void Simulation::HighBurnupStructureFormation()
         // (10) restructured fraction, lever rule                      <-- output 3
         //      The measured Theta is the mean over the EBSD map, i.e. the weighted
         //      mean of a two-phase mixture; the fraction is recovered by inverting it.
-        const double f_max = 1.0 - 1.0e-9;
-        double f_instant   = (theta - theta_u) / (theta_hagb - theta_u);
-        f_instant          = std::min(f_max, std::max(f_instant, 0.0));
+        const double f_max     = 1.0 - 1.0e-9;
+        double       f_instant = (theta - theta_u) / (theta_hagb - theta_u);
+        f_instant              = std::min(f_max, std::max(f_instant, 0.0));
 
         // Monotonic lock, as in option 3: HBS formation is irreversible. With the
         // burnup non-decreasing and the three outputs functions of the burnup alone
