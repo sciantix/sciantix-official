@@ -73,6 +73,7 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
     Sciantix_options[25] = ReadOneSetting("iFMP", input_settings, input_check);
+    Sciantix_options[26] = ReadOneSetting("iCm", input_settings, input_check);
 
     if (!input_scaling_factors.fail())
     {
@@ -85,18 +86,82 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
         Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+
+        Sciantix_scaling_factors[9]  = 1.0;
+        Sciantix_scaling_factors[10] = 1.0;
+        Sciantix_scaling_factors[11] = 1.0;
+        Sciantix_scaling_factors[12] = 1.0;
+        Sciantix_scaling_factors[13] = 1.0;
+        Sciantix_scaling_factors[14] = 1.0;
+        Sciantix_scaling_factors[15] = 1.0;
+        Sciantix_scaling_factors[16] = 1.0;
+        Sciantix_scaling_factors[17] = 1.0;
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[9] =
+                ReadOneParameter("sf_mfp_nucleation_rate", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[10] =
+                ReadOneParameter("sf_mfp_precipitation_rate_intragranular", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[11] =
+                ReadOneParameter("sf_mfp_precipitation_rate_grain_boundary", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[12] =
+                ReadOneParameter("sf_mfp_resolution_rate", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[13] =
+                ReadOneParameter("sf_mfp_nucleation_energy_barrier", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[14] =
+                ReadOneParameter("sf_mfp_intra_activation_energy", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[15] =
+                ReadOneParameter("sf_mfp_grain_boundary_activation_energy", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[16] =
+                ReadOneParameter("sf_mfp_nucleation_energy_barrier_grain_boundary", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[17] =
+                ReadOneParameter("sf_mfp_nucleation_rate_grain_boundary", input_scaling_factors, input_check);
     }
     else
     {
-        Sciantix_scaling_factors[0] = 1.0;
-        Sciantix_scaling_factors[1] = 1.0;
-        Sciantix_scaling_factors[2] = 1.0;
-        Sciantix_scaling_factors[3] = 1.0;
-        Sciantix_scaling_factors[4] = 1.0;
-        Sciantix_scaling_factors[5] = 1.0;
-        Sciantix_scaling_factors[6] = 1.0;
-        Sciantix_scaling_factors[7] = 1.0;
-        Sciantix_scaling_factors[8] = 1.0;
+        Sciantix_scaling_factors[0]  = 1.0;
+        Sciantix_scaling_factors[1]  = 1.0;
+        Sciantix_scaling_factors[2]  = 1.0;
+        Sciantix_scaling_factors[3]  = 1.0;
+        Sciantix_scaling_factors[4]  = 1.0;
+        Sciantix_scaling_factors[5]  = 1.0;
+        Sciantix_scaling_factors[6]  = 1.0;
+        Sciantix_scaling_factors[7]  = 1.0;
+        Sciantix_scaling_factors[8]  = 1.0;
+        Sciantix_scaling_factors[9]  = 1.0;
+        Sciantix_scaling_factors[10] = 1.0;
+        Sciantix_scaling_factors[11] = 1.0;
+        Sciantix_scaling_factors[12] = 1.0;
+        Sciantix_scaling_factors[13] = 1.0;
+        Sciantix_scaling_factors[14] = 1.0;
+        Sciantix_scaling_factors[15] = 1.0;
+        Sciantix_scaling_factors[16] = 1.0;
+        Sciantix_scaling_factors[17] = 1.0;
     }
 
     input_check.close();

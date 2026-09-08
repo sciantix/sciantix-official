@@ -18,9 +18,18 @@
 
 void Simulation::MetallicFissionProducts()
 {
-    // Se iCm = 0 nel file di input, il modello è disattivato
-    if (!input_variable["iCm"].getValue())
+    // Il modello e' attivo se iFMP = 1 (output "Metal produced") oppure
+    // se iCm = 1 (output diagnostico dettagliato Cm/precipitazione/nucleazione).
+    // I due flag abilitano lo stesso modello fisico, differendo solo per
+    // l'output esposto.
+    if (!input_variable["iFMP"].getValue() && !input_variable["iCm"].getValue())
         return;
+
+    // Model declaration (registers the model in overview.txt)
+    Model model_;
+    model_.setName("Metallic fission products");
+    model_.setRef(": under development.");
+    model.push(model_);
 
     // Passo temporale (s)
     double dt = physics_variable["Time step"].getFinalValue();
@@ -94,6 +103,7 @@ void Simulation::MetallicFissionProducts()
     // addValue aggiunge 'produzione' al valore attuale di Cm
     // final_value è protected -> devo usare la funzione pubblica addValue
     sciantix_variable["Cm"].addValue(produzione);
+    sciantix_variable["Metal produced"].addValue(produzione);
 
     // SETUP: VALORI INIZIALI DEL TIMESTEP
 
