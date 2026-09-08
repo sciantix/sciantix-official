@@ -44,8 +44,8 @@ import sys
 
 import itertools
 
-from hbs_formation_landau import (ALPHA_MAX, THETA_HAGB, THETA_MAX, THETA_U, UO2_TO_U,
-                                  hbs_state, wall_geometry)
+from hbs_formation_landau import (ALPHA_MAX, FABRICATION_POROSITY, THETA_HAGB, THETA_MAX,
+                                  THETA_U, UO2_TO_U, hbs_state, wall_geometry)
 
 # Column headers written by src/file_manager/Output.C.
 COL_BURNUP = "Burnup (MWd/kgUO2)"
@@ -60,6 +60,18 @@ COL_RHO = "Dislocation density (1/m2)"
 
 # The inputs case 4 reads from SCIANTIX, in the order `outputs()` takes them.
 INPUTS = (COL_BURNUP, COL_TEMPERATURE, COL_POROSITY, COL_STOICHIOMETRY, COL_GRAIN_RADIUS)
+
+# Of those, the ones the output file must carry for the comparison to mean anything.
+# The porosity and the deviation from stoichiometry are NOT among them: they enter
+# only through G and nu, which cancel exactly in eta^2 = -C2/(2 C4) since the
+# grain-boundary surface term was dropped, so none of the four compared quantities
+# depends on them.  `Output.C` gates those two columns on iGrainBoundaryVenting and
+# iStoichiometryDeviation, which the HBS cases leave at 0, so they are usually
+# absent.  When they ARE present the script uses them rather than the defaults, so
+# that this check keeps working if the functional ever regains a term that breaks
+# the cancellation -- and `--selftest` is what asserts the cancellation still holds.
+REQUIRED_INPUTS = (COL_BURNUP, COL_TEMPERATURE, COL_GRAIN_RADIUS)
+OPTIONAL_INPUT_DEFAULTS = {COL_POROSITY: FABRICATION_POROSITY, COL_STOICHIOMETRY: 0.0}
 
 COMPARED = (
     (COL_THETA, "theta", "deg"),
@@ -156,7 +168,7 @@ def bracket(printed_inputs, theta_previous):
 
 def compare(path, verbose=True):
     header, rows = read_output(path)
-    missing = [name for name in INPUTS + tuple(c for c, _, _ in COMPARED)
+    missing = [name for name in REQUIRED_INPUTS + tuple(c for c, _, _ in COMPARED)
                if name not in header]
     if missing:
         raise SystemExit(
@@ -164,13 +176,23 @@ def compare(path, verbose=True):
             "iHighBurnupStructureFormation = 4, which is what turns those columns on."
             % (path, ", ".join('"%s"' % name for name in missing)))
 
+    substituted = [name for name in OPTIONAL_INPUT_DEFAULTS if name not in header]
+    if substituted and verbose:
+        print("  not in this output file, module defaults substituted: %s"
+              % ", ".join('%s = %g' % (name, OPTIONAL_INPUT_DEFAULTS[name])
+                          for name in substituted))
+        print("  they cancel out of all four compared quantities, see the header of "
+              "this script.")
+        print()
+
     index = {name: header.index(name) for name in header}
     worst = {key: (0.0, 0.0, None) for _, key, _ in COMPARED}   # residual, relative, row
     theta_previous = 0.0
     lock_bound = 0
 
     for number, row in enumerate(rows):
-        printed_inputs = tuple(row[index[name]] for name in INPUTS)
+        printed_inputs = tuple(row[index[name]] if name in index
+                               else OPTIONAL_INPUT_DEFAULTS[name] for name in INPUTS)
 
         nominal = outputs(*printed_inputs, theta_previous=theta_previous)
         bounds = bracket(printed_inputs, theta_previous)

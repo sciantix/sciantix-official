@@ -40,6 +40,11 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputCracking               = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
          toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() != 0,
+         // The mean misorientation and the subgrain radius exist only in the Landau
+         // formation model; the other options would write two columns of zeros. Their
+         // own flag, so that adding them does not move the column layout of every
+         // other HBS case.
+         toOutputLandauSubstructure     = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
 
@@ -63,6 +68,7 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputCracking,
                                         toOutputGrainBoundary,
                                         toOutputHighBurnupStructure,
+                                        toOutputLandauSubstructure,
                                         toOutputStoichiometryDeviation,
                                         toOutputChromiumContent);
 
