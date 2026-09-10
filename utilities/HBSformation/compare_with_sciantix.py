@@ -44,8 +44,13 @@ import sys
 
 import itertools
 
+# Burnup unit conversion used by SCIANTIX: MWd/kgUO2 -> MWd/kgU = GWd/tU.
+# Not used by this script (which takes GWd/tU directly); quoted because the C++
+# applies it to sciantix_variable["Burnup"] before calling the model.
+UO2_TO_U = 0.8814               # kgU/kgUO2
+
 from hbs_formation_landau import (ALPHA_MAX, FABRICATION_POROSITY, THETA_HAGB, THETA_MAX,
-                                  THETA_U, UO2_TO_U, hbs_state, wall_geometry)
+                                  THETA_U, hbs_state, wall_geometry)
 
 # Column headers written by src/file_manager/Output.C.
 COL_BURNUP = "Burnup (MWd/kgUO2)"

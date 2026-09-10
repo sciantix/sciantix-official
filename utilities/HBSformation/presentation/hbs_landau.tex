@@ -67,6 +67,30 @@
   \footnotetext[3]{Veshchunov \& Shestak, \emph{J.\ Nucl.\ Mater.} \textbf{384} (2009) 12--18.}
 \end{frame}
 
+\begin{frame}{The data this model is built on}
+  \textbf{EBSD} --- Zacharie-Aubrun \emph{et al.} (2022), Onofri \emph{et al.} (2025).
+  42 radial positions on 7 rods, with TRANSURANUS local conditions.
+
+  \begin{center}
+  \small
+  \begin{tabular}{lcl}
+    \toprule
+    quantity & $N$ & what it is \\
+    \midrule
+    mean misorientation $\Theta$        & 41 & $[\,A_{\text{Mis}}(f_1-f_{10}) + 10 f_{10}\,]/100$ \\
+    restructured fraction $X$           & 27 & $f_{10}$, area fraction above $10^\circ$ \\
+    subgrain radius $r_n$               & 14 & ECD50\,\%\,$/2$\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \vspace{0.2em}
+  \footnotesize
+  $f_1$ is the same area fraction taken at $1^\circ$ instead of $10^\circ$. That $1^\circ$
+  is the lower bin edge of the whole dataset --- below it a boundary is not counted --- and
+  it is what fixes $\theta_u$ later, in Eq.~(10).
+\end{frame}
+
 % ---------------------------------------------------------------------
 \begin{frame}{What KJMA is, and what it assumes}
   Kolmogorov, Johnson \& Mehl and Avrami, independently, 1937--41.\footnotemark[4]
@@ -183,23 +207,6 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{The data this model is built on}
-  \textbf{EBSD} --- Zacharie-Aubrun \emph{et al.} (2022), Onofri \emph{et al.} (2025).
-  42 radial positions on 7 rods, with TRANSURANUS local conditions.
-
-  \begin{center}
-  \small
-  \begin{tabular}{lcl}
-    \toprule
-    quantity & $N$ & what it is \\
-    \midrule
-    mean misorientation $\Theta$        & 41 & $[\,A_{\text{Mis}}(f_1-f_{10}) + 10 f_{10}\,]/100$ \\
-    restructured fraction $X$           & 27 & $f_{10}$, area fraction above $10^\circ$ \\
-    subgrain radius $r_n$               & 14 & ECD50\,\%\,$/2$\\
-    \bottomrule
-  \end{tabular}
-  \end{center}
-\end{frame}
 
 % =====================================================================
 \section{The model}
@@ -640,11 +647,12 @@
 
       \vspace{0.6em}
       \footnotesize
-      $\theta_u$ is the misorientation of the unrestructured matrix, read off the data
-      rather than fitted: the measured $A_{\text{Mis2Mean}}$ spans
-      0.1--6.1$^\circ$ with a median of $1.5^\circ$, and $1.0^\circ$ is the round value
-      taken inside that range. It sets only \emph{where} $X$ leaves zero, not the shape
-      of the transition: $\Theta$ and $r_n$ do not depend on it.
+      $\theta_u$ is the lower end member of the mixture Eq.~(10) inverts, and it is set by
+      the \textbf{measurement convention}, not fitted: the EBSD data reports a restructured
+      fraction \emph{at} $1^\circ$ ($f_1$) and one \emph{at} $10^\circ$ ($f_{10}$), so
+      $1^\circ$ is the edge below which a boundary is not counted at all. A map whose whole
+      resolved population sits there carries no restructuring --- which is $X = 0$.
+      It fixes only \emph{where} $X$ leaves zero: $\Theta$ and $r_n$ do not depend on it.
     \end{column}
   \end{columns}
 \end{frame}
