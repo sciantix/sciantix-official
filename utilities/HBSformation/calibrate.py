@@ -12,18 +12,11 @@ The objective is dimensionless and symmetric in the two observables:
     J(k, beta, rho_c) = <(Theta_pred - Theta_obs)^2>/var(Theta)
                       + w <(r_pred - r_obs)^2>/var(r)
 
-
-This script calls `hbs_state()` itself rather than re-deriving the model, so it
-cannot drift away from the implementation it is calibrating.
+This script calls `hbs_state()`.
 
 USAGE
 ---------------------------------------------------------------------------------
-    python3 calibrate.py                        # the shipped calibration
-    python3 calibrate.py --weight 0.2           # weigh the sizes more
-    python3 calibrate.py --weight 0             # Theta alone, see the plateau
-    python3 calibrate.py --fix-rho-c 4.55e-6    # rho_c anchored to a grain radius
-    python3 calibrate.py --front                # scan w, write the trade-off figure
-    python3 calibrate.py --reference-table      # regenerate the frozen self-test table
+    python3 calibrate.py      
 
 Needs numpy and scipy.  `hbs_formation_landau.py` itself stays stdlib-only.
 """
@@ -232,75 +225,6 @@ def print_paste_block(parameters, weight, seeds):
     print("  rho_c^(-1/2) = %.4f um." % (parameters.rho_c ** -0.5 * 1e6))
 
 
-def print_reference_table(parameters, temperature=REFERENCE_TEMPERATURE,
-                          porosity=REFERENCE_POROSITY):
-    """The frozen self-test table of `hbs_formation_landau.py`, regenerated."""
-    threshold, onset, saturation = regime_boundaries(temperature, porosity, parameters)
-    # threshold + 0.05 is in the band where Eq. (9) would diverge and the grain
-    # ceiling binds: the frozen table has to pin that branch too.
-    burnups = [10.0, 20.0, 30.0, 40.0,
-               round(threshold, 4), round(threshold + 0.05, 4), round(threshold + 0.5, 4),
-               50.0, round(onset, 4), 60.0, 70.0, 80.0,
-               round(saturation, 4), 100.0, 150.0]
-    burnups = sorted(set(burnups))
-
-    print("REFERENCE_TABLE = [")
-    for burnup in burnups:
-        state = hbs_state(burnup, temperature, porosity=porosity, parameters=parameters)
-        radius = ("math.nan" if math.isnan(state.subgrain_radius_m)
-                  else repr(state.subgrain_radius_m))
-        fraction = ("ALPHA_MAX" if state.restructured_fraction == ALPHA_MAX
-                    else repr(state.restructured_fraction))
-        print("    (%s, %s, %s, %s, %s),"
-              % (repr(burnup), repr(state.rho_tot), repr(state.theta_deg), radius, fraction))
-    print("]")
-    print()
-    print("BU_THRESHOLD = %.4f      # GWd/tU   C2 = 0: Theta leaves zero" % threshold)
-    print("BU_ONSET = %.4f          # GWd/tU   Theta = theta_u: X leaves zero" % onset)
-    print("BU_SATURATION = %.4f     # GWd/tU   Theta = theta_HAGB: X reaches its cap" % saturation)
-
-
-def plot_front(theta, size, fraction, weights, seeds, n_families, maxiter, popsize,
-               path=None):
-    """RMSE(Theta) against RMSE(r_n) as the size weight is scanned."""
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    if path is None:
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                            "figures", "calibration_front.png")
-
-    points = []
-    for weight in weights:
-        print("  w = %g" % weight)
-        parameters, _, _ = fit(theta, size, fraction, weight, 0.0, seeds, n_families,
-                               maxiter=maxiter, popsize=popsize, verbose=False)
-        score = scores(parameters, theta, size)
-        points.append((weight, parameters, score))
-        print("    k = %8.5f  beta = %7.3f  rho_c = %.4e   "
-              "RMSE_Theta = %.4f deg   RMSE_r = %.4f um"
-              % (parameters.k_sweep, parameters.beta, parameters.rho_c,
-                 score["rmse_theta"], score["rmse_radius"] * 1e6))
-
-    figure, axis = plt.subplots(figsize=(7.0, 5.0))
-    axis.plot([p[2]["rmse_radius"] * 1e6 for p in points],
-              [p[2]["rmse_theta"] for p in points], "o-", color="k")
-    for weight, _, score in points:
-        axis.annotate(" w = %g" % weight,
-                      (score["rmse_radius"] * 1e6, score["rmse_theta"]), fontsize=8)
-    axis.set_xlabel(r"RMSE on the subgrain radius $r_n$  [$\mu$m]")
-    axis.set_ylabel(r"RMSE on the mean misorientation $\Theta$  [deg]")
-    axis.set_title("Joint calibration: what the size term costs on $\\Theta$")
-    axis.grid(alpha=0.3)
-    figure.tight_layout()
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    figure.savefig(path, dpi=150)
-    plt.close(figure)
-    print("  written: %s" % path)
-    return points
-
-
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description="Joint calibration of beta, k and rho_c of the Landau HBS-formation model.",
@@ -324,18 +248,10 @@ def main(argv=None):
                              "anchor it to an as-fabricated grain radius")
     parser.add_argument("--maxiter", type=int, default=800)
     parser.add_argument("--popsize", type=int, default=25)
-    parser.add_argument("--front", action="store_true",
-                        help="scan the size weight and write figures/calibration_front.png")
-    parser.add_argument("--reference-table", dest="reference_table", action="store_true",
-                        help="print the frozen self-test table for the SHIPPED parameters "
-                             "and exit, without fitting")
+
     arguments = parser.parse_args(argv)
 
     shipped = ModelParameters()
-
-    if arguments.reference_table:
-        print_reference_table(shipped)
-        return 0
 
     theta, size, fraction = load_targets()
     print("Joint calibration of the Landau HBS-formation model")
@@ -349,11 +265,6 @@ def main(argv=None):
         print("  rho_c fixed at %.4e m^-2  (%.3f um)"
               % (fixed_rho_c, arguments.fix_rho_c * 1e6))
     print()
-
-    if arguments.front:
-        plot_front(theta, size, fraction, [0.0, 0.01, 0.05, 0.2, 1.0], arguments.seeds,
-                   arguments.n, arguments.maxiter, arguments.popsize)
-        return 0
 
     parameters, cost, _ = fit(theta, size, fraction, arguments.weight,
                               arguments.fraction_weight, arguments.seeds, arguments.n,
