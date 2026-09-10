@@ -1,0 +1,3 @@
+# Intragranular bubble concentration (bub/m3), Kashibe et al. (1993)
+test_Kashibe1993_23	9e+23
+test_Kashibe1993_44	6.7e+23
