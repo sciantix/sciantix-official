@@ -128,38 +128,22 @@ void Simulation::HighBurnupStructureFormation()
             //   utilities/HBSformation/hbs_formation_landau.py  (the model)
             //   utilities/HBSformation/calibrate.py             (beta, k, rho_c)
             //   utilities/HBSformation/README.md                (the derivation)
-            //
-            // The order parameter is the mean misorientation of the subgrains
-            // normalized to its maximum, eta = theta/theta_max. The functional is
-            // built by splitting the dislocations into three populations that must
-            // add up to rho_tot -- free, condensed into low-angle walls, annihilated
-            // by the sweeping boundaries -- and giving each the line energy of the
-            // state it is in. Only the FREE dislocations are swept: the ones already
-            // in a wall belong to the boundary, not to the volume the boundary
-            // passes through (Gourdet & Montheillet, Acta Mater. 51 (2003) 2685).
             reference += ": Landau functional, HBS as a second-order phase transition, Cappellari (2026); "
                          "dislocation density Nogita & Une Nucl. Instrum. Methods B 91 (1994) 301-306; "
                          "elastic constants NEA/NSC/R(2024)1 (2025) p. 124; "
                          "dislocation balance after Gourdet & Montheillet Acta Mater. 51 (2003) 2685-2699";
 
             // --- calibrated, offsets 0-3, printed ready to paste by calibrate.py ---
-            double n_families = 2.0;                  // (-)     dislocation families in a wall
-            double beta       = 33.54724855333423;    // (-)     wall geometry
-            double k_sweep    = 0.04696637283583627;  // (-)     sweeping
-            double rho_c      = 1165846255229680.0;   // (m^-2)  strain-field cut-off
+            parameter.push_back(2.0);                  // n, dislocation families in a wall
+            parameter.push_back(33.54724855333423);    // beta, wall geometry
+            parameter.push_back(0.04696637283583627);  // k, sweeping
+            parameter.push_back(1165846255229680.0);   // rho_c, strain-field cut-off (m^-2)
 
             // --- fixed, offsets 4-7 -------------------------------------------
-            // theta_max is a pure NORMALIZATION: every physical quantity depends on
-            // theta = eta*theta_max alone, so it cancels out of Theta, r_n and X at
-            // fixed beta, k and rho_c (the reference implementation's --selftest
-            // checks this). It is therefore set to the LAGB/HAGB boundary itself, so
-            // that eta runs over the full [0, 1] and
-            //     eta = 1  <=>  Theta = theta_HAGB  <=>  rho_ord = rho_tot
-            // all coincide, at 91.32 GWd/tU.
-            double theta_hagb = 10.0;                   // (deg)   LAGB/HAGB boundary
+            double theta_hagb = 10.0;                       // (deg)   LAGB/HAGB boundary
             double theta_max  = theta_hagb * M_PI / 180.0;  // (rad) = 0.174533
-            double theta_u    = 2.20;                   // (deg)   measured median AMis2Mean
-            double burgers    = 3.889087296526011e-10;  // (m)     Djonovic thesis
+            double theta_u    = 1.0;                        // (deg)   measured median AMis2Mean
+            double burgers    = 3.889087296526011e-10;      // (m)     Djonovic thesis
 
             parameter.push_back(n_families);
             parameter.push_back(beta);
@@ -270,14 +254,8 @@ void Simulation::HighBurnupStructureFormation()
     else if (option == 4)
     {
         // Landau functional. This block mirrors hbs_state() of
-        // utilities/HBSformation/hbs_formation_landau.py statement by statement, in
-        // the same order, so that the two can be read side by side;
+        // utilities/HBSformation/hbs_formation_landau.py;
         // compare_with_sciantix.py checks them against each other with no tolerance.
-        //
-        // Burnup input: "Burnup" (local), not "Effective burnup", for the same
-        // reason as option 3 -- rho_tot(bu) of Nogita & Une was correlated against
-        // the total burnup, and applying the Holt-style thermal cutoff of
-        // EffectiveBurnup.C on top of it would suppress the accumulation twice.
         double n_families = model["High-burnup structure formation"].getParameter().at(0);
         double beta       = model["High-burnup structure formation"].getParameter().at(1);
         double k_sweep    = model["High-burnup structure formation"].getParameter().at(2);
@@ -293,10 +271,10 @@ void Simulation::HighBurnupStructureFormation()
         // StoichiometryDeviation() runs after this model, so this is the value of
         // the previous time step. It is immaterial: as shown below, it cancels out
         // of the three outputs entirely and survives only in C0.
-        double x_dev       = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+        double x_dev = sciantix_variable["Stoichiometry deviation"].getFinalValue();
         // GrainGrowth() also runs after this model, so this is the grain radius at
         // the start of the step. It is used only as the ceiling of Eq. (9).
-        double R_grain     = sciantix_variable["Grain radius"].getFinalValue();
+        double R_grain = sciantix_variable["Grain radius"].getFinalValue();
 
         // (1) dislocation density -- Nogita & Une (1994)
         //     log10(rho_tot) = 2.2e-2 * bu + 13.8, bu in MWd/kgU = GWd/tU
@@ -328,53 +306,36 @@ void Simulation::HighBurnupStructureFormation()
         double a2 = f_nu / (4.0 * M_PI) * std::log(std::pow(rho_tot, -0.5) / burgers);  // screened in the wall
 
         // (5)-(6) the partition, collected into F = C0 + C2 eta^2 + C4 eta^4
-        double c0 = rho_tot * a1 * gb2;                          // free dislocations
-        double c2 = rho_lagb_max * (a2 - a1) * gb2               // condensed into walls
-                    - rho_tot * dr_over_r_max * a1 * gb2;        // sweep, second order
-        double c4 = rho_lagb_max * dr_over_r_max * a1 * gb2;     // sweep, fourth order
+        double c0 = rho_tot * a1 * gb2;                       // free dislocations
+        double c2 = rho_lagb_max * (a2 - a1) * gb2            // condensed into walls
+                    - rho_tot * dr_over_r_max * a1 * gb2;     // sweep, second order
+        double c4 = rho_lagb_max * dr_over_r_max * a1 * gb2;  // sweep, fourth order
 
-        // (7) stationary point: eta^2 = -C2/(2 C4), zero where C2 >= 0. No guard is
-        //     needed on virgin fuel: the functional gives C2 > 0 at bu = 0 on its own.
+        // (7) stationary point
         double eta_stationary = std::sqrt(std::max(-c2 / (2.0 * c4), 0.0));
 
-        // (7b) admissibility. The walls cannot hold more dislocations than exist, so
-        //      rho_ord = rho_LAGB_max*eta^2 <= rho_tot. The equilibrium is the minimum
-        //      of F on 0 <= eta <= eta_balance, not the free stationary point. On the
-        //      bound theta = beta*b*sqrt(rho_tot)/(3n), the classical theta ~ sqrt(rho):
-        //      every dislocation is in a wall, so the misorientation can only grow as
-        //      fast as the dislocations that feed it, and the sweep stops because there
-        //      is nothing free left to sweep. Without this bound the walls hold up to
-        //      twice the dislocations that exist over 66-98 GWd/tU.
+        // (7b) admissibility
         double eta_balance = std::sqrt(std::min(rho_tot / rho_lagb_max, 1.0));
 
-        // (8) mean misorientation, capped at the LAGB/HAGB boundary   <-- output 1
-        //     With theta_max = theta_HAGB the cap is eta <= 1, which coincides with
-        //     eta_balance at saturation; the min over all three is what matters.
+        // (8) mean misorientation
         double eta_hagb = (theta_hagb * M_PI / 180.0) / theta_max;
         double eta      = std::min(std::min(eta_stationary, eta_balance), eta_hagb);
         double theta    = eta * theta_max * 180.0 / M_PI;
         eta             = (theta * M_PI / 180.0) / theta_max;  // re-derived after the cap
 
-        // (9) subgrain radius, capped at the host grain               <-- output 2
-        //     SCIANTIX writes 0.0 below the threshold, where there is no substructure
-        //     and the radius is not a length; the reference implementation writes nan.
+        // (9) subgrain radius, capped at the host grain
         double s_over_v  = s_over_v_max * eta;
         double dr_over_r = dr_over_r_max * eta * eta;
         double r_n       = 0.0;
         if (s_over_v > 0.0)
             r_n = std::min(1.5 / s_over_v * (1.0 + dr_over_r), R_grain);
 
-        // (10) restructured fraction, lever rule                      <-- output 3
-        //      The measured Theta is the mean over the EBSD map, i.e. the weighted
-        //      mean of a two-phase mixture; the fraction is recovered by inverting it.
-        const double f_max = 1.0 - 1.0e-9;
-        double f_instant   = (theta - theta_u) / (theta_hagb - theta_u);
-        f_instant          = std::min(f_max, std::max(f_instant, 0.0));
+        // (10) restructured fraction, lever rule
+        const double f_max     = 1.0 - 1.0e-9;
+        double       f_instant = (theta - theta_u) / (theta_hagb - theta_u);
+        f_instant              = std::min(f_max, std::max(f_instant, 0.0));
 
-        // Monotonic lock, as in option 3: HBS formation is irreversible. With the
-        // burnup non-decreasing and the three outputs functions of the burnup alone
-        // this is already satisfied, so the lock only guards against a history that
-        // steps the burnup backwards.
+        // Monotonic lock, as in option 3: HBS formation is irreversible.
         double alpha_r_old = sciantix_variable["Restructured volume fraction"].getInitialValue();
         double alpha_r_new = std::min(f_max, std::max(alpha_r_old, f_instant));
 
