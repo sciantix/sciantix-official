@@ -126,7 +126,10 @@ Equations
        the weighted mean of a two-phase mixture.  The functional,
        calibrated on Theta, therefore predicts the mixture MEAN, and the fraction
        is recovered by inverting the mixture.  theta_u is the misorientation of
-       the unrestructured matrix (median AMis2Mean).
+       the unrestructured matrix, and it is fixed by the measurement convention:
+       f1 is the "restructured fraction at 1 deg", so 1 deg is the lower bin edge
+       that decides which boundaries enter the mixture at all.  A map whose whole
+       resolved population sits at that edge carries no restructuring.
 
   (11) driving force, reported for the nucleation criterion, not an output
        dE_s = C0 + C2*eta^2 + C4*eta^4                                  [J/m^3]
@@ -221,8 +224,11 @@ PLUTONIUM_FRACTION = 0.0         # -      UO2; set to q for MOX
 THETA_HAGB = 10.0               # deg
 THETA_MAX = math.radians(THETA_HAGB)    # rad     = 0.174533 (10 deg)
 
-# Misorientation of the unrestructured matrix.
-# Median of AMis2Mean over the 27 points that carry a restructured fraction.
+# Misorientation of the unrestructured matrix, i.e. the lower end member of the
+# mixture Eq. (10) inverts.  It is the lower binning edge of the EBSD data, not a
+# fit: the dataset reports a "restructured fraction at 1 deg" (f1) and one "at 10
+# deg" (f10), so 1 deg is the threshold below which a boundary is not counted, and
+# the mixture that produces Theta is built over the f1 population.
 THETA_U = 1.0               # deg
 
 # --- host grain ------------------------------------------------------------

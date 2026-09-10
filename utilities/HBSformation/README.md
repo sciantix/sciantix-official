@@ -181,10 +181,13 @@ local misorientation: it is the mean over the EBSD map, built as
 mixture — a fraction `f10` is restructured and sits at 10°, the rest is matrix and sits at
 `AMis`. The functional, calibrated on `Theta`, therefore predicts the mixture **mean**, and
 the fraction is recovered by inverting the mixture. `theta_u` is the misorientation of the
-unrestructured matrix, read off the data rather than fitted: the measured `AMis2Mean` spans
-0.10–6.10° with a median of 1.50°, and `theta_u = 1.00°` is the round value taken inside that
-range. It sets only *where* `X` leaves zero, never the shape of the transition — `Theta` and
-`r_n` do not depend on it at all.
+unrestructured matrix — the lower end member of that mixture — and it is fixed by the
+**measurement convention**, not fitted: the dataset reports a *restructured fraction at 1°*
+(`f1`) and one *at 10°* (`f10`), so 1° is the threshold below which a boundary is not counted
+at all, and the mixture that produces `Theta` is built over the `f1` population. A map whose
+whole resolved population sits at that edge carries no restructuring, which is exactly
+`X = 0`. It sets only *where* `X` leaves zero, never the shape of the transition — `Theta`
+and `r_n` do not depend on it.
 
 ### Why the balance of Eq. (7b) is not optional
 Without it, the free stationary point `eta^2 = -C2/(2 C4)` is reached with
@@ -217,7 +220,7 @@ import hbs_formation_landau as m
 | `f(nu) = (1 - nu/2)/(1 - nu)` | 1.213–1.225 over 500–1200 K | - | Hansen, Mater. Sci. Eng. 81 (1986) 141; ν from Eq. (2) |
 | `theta_max` | = `theta_HAGB` = 0.174533 (10°) | rad | pure **normalization of the order parameter**: it cancels out of Θ, r_n and X, so it is set to `theta_HAGB` to make `eta = 1` ⟺ Θ = θ_HAGB ⟺ ρ_ord = ρ_tot |
 | `theta_HAGB` | 10 | deg | LAGB/HAGB boundary |
-| `theta_u` | 1.00 | deg | misorientation of the unrestructured matrix; the measured `AMis2Mean` spans 0.10–6.10° with a median of 1.50°, and 1.00 is the round value taken inside that range. Not fitted, and `Theta` and `r_n` do not depend on it |
+| `theta_u` | 1.00 | deg | lower end member of the mixture Eq. (10) inverts: the lower binning edge of the EBSD data, which reports `f1` = restructured fraction **at 1°** and `f10` = **at 10°**. Not fitted; `Theta` and `r_n` do not depend on it |
 | G coefficients of Eq. (2) | 82.52, 94.91, 0.95275, 2.88078, 15.49419, 1.009549, 1.182e-5, 6.671e-8 | mixed | NEA/NSC/R(2024)1 p. 124 |
 | ν coefficients of Eq. (2) | 0.32051, 0.31882, 1.03223, 0.69962, 7.52905, 1.017906, 6.420e-5, 1.506e-8 | mixed | idem |
 | `n` | 2 | - | Gourdet & Montheillet (2003), range 1–3; the same reference for the balance of Eq. (5) and for sweeping the free dislocations only |
@@ -363,9 +366,9 @@ model — the useful cross-check: they agree to 0.1 MWd/kgU at the 1 % crossing.
 part company at the top end: the lever rule of Eq. (10) **saturates**, because Θ reaches
 the 10° cap and X is then exactly 1, whereas the KJMA forms approach 1 asymptotically.
 Eq. (7b) pushed that saturation from 84.0 to 91.1 MWd/kgU, but it did not remove it.
-Lowering `theta_u` from 2.20° to 1.00° moved the whole curve earlier by 3–4 MWd/kgU below
-the 90 % crossing and left the saturation where it was, so option 4 now spans the
-transition in 40 MWd/kgU against 90 for option 1.
+Setting `theta_u` to the 1° binning edge rather than 2.20° moved the whole curve earlier by
+3–4 MWd/kgU below the 90 % crossing and left the saturation where it was, so option 4 now
+spans the transition in 40 MWd/kgU against 90 for option 1.
 
 Downstream that shows up as a **transient dip in the HBS porosity** right after the corner:
 
@@ -414,9 +417,9 @@ Option 4 comes **third of the four**, behind option 3 — which was fitted on ex
 points — and behind option 2. That is where the dislocation balance of Eq. (7b) shows its
 worth: before it, option 4 scored RMSE 0.1848 with R² **+0.094**, the worst of the four.
 The bound did not change what the model is fitted on; it changed where it saturates, and
-these 8 points sit in that band. Lowering `theta_u` to 1.00° moved the curve earlier and so
-cost a little here (0.1298 → 0.1461), because the residuals on these points are already
-one-sided and positive.
+these 8 points sit in that band. Taking `theta_u` at the 1° binning edge moved the curve
+earlier and so cost a little here (0.1298 → 0.1461), because the residuals on these points
+are already one-sided and positive.
 
 *Where the residual error is.* Per point:
 

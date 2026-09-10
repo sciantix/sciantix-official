@@ -137,7 +137,11 @@ void Simulation::HighBurnupStructureFormation()
             // --- fixed, offsets 4-7 -------------------------------------------
             double theta_hagb = 10.0;                       // (deg)   LAGB/HAGB boundary
             double theta_max  = theta_hagb * M_PI / 180.0;  // (rad) = 0.174533
-            double theta_u    = 1.0;                        // (deg)   measured median AMis2Mean
+            // (deg) lower end member of the mixture Eq. (10) inverts. Set by the EBSD
+            // binning, not fitted: the dataset reports a restructured fraction at 1 deg
+            // and one at 10 deg, so 1 deg is the threshold below which a boundary is
+            // not counted at all.
+            double theta_u = 1.0;
             double burgers    = 3.889087296526011e-10;      // (m)     Djonovic thesis
 
             // --- calibrated, offsets 0-3, printed ready to paste by calibrate.py ---
