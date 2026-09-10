@@ -1,0 +1,7 @@
+# Intergranular gas swelling (%), Kashibe and Une (1990) -- cases not measured are omitted
+test_Kashibe1990_1873K_16	6.7
+test_Kashibe1990_1873K_23	6.5
+test_Kashibe1990_1873K_28	7.4
+test_Kashibe1990_2073K_06	8.9
+test_Kashibe1990_2073K_16	9
+test_Kashibe1990_2073K_23	10.4

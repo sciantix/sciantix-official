@@ -1,0 +1,9 @@
+# Fission gas release (%), Kashibe and Une (1990) -- extracted from plot.py
+test_Kashibe1990_1873K_06	7.73333
+test_Kashibe1990_1873K_16	7.73333
+test_Kashibe1990_1873K_23	18.28
+test_Kashibe1990_1873K_28	22.26
+test_Kashibe1990_2073K_06	14.16
+test_Kashibe1990_2073K_16	16.86
+test_Kashibe1990_2073K_23	25.3
+test_Kashibe1990_2073K_28	25.9
