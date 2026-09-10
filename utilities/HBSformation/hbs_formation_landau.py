@@ -1,4 +1,4 @@
-"""High-burnup structure formation as a second-order phase transition (Landau functional).
+"""High-burnup structure formation as a second-order phase transition.
 
 This is the reference implementation of the HBS-formation model that
 `src/models/HighBurnupStructureFormation.C` implements as
@@ -32,18 +32,16 @@ Three quantities are produced:
 
 The dislocation density is fixed to Nogita & Une (1994).
 
-EQUATIONS
+Equations
 ---------------------------------------------------------------------------------
 
   (1)  dislocation density -- Nogita & Une (1994)
        rho_tot(bu) = 10^(2.2e-2*bu + 13.8)                              [m^-2]
 
   (2)  elastic constants -- NEA Recommendations on fuel properties (2025),
-       Nuclear Science NEA/NSC/R(2024)1, p. 124.  Both have the same four-factor
-       shape: composition, porosity, deviation from stoichiometry, temperature.
+       Nuclear Science NEA/NSC/R(2024)1, p. 124.  Both depend on temperature,
        q = plutonium fraction (0 for UO2), P = porosity, x = deviation from
-       stoichiometry.  Neither depends on burnup: the whole burnup dependence of
-       the functional enters through rho_tot alone.
+       stoichiometry.
 
        G(T,P,x,q) = 1e9 * [82.52*(1-q) + 94.91*q]
                         * (1 - P)^2 / (1 + 0.95275*P)
@@ -69,19 +67,12 @@ EQUATIONS
        A1 = f(nu)/(4 pi)*ln(rho_c^(-1/2)/b)     random array, cut-off rho_c
        A2 = f(nu)/(4 pi)*ln(rho_tot^(-1/2)/b)   stress-screened inside the wall
 
-  (5)  THE DISLOCATION BALANCE -- three populations that close on rho_tot [m^-2]
+  (5)  dislocation balance
        rho_ord(eta)   = rho_LAGB_max * eta^2       condensed into LAGB walls
        rho_swept(eta) = (rho_tot - rho_ord) * dRoverR(eta)   annihilated
        rho_free(eta)  = rho_tot - rho_ord - rho_swept        still random
 
-       Only the FREE dislocations are swept: the ones already in a wall belong to
-       the boundary, not to the volume the boundary passes through (Gourdet &
-       Montheillet 2003).  That is what makes the sweep contribute at eta^4 as
-       well as at eta^2, and the eta^4 term is what closes the functional.
-
-       Each population carries the line energy of the state it is in -- the free
-       ones the cut-off of a random array, the ones in the walls the cut-off
-       screened by the wall itself, the swept ones nothing, they are gone:
+       Each population carries the line energy of the state it is in:
 
            F = rho_free*A1*G b^2 + rho_ord*A2*G b^2                   [J/m^3]
 
@@ -99,20 +90,15 @@ EQUATIONS
   (7)  stationary point    dF/deta = 0  =>  eta^2 = -C2/(2*C4), clipped at 0
        eta = 0 wherever C2 >= 0, i.e. below the transition threshold
 
-  (7a) theta_max is a pure NORMALIZATION.  rho_LAGB, S/V and dR/R all depend on
-       theta = eta*theta_max alone, so theta_max cancels out of Theta, r_n and X
-       at fixed beta, k and rho_c -- `--selftest` checks this against the old
-       value pi - 2.723.  It is therefore set to theta_HAGB, which makes
-
-           eta = 1   <=>   Theta = theta_HAGB   <=>   rho_ord = rho_tot
+  (7a)      eta = 1   <=>   Theta = theta_HAGB   <=>   rho_ord = rho_tot
 
        coincide at 91.32 GWd/tU: the order parameter saturates exactly where the
        substructure becomes high-angle AND where the last free dislocation enters
        a wall.  Eq. (8) then reduces to a clip of eta at 1.
 
-  (7b) ADMISSIBILITY -- the walls cannot hold more dislocations than exist, so
-       rho_ord <= rho_tot.  The equilibrium is the minimum of F on the admissible
-       interval, not the free stationary point:
+  (7b) dislocation balance   rho_ord <= rho_tot. 
+       The equilibrium is the minimum of F on the admissible interval, 
+       not the free stationary point:
 
            eta_balance = sqrt( min(rho_tot / rho_LAGB_max, 1) )         [-]
            eta_eq      = min( sqrt(-C2/(2*C4)), eta_balance )
@@ -123,26 +109,24 @@ EQUATIONS
        as the dislocations that feed it, and the sweep stops because there is
        nothing free left to sweep. 
 
-  (8)  MEAN MISORIENTATION                                   <-- output 1
+  (8)  mean misorientation                                 <-- output 1
        Theta = min( eta_eq*theta_max*180/pi , theta_HAGB )              [deg]
        eta   = (Theta*pi/180)/theta_max
 
-  (9)  SUBGRAIN RADIUS                                       <-- output 2
+  (9)  subgrain radius                                     <-- output 2
        SoverV  = SoverV_max*eta
        dRoverR = dRoverR_max*eta^2
        r_n     = min( 1.5/SoverV * (1 + dRoverR) , R_grain )            [m]
-       Undefined where eta = 0 --> no substructure, and no restructured
-       fraction either.  The ceiling is the host grain: a subgrain cannot be
-       larger than the grain it subdivides.
+       Undefined where eta = 0 --> no substructure;
 
-  (10) RESTRUCTURED FRACTION -- lever rule                    <-- output 3
+  (10) restructured fraction                               <-- output 3
        X = clip( (Theta - theta_u) / (theta_HAGB - theta_u), 0, ALPHA_MAX )
        The measured Theta is not a local misorientation: it is the mean over the
        EBSD map, built as Theta = [AMis*(f1 - f10) + 10*f10]/100, i.e. exactly
        the weighted mean of a two-phase mixture.  The functional,
        calibrated on Theta, therefore predicts the mixture MEAN, and the fraction
        is recovered by inverting the mixture.  theta_u is the misorientation of
-       the unrestructured matrix: a MEASURED quantity (median AMis2Mean).
+       the unrestructured matrix (median AMis2Mean).
 
   (11) driving force, reported for the nucleation criterion, not an output
        dE_s = C0 + C2*eta^2 + C4*eta^4                                  [J/m^3]
@@ -151,30 +135,18 @@ EQUATIONS
        available.
 
 
-SURFACE ENERGY -- why there is none
+No surface energy
 ---------------------------------------------------------------------------------
-An earlier form of this functional carried a fifth term, E3 = SoverV_max*gamma_max
-at order eta^2, for "the energy of the new grain-boundary surface".  It is gone,
-for three reasons.
 
-  * It is not the convention of the model this one follows.  In Gourdet &
-    Montheillet (2003) and the CDRX models built on it, the stored energy is the
-    dislocation energy alone, tau*rho with tau = G b^2/2.  Read-Shockley
-    gamma(theta) does appear, but as the boundary energy that sets the driving
-    pressure and the mobility of a migrating boundary -- never as a term added to
-    the stored energy.
+  * In Gourdet & Montheillet (2003), the stored energy is the dislocation energy 
+    alone.
+  * It may count the walls twice.
 
-  * It counts the walls twice.  Read-Shockley gamma(theta) IS the strain energy
-    of the dislocations in the wall, summed: (S/V)*gamma = rho_LAGB * (line
-    energy), which is the same object E_wall already carries through A2.
-
-
-CALIBRATION
+Calibration
 ---------------------------------------------------------------------------------
-`calibrate.py`, in this folder, is the calibration: it fits beta, k and rho_c
-jointly on the mean misorientation AND on the measured sizes, against this very
-implementation, and prints the result ready to paste back into the constants
-below and into the C++ parameter push. 
+`calibrate.py`: it fits beta, k and rho_c jointly on the mean misorientation and
+on the measured sizes of subgrains, and prints the result ready to paste back 
+into the constants below and into the C++ parameter push. 
 
     python3 calibrate.py
 
@@ -182,18 +154,12 @@ VALIDATION
 ---------------------------------------------------------------------------------
 Against the EBSD dataset shipped in `data/`, `--validate` gives
 
-    mean misorientation   Theta   N = 41   RMSE = 1.7616 deg   R2 = 0.7715
-    restructured fraction X       N = 27   RMSE = 0.2053       R2 = 0.7283
-    subgrain radius       r_n     N = 14   RMSE = 0.0678 um    R2 = 0.7737
+  mean misorientation  Theta   N = 41   RMSE = 1.7616 deg   R2 = 0.7715
+  restructured fraction X      N = 27   RMSE = 0.2122       R2 = 0.7095
+  subgrain radius       r_n    N = 14   RMSE = 0.0678 um    R2 = 0.7737
 
 and on the 8 PIE points of `validation.py`, which the model has never seen,
 RMSE = 0.1298 with R2 = +0.553 on the restructured fraction.
-
-SELF-TEST
----------------------------------------------------------------------------------
-`--validate` compares the model with the experiment.  `--selftest` checks the 
-model against ITSELF, with no external data, and is there to catch a change to 
-the code that silently changes the physics.
 
 References
 ---------------------------------------------------------------------------------
@@ -219,19 +185,14 @@ from dataclasses import dataclass, field
 
 # ---------------------------------------------------------------------------
 # CONSTANTS
-#
-# Every value is quoted with its unit and its origin.  Nothing here is tuned in
-# this file: the three adjustable parameters (beta, k, rho_c) come from
-# `calibrate.py` and are marked as such.
 # ---------------------------------------------------------------------------
 
 # --- elastic constants -----------------------------------------------------
 BURGERS = 3.889087296526011e-10  # m      Burgers vector, Djonovic thesis
 
 # --- shear modulus and Poisson ratio, Eq. (2): NEA/NSC/R(2024)1 p. 124 -----
-# Both correlations have the same four-factor shape.  The shear modulus is quoted
-# in GPa: SCIANTIX stores the modulus of the matrix in MPa and therefore writes a
-# factor 1e3, while the Landau functional works in Pa, so the prefactor here is 1e9.
+# The shear modulus is quoted in GPa: SCIANTIX stores the modulus of the matrix in 
+# MPa, while the Landau functional works in Pa.
 G_UO2 = 82.52                    # GPa    UO2 end member
 G_PUO2 = 94.91                   # GPa    PuO2 end member
 G_POROSITY_COEFF = 0.95275       # -
@@ -250,8 +211,7 @@ NU_TEMP_CONSTANT = 1.017906      # -
 NU_TEMP_LINEAR = 6.420e-5        # 1/K
 NU_TEMP_QUADRATIC = 1.506e-8     # 1/K2
 
-# Default state of the fuel when the caller does not say otherwise.  SCIANTIX
-# passes its own sciantix_variable["Porosity"] and ["Stoichiometry deviation"].
+# Default state of the fuel when the caller does not say otherwise.
 FABRICATION_POROSITY = 0.05      # -      as-fabricated porosity of UO2
 PLUTONIUM_FRACTION = 0.0         # -      UO2; set to q for MOX
 
@@ -259,60 +219,29 @@ PLUTONIUM_FRACTION = 0.0         # -      UO2; set to q for MOX
 # Both the upper end of the validity of the functional for the MATRIX and the
 # composition of the restructured phase in the lever rule, Eq. (10).
 THETA_HAGB = 10.0               # deg
-
-# --- normalization of the order parameter ----------------------------------
-# theta_max is a pure NORMALIZATION: every physical quantity in the functional
-# depends on theta = eta*theta_max alone -- rho_LAGB = (3n*theta/(beta*b))^2,
-# S/V = 3*sqrt(rho_LAGB)/beta, dR/R = k*rho_LAGB/rho_tot -- so theta_max cancels
-# out of Theta, r_n and X exactly, at fixed beta, k and rho_c.  `--selftest`
-# asserts that invariance rather than leaving it as a claim.
-#
-# It is therefore free, and the consistent choice is the LAGB/HAGB boundary
-# itself.  That makes eta run over the full [0, 1] with a meaning at each end,
-# and it makes three statements coincide instead of merely coexist:
-#
-#     eta = 1   <=>   Theta = theta_HAGB   <=>   rho_ord = rho_tot
-#
-# i.e. the order parameter saturates exactly where the substructure becomes
-# high-angle AND where the last free dislocation enters a wall, at 91.32 GWd/tU.
-#
-# It was previously set to the peak of the Read-Shockley-Wolf curve of Zhang et
-# al. (pi - 2.723 = 23.984 deg), which came in with the grain-boundary surface
-# term.  That term is gone (see the SURFACE ENERGY section of the module
-# docstring) and with it the only reason to prefer that angle; all it did was
-# cap eta at 0.417 and leave the top of the range unreachable.
 THETA_MAX = math.radians(THETA_HAGB)    # rad     = 0.174533 (10 deg)
 
-# Misorientation of the unrestructured matrix, the lower end of the lever.
-# Median of AMis2Mean over the 27 points that carry a restructured fraction: a
-# MEASURED quantity, not a fitted parameter.  An independent fit of it gives
-# 1.55 deg, inside the measured range 0.9-6.1 deg.
-THETA_U = 2.20                  # deg
+# Misorientation of the unrestructured matrix.
+# Median of AMis2Mean over the 27 points that carry a restructured fraction.
+THETA_U = 1.0               # deg
 
 # --- host grain ------------------------------------------------------------
-# Ceiling of Eq. (9).  SCIANTIX passes sciantix_variable["Grain radius"]; this
-# default is the initial grain radius of the HBS regression cases.
 GRAIN_RADIUS = 5.0e-6           # m
 
 # --- adjustable parameters -------------------------------------------------
 # n     number of dislocation families in a wall, range 1-3.
 #       Gourdet & Montheillet, Acta Mater. 51 (2003) 2685-2699.  Not fitted.
 # beta  geometric parameter linking the dislocation density to the crystallite
-#       size; the analogue of the one of Rest & Hofman (2000), who use 5.
+#       size; the analogue of the one of Rest & Hofman (2000).
 # k     links the volume seen by the mobile grain boundary to the fraction of
 #       dislocations engaged in the LAGB over the total.
-# rho_c outer cut-off of the dislocation strain field in Eq. (4), the scale at
-#       which the field of a random array is screened.  rho_c^(-1/2) = 0.029 um,
-#       roughly a fifth of the subgrain size this model predicts (0.21-0.65 um in
-#       the dataset), i.e. a screening length well inside the subgrain.
+# rho_c outer cut-off of the dislocation strain field in Eq. (4).
 #
-# beta, k and rho_c come from `calibrate.py`: joint fit on 41 radial points of
-# Theta plus 14 points of ECD50% (weight 0.05 on the size term), rho_tot of
-# Nogita, G of Eq. (2), n = 2.  All six seeds converge to J = 0.23983258.
+# beta, k and rho_c come from `calibrate.py`
 N_FAMILIES = 2.0                        # -
-BETA = 33.54724855333423                # -
-K_SWEEP = 0.04696637283583627           # -
-RHO_C = 1165846255229680.0              # m^-2
+BETA       = 33.54724855333423          # -
+K_SWEEP    = 0.04696637283583627        # -
+RHO_C      = 1165846255229680.0         # m^-2
 
 # --- Nogita & Une (1994), Eq. (1) ------------------------------------------
 NOGITA_SLOPE = 2.2e-2           # 1/(GWd/tU)
@@ -322,18 +251,16 @@ NOGITA_INTERCEPT = 13.8         # log10(m^-2)
 # The restructured fraction must stay strictly below 1.  SCIANTIX divides by
 # (1 - alpha) downstream -- GasDiffusion.C (sweeping term), Matrix.C (pore
 # nucleation), System.C (production split) -- and alpha = 1 exactly would produce
-# inf/NaN.  The cap is applied HERE as well as in the C++, so that the two
-# implementations agree bit for bit and the port stays verifiable.
+# inf/NaN.  The cap is applied HERE as well as in the C++.
 # How the other formation options handle the same thing:
 #   option 3  caps at exactly this value, f_max = 1 - 1e-9, in the same way;
-#   options 1 and 2  do NOT cap.  They evaluate alpha_r = 1 - exp(-K (bu - bu_inc)^n)
+#   options 1 and 2  do NOT cap. They evaluate alpha_r = 1 - exp(-K (bu - bu_inc)^n)
 #     and rely on the exponential never reaching zero.
 ALPHA_MAX = 1.0 - 1.0e-9        # -
 
-# Burnup unit conversion used by SCIANTIX: MWd/kgUO2 -> MWd/kgU = GWd/tU.
-# Not used by this script (which takes GWd/tU directly); quoted because the C++
-# applies it to sciantix_variable["Burnup"] before calling the model.
-UO2_TO_U = 0.8814               # kgU/kgUO2
+# --- Reference conditions --------------------------------------------------
+REFERENCE_TEMPERATURE = 600.0    # K
+REFERENCE_POROSITY = FABRICATION_POROSITY
 
 
 # ---------------------------------------------------------------------------
@@ -358,10 +285,8 @@ class HbsState:
     """The complete state of the model at one (burnup, temperature) point.
 
     The three quantities SCIANTIX consumes are `theta_deg`, `subgrain_radius_m`
-    and `restructured_fraction`; the rest is carried for diagnostics and for the
-    self-test.
+    and `restructured_fraction`; the rest is carried for diagnostics.
     """
-
     burnup: float             # GWd/tU     input
     temperature: float        # K          input
     porosity: float           # -          input
@@ -391,7 +316,7 @@ def dislocation_density_nogita(burnup):
 
 def shear_modulus(temperature, porosity=FABRICATION_POROSITY,
                   stoichiometry_deviation=0.0, plutonium_fraction=PLUTONIUM_FRACTION):
-    """Eq. (2) -- shear modulus [Pa]. NEA/NSC/R(2024)1 p. 124.    """
+    """Eq. (2) -- shear modulus [Pa]. NEA/NSC/R(2024)1 p. 124."""
     composition = G_UO2 * (1.0 - plutonium_fraction) + G_PUO2 * plutonium_fraction
     porosity_factor = (1.0 - porosity) ** 2 / (1.0 + G_POROSITY_COEFF * porosity)
     stoichiometry_factor = (1.0 - G_STOICH_LINEAR * stoichiometry_deviation
@@ -404,13 +329,7 @@ def shear_modulus(temperature, porosity=FABRICATION_POROSITY,
 
 def poisson_ratio(temperature, porosity=FABRICATION_POROSITY,
                   stoichiometry_deviation=0.0, plutonium_fraction=PLUTONIUM_FRACTION):
-    """Eq. (2) -- Poisson ratio [-]. NEA/NSC/R(2024)1 p. 124.
-
-    Same four-factor shape as `shear_modulus`, and taken from the same table rather
-    than held at a single value: it enters the functional through f(nu), and there is
-    no reason to take one elastic constant from the correlation and not the other.
-    Note the sign of the quadratic temperature term, which is + here and - for G.
-    """
+    """Eq. (2) -- Poisson ratio [-]. NEA/NSC/R(2024)1 p. 124."""
     composition = NU_UO2 * (1.0 - plutonium_fraction) + NU_PUO2 * plutonium_fraction
     porosity_factor = 1.0 - NU_POROSITY_COEFF * porosity
     stoichiometry_factor = (1.0 + NU_STOICH_LINEAR * stoichiometry_deviation
@@ -449,23 +368,10 @@ def wall_geometry(rho_tot, parameters=DEFAULT_PARAMETERS):
 def dislocation_partition(rho_tot, eta, parameters=DEFAULT_PARAMETERS):
     """Eq. (5) -- the three dislocation populations at a given eta [m^-2].
 
-    Returns (rho_ordered, rho_swept, rho_free), which add up to `rho_tot` by
-    construction.  This is the bookkeeping the functional is built on and the
-    single place it lives: `landau_coefficients` assembles the same partition
-    into the coefficients of Eq. (6), and `selftest` checks it closes.
-
         rho_ord   = rho_LAGB_max * eta^2      condensed into the LAGB walls
         rho_swept = (rho_tot - rho_ord) * dRoverR     annihilated by the sweep
         rho_free  = rho_tot - rho_ord - rho_swept     still a random array
 
-    Only the FREE dislocations are swept: the ones already stored in a wall
-    belong to the boundary, not to the volume the boundary passes through.  That
-    is the Gourdet & Montheillet (2003) picture, and it is what makes the sweep
-    contribute at both eta^2 and eta^4 rather than at eta^2 alone.
-
-    `rho_free` is non-negative only for eta <= eta_balance of Eq. (7b); above
-    that the partition is unphysical, which is precisely why `hbs_state` refuses
-    to minimize the functional there.
     """
     rho_lagb_max, _, dr_over_r_max = wall_geometry(rho_tot, parameters)
     # The `min` is the bound of Eq. (7b) written on the density instead of on
@@ -485,12 +391,6 @@ def landau_coefficients(temperature, rho_tot, porosity=FABRICATION_POROSITY,
     carrying the line energy of the state it is in:
 
         F = rho_free*A1*G b^2 + rho_ord*A2*G b^2
-
-    the free ones with the cut-off of a random array, the ones in the walls with
-    the cut-off screened by the wall itself, and the swept ones with nothing at
-    all -- they are gone.  Substituting the partition and collecting powers of
-    eta gives Eq. (6).  There is no grain-boundary surface energy term; see the
-    SURFACE ENERGY section of the module docstring.
 
     Returns (C0, C2, C4, [E_free, E_wall, E_sweep_2, E_sweep_4]).  The four
     amplitudes are the energy contributions at eta = 1, in the order of Eq. (5).
@@ -522,7 +422,7 @@ def hbs_state(burnup, temperature, porosity=FABRICATION_POROSITY,
               parameters=DEFAULT_PARAMETERS):
     """The model. Eqs. (1)-(11) for one (burnup [GWd/tU], temperature [K]) point.
 
-    THIS IS THE FUNCTION THE C++ PORT MUST MIRROR.  It is scalar and uses only
+    This is the function the C++ port must mirror.  It is scalar and uses only
     `math`, and the statements are in the order `HighBurnupStructureFormation.C`
     case 4 should use, so the two can be read side by side and compared
     numerically once that case exists.
@@ -538,25 +438,13 @@ def hbs_state(burnup, temperature, porosity=FABRICATION_POROSITY,
     c0, c2, c4, _ = landau_coefficients(temperature, rho_tot, porosity,
                                         stoichiometry_deviation, parameters)
 
-    # (7) stationary point: eta^2 = -C2/(2 C4), zero where C2 >= 0.  No guard is
-    #     needed on virgin fuel: with G of Eq. (2) the functional gives C2 > 0
-    #     at bu = 0 on its own, hence eta = 0.  The self-test asserts it.
+    # (7) stationary point.
     eta_stationary = math.sqrt(max(-c2 / (2.0 * c4), 0.0))
 
-    # (7b) admissibility: the walls cannot hold more dislocations than exist, so
-    #      rho_ord = rho_LAGB_max*eta^2 <= rho_tot.  The equilibrium is the
-    #      minimum of F on 0 <= eta <= eta_balance, not the free stationary point.
-    #      On the bound theta = beta*b*sqrt(rho_tot)/(3n): the misorientation can
-    #      only grow as fast as the dislocations that feed the walls, which is
-    #      the classical theta ~ sqrt(rho_tot).
+    # (7b) admissibility
     eta_balance = math.sqrt(min(rho_tot / rho_lagb_max, 1.0))
 
     # (8) mean misorientation, capped at the LAGB/HAGB boundary   <-- output 1
-    #     Three things can set eta, and `balance_limited` records whether it was
-    #     Eq. (7b) rather than the stationary point or the cap.  With
-    #     theta_max = theta_HAGB the last two coincide at eta = 1, so the flag has
-    #     to be a strict minimum: at and above saturation it is the cap that binds,
-    #     and there Theta stays at theta_HAGB instead of following sqrt(rho_tot).
     eta_hagb = math.radians(THETA_HAGB) / THETA_MAX
     eta = min(eta_stationary, eta_balance, eta_hagb)
     balance_limited = eta_balance < min(eta_stationary, eta_hagb)
@@ -675,6 +563,7 @@ def load_ebsd(path=DATA_FILE):
             grain_size = _number(record[COL_GRAIN_SIZE])
             rows.append({
                 "label": "%s/%s" % (record["Dataset"], record["Label"]),
+                "Dataset": "%s"%(record["Dataset"]),
                 "burnup": _number(record[COL_BURNUP]),
                 # The effective burnup of the same TRANSURANUS run.  Carried because
                 # the KJMA formation options of SCIANTIX (1 and 2) are driven by
@@ -793,47 +682,6 @@ def validate(path=DATA_FILE, verbose=True, parameters=DEFAULT_PARAMETERS):
               % (metrics["radius"]["n"], metrics["radius"]["rmse"] * 1e6, metrics["radius"]["r2"]))
     return metrics
 
-
-# ---------------------------------------------------------------------------
-# REFERENCE TABLE AND SELF-TEST
-# ---------------------------------------------------------------------------
-
-# Produced by this implementation at T = 600 K, P = 0.05, x = 0, with the shipped
-# calibration, and frozen here so that a change to the code that moves the physics
-# fails `--selftest` instead of passing quietly.  Regenerate with
-# `python3 calibrate.py --reference-table` after a recalibration.
-#
-#          bu [GWd/tU],  rho_tot [m^-2],     Theta [deg],   r_n [m],   X [-]
-REFERENCE_TABLE = [
-    (10.0, 104712854805090.28, 0.0, math.nan, 0.0),
-    (20.0, 173780082874937.62, 0.0, math.nan, 0.0),
-    (30.0, 288403150312661.2, 0.0, math.nan, 0.0),
-    (40.0, 478630092322638.0, 0.0, math.nan, 0.0),
-    (49.5612, 776866510328443.9, 0.006048196298133282, 5e-06, 0.0),
-    (49.6112, 778836685718761.9, 0.19429892627965883, 5e-06, 0.0),
-    (50.0, 794328234724282.1, 0.5810433307889246, 3.6012438391299855e-06, 0.0),
-    (50.0612, 796794632758579.4, 0.6211986007858683, 3.3690570226717287e-06, 0.0),
-    (54.5559, 1000529274070491.6, 2.2000009613499585, 9.638083847254108e-07, 1.2324999465462838e-07),
-    (60.0, 1318256738556410.0, 3.650710985508894, 5.899452023333265e-07, 0.18598858788575565),
-    (70.0, 2187761623949551.8, 5.827415437115106, 3.75456514127303e-07, 0.46505326116860335),
-    (80.0, 3630780547701017.5, 7.50716532439319, 2.914470365107784e-07, 0.6804058108196398),
-    (91.3204, 6442416524039701.0, 10.0, 2.1879409145881883e-07, ALPHA_MAX),
-    (100.0, 1e+16, 10.0, 2.1530233253870363e-07, ALPHA_MAX),
-    (150.0, 1.2589254117941714e+17, 10.0, 2.094813883166304e-07, ALPHA_MAX),
-]
-
-# The three burnups at which the model changes regime, at T = 600 K, P = 0.05.
-# Re-derived by bisection in `--selftest`.  They no longer depend on T, P or x:
-# see the SURFACE ENERGY section of the module docstring.
-BU_THRESHOLD = 49.5612      # GWd/tU   C2 = 0: Theta leaves zero
-BU_ONSET = 54.5559          # GWd/tU   Theta = theta_u: X leaves zero
-BU_SATURATION = 91.3204     # GWd/tU   Theta = theta_HAGB: X reaches its cap
-
-# State the reference table and the boundaries are computed in.
-REFERENCE_TEMPERATURE = 600.0    # K
-REFERENCE_POROSITY = FABRICATION_POROSITY
-
-
 def _bisect(function, low, high, tolerance=1e-9):
     """Smallest root bracketed by [low, high] of a monotone sign-changing function."""
     f_low = function(low)
@@ -856,31 +704,6 @@ def regime_boundaries(temperature=REFERENCE_TEMPERATURE, porosity=REFERENCE_PORO
     onset = _bisect(lambda b: theta(b) - THETA_U, threshold, 300.0)
     saturation = _bisect(lambda b: theta(b) - THETA_HAGB * (1.0 - 1e-12), onset, 400.0)
     return threshold, onset, saturation
-
-
-def print_table(temperature=REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY):
-    """The reference table, recomputed."""
-    print("HBS formation, Landau functional -- reference behaviour at T = %g K, P = %g"
-          % (temperature, porosity))
-    print()
-    print("    bu          rho_tot        Theta      r_n         X")
-    print("    [GWd/tU]    [m^-2]         [deg]      [um]        [-]")
-    print("    " + "-" * 58)
-    for burnup, _, _, _, _ in REFERENCE_TABLE:
-        state = hbs_state(burnup, temperature, porosity=porosity)
-        radius = ("%10.4f" % (state.subgrain_radius_m * 1e6)
-                  if not math.isnan(state.subgrain_radius_m) else "         -")
-        print("    %7.1f     %.4e   %8.4f %s  %8.6f"
-              % (burnup, state.rho_tot, state.theta_deg, radius, state.restructured_fraction))
-    print()
-    print("    transition threshold  C2 = 0            bu = %8.4f GWd/tU" % BU_THRESHOLD)
-    print("    restructuring starts  Theta = %.2f deg   bu = %8.4f GWd/tU" % (THETA_U, BU_ONSET))
-    print("    fully restructured    Theta = %.1f deg   bu = %8.4f GWd/tU" % (THETA_HAGB, BU_SATURATION))
-    print()
-    print("    X saturates at ALPHA_MAX = 1 - 1e-9, never at 1 exactly: SCIANTIX")
-    print("    divides by (1 - X) downstream.  The table rounds it to 1.000000.")
-    print("    r_n is capped at the host grain radius, %g um." % (GRAIN_RADIUS * 1e6))
-
 
 def _outputs_at_theta_max(burnup, theta_max, temperature=REFERENCE_TEMPERATURE,
                           porosity=REFERENCE_POROSITY, grain_radius_m=GRAIN_RADIUS,
@@ -920,39 +743,13 @@ def _outputs_at_theta_max(burnup, theta_max, temperature=REFERENCE_TEMPERATURE,
 
 
 def selftest(verbose=True):
-    """Every invariant the model must satisfy. Raises AssertionError on failure.
-
-    See the SELF-TEST section of the module docstring for what this covers and
-    how it differs from `--validate`.
-    """
+    """Every invariant the model must satisfy. """
     checks = []
 
     def check(name, condition, detail=""):
         checks.append((name, bool(condition), detail))
 
-    # 1. the reference table, to the last digit
-    worst = 0.0
-    for burnup, rho_ref, theta_ref, radius_ref, fraction_ref in REFERENCE_TABLE:
-        state = hbs_state(burnup, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
-        for got, want in ((state.rho_tot, rho_ref), (state.theta_deg, theta_ref),
-                          (state.subgrain_radius_m, radius_ref),
-                          (state.restructured_fraction, fraction_ref)):
-            if math.isnan(want):
-                check("reference table: nan radius at bu = %g" % burnup, math.isnan(got))
-            elif want == 0.0:
-                worst = max(worst, abs(got))
-            else:
-                worst = max(worst, abs(got - want) / abs(want))
-    check("reference table reproduced", worst < 1e-12, "max relative error %.2e" % worst)
-
-    # 2. the three characteristic burnups
-    threshold, onset, saturation = regime_boundaries()
-    check("transition threshold = %.4f GWd/tU" % threshold, abs(threshold - BU_THRESHOLD) < 1e-3)
-    check("restructuring onset  = %.4f GWd/tU" % onset, abs(onset - BU_ONSET) < 1e-3)
-    check("full restructuring   = %.4f GWd/tU" % saturation, abs(saturation - BU_SATURATION) < 1e-3)
-
-    # 3. virgin fuel carries no structure, and the code contains no guard that
-    #    makes it so: with G of Eq. (2) the functional gives C2 > 0 at bu = 0.
+    # virgin fuel carries no structure.
     for temperature in (300.0, 723.0, 1200.0):
         virgin = hbs_state(0.0, temperature)
         check("virgin fuel at T = %g K carries no structure" % temperature,
@@ -961,7 +758,9 @@ def selftest(verbose=True):
         check("Theta = 0 at bu = 0 comes from C2 > 0, not from a special case (T = %g K)"
               % temperature, virgin.c2 > 0.0, "C2 = %+.4e J/m3" % virgin.c2)
 
-    # 4. the regimes on either side
+    # the regimes on either side
+    BU_THRESHOLD, BU_ONSET, BU_SATURATION = regime_boundaries(
+        temperature=REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY, parameters=DEFAULT_PARAMETERS)
     below = hbs_state(BU_THRESHOLD - 0.01, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
     above = hbs_state(BU_SATURATION + 0.01, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
     check("below the threshold Theta = 0 and X = 0",
@@ -973,7 +772,7 @@ def selftest(verbose=True):
           all(hbs_state(b, REFERENCE_TEMPERATURE).restructured_fraction < 1.0
               for b in (86.0, 100.0, 200.0, 500.0)))
 
-    # 5. monotonicity in burnup at fixed temperature
+    # monotonicity in burnup at fixed temperature
     burnups = [1.0 + 0.5 * i for i in range(400)]        # 1 -> 200.5 GWd/tU
     states = [hbs_state(b, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY) for b in burnups]
     check("Theta is non-decreasing in burnup",
@@ -985,7 +784,7 @@ def selftest(verbose=True):
     check("the subgrain radius is non-increasing above the threshold",
           all(b <= a + 1e-20 for a, b in zip(radii, radii[1:])))
 
-    # 6. the subgrain radius never exceeds the grain that hosts it
+    # the subgrain radius never exceeds the grain that hosts it
     ceiling_worst = 0.0
     for grain_radius in (1.0e-6, 5.0e-6, 1.0e-5):
         for burnup in burnups:
@@ -996,11 +795,7 @@ def selftest(verbose=True):
     check("r_n never exceeds the host grain radius", ceiling_worst <= 1.0,
           "max r_n / R_grain = %.6f" % ceiling_worst)
 
-    # 7. the three outputs depend on the local burnup ALONE.  Every term of C2
-    #    and of C4 carries the same factor f(nu)*G*b^2, so it cancels exactly in
-    #    eta^2 = -C2/(2 C4): there is nothing left for T, P or x to act on.  This
-    #    replaces the old "Theta decreases with temperature", which held only
-    #    while the functional carried a grain-boundary surface term.
+    # the three outputs depend on the local burnup alone
     worst_invariance = 0.0
     for burnup in (52.0, 60.0, 70.0, 85.0, 120.0):
         base = hbs_state(burnup, 600.0, porosity=0.05, stoichiometry_deviation=0.0)
@@ -1013,17 +808,12 @@ def selftest(verbose=True):
                                       (other.restructured_fraction,
                                        base.restructured_fraction)):
                         worst_invariance = max(worst_invariance, abs(got - want))
-    # The cancellation is exact in exact arithmetic; what survives is the last
-    # bit of the division, hence a tolerance rather than an equality.
     check("Theta and X depend on burnup alone: f(nu) G b^2 cancels in -C2/(2 C4)",
           worst_invariance < 1e-12, "max absolute difference %.2e" % worst_invariance)
     check("the driving force still moves with temperature",
           hbs_state(70.0, 500.0).driving_force > hbs_state(70.0, 1200.0).driving_force)
 
-    # 8. eta_eq is a stationary point of the functional, Eq. (7) -- wherever the
-    #    equilibrium is the free stationary point.  Where Eq. (7b) or the HAGB
-    #    cap sets eta instead, the minimum is on the edge of the admissible
-    #    interval and dF/deta is not zero there.
+    # eta_eq is a stationary point of the functional
     worst_stationarity = 0.0
     for burnup in (50.0, 55.0, 60.0, 65.0, 70.0, 75.0, 80.0, 85.0):
         state = hbs_state(burnup, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
@@ -1035,11 +825,7 @@ def selftest(verbose=True):
     check("dF/deta = 0 wherever the equilibrium is interior", worst_stationarity < 1e-14,
           "max normalized residual %.2e" % worst_stationarity)
 
-    # 8b. THE DISLOCATION BALANCE, Eq. (5) and Eq. (7b).  The three populations
-    #     close on rho_tot, none of them is negative, and the swept fraction of
-    #     the volume is a fraction.  Without the bound of Eq. (7b) the walls hold
-    #     up to twice the dislocations that exist over 66-98 GWd/tU and rho_swept
-    #     changes sign, which is what this bound is there to prevent.
+    # the dislocation balance, Eq. (5) and Eq. (7b).
     worst_closure, worst_free, worst_swept, worst_dr = 0.0, 0.0, 0.0, 0.0
     for state in states:
         rho_ordered, rho_swept, rho_free = (state.rho_ordered, state.rho_swept,
@@ -1060,7 +846,7 @@ def selftest(verbose=True):
     check("dR/R <= 1: the swept volume is a fraction of the volume",
           worst_dr <= 1.0, "max dR/R = %.6f" % worst_dr)
 
-    # 8c. on the bound the model is the classical theta ~ sqrt(rho_tot): with
+    # on the bound the model is the classical theta ~ sqrt(rho_tot): with
     #     every dislocation in a wall, the misorientation can only grow as fast
     #     as the dislocations that feed it.
     worst_sqrt_law, bound_points = 0.0, 0
@@ -1076,26 +862,7 @@ def selftest(verbose=True):
           bound_points > 0 and worst_sqrt_law < 1e-14,
           "%d points on the bound, max relative error %.2e" % (bound_points, worst_sqrt_law))
 
-    # 8d. theta_max is a pure normalization.  Every physical quantity depends on
-    #     theta = eta*theta_max alone, so the three outputs are invariant under
-    #     changing it at fixed beta, k and rho_c.  This is what makes the choice
-    #     theta_max = theta_HAGB free, and it is checked rather than asserted:
-    #     the whole model is re-evaluated at the old normalization, pi - 2.723.
-    worst_normalization = 0.0
-    for burnup in (50.0, 55.0, 60.0, 70.0, 80.0, 91.0, 100.0, 150.0):
-        state = hbs_state(burnup, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
-        other = _outputs_at_theta_max(burnup, math.pi - 2.723)
-        for got, want in zip(other, (state.theta_deg, state.subgrain_radius_m,
-                                     state.restructured_fraction)):
-            if math.isnan(want):
-                continue
-            worst_normalization = max(worst_normalization,
-                                      abs(got - want) / max(abs(want), 1e-300))
-    check("Theta, r_n and X are invariant under the choice of theta_max",
-          worst_normalization < 1e-12,
-          "max relative difference vs theta_max = pi - 2.723: %.2e" % worst_normalization)
-
-    # 8e. and with theta_max = theta_HAGB the three saturations coincide: the order
+    # and with theta_max = theta_HAGB the three saturations coincide: the order
     #     parameter reaches 1 exactly where the substructure becomes high-angle and
     #     where the last free dislocation enters a wall.
     saturated = hbs_state(BU_SATURATION + 0.01, REFERENCE_TEMPERATURE,
@@ -1110,7 +877,7 @@ def selftest(verbose=True):
           % (at_cap.eta, BU_SATURATION,
              rho_lagb_max / dislocation_density_nogita(BU_SATURATION)))
 
-    # 9. the exact bridge to the stored energy of Muramatsu et al. (2014), Eq. 8:
+    # the exact bridge to the stored energy of Muramatsu et al. (2014), Eq. 8:
     #    E_s = rho_tot*G*b^2/2, so C0/E_s = f(nu)*ln(rho_c^(-1/2)/b)/(2 pi),
     #    a constant at every burnup and temperature.
     #    f(nu) now varies with the state, so the ratio is constant in burnup at fixed
@@ -1127,7 +894,7 @@ def selftest(verbose=True):
     check("C0 / E_s(Muramatsu Eq. 8) = f(nu) ln(rho_c^-1/2 / b) / 2pi, constant in burnup",
           worst_ratio < 1e-14, "max relative spread %.2e" % worst_ratio)
 
-    # 10. the numpy wrapper carries no physics of its own
+    # the numpy wrapper carries no physics of its own
     try:
         import numpy  # noqa: F401
     except ImportError:
@@ -1170,163 +937,70 @@ def plot(path="hbs_formation_landau.png", temperature=REFERENCE_TEMPERATURE):
     burnups = [1.0 + 0.25 * i for i in range(800)]
     states = [hbs_state(b, temperature) for b in burnups]
     rows = [r for r in load_ebsd() if r["burnup"] > 0.0]
+    rows_O = [r for r in load_ebsd() if r["Dataset"] == "Onofri"]
+    rows_Z = [r for r in load_ebsd() if r["Dataset"] == "Zacharie"]
 
-    figure, axes = plt.subplots(1, 3, figsize=(13.5, 4.0))
+    figure, axes = plt.subplots(1, 3, figsize=(13, 4.0))
 
-    axes[0].plot(burnups, [s.theta_deg for s in states], "-", color="k")
-    axes[0].plot([r["burnup"] for r in rows], [theta_measured(r) for r in rows], "o", ms=4)
-    axes[0].set_ylabel(r"mean misorientation  $\Theta$  [deg]")
+    axes[0].plot(burnups, [s.theta_deg for s in states], "-", color="k", 
+        label="This work")
+    axes[0].plot([r["burnup"] for r in rows_O], [theta_measured(r) for r in rows_O], "o", 
+        ms=4, label="Onofri et al. (2025)")
+    axes[0].plot([r["burnup"] for r in rows_Z], [theta_measured(r) for r in rows_Z], "*", 
+        ms=4, label="Zacharie-Aubrun et al. (2022)")
 
-    axes[1].plot(burnups, [s.subgrain_radius_m * 1e6 for s in states], "-", color="k")
-    sizes = [(r["burnup"], measured_radius(r) * 1e6) for r in rows]
+    axes[0].set_ylabel(r"mean misorientation  $\Theta$  (deg)")
+
+    axes[1].plot(burnups, [s.subgrain_radius_m * 1e6 for s in states], "-", color="k",
+        label="This work")
+
+    sizes = [(r["burnup"], measured_radius(r) * 1e6) for r in rows_O]
     sizes = [(b, e) for b, e in sizes if not math.isnan(e)]
-    axes[1].plot([b for b, _ in sizes], [e for _, e in sizes], "o", ms=4)
-    axes[1].set_ylabel(r"subgrain radius  $r_n$  [$\mu$m]")
+    axes[1].plot([b for b, _ in sizes], [e for _, e in sizes], "o", ms=4, 
+        label="Onofri et al. (2025)")
+
+    sizes = [(r["burnup"], measured_radius(r) * 1e6) for r in rows_Z]
+    sizes = [(b, e) for b, e in sizes if not math.isnan(e)]
+    axes[1].plot([b for b, _ in sizes], [e for _, e in sizes], "*", 
+        ms=4, label="Zacharie-Aubrun et al. (2022)")
+
+    axes[1].legend(frameon=False, loc='upper right')
+    axes[1].set_ylabel(r"subgrain radius  $r_n$  ('$\mu$m)")
     axes[1].set_ylim(0.0, 1.5)
 
-    axes[2].plot(burnups, [s.restructured_fraction for s in states], "-", color="k")
-    fractions = [(r["burnup"], r["f10"] / 100.0) for r in rows if not math.isnan(r["f10"])]
-    axes[2].plot([b for b, _ in fractions], [x for _, x in fractions], "o", ms=4)
-    axes[2].set_ylabel("restructured fraction  $X$  [-]")
+    axes[2].plot(burnups, [s.restructured_fraction for s in states], "-", color="k",
+        label="This work")
+
+    fractions = [(r["burnup"], r["f10"] / 100.0) for r in rows_O if not math.isnan(r["f10"])]
+    axes[2].plot([b for b, _ in fractions], [x for _, x in fractions], "o", 
+        ms=4, label="Onofri et al. (2025)")
+
+    fractions = [(r["burnup"], r["f10"] / 100.0) for r in rows_Z if not math.isnan(r["f10"])]
+    axes[2].plot([b for b, _ in fractions], [x for _, x in fractions],  "*", 
+        ms=4, label="Zacharie-Aubrun et al. (2022)")
+
+    axes[2].set_ylabel("restructured fraction  $X$  (-)")
 
     for axis in axes:
-        axis.set_xlabel("burnup  [GWd/tU]")
-        axis.axvline(BU_THRESHOLD, ls=":", lw=0.8, color="0.5")
+        axis.set_xlim(burnups[0], burnups[-1])
+        axis.set_xlabel("burnup  (GWd/tU)")
     figure.suptitle("HBS formation, Landau functional -- T = %g K, "
                     r"$\rho_{tot}$ Nogita & Une (1994)" % temperature)
     figure.tight_layout()
     figure.savefig(path, dpi=150)
     print("written: %s" % path)
 
-
-def plot_populations(path="hbs_dislocation_populations.png",
-                     temperature=REFERENCE_TEMPERATURE, parameters=DEFAULT_PARAMETERS):
-    """The three dislocation populations of Eq. (5) against burnup. Needs matplotlib.
-
-    The dashed curves are the same partition evaluated at the SAME parameters but
-    with Eq. (7b) switched off, i.e. at the free stationary point of Eq. (7).  They
-    are what the functional did before the admissibility bound was added, and they
-    are the argument for it: rho_free goes negative, and rho_swept with it, because
-    the walls are asked to hold more dislocations than exist.
-    """
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    burnups = [30.0 + 0.25 * i for i in range(600)]        # 30 -> 180 GWd/tU
-
-    def unbounded_eta(burnup):
-        """Eq. (7) alone: the stationary point, with the HAGB cap but no Eq. (7b)."""
-        rho_tot = dislocation_density_nogita(burnup)
-        _, c2, c4, _ = landau_coefficients(temperature, rho_tot,
-                                           parameters=parameters)
-        eta = math.sqrt(max(-c2 / (2.0 * c4), 0.0))
-        return min(eta, math.radians(THETA_HAGB) / THETA_MAX)
-
-    states = [hbs_state(b, temperature, parameters=parameters) for b in burnups]
-    # The unbounded partition, deliberately NOT clamped: the point is to show it
-    # leaving the physical range, so it bypasses `dislocation_partition`.
-    unbounded = []
-    for burnup in burnups:
-        rho_tot = dislocation_density_nogita(burnup)
-        rho_lagb_max, _, dr_over_r_max = wall_geometry(rho_tot, parameters)
-        eta = unbounded_eta(burnup)
-        rho_ordered = rho_lagb_max * eta * eta
-        rho_swept = (rho_tot - rho_ordered) * dr_over_r_max * eta * eta
-        unbounded.append((rho_tot, rho_ordered, rho_swept,
-                          rho_tot - rho_ordered - rho_swept))
-
-    bounded_band = [b for b, s in zip(burnups, states) if s.balance_limited]
-    populations = (("$\\rho_{tot}$", "0.15", [s.rho_tot for s in states],
-                    [u[0] for u in unbounded]),
-                   ("$\\rho_{ord}$  (walls)", "tab:blue", [s.rho_ordered for s in states],
-                    [u[1] for u in unbounded]),
-                   ("$\\rho_{free}$  (random)", "tab:green", [s.rho_free for s in states],
-                    [u[3] for u in unbounded]),
-                   ("$\\rho_{swept}$  (annihilated)", "tab:orange",
-                    [s.rho_swept for s in states], [u[2] for u in unbounded]))
-
-    figure, axes = plt.subplots(1, 3, figsize=(15.0, 4.4))
-
-    # --- panel 1: the densities themselves, log scale over three decades -----
-    # Inside the shaded band rho_free and rho_swept are EXACTLY zero, which a log
-    # axis cannot draw: masked to nan so the curve stops there rather than
-    # plunging off the bottom and looking like an artefact.
-    for label, colour, bounded, _ in populations:
-        axes[0].plot(burnups, [v if v > 0.0 else math.nan for v in bounded],
-                     "-", color=colour, lw=2.0, label=label)
-    axes[0].set_yscale("log")
-    axes[0].set_ylim(1e12, 3e17)
-    axes[0].set_ylabel(r"dislocation density  [m$^{-2}$]")
-    axes[0].set_title("the three populations, Eq. (5)", fontsize=10)
-    axes[0].legend(fontsize=8, loc="lower right")
-
-    # --- panel 2: the partition, with and without Eq. (7b) ------------------
-    for label, colour, bounded, free in populations[1:]:
-        axes[1].plot(burnups, [v / t for v, t in zip(bounded, [s.rho_tot for s in states])],
-                     "-", color=colour, lw=2.0, label=label)
-        axes[1].plot(burnups, [v / u[0] for v, u in zip(free, unbounded)],
-                     "--", color=colour, lw=1.2, alpha=0.9)
-    axes[1].axhline(0.0, color="k", lw=0.8)
-    axes[1].axhline(1.0, color="k", lw=0.8, ls=":")
-    axes[1].set_ylim(-1.15, 2.15)
-    axes[1].set_ylabel(r"fraction of $\rho_{tot}$  [-]")
-    axes[1].set_title("solid: with Eq. (7b).  dashed: without it", fontsize=10)
-    axes[1].legend(fontsize=8, loc="lower left")
-    axes[1].annotate("walls hold ~2x the\ndislocations that exist",
-                     xy=(84.0, 1.93), xytext=(103.0, 1.80), fontsize=7.5,
-                     color="tab:blue",
-                     arrowprops=dict(arrowstyle="->", color="tab:blue", lw=0.8))
-    axes[1].annotate(r"$\rho_{free} < 0$", xy=(80.0, -0.79), xytext=(96.0, -0.85),
-                     fontsize=7.5, color="tab:green",
-                     arrowprops=dict(arrowstyle="->", color="tab:green", lw=0.8))
-
-    # --- panel 3: the swept population on its own scale ---------------------
-    axes[2].plot(burnups, [s.rho_swept / s.rho_tot for s in states],
-                 "-", color="tab:orange", lw=2.0, label="with Eq. (7b)")
-    axes[2].plot(burnups, [u[2] / u[0] for u in unbounded],
-                 "--", color="tab:orange", lw=1.2, label="without it")
-    axes[2].axhline(0.0, color="k", lw=0.8)
-    axes[2].set_ylabel(r"$\rho_{swept} / \rho_{tot}$  [-]")
-    axes[2].set_title("the sweep: a sink, or a source", fontsize=10)
-    axes[2].legend(fontsize=8, loc="lower right")
-
-    for axis in axes:
-        if bounded_band:
-            axis.axvspan(min(bounded_band), max(bounded_band), color="0.9", zorder=0,
-                         label="_nolegend_")
-        for burnup in (BU_THRESHOLD, BU_ONSET, BU_SATURATION):
-            axis.axvline(burnup, ls=":", lw=0.8, color="0.5")
-        axis.set_xlabel("burnup  [GWd/tU]")
-        axis.set_xlim(burnups[0], burnups[-1])
-
-    title = "HBS formation -- the dislocation balance of Eq. (5)"
-    if bounded_band:
-        title += (".  Shaded: where Eq. (7b) sets $\\eta$ (%.1f-%.1f GWd/tU); "
-                  "dotted: threshold, onset, saturation"
-                  % (min(bounded_band), max(bounded_band)))
-    figure.suptitle(title)
-    figure.tight_layout()
-    figure.savefig(path, dpi=150)
-    print("written: %s" % path)
-
-
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description="HBS formation as a second-order phase transition (Landau functional). "
                     "Reference implementation of iHighBurnupStructureFormation = 4.",
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--table", action="store_true", help="reference behaviour vs burnup")
     parser.add_argument("--validate", action="store_true",
                         help="the model against the EBSD measurements")
     parser.add_argument("--selftest", action="store_true",
                         help="the model against itself: invariants, no experimental data")
     parser.add_argument("--plot", nargs="?", const="hbs_formation_landau.png", default=None,
                         metavar="PNG", help="the three outputs against burnup")
-    parser.add_argument("--plot-populations", dest="plot_populations", nargs="?",
-                        const="hbs_dislocation_populations.png", default=None, metavar="PNG",
-                        help="the three dislocation populations of Eq. (5) against burnup, "
-                             "with and without the balance bound of Eq. (7b)")
     parser.add_argument("--temperature", type=float, default=REFERENCE_TEMPERATURE, metavar="K",
                         help="temperature for --table and --plot (default %g)"
                              % REFERENCE_TEMPERATURE)
@@ -1334,14 +1008,13 @@ def main(argv=None):
                         help="evaluate the model at one (burnup [GWd/tU], temperature [K])")
     arguments = parser.parse_args(argv)
 
-    if not any((arguments.table, arguments.validate, arguments.selftest,
-                arguments.plot, arguments.plot_populations, arguments.point)):
+    if not any((arguments.validate, arguments.selftest,
+                arguments.plot, arguments.point)):
         parser.print_help()
         return 0
 
     printed = False
     for enabled, action in ((arguments.selftest, lambda: selftest()),
-                            (arguments.table, lambda: print_table(arguments.temperature)),
                             (arguments.validate, lambda: validate())):
         if enabled:
             if printed:
@@ -1360,8 +1033,6 @@ def main(argv=None):
 
     if arguments.plot:
         plot(arguments.plot, arguments.temperature)
-    if arguments.plot_populations:
-        plot_populations(arguments.plot_populations, arguments.temperature)
     return 0
 
 
