@@ -265,11 +265,33 @@ def plot(rows):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
+    plt.style.use("seaborn-v0_8-whitegrid")
+    plt.rcParams.update({
+        "figure.figsize": (10, 7),
+        "font.family": "serif",
+        "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+        "mathtext.fontset": "dejavuserif",
+        "font.size": 20,
+        "axes.labelsize": 20,
+        "axes.titlesize": 20,
+        "xtick.labelsize": 20,
+        "ytick.labelsize": 20,
+        "legend.fontsize": 20,
+        "figure.dpi": 300,
+        "axes.grid": True,
+        "grid.alpha": 0.5,
+        "grid.linestyle": "--",
+        "lines.linewidth": 3,
+        "lines.markersize": 6,
+        "legend.frameon": True,
+        "legend.loc": "upper right"
+    })
+
     os.makedirs(FIGURES, exist_ok=True)
     burnups = [1.0 + 0.25 * i for i in range(660)]      # 1 -> 165 MWd/kgU
 
     # ---- figure 1: the three observables against burnup --------------------
-    figure, axes = plt.subplots(1, 3, figsize=(15.4, 4.5), layout="constrained")
+    figure, axes = plt.subplots(1, 3, figsize=(18, 6), layout="constrained")
 
     for number, label, model, colour, style, _ in OPTIONS:
         width = 2.4 if number == 4 else 1.5
@@ -289,7 +311,14 @@ def plot(rows):
                               edgecolors="0.3", linewidths=0.4, zorder=4,
                               label="EBSD, Zacharie (2022) / Onofri (2025)")
     axes[0].set_ylabel(r"restructured fraction  $X$  (-)")
-    axes[0].legend(fontsize=7.5, loc="upper left", frameon=False)
+    handles, labels = axes[0].get_legend_handles_labels()
+    figure.legend(
+        handles, labels,
+        loc="outside lower center",
+        ncol=3, frameon=False,
+        handlelength=2.0, columnspacing=1.2, handletextpad=0.5,
+    )
+    
 
     axes[1].plot(burnups, [hbs_state(b, PIE_TEMPERATURE).theta_deg for b in burnups],
                  "k-", lw=2.4)
@@ -308,7 +337,7 @@ def plot(rows):
                     c=[r["temperature"] for r in size_rows], cmap="coolwarm",
                     vmin=low, vmax=high, s=34, marker="s",
                     edgecolors="0.3", linewidths=0.4)
-    axes[2].set_ylabel(r"subgrain radius  $r_n$  [$\mu$m]")
+    axes[2].set_ylabel(r"subgrain radius  $r_n$(um)")
     axes[2].set_ylim(0.0, 1.2)
 
     for axis in axes:

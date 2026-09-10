@@ -940,20 +940,41 @@ def plot(path="hbs_formation_landau.png", temperature=REFERENCE_TEMPERATURE):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
+    plt.style.use("seaborn-v0_8-whitegrid")
+    plt.rcParams.update({
+        "figure.figsize": (10, 7),
+        "font.family": "serif",
+        "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+        "mathtext.fontset": "dejavuserif",
+        "font.size": 20,
+        "axes.labelsize": 20,
+        "axes.titlesize": 20,
+        "xtick.labelsize": 20,
+        "ytick.labelsize": 20,
+        "legend.fontsize": 20,
+        "figure.dpi": 300,
+        "axes.grid": True,
+        "grid.alpha": 0.5,
+        "grid.linestyle": "--",
+        "lines.linewidth": 3,
+        "lines.markersize": 6,
+        "legend.frameon": True,
+        "legend.loc": "upper right"
+    })
+
     burnups = [1.0 + 0.25 * i for i in range(800)]
     states = [hbs_state(b, temperature) for b in burnups]
-    rows = [r for r in load_ebsd() if r["burnup"] > 0.0]
     rows_O = [r for r in load_ebsd() if r["Dataset"] == "Onofri"]
     rows_Z = [r for r in load_ebsd() if r["Dataset"] == "Zacharie"]
 
-    figure, axes = plt.subplots(1, 3, figsize=(13, 4.0))
+    figure, axes = plt.subplots(1, 3, figsize=(18, 6.0))
 
     axes[0].plot(burnups, [s.theta_deg for s in states], "-", color="k", 
         label="This work")
     axes[0].plot([r["burnup"] for r in rows_O], [theta_measured(r) for r in rows_O], "o", 
-        ms=4, label="Onofri et al. (2025)")
+         label="Onofri et al. (2025)")
     axes[0].plot([r["burnup"] for r in rows_Z], [theta_measured(r) for r in rows_Z], "*", 
-        ms=4, label="Zacharie-Aubrun et al. (2022)")
+         label="Zacharie-Aubrun et al. (2022)")
 
     axes[0].set_ylabel(r"mean misorientation  $\Theta$  (deg)")
 
@@ -962,16 +983,16 @@ def plot(path="hbs_formation_landau.png", temperature=REFERENCE_TEMPERATURE):
 
     sizes = [(r["burnup"], measured_radius(r) * 1e6) for r in rows_O]
     sizes = [(b, e) for b, e in sizes if not math.isnan(e)]
-    axes[1].plot([b for b, _ in sizes], [e for _, e in sizes], "o", ms=4, 
+    axes[1].plot([b for b, _ in sizes], [e for _, e in sizes], "o",  
         label="Onofri et al. (2025)")
 
     sizes = [(r["burnup"], measured_radius(r) * 1e6) for r in rows_Z]
     sizes = [(b, e) for b, e in sizes if not math.isnan(e)]
     axes[1].plot([b for b, _ in sizes], [e for _, e in sizes], "*", 
-        ms=4, label="Zacharie-Aubrun et al. (2022)")
+         label="Zacharie-Aubrun et al. (2022)")
 
-    axes[1].legend(frameon=False, loc='upper right')
-    axes[1].set_ylabel(r"subgrain radius  $r_n$  ('$\mu$m)")
+    axes[1].legend()
+    axes[1].set_ylabel(r"subgrain radius  $r_n$  ($\mu$m)")
     axes[1].set_ylim(0.0, 1.5)
 
     axes[2].plot(burnups, [s.restructured_fraction for s in states], "-", color="k",
@@ -979,11 +1000,11 @@ def plot(path="hbs_formation_landau.png", temperature=REFERENCE_TEMPERATURE):
 
     fractions = [(r["burnup"], r["f10"] / 100.0) for r in rows_O if not math.isnan(r["f10"])]
     axes[2].plot([b for b, _ in fractions], [x for _, x in fractions], "o", 
-        ms=4, label="Onofri et al. (2025)")
+         label="Onofri et al. (2025)")
 
     fractions = [(r["burnup"], r["f10"] / 100.0) for r in rows_Z if not math.isnan(r["f10"])]
     axes[2].plot([b for b, _ in fractions], [x for _, x in fractions],  "*", 
-        ms=4, label="Zacharie-Aubrun et al. (2022)")
+         label="Zacharie-Aubrun et al. (2022)")
 
     axes[2].set_ylabel("restructured fraction  $X$  (-)")
 
