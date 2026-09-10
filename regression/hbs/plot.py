@@ -27,16 +27,31 @@ are drawn from test_UO2HBS alone.
 
 Experimental data and literature model curves live in ``regression/hbs/data``.
 
-``--landau`` adds a third configuration, ``test_UO2HBS_landau``
-(iHighBurnupStructureFormation = 4, the Landau functional), as an extra overlay on
-every figure, and produces two more:
+``--landau`` overlays the two remaining HBS cases as well, so that every figure
+carries one curve per value of ``iHighBurnupStructureFormation``:
 
-    plot_alpha_r.png        restructured volume fraction, the three cases together
+    test_UO2HBS_0            1  KJMA, Barani et al. (2020)
+    test_UO2HBS              2  KJMA with bu_inc = 15 MWd/kgHM
+    test_UO2HBS_dislocation  3  KJMA on rho_d, Veshchunov & Shestak (2009)
+    test_UO2HBS_landau       4  Landau functional
+
+and produces two more:
+
+    plot_alpha_r.png        restructured volume fraction, the four cases together
     plot_hbs_state.png      mean misorientation and subgrain radius, Landau only
 
 Everything is then written with a ``_landau`` suffix, so the manuscript figures
 beside them are untouched. Use it to see whether swapping the formation model
 perturbs the downstream porosity model.
+
+A caveat on reading these four curves as a comparison of formation models: the
+cases do NOT hold everything else fixed. They pair the formation option with the
+porosity model each was built around (1, 2, 3 and 3 respectively), so part of the
+spread between the curves is the porosity model, not the formation model. The
+controlled comparison -- same history, same time stepping, porosity held at 3, only
+the formation option varying -- is ``utilities/HBSformation/compare_formation_options.py``
+and its ``formation_options.png``. The two figures answer different questions:
+this one asks what a user actually gets from each case, that one isolates the model.
 """
 
 import os
@@ -56,6 +71,7 @@ DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 FIG_DIR = os.path.join(SCRIPT_DIR, "figures")
 LIVE_CASE = os.path.join(SCRIPT_DIR, "test_UO2HBS")
 REFERENCE_CASE = os.path.join(SCRIPT_DIR, "test_UO2HBS_0")
+DISLOCATION_CASE = os.path.join(SCRIPT_DIR, "test_UO2HBS_dislocation")
 LANDAU_CASE = os.path.join(SCRIPT_DIR, "test_UO2HBS_landau")
 
 # Burnup is written in MWd/kgUO2 and plotted in MWd/kgHM.
@@ -69,7 +85,8 @@ SOLID_FP_COEFF = 0.00303
 
 LABEL_LIVE = "SCIANTIX, this work"
 LABEL_REFERENCE = "SCIANTIX, semi-empirical"
-LABEL_LANDAU = "SCIANTIX, Landau formation"
+LABEL_DISLOCATION = r"SCIANTIX, $\rho_d$ formation (opt 3)"
+LABEL_LANDAU = "SCIANTIX, Landau formation (opt 4)"
 
 # =============================================================================
 # Plot style
@@ -91,6 +108,7 @@ COLOR_UNE_LOW = "#8e44ad"
 COLOR_UNE_STRONG = "#e377c2"
 COLOR_WALKER = "#1a3c6e"
 COLOR_ALPHA = "#f39c12"
+COLOR_DISLOCATION = "#9467bd"  # rho_d formation  - test_UO2HBS_dislocation
 COLOR_LANDAU = "#000000"   # Landau formation - test_UO2HBS_landau
 COLOR_LASSMANN_FIT = "#6a0dad"
 
@@ -126,19 +144,23 @@ def new_axes(xlabel, ylabel):
     return fig, ax
 
 
-# Set by main() when --landau is given: the extra case to overlay, and the
-# suffix that keeps its figures away from the manuscript ones.
+# Set by main() when --landau is given: the extra cases to overlay on top of the
+# two manuscript ones, and the suffix that keeps their figures away from the
+# manuscript ones. Each entry is (case, colour, label, linestyle); the order is
+# the order of iHighBurnupStructureFormation, so the legends read 1, 2, 3, 4.
+EXTRA_CASES = []
 LANDAU = None
 SUFFIX = ""
 
 
-def overlay_landau(ax, key, style="--", linewidth=None):
-    """Add the Landau case to an axis, if --landau is active and it has that column."""
-    if LANDAU is None or LANDAU.get(key) is None:
-        return
-    ax.plot(LANDAU["burnup"], LANDAU[key], style, color=COLOR_LANDAU,
-            linewidth=linewidth if linewidth is not None else LINEWIDTH_MODEL,
-            label=LABEL_LANDAU)
+def overlay_extras(ax, key, linewidth=None):
+    """Add every extra case to an axis, skipping the ones without that column."""
+    for case, colour, label, style in EXTRA_CASES:
+        if case.get(key) is None:
+            continue
+        ax.plot(case["burnup"], case[key], style, color=colour,
+                linewidth=linewidth if linewidth is not None else LINEWIDTH_MODEL,
+                label=label)
 
 
 def save(fig, filename):
@@ -268,7 +290,7 @@ def plot_pore_density(live, reference):
                 linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
     ax.plot(live["burnup"], live["poreDensity"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
-    overlay_landau(ax, "poreDensity")
+    overlay_extras(ax, "poreDensity")
     ax.set_xlim(0, 210)
     ax.legend(loc="upper right")
     save(fig, "plot_pore_density.png")
@@ -303,7 +325,7 @@ def plot_porosity(live, reference):
                 linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
     ax.plot(live["burnup"], live["porosity"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
-    overlay_landau(ax, "porosity")
+    overlay_extras(ax, "porosity")
     if live["sigma_xi"] is not None:
         ax.fill_between(live["burnup"],
                         np.maximum(live["porosity"] - live["sigma_xi"], 0.0),
@@ -333,7 +355,7 @@ def plot_pore_radius(live, reference):
                 linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
     ax.plot(live["burnup"], live["poreRadius"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
-    overlay_landau(ax, "poreRadius")
+    overlay_extras(ax, "poreRadius")
     if live["sigma_R"] is not None:
         ax.fill_between(live["burnup"],
                         np.maximum(live["poreRadius"] - live["sigma_R"], 0.0),
@@ -368,10 +390,12 @@ def plot_xe_depletion(live, reference):
              linewidth=LINEWIDTH_REF, label=LABEL_LIVE + ", HBS")
     ax1.plot(live["burnup"], (live["xe_ig"] + live["xe_igHBS"]) / XE_EQUIVALENT, "-",
              color="#2c2c2c", linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE + " (total)")
-    if LANDAU is not None and LANDAU["xe_igHBS"] is not None:
-        ax1.plot(LANDAU["burnup"], (LANDAU["xe_ig"] + LANDAU["xe_igHBS"]) / XE_EQUIVALENT,
-                 "--", color=COLOR_LANDAU, linewidth=LINEWIDTH_MODEL,
-                 label=LABEL_LANDAU + " (total)")
+    for case, colour, label, style in EXTRA_CASES:
+        if case["xe_igHBS"] is None:
+            continue
+        ax1.plot(case["burnup"], (case["xe_ig"] + case["xe_igHBS"]) / XE_EQUIVALENT,
+                 style, color=colour, linewidth=LINEWIDTH_MODEL,
+                 label=label + " (total)")
     ax1.set_xlabel("Burnup (MWd/kgHM)")
     ax1.set_ylabel("Xe in grains (wt%)")
     ax1.set_xlim(0, 200)
@@ -408,11 +432,11 @@ def plot_fuel_swelling(live, reference):
     ax1.plot(live["burnup"], live["swe_igb"], "-.", color=COLOR_CURRENT,
              linewidth=LINEWIDTH_REF, label="Intra-granular gas in bubbles")
     total_live = live["swe_igs"] + live["swe_igb"] + SOLID_FP_COEFF * live["fima"]
-    if LANDAU is not None:
-        total_landau = (LANDAU["swe_igs"] + LANDAU["swe_igb"]
-                        + SOLID_FP_COEFF * LANDAU["fima"])
-        ax1.plot(LANDAU["burnup"], total_landau, "--", color=COLOR_LANDAU,
-                 linewidth=LINEWIDTH_MODEL, label=LABEL_LANDAU + " (total)")
+    for case, colour, label, style in EXTRA_CASES:
+        total_extra = (case["swe_igs"] + case["swe_igb"]
+                       + SOLID_FP_COEFF * case["fima"])
+        ax1.plot(case["burnup"], total_extra, style, color=colour,
+                 linewidth=LINEWIDTH_MODEL, label=label + " (total)")
     ax1.plot(live["burnup"], total_live, "-", color="#1a365d",
              linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE + " (total)")
 
@@ -534,7 +558,7 @@ def plot_alpha_r(live, reference):
                 linewidth=LINEWIDTH_MODEL, label=LABEL_REFERENCE)
     ax.plot(live["burnup"], live["alpha"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
-    overlay_landau(ax, "alpha")
+    overlay_extras(ax, "alpha")
     ax.set_xlim(0, 210)
     ax.set_ylim(0, 1.05)
     ax.legend(loc="lower right")
@@ -569,13 +593,27 @@ def plot_hbs_state(case):
 
 
 def main():
-    global LANDAU, SUFFIX
+    global LANDAU, SUFFIX, LABEL_LIVE, LABEL_REFERENCE
 
     if "--landau" in sys.argv:
         LANDAU = load_case(LANDAU_CASE)
         if LANDAU is None:
             print("Run the HBS cases first: python3 -m regression.runner --hbs")
             return
+        # The dislocation-density case completes the set of formation options; it
+        # is optional, so that a missing case degrades to the three-curve figures
+        # instead of failing.
+        dislocation = load_case(DISLOCATION_CASE)
+        if dislocation is not None:
+            EXTRA_CASES.append((dislocation, COLOR_DISLOCATION, LABEL_DISLOCATION, "--"))
+        else:
+            print(f"No dislocation case in {DISLOCATION_CASE}, that overlay is skipped")
+        EXTRA_CASES.append((LANDAU, COLOR_LANDAU, LABEL_LANDAU, "--"))
+        # These figures are read as a comparison of formation models, so the legend
+        # has to say which option each curve is. Only under --landau: the manuscript
+        # figures keep the labels the manuscript uses.
+        LABEL_REFERENCE += " (opt 1)"
+        LABEL_LIVE += " (opt 2)"
         # A suffix, so the manuscript figures beside these are untouched.
         SUFFIX = "_landau"
 
