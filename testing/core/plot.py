@@ -23,22 +23,34 @@ def parity_plot(exp, calc_gold, calc_test, quantity, title, outdir, calc_extra=N
     """
     plt.figure(figsize=(6, 5))
 
+    def tag(name, calc):
+        """Append the median relative deviation from the experimental values.
+
+        Relative rather than absolute: these plots span quantities in different
+        units and orders of magnitude (swelling in %, radii in m, densities in
+        bub/m3), and an absolute MAD is unreadable across them.
+        """
+        e, c = np.asarray(exp, float), np.asarray(calc, float)
+        d = np.abs(c / e - 1.0)
+        d = d[np.isfinite(d) & (e != 0)]
+        return name if not d.size else f"{name} (MAD {100 * np.median(d):.1f}%)"
+
     # Scatter Gold
     plt.scatter(exp, calc_gold, 
                 facecolors="none", edgecolors="brown",
-                marker="^", s=40, label="gold")
+                marker="^", s=40, label=tag("gold", calc_gold))
 
     # Scatter Test
     plt.scatter(exp, calc_test,
                 facecolors="green", edgecolors="none",
-                marker="o", s=35, alpha=0.8, label="test")
+                marker="o", s=35, alpha=0.8, label=tag("test", calc_test))
     
     # Scatter Extra (Optional)
     if calc_extra is not None:
         lbl = label_extra if label_extra else "extra"
         plt.scatter(exp, calc_extra,
                     facecolors="blue", edgecolors="none",
-                    marker="s", s=35, alpha=0.8, label=lbl)
+                    marker="s", s=35, alpha=0.8, label=tag(lbl, calc_extra))
 
     # Determine plot limits for 1:1 lines
     arrays = [exp, calc_gold, calc_test]
@@ -72,9 +84,12 @@ def parity_plot(exp, calc_gold, calc_test, quantity, title, outdir, calc_extra=N
 
     plt.xscale("log")
     plt.yscale("log")
-    plt.xlabel("experimental")
-    plt.ylabel("calculated")
-    plt.title(title)
+    # same range on both axes, so distance from the 1:1 line reads as the error
+    plt.xlim(xmin, xmax)
+    plt.ylim(xmin, xmax)
+    plt.gca().set_aspect("equal")
+    plt.xlabel(f"experimental {title}")
+    plt.ylabel(f"calculated {title}")
 
     plt.grid(True, which="both", ls=":")
     plt.legend()
