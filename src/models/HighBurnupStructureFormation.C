@@ -134,15 +134,15 @@ void Simulation::HighBurnupStructureFormation()
                          "dislocation balance after Gourdet & Montheillet Acta Mater. 51 (2003) 2685-2699";
 
             // --- calibrated, offsets 0-3, printed ready to paste by calibrate.py ---
-            parameter.push_back(2.0);  // n, dislocation families in a wall
-            parameter.push_back(33.54724855333423);  // beta, wall geometry
+            parameter.push_back(2.0);                  // n, dislocation families in a wall
+            parameter.push_back(33.54724855333423);    // beta, wall geometry
             parameter.push_back(0.04696637283583627);  // k, sweeping
-            parameter.push_back(1165846255229680.0);  // rho_c, strain-field cut-off (m^-2)
+            parameter.push_back(1165846255229680.0);   // rho_c, strain-field cut-off (m^-2)
 
             // --- fixed, offsets 4-7 -------------------------------------------
             double theta_hagb = 10.0;                       // (deg)   LAGB/HAGB boundary
             double theta_max  = theta_hagb * M_PI / 180.0;  // (rad) = 0.174533
-            double theta_u    = 1.0;                       // (deg)   measured median AMis2Mean
+            double theta_u    = 1.0;                        // (deg)   measured median AMis2Mean
             double burgers    = 3.889087296526011e-10;      // (m)     Djonovic thesis
 
             parameter.push_back(n_families);
