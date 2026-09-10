@@ -423,6 +423,104 @@
   \end{columns}
 \end{frame}
 
+% =====================================================================
+\section{Outlook: from a local functional to a phase field}
+% =====================================================================
+
+\begin{frame}{What a local functional cannot give -> phase-field models}
+  \textbf{Problems of the Landau-like local functional}
+  \small
+  \begin{itemize}
+    \item \textbf{no spatial quantities};
+    \item \textbf{no kinetics}: equilibrium is instantaneous.
+  \end{itemize}
+
+  \scriptsize
+  \begin{tabular}{p{0.17\textwidth}p{0.44\textwidth}p{0.25\textwidth}}
+    \toprule
+    family & property & application/ref \\
+    \midrule
+    \textbf{KWC} 
+     & two fields $(\phi,\theta)$, allows subgrain rotation; singular diffusion equations
+     & Nucleation via subgrain coalescence, Muramatsu (2014) \\
+    \textbf{MPF} 
+     & One order parameter per grain; stable time increments; rotation ignored
+     & Subgrain growth, Khajezade \emph{et al.} (2024) \\
+    \textbf{HMP}
+     & Removes nonphysical linear gradient term; handles inclination-dependent GB energy 
+     & Coupled Cosserat crystal plasticity, Tandogan \emph{et al.} (2024), Ghiglione \emph{et al.} (2024) \\
+    \textbf{PFC} 
+     & Atomic-resolution density field; diffusive timescales 
+     & Interface morphology development during solidification, Nittala (2025) \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.2em}
+  \footnotesize
+  Nucleation is usually \alert{seeded ad hoc} at a critical density or stress;
+      spontaneous nucleation from lattice-curvature gradients is obtained when coupling KWC
+      with Cosserat crystal plasticity (Ghiglione, 2024).
+
+\end{frame}
+
+\begin{frame}{Muramatsu \emph{et al.}~(2014): a KWC phase field for recrystallization}
+  \footnotesize
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \textbf{The functional}\footnotemark[7] --- two fields, $\phi$ and $\theta$:
+      \[ \mathcal{F} = \int_V \Big[\, f(\phi) + \tfrac{\alpha^2}{2}|\nabla\phi|^2
+         + s\,g(\phi)\,|\nabla\theta| + \tfrac{\epsilon^2}{2}\,h(\phi)\,|\nabla\theta|^2
+         \Big]\,\mathrm{d}V \]
+      with $g(\phi) = h(\phi) = \phi^2$, relaxed by
+      $\dot\phi = -M_\phi\,\delta\mathcal{F}/\delta\phi$ and
+      $\dot\theta = -M_\theta\,\delta\mathcal{F}/\delta\theta$.
+
+      $\phi = 1$ inside a subgrain; $\theta$ is the
+      \textbf{lattice orientation}. 
+      
+      The \emph{singular} $|\nabla\theta|$ term gives a boundary
+      an energy growing with misorientation.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \textbf{The local part} (Eq.~7, $f_m = 0$):
+      \[ f(\phi;E_s) = a_{ub}\big(1-p(\phi)\big)E_s + a_{wg}W_b\,q(\phi) \]
+      \[ q(\phi) = \phi^2(1-\phi)^2 \]
+      \[ p(\phi) = \phi^3(10-15\phi+6\phi^2) \]
+
+        \scriptsize
+      \begin{itemize}
+        \item $q$: the \textbf{double well}, original matrix against new grains; its height $a_{wg}W_b$
+          sets the boundary energy;
+        \item $p$: is a sigmoid-like function where $p'(0)=p'(1)=0$m therefore it \emph{tilts} the well without
+          moving its two minima;
+        \item $E_s$: the \textbf{stored dislocation energy}, the only driving force, supplied
+          from outside the model.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \textbf{How the paper nucleates}: a subgrain group enclosed by high-angle ($>10^\circ$)
+  boundaries is \emph{selected} as a nucleus candidate and grows after an \emph{incubation
+  period} --- the criterion is \alert{imposed}, not produced by the free energy.
+\end{frame}
+
+\begin{frame}{The prototype: the Landau model supplies the driving force}
+      \scriptsize
+      Keep $q(\phi)$ and $p(\phi)$ exactly as above, and replace the externally supplied $E_s$
+      by what the Landau model:
+      \[ f_{\text{Mur}}(\phi;E_s) = a_{ub}\big(1-p(\phi)\big)E_s + a_{wg}W_b\,q(\phi) \]
+      \[ f_{\text{new}}(\phi;bu,T) = C_0\big(1-p(\phi)\,\eta\big) + a_{wg}W_b\,q(\phi) \]
+      Both $C_0$ and $\eta$ come from the same \texttt{hbs\_state($bu$,$T$)} that produces
+      $\Theta$, $r_n$ and $X$.
+
+      \begin{center}
+      \includegraphics[width=0.7\textwidth]{phasefield_free_energy.png}
+
+      \scriptsize
+      Left: Eq.~(7) at three stored energies. Right: $f_{\text{new}}$ below, at, and above the
+      threshold.
+      \end{center}
+\end{frame}
+
 \begin{frame}[standout]
   Summary
 \end{frame}
@@ -487,10 +585,59 @@
       \emph{J.\ Nucl.\ Mater.} \textbf{277} (2000) 231--238.
       \hfill{\itshape the analogue of $\beta$}
 
+    \bibitem{kwc2000} R.\ Kobayashi, J.A.\ Warren, W.C.\ Carter,
+      \emph{A continuum model of grain boundaries},
+      \emph{Physica D} \textbf{140} (2000) 141--150.
+      \hfill{\itshape the $(\phi,\theta)$ functional}
+
     \bibitem{muramatsu2014} M.\ Muramatsu, Y.\ Aoyagi, Y.\ Tadano, K.\ Shizawa,
       \emph{Phase-field simulation of static recrystallization considering nucleation from
       subgrains and nucleus growth with incubation period},
       \emph{Comput.\ Mater.\ Sci.} \textbf{87} (2014) 112--122.
+
+    \bibitem{chen2002} L.-Q.\ Chen,
+      \emph{Phase-field models for microstructure evolution},
+      \emph{Annu.\ Rev.\ Mater.\ Res.} \textbf{32} (2002) 113--140.
+      \hfill{\itshape the general framework}
+
+    \bibitem{takaki2007} T.\ Takaki, A.\ Yamanaka, Y.\ Tomita,
+      \emph{Phase-field modeling and simulation of nucleation and growth of recrystallized
+      grains}, \emph{Mater.\ Sci.\ Forum} \textbf{558--559} (2007) 1195--1200.
+      \hfill{\itshape KWC, subgrain rotation}
+
+    \bibitem{muramatsu2008} M.\ Muramatsu, Y.\ Tadano, K.\ Shizawa,
+      \emph{A phase-field simulation of nucleation from subgrain and grain growth in static
+      recrystallization}, \emph{Mater.\ Sci.\ Forum} \textbf{584--586} (2008) 1045--1050.
+      \hfill{\itshape nucleation by coalescence}
+
+    \bibitem{khajezade2024} A.\ Khajezade, W.\ Poole, M.\ Greenwood, M.\ Militzer,
+      \emph{Large-scale multi-phase-field simulation of 2D subgrain growth},
+      \emph{Metals} \textbf{14} (2024) 584.
+      \hfill{\itshape MPF, Read--Shockley}
+
+    \bibitem{tandogan2024} I.T.\ Tandogan, M.\ Budnitzki, S.\ Sandfeld,
+      \emph{A multi-physics model for the evolution of grain microstructure},
+      \emph{Int.\ J.\ Plast.} \textbf{180} (2024) 104201.
+      \hfill{\itshape HMP orientation field}
+
+    \bibitem{tandogan2025} I.T.\ Tandogan, M.\ Budnitzki, S.\ Sandfeld,
+      \emph{A multi-physics model for dislocation driven spontaneous grain nucleation and
+      microstructure evolution in polycrystals},
+      \emph{J.\ Mech.\ Phys.\ Solids} (2025) 106325.
+
+    \bibitem{ghiglione2024} F.\ Ghiglione, A.\ Ask, K.\ Ammar, B.\ Appolaire, S.\ Forest,
+      \emph{Cosserat-phase-field modeling of grain nucleation in plastically deformed single
+      crystals}, \emph{J.\ Mech.\ Phys.\ Solids} \textbf{188} (2024) 105628.
+      \hfill{\itshape spontaneous nucleation}
+
+    \bibitem{kong2018} L.\ Kong \emph{et al.},
+      \emph{A study of strain-driven nucleation and extension of deformed grain: phase field
+      crystal and continuum modeling}, \emph{Materials} \textbf{11} (2018) 1805.
+
+    \bibitem{nittala2025} S.\ Nittala \emph{et al.},
+      \emph{Interface morphology and dislocation-mediated processes during rapid solidification
+      of thin films}, \emph{Acta Mater.} (2025) 121581.
+      \hfill{\itshape PFC subgrain boundaries}
 
     \bibitem{barani2020} T.\ Barani \emph{et al.},
       \emph{Modeling high burnup structure in oxide fuels\dots\ Part I: HBS formation},
