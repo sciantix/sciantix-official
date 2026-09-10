@@ -205,15 +205,37 @@ def plot(results, path):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    figure, axes = plt.subplots(1, 3, figsize=(14.0, 4.2))
+    plt.style.use("seaborn-v0_8-whitegrid")
+    plt.rcParams.update({
+        "figure.figsize": (10, 7),
+        "font.family": "serif",
+        "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+        "mathtext.fontset": "dejavuserif",
+        "font.size": 20,
+        "axes.labelsize": 20,
+        "axes.titlesize": 20,
+        "xtick.labelsize": 20,
+        "ytick.labelsize": 20,
+        "legend.fontsize": 20,
+        "figure.dpi": 300,
+        "axes.grid": True,
+        "grid.alpha": 0.5,
+        "grid.linestyle": "--",
+        "lines.linewidth": 3,
+        "lines.markersize": 6,
+        "legend.frameon": True,
+        "legend.loc": "upper right"
+    })
+
+    figure, axes = plt.subplots(1, 3, figsize=(18, 6.0))
     for option, label, colour in OPTIONS:
         width = 2.2 if option == 4 else 1.4
         axes[0].plot(results[option]["bu_U"], results[option]["alpha"],
                      color=colour, lw=width, label=label)
         axes[1].plot(results[option]["bu_U"], results[option]["porosity"],
-                     color=colour, lw=width)
+                     color=colour, lw=width, label=label)
     axes[0].set_ylabel(r"restructured fraction  $\alpha_r$  [-]")
-    axes[0].legend(fontsize=8, loc="lower right")
+    axes[1].legend(loc="lower left")
     axes[1].set_ylabel("HBS porosity  [-]")
 
     landau = results[4]
