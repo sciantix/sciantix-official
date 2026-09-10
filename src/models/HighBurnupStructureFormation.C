@@ -133,7 +133,6 @@ void Simulation::HighBurnupStructureFormation()
                          "elastic constants NEA/NSC/R(2024)1 (2025) p. 124; "
                          "dislocation balance after Gourdet & Montheillet Acta Mater. 51 (2003) 2685-2699";
 
-
             // --- fixed, offsets 4-7 -------------------------------------------
             double theta_hagb = 10.0;                       // (deg)   LAGB/HAGB boundary
             double theta_max  = theta_hagb * M_PI / 180.0;  // (rad) = 0.174533
@@ -142,7 +141,7 @@ void Simulation::HighBurnupStructureFormation()
             // and one at 10 deg, so 1 deg is the threshold below which a boundary is
             // not counted at all.
             double theta_u = 1.0;
-            double burgers    = 3.889087296526011e-10;      // (m)     Djonovic thesis
+            double burgers = 3.889087296526011e-10;  // (m)     Djonovic thesis
 
             // --- calibrated, offsets 0-3, printed ready to paste by calibrate.py ---
             parameter.push_back(2.0);                  // n, dislocation families in a wall
