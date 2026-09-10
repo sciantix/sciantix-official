@@ -51,17 +51,136 @@
     \toprule
     option & form & driven by \\
     \midrule
-    1 & KJMA, Barani (2020) & effective burnup \\
-    2 & KJMA $+$ $bu_{\text{inc}} = 15$, Biswas \& Aagesen (2025) & effective burnup \\
-    3 & KJMA on $\rho_d$, Veshchunov \& Shestak (2009) & local burnup \\
+    1 & KJMA, Barani (2020)\footnotemark[1] & effective burnup \\
+    2 & KJMA $+$ $bu_{\text{inc}} = 15$, Biswas \& Aagesen (2025)\footnotemark[2] & effective burnup \\
+    3 & KJMA on $\rho_d$, Veshchunov \& Shestak (2009)\footnotemark[3] & local burnup \\
     \bottomrule
   \end{tabular}
   \end{center}
 
   \vspace{0.4em}
-  All three are \alert{empirical transformation kinetics}: a fitted sigmoid in burnup. None of them produces
-    the \textbf{mean misorientation} $\Theta$ of the subgrains, and the \textbf{subgrain radius} $r_n$.
+  All three are \alert{transformation kinetics}: a sigmoid fitted in burnup. None of them produces
+    the \textbf{mean misorientation} $\Theta$ of the subgrains, or the \textbf{subgrain radius} $r_n$.
 
+  \footnotetext[1]{Barani \emph{et al.}, \emph{J.\ Nucl.\ Mater.} \textbf{539} (2020) 152296.}
+  \footnotetext[2]{Biswas \& Aagesen, \emph{Comput.\ Mater.\ Sci.} \textbf{258} (2025) 114052, Eq.\ 45.}
+  \footnotetext[3]{Veshchunov \& Shestak, \emph{J.\ Nucl.\ Mater.} \textbf{384} (2009) 12--18.}
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{What KJMA is, and what it assumes}
+  Kolmogorov, Johnson \& Mehl and Avrami, independently, 1937--41.\footnotemark[4]
+  Nuclei appear \emph{at random} in the untransformed material and grow \emph{isotropically};
+  count the transformed volume as if the growing regions could overlap freely --- the
+  \alert{extended volume} $V_e$ --- and the overlap correction is purely statistical:
+  \[ \mathrm{d}X = \Big(1 - X\Big)\,\frac{\mathrm{d}V_e}{V}
+     \quad\Longrightarrow\quad
+     X = 1 - \exp\!\big(-K\,t^{\,n}\big) \]
+
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{What you get}\\
+      \small
+      Two numbers, $K$ and $n$, and a sigmoid. $n$ carries the dimensionality of growth
+      and the nucleation regime --- but only if the assumptions hold.
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{What it assumes}\\
+      \small
+      Randomly placed nuclei, a growth law independent of where you are in the
+      transformation, and a \emph{clock}. In SCIANTIX the clock is burnup.
+    \end{column}
+  \end{columns}
+
+  \footnotetext[4]{Kolmogorov (1937); Johnson \& Mehl, \emph{Trans.\ AIME} \textbf{135} (1939) 416;
+    Avrami, \emph{J.\ Chem.\ Phys.} \textbf{7} (1939) 1103. Derivation: Christian (2002), ch.\ 12.}
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{The three options are three answers to ``which clock?''}
+  \small
+  \begin{itemize}
+    \item[\textbf{1}] \textbf{Effective burnup}, $n = 3.54$, $K = 2.77\times10^{-7}$, fitted on
+      restructured-fraction data. The transformation begins the instant irradiation does.
+    \item[\textbf{2}] Same, with an \textbf{incubation burnup} $bu_{\text{inc}} = 15$\,MWd/kgHM
+      below which nothing happens. Biswas \& Aagesen get it from a balance between the energy
+      stored in dislocations and the energy of forming a subgrain --- \alert{the same physical
+      argument as this work}, used to shift the origin of an empirical curve rather than to
+      build the curve.
+    \item[\textbf{3}] KJMA not on burnup but on the \textbf{dislocation density}
+      $\rho_d(bu,T)$, with a threshold $\rho_{\text{crit}} = 6\times10^{14}$\,m$^{-2}$.
+      The first to make the driver a \textbf{microstructural state variable} instead of a clock,
+      and the only one of the three that feels temperature.
+  \end{itemize}
+
+  \begin{block}{What none of them can do}
+    They are calibrated on $X$ alone. There is no $\Theta$, no $r_n$, and no internal state:
+    ask the model where the microstructure \emph{is} and it can only tell you how far along
+    a fitted curve it has travelled.
+  \end{block}
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{Why a phase transition is the right shape for this problem}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{The HBS forms \emph{continuously}}
+
+      \small
+      Not by nucleating new grains, but by low-angle boundaries absorbing dislocations until
+      their misorientation drifts through the $10^\circ$ HAGB threshold. In the metallurgical
+      literature this is \emph{continuous} dynamic recrystallization, and it is a well-posed
+      alternative to the nucleation-and-growth picture KJMA describes.\footnotemark[5]
+
+      \vspace{0.4em}
+      The evidence in UO$_2$ is the EBSD itself: $\Theta$ rises smoothly with burnup. There is
+      no population of already-$10^\circ$ nuclei waiting to grow.
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{A continuous transformation has an order parameter}
+
+      \small
+      If a single continuous quantity distinguishes the two states, Landau's argument
+      applies: expand the free energy in it, and keep only the terms symmetry
+      allows.\footnotemark[6]
+      \[ F(\eta) = C_0 + C_2\eta^2 + C_4\eta^4 \]
+      Odd powers are forbidden here for a concrete reason --- the energy of a boundary cannot
+      depend on the \emph{sign} of the misorientation across it.
+
+      \vspace{0.4em}
+      $C_2$ changing sign \emph{is} the transition. Nothing is fitted to make it happen.
+    \end{column}
+  \end{columns}
+
+  \footnotetext[5]{Gourdet \& Montheillet, \emph{Acta Mater.} \textbf{51} (2003) 2685;
+    Humphreys \& Hatherly (2017), chs.\ 6 and 10.}
+  \footnotetext[6]{Landau (1937); Landau \& Lifshitz, \emph{Statistical Physics} I, \S143.}
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{Landau against KJMA, side by side}
+  \begin{center}
+  \small
+  \begin{tabular}{p{0.30\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+    \toprule
+     & KJMA (options 1--3) & Landau (option 4) \\
+    \midrule
+    what is solved      & a \emph{kinetic} law along a path & the \emph{equilibrium} of a state \\
+    driver              & a clock (burnup), or $\rho_d$      & $\rho_{\text{tot}}(bu)$ through $C_2$ \\
+    free parameters     & $K$, $n$ fitted on $X$             & $\beta$, $k$, $\rho_c$ fitted on $\Theta$, $r_n$ \\
+    predicts $X$        & by construction                    & \good{as a by-product} \\
+    predicts $\Theta$, $r_n$ & no                            & \good{yes} \\
+    reversible?         & no, monotone by construction       & \alert{yes} --- see below \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \begin{block}{The price of using an equilibrium theory}
+    $F$ is minimised afresh at every step, so a drop in $\rho_{\text{tot}}$ would un-restructure
+    the fuel. Restructuring is irreversible, so the implementation carries a
+    \alert{monotonic lock} on $\Theta$, and re-derives $r_n$ and $X$ from the locked value.
+    It is the one piece of the model that is kinetics rather than thermodynamics.
+  \end{block}
 \end{frame}
 
 \begin{frame}{The data this model is built on}
@@ -236,7 +355,17 @@
 
     \end{column}
     \begin{column}{0.52\textwidth}
-      \includegraphics[width=\textwidth]{calibration_front.png}
+      \begin{block}{Three parameters, two datasets, three predictions}
+        $\beta$, $k$ and $\rho_c$ are fitted on $\Theta$ and $r_n$ only.
+        The restructured fraction $X$ --- the one quantity SCIANTIX actually consumes ---
+        is left \alert{out of the objective} and comes out of the lever rule, Eq.~(10),
+        as a \good{prediction}.
+      \end{block}
+
+      \vspace{0.3em}
+      \footnotesize
+      That is what makes the next slide a test rather than a report of the fit:
+      $X$ and the PIE fractions are scored on data the calibration never saw.
     \end{column}
   \end{columns}
 \end{frame}
@@ -248,10 +377,10 @@
     & RMSE / $R^2$ \\
     \midrule
     $\Theta$ \quad ($N=41$, calibrated)  & 1.7616$^\circ$ /  0.772 \\
-    $X$ \quad ($N=27$, \emph{not} fitted)  & \good{0.2053 / 0.728} \\
+    $X$ \quad ($N=27$, \emph{not} fitted)  & \good{0.2122 / 0.710} \\
     $r_n$ \quad ($N=14$, calibrated)    & 0.0678\,$\mu$m /  0.774 \\
     \midrule
-    PIE fraction ($N=8$, \alert{out-of-sample}) & \good{0.1298 / $+0.553$} \\
+    PIE fraction ($N=8$, \alert{out-of-sample}) & 0.1461 / $+0.433$ \\
     \bottomrule
   \end{tabular}
   \end{center}
@@ -274,20 +403,25 @@
     \toprule
     threshold & 1 KJMA & 2 KJMA$+bu_{\text{inc}}$ & 3 $\rho_d$ & \textbf{4 Landau} \\
     \midrule
-    1\,\%  & 19.5  & 34.5  & 51.2  & \textbf{54.9} \\
-    10\,\% & 37.8  & 52.8  & 54.8  & \textbf{57.5} \\
-    50\,\% & 64.2  & 79.3  & 72.3  & \textbf{71.8} \\
-    90\,\% & 90.1  & 105.2 & 112.3 & \textbf{88.2} \\
+    1\,\%  & 19.5  & 34.5  & 51.2  & \textbf{51.1} \\
+    10\,\% & 37.8  & 52.8  & 54.8  & \textbf{53.5} \\
+    50\,\% & 64.2  & 79.3  & 72.3  & \textbf{67.7} \\
+    90\,\% & 90.1  & 105.2 & 112.3 & \textbf{87.7} \\
     99\,\% & 109.7 & 124.6 & 161.7 & \textbf{91.1} \\
     \bottomrule
   \end{tabular}
   \end{center}
 
   \begin{itemize}
-    \item Through the onset, option 4 sits \good{within 0.5 MWd/kgU of option 3} at the
-      50\,\% crossing (an independently calibrated model, so a genuine cross-check).
+    \item At the onset, option 4 lands \good{within 0.1 MWd/kgU of option 3} --- an
+      independently calibrated model built on a different microstructural variable,
+      so a genuine cross-check and not a shared fit.
     \item They part at the top: the lever rule \alert{saturates} when $\Theta$ hits the
-      $10^\circ$ cap, whereas KJMA approaches 1 asymptotically.
+      $10^\circ$ cap, whereas KJMA approaches 1 asymptotically. Option 4 is done by
+      91 MWd/kgU, option 3 not before 162.
+    \item Option 4 spans the transition in \textbf{40 MWd/kgU} against 90 for option 1:
+      once the driver is a state variable rather than a fitted sigmoid in burnup, the
+      transformation is sharper.
   \end{itemize}
 \end{frame}
 
@@ -303,9 +437,14 @@
     \begin{column}{0.25\textwidth}
       \small
       \vspace{0.6em}
-      Largest deviation \bad{$+0.045$ absolute at 91.3\,MWd/kgHM} ($+37\,\%$), exactly
-      the saturation burnup. Elsewhere: $\leq 0.017$ below 75, $\leq 0.008$ above 120, and
-      the two end states are \good{0.9\,\% apart}.
+      Largest deviation \bad{$+0.044$ absolute at 91.3\,MWd/kgHM} ($+36\,\%$), exactly
+      the saturation burnup. Elsewhere: $\leq 0.026$ below 75, $\leq 0.008$ above 120, and
+      the two end states are \good{0.7\,\% apart}.
+
+      \vspace{0.4em}
+      \footnotesize
+      Held against option 2 in \texttt{test\_UO2HBS}; all four options end within
+      \good{0.17\,\%} of the same porosity.
     \end{column}
   \end{columns}
 \end{frame}
@@ -314,7 +453,139 @@
   Summary
 \end{frame}
 
+
 \appendix
+
+% =====================================================================
+\begin{frame}[allowframebreaks]{References}
+  \scriptsize
+  \begin{thebibliography}{99}
+    \setbeamertemplate{bibliography item}[text]
+
+    \bibitem{landau1937} L.D.\ Landau,
+      \emph{On the theory of phase transitions}, Zh.\ Eksp.\ Teor.\ Fiz.\ \textbf{7} (1937) 19;
+      L.D.\ Landau, E.M.\ Lifshitz, \emph{Statistical Physics}, Part 1, 3rd ed., \S143.
+
+    \bibitem{kolmogorov1937} A.N.\ Kolmogorov,
+      Izv.\ Akad.\ Nauk SSSR, Ser.\ Mat.\ \textbf{1} (1937) 355--359.
+
+    \bibitem{johnsonmehl1939} W.A.\ Johnson, R.F.\ Mehl,
+      Trans.\ AIME \textbf{135} (1939) 416--442.
+
+    \bibitem{avrami1939} M.\ Avrami,
+      \emph{J.\ Chem.\ Phys.} \textbf{7} (1939) 1103--1112; \textbf{8} (1940) 212--224;
+      \textbf{9} (1941) 177--184.
+
+    \bibitem{christian2002} J.W.\ Christian,
+      \emph{The Theory of Transformations in Metals and Alloys}, Part I, 3rd ed.,
+      Pergamon (2002), ch.\ 12, \emph{Formal Theory of Transformation Kinetics}.
+
+    \bibitem{humphreys1997} F.J.\ Humphreys,
+      \emph{A unified theory of recovery, recrystallization and grain growth, based on the
+      stability and growth of cellular microstructures --- I. The basic model},
+      \emph{Acta Mater.} \textbf{45} (1997) 4231--4240.
+
+    \bibitem{humphreys2017} F.J.\ Humphreys, G.S.\ Rohrer, A.D.\ Rollett,
+      \emph{Recrystallization and Related Annealing Phenomena}, 3rd ed., Elsevier (2017),
+      ch.\ 6 (recovery) and ch.\ 10 (growth and stability of cellular microstructures).
+
+    \bibitem{gourdet2003} S.\ Gourdet, F.\ Montheillet,
+      \emph{A model of continuous dynamic recrystallization},
+      \emph{Acta Mater.} \textbf{51} (2003) 2685--2699.
+      \hfill{\itshape $n$, and the sweeping term}
+
+    \bibitem{readshockley1950} W.T.\ Read, W.\ Shockley,
+      \emph{Dislocation models of crystal grain boundaries},
+      \emph{Phys.\ Rev.} \textbf{78} (1950) 275--289.
+      \hfill{\itshape $\theta = b/d$, and the wall energy}
+
+    \bibitem{nye1953} J.F.\ Nye,
+      \emph{Some geometrical relations in dislocated crystals},
+      \emph{Acta Metall.} \textbf{1} (1953) 153--162.
+
+    \bibitem{rohrer2011} G.S.\ Rohrer,
+      \emph{Grain boundary energy anisotropy: a review},
+      \emph{J.\ Mater.\ Sci.} \textbf{46} (2011) 5881--5895.
+
+    \bibitem{resthofman2000} J.\ Rest, G.L.\ Hofman,
+      \emph{An alternative explanation for evidence that xenon depletion, pore formation and
+      grain subdivision begin at different local burnups},
+      \emph{J.\ Nucl.\ Mater.} \textbf{277} (2000) 231--238.
+      \hfill{\itshape the analogue of $\beta$}
+
+    \bibitem{muramatsu2014} M.\ Muramatsu, Y.\ Aoyagi, Y.\ Tadano, K.\ Shizawa,
+      \emph{Phase-field simulation of static recrystallization considering nucleation from
+      subgrains and nucleus growth with incubation period},
+      \emph{Comput.\ Mater.\ Sci.} \textbf{87} (2014) 112--122.
+
+    \bibitem{barani2020} T.\ Barani \emph{et al.},
+      \emph{Modeling high burnup structure in oxide fuels\dots\ Part I: HBS formation},
+      \emph{J.\ Nucl.\ Mater.} \textbf{539} (2020) 152296.
+      \hfill{\itshape option 1}
+
+    \bibitem{barani2022} T.\ Barani \emph{et al.},
+      \emph{\dots\ Part II: Porosity evolution},
+      \emph{J.\ Nucl.\ Mater.} \textbf{563} (2022) 153627.
+      \hfill{\itshape porosity options 2--3}
+
+    \bibitem{biswas2025} S.\ Biswas, L.K.\ Aagesen,
+      \emph{Comput.\ Mater.\ Sci.} \textbf{258} (2025) 114052, Eq.\ 45.
+      \hfill{\itshape option 2, $bu_{\text{inc}}$}
+
+    \bibitem{veshchunov2009} M.S.\ Veshchunov, V.E.\ Shestak,
+      \emph{Model for evolution of crystal defects in UO$_2$ under irradiation up to high
+      burn-ups}, \emph{J.\ Nucl.\ Mater.} \textbf{384} (2009) 12--18.
+      \hfill{\itshape option 3, $\rho_d(bu,T)$}
+
+    \bibitem{khvostov2005} G.\ Khvostov \emph{et al.},
+      \emph{Approaches to modeling of high burn-up structure\dots\ in the START-3 code},
+      WRFPM-2005, Kyoto.
+
+    \bibitem{nogita1994} K.\ Nogita, K.\ Une,
+      \emph{Radiation-induced microstructural change in high burnup UO$_2$ fuel pellets},
+      \emph{Nucl.\ Instrum.\ Methods B} \textbf{91} (1994) 301--306.
+      \hfill{\itshape Eq.~(1), $\rho_{\text{tot}}(bu)$}
+
+    \bibitem{nogita1995} K.\ Nogita, K.\ Une,
+      \emph{Irradiation-induced recrystallization in high burnup UO$_2$ fuel},
+      \emph{J.\ Nucl.\ Mater.} \textbf{226} (1995) 302--310.
+
+    \bibitem{matzke1997} Hj.\ Matzke, M.\ Kinoshita,
+      \emph{Polygonization and high burnup structure in nuclear fuels},
+      \emph{J.\ Nucl.\ Mater.} \textbf{247} (1997) 108--115.
+
+    \bibitem{spino2006} J.\ Spino \emph{et al.},
+      \emph{J.\ Nucl.\ Mater.} \textbf{354} (2006) 66--84.
+      \hfill{\itshape porosity option 1, and the swelling data}
+
+    \bibitem{zacharie2022} I.\ Zacharie-Aubrun \emph{et al.},
+      \emph{Restructuring in high burn-up UO$_2$ fuels: experimental characterization by
+      electron backscattered diffraction},
+      \emph{J.\ Appl.\ Phys.} \textbf{132} (2022) 195903.
+      \hfill{\itshape 28 of the 42 EBSD points}
+
+    \bibitem{onofri2025} C.\ Onofri \emph{et al.},
+      \emph{Experimental characterizations by EBSD and TEM of sub-grain boundaries and
+      dislocations in low irradiated UO$_2$ fuels},
+      \emph{J.\ Nucl.\ Mater.} \textbf{615} (2025) 155981.
+      \hfill{\itshape the other 14}
+
+    \bibitem{nea2024} NEA,
+      \emph{Recommendations on nuclear fuel properties}, NEA/NSC/R(2024)1 (2025), p.\ 124.
+      \hfill{\itshape Eq.~(2), $G$ and $\nu$}
+
+    \bibitem{pizzocri2020} D.\ Pizzocri \emph{et al.},
+      \emph{SCIANTIX: a new open source multi-scale code for fission gas behaviour modelling},
+      \emph{J.\ Nucl.\ Mater.} \textbf{532} (2020) 152042.
+
+    \bibitem{zullo2023} G.\ Zullo \emph{et al.},
+      \emph{The SCIANTIX code for fission gas behaviour: status, upgrades, separate-effect
+      validation and future developments},
+      \emph{J.\ Nucl.\ Mater.} \textbf{587} (2023) 154744.
+
+  \end{thebibliography}
+\end{frame}
+
 
 \begin{frame}{Backup --- the equations}
   \scriptsize
@@ -345,13 +616,13 @@
         condition & $bu$ [GWd/tU] \\
         \midrule
         $C_2 = 0$, $\Theta$ leaves 0     & 49.56 \\
-        $\Theta = \theta_u$, $X$ leaves 0 & 54.56 \\
+        $\Theta = \theta_u$, $X$ leaves 0 & 50.81 \\
         $\Theta = \theta_{\text{HAGB}}$   & 91.32 \\
         \bottomrule
       \end{tabular}
 
       \vspace{0.8em}
-      The balance bound sets $\eta$ over roughly \textbf{65.8--91.2 GWd/tU}, and at
+      The balance bound sets $\eta$ over roughly \textbf{65.6--91.3 GWd/tU}, and at
       11 of the 41 EBSD points.
     \end{column}
     \begin{column}{0.5\textwidth}
@@ -362,24 +633,46 @@
         $b$ & 3.889e-10 m \\
         $\theta_{\max}$ & $= \theta_{\text{HAGB}}$ \\
         $\theta_{\text{HAGB}}$ & $10^\circ$ \\
-        $\theta_u$ & $2.20^\circ$ (measured) \\
+        $\theta_u$ & $1.00^\circ$ \\
         $n$ & 2 \\
         \bottomrule
       \end{tabular}
 
       \vspace{0.6em}
       \footnotesize
-      $\theta_u$ is the median $A_{\text{Mis2Mean}}$ over the 27 points carrying a
-      restructured fraction --- a measured quantity, not a fitted one. An independent fit
-      gives $1.55^\circ$, inside the measured range 0.9--6.1$^\circ$.
+      $\theta_u$ is the misorientation of the unrestructured matrix, read off the data
+      rather than fitted: the measured $A_{\text{Mis2Mean}}$ spans
+      0.1--6.1$^\circ$ with a median of $1.5^\circ$, and $1.0^\circ$ is the round value
+      taken inside that range. It sets only \emph{where} $X$ leaves zero, not the shape
+      of the transition: $\Theta$ and $r_n$ do not depend on it.
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Backup --- parity plots}
+\begin{frame}{Backup --- the model on its own, $T = 600$\,K, $P = 0.05$}
   \begin{center}
-    \includegraphics[width=0.92\textwidth]{validation_parity.png}
+    \includegraphics[width=0.86\textwidth]{hbs_formation_landau.png}
   \end{center}
+  \footnotesize
+  \texttt{python3 hbs\_formation\_landau.py -{}-plot}
+\end{frame}
+
+\begin{frame}{Backup --- the four regression cases, as they ship}
+  \begin{columns}[T]
+    \begin{column}{0.62\textwidth}
+      \includegraphics[width=\textwidth]{plot_alpha_r_landau.png}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+      \footnotesize
+      \alert{Not} the controlled comparison of the previous figure: each case pairs its
+      formation option with the porosity model it was built around (1, 2, 3, 3), so part
+      of the spread is the porosity model.
+
+      \vspace{0.5em}
+      This is what a user of each regression case actually gets;
+      \texttt{formation\_options.png} is what isolates the formation model.
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Backup --- the four formation options in a full run}
