@@ -38,7 +38,7 @@ def load_experimental(basename):
 
     with open(fpath, "r") as f:
         for line in f:
-            if not line.strip():
+            if not line.strip() or line.lstrip().startswith("#"):
                 continue
             parts = line.split()
             names.append(parts[0])
