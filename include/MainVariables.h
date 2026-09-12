@@ -39,13 +39,13 @@ constexpr int SCIANTIX_HISTORY_SIZE         = 20;
 constexpr int SCIANTIX_VARIABLES_SIZE       = 300;
 constexpr int SCIANTIX_SCALING_FACTORS_SIZE = 20;
 constexpr int N_DIFFUSION_MODES             = 40;
-// TRANSURANUS only tracks 12 of the 18 mode-blocks (Xe, Kr, He, Xe133); 
+// TRANSURANUS only tracks 12 of the 18 mode-blocks (Xe, Kr, He, Xe133);
 // Kr85m and Xe-in-HBS are standalone-SCIANTIX-only
 // (see SetSystem.C and Simulation.h's getDiffusionModes* guards).
 #if defined(COUPLING_TU)
-constexpr int N_MODE_BLOCKS                 = 12;
+constexpr int N_MODE_BLOCKS = 12;
 #else
-constexpr int N_MODE_BLOCKS                 = 18;
+constexpr int N_MODE_BLOCKS = 18;
 #endif
 constexpr int SCIANTIX_DIFFUSION_MODES_SIZE = N_MODE_BLOCKS * N_DIFFUSION_MODES;
 constexpr int SCIANTIX_THERMOCHEMISTRY_SIZE = 300;
