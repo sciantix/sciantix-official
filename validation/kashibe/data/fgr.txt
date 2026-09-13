@@ -1,5 +1,7 @@
-# Fission gas release (%), Kashibe and Une (1990) -- extracted from plot.py
-test_Kashibe1990_1873K_06	7.73333
+# Fission gas release during the post-irradiation anneal (%).
+#
+# This is the *increment* over the base irradiation, FGR(end) - FGR(start of anneal), which
+# is the quantity Cappellari et al., JNM 617 (2025) 156116 compare against.
 test_Kashibe1990_1873K_16	7.73333
 test_Kashibe1990_1873K_23	18.28
 test_Kashibe1990_1873K_28	22.26
@@ -7,3 +9,18 @@ test_Kashibe1990_2073K_06	14.16
 test_Kashibe1990_2073K_16	16.86
 test_Kashibe1990_2073K_23	25.3
 test_Kashibe1990_2073K_28	25.9
+
+# Kashibe and Une (1991)
+test_Kashibe1991_1673K_23_Multiple	5.9
+test_Kashibe1991_1673K_23_Single	6.5
+test_Kashibe1991_1673K_28_Multiple	5.9
+test_Kashibe1991_1673K_28_Single	7.6
+test_Kashibe1991_2073K_23_1	17.8
+test_Kashibe1991_2073K_23_2	19.2
+test_Kashibe1991_2073K_23_3	24
+test_Kashibe1991_2073K_23_4	16.3
+test_Kashibe1991_2073K_23_5	19.4
+test_Kashibe1991_2073K_28_1	28.7
+test_Kashibe1991_2073K_28_2	27.1
+test_Kashibe1991_2073K_28_4	24
+test_Kashibe1991_2073K_28_5	24.47
