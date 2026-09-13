@@ -24,13 +24,11 @@ class uncertaintyAnalysis():
     def readFile_inputScalingFactors(self):
         self.scaling_factors = {}
         with open(self.file_path, 'r') as file:
-            lines = file.readlines()
-            i = 0
-            while i < len(lines):
-                value = float(lines[i].strip())
-                name = lines[i + 1].strip()[len("# scaling factor - "):]
-                self.scaling_factors[name] = value
-                i += 2
+            # Each line is "<value>  # <key> (<description>)".
+            for line in file:
+                value, _, comment = line.partition("#")
+                if value.strip():
+                    self.scaling_factors[comment.split()[0]] = float(value)
 
     def exectute_inputScalingFactors(self):
 
@@ -83,8 +81,7 @@ class uncertaintyAnalysis():
             with open("input_scaling_factors.txt", 'w') as file:
 
                 for key, value in self.scaling_factors.items():
-                    file.write(f'{value}\n')
-                    file.write(f'# scaling factor - {key}\n')
+                    file.write(f'{value}    # {key}\n')
 
             os.system("./sciantix.x")
             os.chdir('..')
@@ -205,8 +202,7 @@ class uncertaintyAnalysis():
                 with open("input_scaling_factors.txt", 'w') as file:
 
                     for key, value in self.scaling_factors.items():
-                        file.write(f'{value}\n')
-                        file.write(f'# scaling factor - {key}\n')
+                        file.write(f'{value}    # {key}\n')
 
                 os.system("./sciantix.x")
 
