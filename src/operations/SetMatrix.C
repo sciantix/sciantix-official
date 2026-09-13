@@ -48,6 +48,17 @@ void Simulation::setMatrix()
     }
 }
 
+/**
+ * @brief The surface tension to use for a matrix.
+ * @param sciantix_variable The variable array, carrying the optional per-case override.
+ * @param built_in The value calibrated for this matrix.
+ */
+static double surfaceTension(SciantixArray<SciantixVariable>& sciantix_variable, double built_in)
+{
+    const double from_input = sciantix_variable["Surface tension"].getFinalValue();
+    return from_input > 0.0 ? from_input : built_in;
+}
+
 Matrix UO2(SciantixArray<Matrix>&           matrices,
            SciantixArray<SciantixVariable>& sciantix_variable,
            SciantixArray<SciantixVariable>& history_variable,
@@ -60,13 +71,13 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
     matrix_.setRef("\n\t");
     matrix_.setCrystalProperties(sciantix_variable);  // (kg/m3, m)
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
-    matrix_.setSurfaceTension(0.7);                     // (N/m)
-    matrix_.setFissionFragmentInfluenceRadius(1.0e-9);  // (m)
-    matrix_.setFissionFragmentRange(6.0e-6);            // (m)
-    matrix_.setSchottkyVolume(4.09e-29);                // (m3)
-    matrix_.setOctahedralInterstitialSite(7.8e-30);     // (m3)
-    matrix_.setSemidihedralAngle(0.872664626);          // (rad)
-    matrix_.setGrainBoundaryThickness(5.0e-10);         // (m)
+    matrix_.setSurfaceTension(surfaceTension(sciantix_variable, 0.7));  // (N/m)
+    matrix_.setFissionFragmentInfluenceRadius(1.0e-9);                  // (m)
+    matrix_.setFissionFragmentRange(6.0e-6);                            // (m)
+    matrix_.setSchottkyVolume(4.09e-29);                                // (m3)
+    matrix_.setOctahedralInterstitialSite(7.8e-30);                     // (m3)
+    matrix_.setSemidihedralAngle(0.872664626);                          // (rad)
+    matrix_.setGrainBoundaryThickness(5.0e-10);                         // (m)
     matrix_.setLenticularShapeFactor(0.168610764);
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());  // (m)
     matrix_.setHealingTemperatureThreshold(1273.15);                            // K
@@ -109,9 +120,9 @@ Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
     matrix_.setRef("\n\t");
     matrix_.setCrystalProperties(sciantix_variable);  // (kg/m3, m)
     matrix_.setGrainBoundaryMobility(0, history_variable);
-    matrix_.setSurfaceTension(0.7);                     // (N/m)
-    matrix_.setFissionFragmentInfluenceRadius(1.0e-9);  // (m)
-    matrix_.setFissionFragmentRange(6.0e-6);            // (m)
+    matrix_.setSurfaceTension(surfaceTension(sciantix_variable, 0.7));  // (N/m)
+    matrix_.setFissionFragmentInfluenceRadius(1.0e-9);                  // (m)
+    matrix_.setFissionFragmentRange(6.0e-6);                            // (m)
     matrix_.setSchottkyVolume(4.09e-29);
     matrix_.setOctahedralInterstitialSite(7.8e-30);
     matrix_.setSemidihedralAngle(0.0);
@@ -173,14 +184,14 @@ Matrix MOX(SciantixArray<Matrix>&           matrices,
     matrix_.setCrystalProperties(sciantix_variable);  // (kg/m3, m)
 
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
-    matrix_.setSurfaceTension(0.626);                   // N/m (reference Kitano)
-    matrix_.setFissionFragmentInfluenceRadius(1.0e-9);  // m
-    matrix_.setFissionFragmentRange(6.0e-6);            // m
-    matrix_.setSchottkyVolume(4.09e-29);                // m3
-    matrix_.setOctahedralInterstitialSite(7.8e-30);     // m3 (verificare fonte)
-    matrix_.setSemidihedralAngle(0.97);                 // rad - to be verified
-    matrix_.setGrainBoundaryThickness(5.0e-10);         // m
-    matrix_.setLenticularShapeFactor(0.168610764);      // function
+    matrix_.setSurfaceTension(surfaceTension(sciantix_variable, 0.626));  // N/m (reference Kitano)
+    matrix_.setFissionFragmentInfluenceRadius(1.0e-9);                    // m
+    matrix_.setFissionFragmentRange(6.0e-6);                              // m
+    matrix_.setSchottkyVolume(4.09e-29);                                  // m3
+    matrix_.setOctahedralInterstitialSite(7.8e-30);                       // m3 (verificare fonte)
+    matrix_.setSemidihedralAngle(0.97);                                   // rad - to be verified
+    matrix_.setGrainBoundaryThickness(5.0e-10);                           // m
+    matrix_.setLenticularShapeFactor(0.168610764);                        // function
 
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());  // m
     matrix_.setHealingTemperatureThreshold((2744.0 + 273.15) / 2.0);            // K (half of the melting temperature)

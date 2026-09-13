@@ -11,6 +11,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from testing.core.common import load_output, load_gold
 from testing.core.plot import parity_plot
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from parity_by_topic import WHITE_SWELLING_FACTOR  # White tabulates half the code's swelling
 
 
 # ------------------------------------------------------------
@@ -81,7 +83,7 @@ def main():
             print(f"[WARNING] No experimental swelling for {test_name}")
             continue
 
-        exp_val = exp_values[idx][0]
+        exp_val = exp_values[idx][0] * WHITE_SWELLING_FACTOR
 
         # load sciantix outputs
         out = load_output(case)

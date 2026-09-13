@@ -156,12 +156,13 @@ SCIANTIX requires three main input files that define the simulation setup, histo
    .. code-block:: plaintext
    
        1    #    iGrainGrowth (0= no, 1= Ainscough, 2= Van Uffelen)
-       1    #    iFissionGasDiffusivity (0= constant, 1= Turnbull et al.)
+       1    #    iFissionProductDiffusivity (0= constant, 1= Turnbull et al.)
        1    #    iDiffusionSolver (1= SDA with quasi-stationarity, 2= without)
        1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al.)
        ...
    
-   Each line contains an integer flag and a comment explaining the available options.
+   Each line contains an integer flag followed by ``#``, the setting's key and a description of the
+   available options. Settings are looked up by key, so the order of the lines does not matter.
 
 2. **input_history.txt**: Time-dependent conditions
    
@@ -177,34 +178,27 @@ SCIANTIX requires three main input files that define the simulation setup, histo
 
 3. **input_initial_conditions.txt**: Physical parameters and initial state
    
-   A structured text file with values followed by comments:
+   One entry per line, in the same keyed format as ``input_settings.txt``:
    
    .. code-block:: plaintext
    
-       5.0e-06
-       # initial grain radius (m)
-       0.0 0.0 0.0 0.0 0.0 0.0
-       # initial Xe (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
-       0.0 0.0 0.0 0.0 0.0 0.0
-       # initial Kr (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
-       0.0 0.0
-       # initial He (at/m³): produced, intragranular [+ in solution, in bubbles, grain boundary, released]
+       5.0e-06                    # Grain_radius[0] (initial grain radius (m))
+       0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_Xe (initial Xe (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
+       0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_Kr (initial Kr (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
+       0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_He (initial He (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
        ...
    
-   Each data line is followed by a comment line (starting with `#`) describing the parameters.
+   Entries are looked up by key; an entry left out defaults to 0.
 
 4. **input_scaling_factors.txt** (Optional): Parameter adjustment
    
-   A single-column text file with scaling factors applied to model parameters:
+   Scaling factors applied to model parameters, in the same keyed format; a factor left out defaults to 1.0:
    
    .. code-block:: plaintext
    
-       1.0
-       # scaling factor - resolution rate
-       1.0
-       # scaling factor - trapping rate
-       1.0
-       # scaling factor - nucleation rate
+       1.0    # sf_resolution_rate (scaling factor - resolution rate)
+       1.0    # sf_trapping_rate (scaling factor - trapping rate)
+       1.0    # sf_nucleation_rate (scaling factor - nucleation rate)
        ...
 
 **Input and Output**

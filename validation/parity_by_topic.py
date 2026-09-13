@@ -17,7 +17,7 @@ Not covered here: oxygen potential, which has its own dedicated parity plot
 over 323 cases (validation/oxygenpotential/combined_parity_plot.py), and JOG,
 which has no scalar experimental reference to compare against.
 
-author: Giovanni Zullo
+author: Giovanni Zullo, Elisa Cappellari
 """
 import os
 import glob
@@ -34,19 +34,54 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 CR_CONVERSION = 52 * 100 / 6.022e23 / 1.07998e7
 # The CONTACT experimental burnup is per kg of uranium, the code reports per kg of UO2.
 UO2_TO_U = 1 / 0.8814
+# White (2004) tabulates the grain-face swelling as (3 / 2a) * sum(V_i) / A_gf: the 1/2 accounts
+# for every grain face being shared by two grains. SCIANTIX computes the intergranular swelling
+# as (3 / a) * N * V (src/models/FissionProductRelease.C), with N * V = sum(V_i) / A_gf, i.e.
+# twice White's expression for the same bubbles. The measured values are therefore doubled
+# when compared with the code; data/ig_swelling.txt keeps White's own numbers.
+WHITE_SWELLING_FACTOR = 2.0
 # Upper bound on markers drawn per source; statistics always use every point.
 MAX_MARKERS = 400
 
 
-def scalar(group, data_file):
-    return dict(kind="scalar", group=group, data=data_file)
+def scalar(group, data_file, baseline=False, only="", exp_factor=1.0):
+    """`baseline` compares the *increment* over the base irradiation rather than the value
+    at the last time step: see anneal_start. `only` restricts the source to the rows of the
+    data file whose key contains it, for a file covering more than one campaign.
+    `exp_factor` multiplies the measured values, for data tabulated under a different
+    definition than the code's."""
+    return dict(kind="scalar", group=group, data=data_file, baseline=baseline, only=only,
+                exp_factor=exp_factor)
+
+
+def anneal_start(case):
+    """Time (h) at which the post-irradiation anneal of a case begins, or nan if it has none.
+
+    Every annealing history has the same shape: base irradiation, a cooldown to a low
+    holding temperature, then the anneal. The anneal therefore starts at the *end* of that
+    hold -- the last row at the lowest temperature reached after the fission rate drops to
+    zero. Taking the foot of the final temperature rise instead would misplace it on the
+    cyclic ("Multiple") cases, whose anneal is a train of rises.
+
+    Deriving the time from input_history.txt ensures it keeps it correct whatever the time discretisation.
+    """
+    history = np.loadtxt(os.path.join(case, "input_history.txt"))
+    time, temperature, fission_rate = history[:, 0], history[:, 1], history[:, 2]
+
+    irradiated = np.flatnonzero(fission_rate > 0)
+    if not irradiated.size or irradiated[-1] + 1 >= len(time):
+        return np.nan  # no post-irradiation segment: nothing to take a baseline at
+
+    tail = slice(irradiated[-1] + 1, None)
+    hold = temperature[tail] == temperature[tail].min()
+    return time[tail][hold][-1]
 
 
 def curve(group, exp_file, xcol, exp_cols=(0, 1), exp_factor=1.0, xfactor=1.0, skip=0, only=""):
     """`only` restricts the source to cases whose name contains it: several groups
     keep a copy of the same experimental file in every case directory."""
     return dict(kind="curve", group=group, exp=exp_file, xcol=xcol, exp_cols=exp_cols,
-                exp_factor=exp_factor, xfactor=xfactor, skip=skip, only=only)
+                exp_factor=exp_factor, xfactor=xfactor, skip=skip, only=only, baseline=False)
 
 
 # quantity -> (output column(s), factor on the calculated value, axis label)
@@ -75,10 +110,10 @@ TOPICS = {
         "intra sw": [scalar("baker", "ig_swelling.txt")],
     },
     "intergranular": {
-        "inter sw": [scalar("white", "ig_swelling.txt"), scalar("kashibe", "intergranular_swelling.txt")],
+        "inter sw": [scalar("white", "ig_swelling.txt", exp_factor=WHITE_SWELLING_FACTOR), scalar("kashibe", "intergranular_swelling.txt")],
     },
     "fission_gas_release": {
-        "fgr": [scalar("kashibe", "fgr.txt"),
+        "fgr": [scalar("kashibe", "fgr.txt", baseline=True),
                 curve("chromium", "Killeen_exp.txt", "FIMA (%)", exp_cols=(1, 0), only="Killeen"),
                 curve("contact", "experimental_fgr.txt", "Burnup (MWd/kgUO2)",
                       exp_factor=100.0, xfactor=UO2_TO_U, skip=1)],
@@ -127,15 +162,22 @@ def from_scalar(source, spec, factor):
             if not line.strip() or line.lstrip().startswith("#"):
                 continue
             key, value = line.split()[:2]
+            if source["only"] not in key:
+                continue
             match = [c for c in cases if key in os.path.basename(c)]
             if len(match) != 1:
                 print(f"  [skip] {source['group']}/{key}: {len(match)} matching cases")
                 continue
-            y = column(load_output(match[0]), spec, factor)
+            output = load_output(match[0])
+            y = column(output, spec, factor)
             if y is None:
                 continue
-            exp.append(float(value))
-            calc.append(y[-1])
+            calculated = y[-1]
+            if source["baseline"]:
+                t = column(output, "Time (h)", 1.0)
+                calculated -= np.interp(anneal_start(match[0]), t, y)
+            exp.append(float(value) * source["exp_factor"])
+            calc.append(calculated)
     return np.array(exp), np.array(calc)
 
 

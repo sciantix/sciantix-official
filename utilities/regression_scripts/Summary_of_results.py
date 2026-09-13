@@ -24,7 +24,7 @@ from regression_kashibe1991 import regression_kashibe1991
 # Please note that to obtain same results as the ones presented in the manuscript, the following input files need to be used:
 # 
 # 1    #    iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))
-# 1    #    iFissionGasDiffusivity (0= constant value, 1= Turnbull et al. (1988))
+# 1    #    iFissionProductDiffusivity (0= constant value, 1= Turnbull et al. (1988))
 # 2    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)
 # 1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))
 # 1    #    iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))

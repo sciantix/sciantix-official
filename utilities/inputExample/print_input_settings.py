@@ -6,7 +6,7 @@ This is a python script to write the SCIANTIX default input file "input_settings
 
 with open('input_settings.txt', 'w') as file:
     file.write('1    #    iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))\n')
-    file.write('1    #    iFissionGasDiffusivity (0= constant value, 1= Turnbull et al. (1988))\n')
+    file.write('1    #    iFissionProductDiffusivity (0= constant value, 1= Turnbull et al. (1988))\n')
     file.write('1    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)\n')
     file.write('1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))\n')
     file.write('1    #    iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))\n')
@@ -26,5 +26,5 @@ with open('input_settings.txt', 'w') as file:
     file.write('0    #    iHighBurnupStructurePorosity (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)\n')
     file.write('0    #    iHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR))\n')
     file.write('0    #    iStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)\n')
-    file.write('0    #    iBubbleDiffusivity (0= not considered, 1= volume diffusivity)')
-    file.write('0    #    iDensification (0= not considered, 1= P. Van Uffelen PhD thesis (2002))')
+    file.write('0    #    iBubbleDiffusivity (0= not considered, 1= volume diffusivity)\n')
+    file.write('0    #    iDensification (0= not considered, 1= P. Van Uffelen PhD thesis (2002))\n')

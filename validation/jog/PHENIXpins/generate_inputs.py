@@ -24,10 +24,8 @@ CSRED_LIB_DIR = PREPROCESSING_DIR / "csred_lib"
 sys.path.insert(0, str(CSRED_LIB_DIR))
 
 PELLET_RADIUS_M = 2.719e-3
-# Index into the (non-comment) value lines of input_scaling_factors.txt.
-# main's 11-slot layout ends with grain_boundary_energy, fabricated_porosity,
-# cs_production (index 10).
-CS_PRODUCTION_SCALING_FACTOR_INDEX = 10
+# Key of the Cs-production entry in input_scaling_factors.txt.
+CS_PRODUCTION_SCALING_FACTOR_KEY = "sf_cs_production"
 
 
 def case_dirs() -> list[Path]:
@@ -144,14 +142,19 @@ def solve_csred_cs_production_scaling_factors() -> tuple[np.ndarray, np.ndarray]
     return radius, result.scaling_factor
 
 
-def update_scaling_factor_value(path: Path, index: int, value: float, comment: str | None = None) -> None:
-    """Overwrite one value line (and optionally its comment) of an input_scaling_factors.txt file."""
+def update_scaling_factor_value(path: Path, key: str, value: float) -> None:
+    """Set the entry `key` of an input_scaling_factors.txt file, keeping its description.
+
+    Entries are "<value>  # <key> (<description>)" lines; the entry is appended if missing.
+    """
     lines = path.read_text().splitlines()
-    value_line_indices = [i for i, line in enumerate(lines) if not line.strip().startswith("#")]
-    value_index = value_line_indices[index]
-    lines[value_index] = f"{value:.6f}"
-    if comment is not None and value_index + 1 < len(lines) and lines[value_index + 1].strip().startswith("#"):
-        lines[value_index + 1] = f"# scaling factor - {comment}"
+    for i, line in enumerate(lines):
+        _, _, comment = line.partition("#")
+        if comment.split()[:1] == [key]:
+            lines[i] = f"{value:.6f}    #{comment}"
+            break
+    else:
+        lines.append(f"{value:.6f}    # {key} (scaling factor - Cs production)")
     path.write_text("\n".join(lines) + "\n")
 
 
@@ -169,9 +172,8 @@ def generate_csred_scaling_factors(case_directories: list[Path]) -> None:
         nearest_index = int(np.argmin(np.abs(radius - target_radius_m)))
         update_scaling_factor_value(
             case_dir / "input_scaling_factors.txt",
-            index=CS_PRODUCTION_SCALING_FACTOR_INDEX,
+            key=CS_PRODUCTION_SCALING_FACTOR_KEY,
             value=float(scaling_factor[nearest_index]),
-            comment="Cs production",
         )
 
 

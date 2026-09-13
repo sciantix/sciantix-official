@@ -16,7 +16,7 @@ The ``input_settings.txt`` file defines the active physical models.
 .. code-block:: text
 
     1    #    iGrainGrowth (1= Ainscough et al. (1973))
-    1    #    iFissionGasDiffusivity (1= Turnbull et al. (1988))
+    1    #    iFissionProductDiffusivity (1= Turnbull et al. (1988))
     2    #    iDiffusionSolver (2= SDA without quasi-stationary hypothesis)
     1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))
     1    #    iResolutionRate (1= Turnbull (1971))
@@ -65,12 +65,12 @@ Input Files Structure
 
 SCIANTIX expects a set of plain-text input files. The following templates show the typical shape of these files; complete descriptions are available in ``utilities/InputExplanation.md``.
 
-``input_settings.txt`` — model flags and options (one integer per line, comments allowed):
+``input_settings.txt`` — model flags and options (one ``<value> # <key> (<description>)`` entry per line, looked up by key):
 
 .. code-block:: text
 
     1    #    iGrainGrowth (0= no, 1= Ainscough, 2= Van Uffelen)
-    1    #    iFissionGasDiffusivity (0= constant, 1= Turnbull et al.)
+    1    #    iFissionProductDiffusivity (0= constant, 1= Turnbull et al.)
     1    #    iDiffusionSolver (1= SDA with quasi-stationarity, 2= without)
     1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al.)
     ...
@@ -82,27 +82,22 @@ SCIANTIX expects a set of plain-text input files. The following templates show t
     0          1273              1e19                      0
     5500       1273              1e19                      0
 
-``input_initial_conditions.txt`` — structured initial parameters (value lines followed by a comment line starting with #):
+``input_initial_conditions.txt`` — initial parameters, in the same keyed format (an entry left out defaults to 0):
 
 .. code-block:: text
 
-    5.0e-06
-    # initial grain radius (m)
-    0.0 0.0 0.0 0.0 0.0 0.0
-    # initial Xe (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
-    0.0 0.0 0.0 0.0 0.0 0.0
-    # initial Kr (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
-    0.0 0.0
-    # initial He (at/m³): produced, intragranular [+ in solution, in bubbles, grain boundary, released]
+    5.0e-06                    # Grain_radius[0] (initial grain radius (m))
+    0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_Xe (initial Xe (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
+    0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_Kr (initial Kr (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
+    0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_He (initial He (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
     ...
 
-``input_scaling_factors.txt`` (optional) — single-column scaling factors with comments:
+``input_scaling_factors.txt`` (optional) — scaling factors, in the same keyed format (a factor left out defaults to 1.0):
 
 .. code-block:: text
 
-    1.0
-    # scaling factor - resolution rate
-    1.0
-    # scaling factor - trapping rate
+    1.0    # sf_resolution_rate (scaling factor - resolution rate)
+    1.0    # sf_trapping_rate (scaling factor - trapping rate)
+    ...
 
 For complete guidance and more examples, consult the `utilities/InputExplanation.md` file or the test cases in the `verification/` and `validation/` folders.

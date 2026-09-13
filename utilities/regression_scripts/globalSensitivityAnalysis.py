@@ -48,16 +48,11 @@ class globalSensitivityAnalysis():
 		# Initialize a dictionary to store scaling factors
 		self.scaling_factors = {}
 		with open(self.file_path, 'r') as file:
-			lines = file.readlines()
-			i = 0
-			while i < len(lines):
-				# Convert the value to float and strip newline characters
-				value = float(lines[i].strip())
-				# Get the variable name
-				name = lines[i + 1].strip()[len("# scaling factor - "):]
-				# Store the variable and its corresponding value to the dictionary
-				self.scaling_factors[name] = value
-				i += 2
+			# Each line is "<value>  # <key> (<description>)".
+			for line in file:
+				value, _, comment = line.partition("#")
+				if value.strip():
+					self.scaling_factors[comment.split()[0]] = float(value)
 
 		print("\nScaling factor dictionary:")
 		print(self.scaling_factors)
@@ -163,8 +158,7 @@ class globalSensitivityAnalysis():
 
 				with open("input_scaling_factors.txt", 'w') as file:
 					for key, value in self.scaling_factors.items():
-						file.write(f'{value}\n')
-						file.write(f'# scaling factor - {key}\n')
+						file.write(f'{value}    # {key}\n')
 
 				print(f"Running reference calculations in {os.getcwd()}")
 				os.system("./sciantix.x")
@@ -184,8 +178,7 @@ class globalSensitivityAnalysis():
 
 					with open("input_scaling_factors.txt", 'w') as file:
 						for key, value in self.scaling_factors.items():
-							file.write(f'{value}\n')
-							file.write(f'# scaling factor - {key}\n')
+							file.write(f'{value}    # {key}\n')
 
 					os.system("./sciantix.x")
 
