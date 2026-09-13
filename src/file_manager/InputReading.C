@@ -33,7 +33,7 @@
  *
  *     <value(s)>  #  <Key> (<description>)
  *
- * where <Key> is the first token after the '#'. 
+ * where <Key> is the first token after the '#'.
  */
 NamedInput ParseNamedEntries(const std::string& path)
 {
@@ -329,7 +329,7 @@ void InputReading(int    Sciantix_options[],
     ReportUnrecognisedEntries("input_initial_conditions.txt", initial_conditions);
 
     // Optional, per-case time discretisation: the number of steps the solver takes between
-    // two consecutive rows of input_history.txt. 
+    // two consecutive rows of input_history.txt.
     Number_of_time_steps_per_interval =
         ReadOneParameter("Number_of_time_steps_per_interval", settings, input_check, Number_of_time_steps_per_interval);
     if (Number_of_time_steps_per_interval <= 0.0)
