@@ -1,22 +1,11 @@
-1.0
-# scaling factor - resolution rate
-1.0
-# scaling factor - trapping rate
-1.0
-# scaling factor - nucleation rate
-1.0
-# scaling factor - diffusivity
-1.0
-# scaling factor - temperature
-1.0
-# scaling factor - fission rate
-1.0
-# scaling factor - diffusion-based release (Cappellari et al., JNM, (2025, under review), 1 = Low release, 2 = Mean production, 3 = Saturation threshold at 50% fractional coverage)
-1.0
-# scaling factor - helium production rate
-1.4
-# scaling factor - Grain boundary energy
-0.8
-# scaling factor - Fabricated porosity
-0.455100
-# scaling factor - Cs production
+1.0         # sf_resolution_rate (scaling factor - resolution rate)
+1.0         # sf_trapping_rate (scaling factor - trapping rate)
+1.0         # sf_nucleation_rate (scaling factor - nucleation rate)
+1.0         # sf_diffusivity (scaling factor - diffusivity)
+1.0         # sf_temperature (scaling factor - temperature)
+1.0         # sf_fission_rate (scaling factor - fission rate)
+1.0         # sf_diffusion_based_release (scaling factor - diffusion-based release)
+1.0         # sf_helium_production_rate (scaling factor - helium production rate)
+1.4         # sf_grain_boundary_energy (scaling factor - grain-boundary energy)
+0.8         # sf_fabricated_porosity (scaling factor - fabricated porosity)
+0.455100    # sf_cs_production (scaling factor - Cs production)
