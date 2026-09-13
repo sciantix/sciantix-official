@@ -43,6 +43,8 @@ import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from testing.core.common import run_sciantix, load_output, load_gold
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from parity_by_topic import WHITE_SWELLING_FACTOR  # White tabulates half the code's swelling
 
 # ------------------------------------------------------------
 # configuration
@@ -52,9 +54,9 @@ from testing.core.common import run_sciantix, load_output, load_gold
 # factors at a time. Keep 1.0 in each list so the nominal point is included (it
 # is used as the central marker of the parity figure).
 FACTORS = {
-    "diffusivity":     [0.5, 0.75, 1.0, 1.25, 1.5],
-    "resolution rate": [0.5, 1.0, 2.0],
-    "nucleation rate":   [0.2, 0.5, 1.0],
+    "sf_diffusivity":     [0.5, 0.75, 1.0, 1.25, 1.5],
+    "sf_resolution_rate": [0.5, 1.0, 2.0],
+    "sf_nucleation_rate": [0.2, 0.5, 1.0],
 }
 # NOTE: the number of runs is (product of grid sizes) x (number of cases), so
 # keep the grids small when biasing several factors at once.
@@ -62,19 +64,20 @@ FACTORS = {
 COL_SWELL = "Intergranular gas swelling (/)"   # output column, converted to %
 EXP_FILE = "ig_swelling.txt"                   # experimental data in data/
 
-# Full ordered list of scaling factors. Must match the layout written by
-# utilities/inputExample/print_input_scaling_factors.py and read by
-# src/file_manager/InputReading.C.
+# Keys of input_scaling_factors.txt, as src/file_manager/InputReading.C looks them up
+# (scaling_factor_keys there). Factors not biased are written at 1.0.
 SF_NAMES = [
-    "resolution rate",
-    "trapping rate",
-    "nucleation rate",
-    "diffusivity",
-    "temperature",
-    "fission rate",
-    "diffusion-based release",
-    "helium production rate",
-    "dummy",
+    "sf_resolution_rate",
+    "sf_trapping_rate",
+    "sf_nucleation_rate",
+    "sf_diffusivity",
+    "sf_temperature",
+    "sf_fission_rate",
+    "sf_diffusion_based_release",
+    "sf_helium_production_rate",
+    "sf_grain_boundary_energy",
+    "sf_fabricated_porosity",
+    "sf_cs_production",
 ]
 
 SF_FILENAME = "input_scaling_factors.txt"
@@ -103,8 +106,7 @@ def write_scaling_factors(case_dir, overrides):
     """
     with open(os.path.join(case_dir, SF_FILENAME), "w") as f:
         for name in SF_NAMES:
-            f.write(f"{overrides.get(name, 1.0)}\n")
-            f.write(f"# scaling factor - {name}\n")
+            f.write(f"{overrides.get(name, 1.0)}    # {name}\n")
 
 
 def restore_case(case_dir, original_output):
@@ -167,7 +169,7 @@ def main():
         if name not in exp:
             print(f"[WARNING] No experimental swelling for {name}; skipping.")
             continue
-        cases.append((name, case_dir, exp[name]))
+        cases.append((name, case_dir, exp[name] * WHITE_SWELLING_FACTOR))
 
     exp_arr = np.array([c[2] for c in cases])
 
@@ -276,7 +278,7 @@ def main():
     plt.legend()
     plt.tight_layout()
 
-    tag = "_".join(f.replace(" ", "-") for f in factor_names)
+    tag = "_".join(f.removeprefix("sf_") for f in factor_names)
     figpath = os.path.join(outdir, f"parity_white_swelling_{tag}_bars.png")
     plt.savefig(figpath, dpi=180)
     plt.close()

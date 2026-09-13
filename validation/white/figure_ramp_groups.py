@@ -17,6 +17,8 @@ from parity_plot import extract_last, load_experimental
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from testing.core.common import load_output
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from parity_by_topic import WHITE_SWELLING_FACTOR  # White tabulates half the code's swelling
 
 LONG_HOLD = {"4135", "4136", "4140"}          # Cappellari et al. (2025), Sec. 3.1
 FAST_THRESHOLD = 1.0                          # K/s, sits in the bimodal gap
@@ -56,7 +58,7 @@ def main():
         if not len(idx):
             print(f"[WARNING] no experimental swelling for {os.path.basename(case)}")
             continue
-        exp.append(values[idx][0])
+        exp.append(values[idx][0] * WHITE_SWELLING_FACTOR)
         new.append(extract_last(load_output(case), COL) * 100)
         old.append(ref_values[np.where(ref_names == os.path.basename(case))[0]][0])
         grp.append(ramp_group(case))

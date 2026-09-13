@@ -26,13 +26,11 @@ class singleSensitivityAnalysis():
 
         self.scaling_factors = {}
         with open(self.file_path, 'r') as file:
-            lines = file.readlines()
-            i = 0
-            while i < len(lines):
-                value = float(lines[i].strip())
-                name = lines[i + 1].strip()[len("# scaling factor - "):]
-                self.scaling_factors[name] = value
-                i += 2
+            # Each line is "<value>  # <key> (<description>)".
+            for line in file:
+                value, _, comment = line.partition("#")
+                if value.strip():
+                    self.scaling_factors[comment.split()[0]] = float(value)
 
         print("\nScaling factor dictionary:")
         print(self.scaling_factors)
@@ -85,8 +83,7 @@ class singleSensitivityAnalysis():
             with open("input_scaling_factors.txt", 'w') as file:
 
                 for key, value in self.scaling_factors.items():
-                    file.write(f'{value}\n')
-                    file.write(f'# scaling factor - {key}\n')
+                    file.write(f'{value}    # {key}\n')
 
             os.system("./sciantix.x")
             os.chdir('..')
@@ -130,13 +127,11 @@ class singleSensitivityAnalysis():
             scaling_factors = {}
             self.file_path = os.path.join(os.getcwd(), self.file_name)
             with open(self.file_path, 'r') as file:
-                lines = file.readlines()
-                i = 0
-                while i < len(lines):
-                    value = float(lines[i].strip())
-                    name = lines[i + 1].strip()[len("# scaling factor - "):]
-                    scaling_factors[name] = value
-                    i += 2
+                # Each line is "<value>  # <key> (<description>)".
+                for line in file:
+                    value, _, comment = line.partition("#")
+                    if value.strip():
+                        scaling_factors[comment.split()[0]] = float(value)
 
             self.scaling_factor_value[j] = scaling_factors[self.bias_name]
 

@@ -45,9 +45,10 @@ void Initialization(double Sciantix_history[],
     Sciantix_history[14] = OMratio_input[0];
 
     // Sciantix_variables initialization
-    Sciantix_variables[25] = 2.0e+13;  // Intergranular_bubble_concentration[0]
-    Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]
-    Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
+    if (Sciantix_variables[25] <= 0.0)
+        Sciantix_variables[25] = 2.0e+13;  // Intergranular_bubble_concentration[0]
+    Sciantix_variables[35] = 0.5;          // Intergranular_saturation_fractional_coverage[0]
+    Sciantix_variables[37] = 1.0;          // Intergranular_fractional_intactness[0]
 
     const double density_mix     = Sciantix_variables[40];
     const double q               = Sciantix_variables[177];

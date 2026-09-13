@@ -20,7 +20,9 @@
 #include "ErrorMessages.h"
 #include "ThermochemistrySettings.h"
 #include <fstream>
+#include <map>
 #include <numeric>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -52,7 +54,39 @@ void InputReading(int                       Sciantix_options[],
                   double&                   Time_end_h,
                   double&                   Time_end_s);
 
-unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
-double             ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+/**
+ * @brief The keyed entries of an input file ("<value(s)> # <Key> (<description>)" lines).
+ *
+ * See ParseNamedEntries in InputReading.C for the format.
+ */
+struct NamedInput
+{
+    std::map<std::string, std::string> value;     ///< key -> the text preceding the '#'
+    mutable std::set<std::string>      consumed;  ///< keys some reader actually asked for
+};
+
+NamedInput ParseNamedEntries(const std::string& path);
+
+/// Stops the run if the file holds an entry no reader asked for (a misspelt or retired key).
+void ReportUnrecognisedEntries(const std::string& file_name, const NamedInput& parsed);
+
+unsigned short int
+ReadOneSetting(const std::string& variable_name, const NamedInput& settings, std::ofstream& output_file);
+
+double ReadOneParameter(const std::string& variable_name,
+                        const NamedInput&  parsed,
+                        std::ofstream&     output_file,
+                        double             fallback);
+
+std::vector<double> ReadSeveralParameters(const std::string& variable_name,
+                                          const NamedInput&  parsed,
+                                          std::size_t        count,
+                                          std::ofstream&     output_file,
+                                          double             fallback);
+
+/**
+ * @brief Reads input_scaling_factors.txt. A missing file, or a missing entry, gives a factor of 1.0.
+ */
+void ReadScalingFactors(const std::string& path, double Sciantix_scaling_factors[], std::ofstream& input_check);
 
 #endif  // INPUT_READING_H
