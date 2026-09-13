@@ -28,7 +28,7 @@ function(add_subdirectory_includes root_dir)
     foreach(subdir ${SUBDIRS})
         if(IS_DIRECTORY ${root_dir}/${subdir}) # if file is a directory
             include_directories(${root_dir}/${subdir})  # include the directory as header directory
-            add_subdirectory_includes(${root_dir}/${subdir})    # exectute the function for the subdirectory (to get all subdirectories of it if any)
+            add_subdirectory_includes(${root_dir}/${subdir})    # execute the function for the subdirectory (to get all subdirectories of it if any)
         endif()
     endforeach()
 endfunction()
