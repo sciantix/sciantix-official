@@ -32,6 +32,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from hbs_formation_landau import (  # noqa: E402
     ALPHA_MAX,
+    DATA_FILE,
+    FABRICATION_POROSITY,
+    GRAIN_RADIUS,
     N_FAMILIES,
     REFERENCE_POROSITY,
     REFERENCE_TEMPERATURE,
@@ -72,16 +75,32 @@ SEEDS_DEFAULT = 6
 # TARGETS
 # ---------------------------------------------------------------------------
 
-def load_targets(path=None):
-    """(theta targets, size targets) as dicts of arrays.
+def load_targets(path=None, ranks=None, rank_weights=False):
+    """(theta targets, size targets, fraction targets) as dicts of arrays.
 
     Theta uses every row with burnup > 0; the sizes only the subset that carries
     an ECD50%.  Both keep the porosity and the grain radius of their specimen.
-    """
-    rows = [r for r in (load_ebsd(path) if path else load_ebsd()) if r["burnup"] > 0.0]
 
-    def pack(subset, values):
+    With the curated dataset (a folder, see hbs_dataset.py) `ranks` keeps only values
+    of those Rose quality ranks, and `rank_weights` weights each target by its
+    provisional weight (numeric score x relevance; PROVISIONAL).  Otherwise every
+    target has weight 1, as with the CSV.
+    """
+    path = path or DATA_FILE
+    if os.path.isdir(path) and ranks:
+        from hbs_dataset import load_rows
+        rows = load_rows(path, ranks=tuple(ranks), fabrication_porosity=FABRICATION_POROSITY,
+                         grain_radius=GRAIN_RADIUS)
+    else:
+        rows = load_ebsd(path)
+    rows = [r for r in rows if r["burnup"] > 0.0]
+    if rank_weights and "weight_theta" not in (rows[0] if rows else {}):
+        raise ValueError("rank weights need the curated dataset, not %s" % path)
+
+    def pack(subset, values, observable="theta"):
+        key = "weight_" + observable
         return {
+            "w": np.array([r[key] if rank_weights else 1.0 for r in subset]),
             "burnup": np.array([r["burnup"] for r in subset]),
             "temperature": np.array([r["temperature"] for r in subset]),
             "porosity": np.array([r["porosity"] for r in subset]),
@@ -92,9 +111,9 @@ def load_targets(path=None):
 
     theta = pack(rows, [theta_measured(r) for r in rows])
     with_size = [r for r in rows if not math.isnan(measured_radius(r))]
-    size = pack(with_size, [measured_radius(r) for r in with_size])
+    size = pack(with_size, [measured_radius(r) for r in with_size], "radius")
     with_fraction = [r for r in rows if not math.isnan(r["f10"])]
-    fraction = pack(with_fraction, [r["f10"] / 100.0 for r in with_fraction])
+    fraction = pack(with_fraction, [r["f10"] / 100.0 for r in with_fraction], "fraction")
     return theta, size, fraction
 
 
@@ -138,13 +157,15 @@ def objective(vector, theta, size, fraction, weight, fraction_weight,
     _, radius_model, _ = predict(parameters, size)
     if not (np.all(np.isfinite(theta_model)) and np.all(np.isfinite(radius_model))):
         return 1.0e6
-    cost = float(np.mean((theta_model - theta["y"]) ** 2) / variance_theta)
+    cost = float(np.average((theta_model - theta["y"]) ** 2, weights=theta["w"]) / variance_theta)
     if weight > 0.0:
-        cost += weight * float(np.mean((radius_model - size["y"]) ** 2) / variance_radius)
+        cost += weight * float(np.average((radius_model - size["y"]) ** 2, weights=size["w"])
+                               / variance_radius)
     if fraction_weight > 0.0:
         _, _, fraction_model = predict(parameters, fraction)
         cost += fraction_weight * float(
-            np.mean((fraction_model - fraction["y"]) ** 2) / variance_fraction)
+            np.average((fraction_model - fraction["y"]) ** 2, weights=fraction["w"])
+            / variance_fraction)
     return cost
 
 
@@ -246,6 +267,13 @@ def main(argv=None):
     parser.add_argument("--fix-rho-c", type=float, default=None, metavar="R",
                         help="fix rho_c to R^-2 with R a length in metres, e.g. 4.55e-6 to "
                              "anchor it to an as-fabricated grain radius")
+    parser.add_argument("--data", default=DATA_FILE, metavar="PATH",
+                        help="curated dataset folder or legacy CSV (default %(default)s)")
+    parser.add_argument("--ranks", default=None, metavar="A,B,...",
+                        help="dataset only: keep values of these Rose quality ranks "
+                             "(A, B, U*, U; default all)")
+    parser.add_argument("--rank-weights", dest="rank_weights", action="store_true",
+                        help="dataset only: weight the targets by their PROVISIONAL weight")
     parser.add_argument("--maxiter", type=int, default=800)
     parser.add_argument("--popsize", type=int, default=25)
 
@@ -253,8 +281,11 @@ def main(argv=None):
 
     shipped = ModelParameters()
 
-    theta, size, fraction = load_targets()
+    ranks = arguments.ranks.split(",") if arguments.ranks else None
+    theta, size, fraction = load_targets(arguments.data, ranks, arguments.rank_weights)
     print("Joint calibration of the Landau HBS-formation model")
+    print("  data   %s%s%s" % (arguments.data, "   ranks " + arguments.ranks if ranks else "",
+                               "   provisional rank weights" if arguments.rank_weights else ""))
     print("  Theta  N = %2d   sizes  N = %2d   fractions  N = %2d"
           % (len(theta["y"]), len(size["y"]), len(fraction["y"])))
     print("  w = %g (sizes)   w_f = %g (fraction)   seeds = %d   n = %g"
@@ -300,7 +331,7 @@ def main(argv=None):
     print()
     print("  All three observables with the fitted parameters:")
     print()
-    validate(parameters=parameters)
+    validate(path=arguments.data, parameters=parameters)
 
     print_paste_block(parameters, arguments.weight, arguments.seeds)
     return 0

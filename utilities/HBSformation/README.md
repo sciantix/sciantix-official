@@ -32,6 +32,8 @@ The dislocation density is fixed to **Nogita & Une (1994)**.
 | `hbs_formation_landau.py` | model |
 | `data/ebsd_zacharie_onofri.csv` | the EBSD dataset |
 | `calibrate.py` | the joint calibration of `beta`, `k` and `rho_c` |
+| `hbs_dataset.py` | reads the HBS JSON datasets (`HBS_2026/data/json`) into calibration rows and targets |
+| `calibration_study.py` | weight maps (leverage, Cook's distance), data-set scenarios and KJMA sigmoid comparison |
 | `compare_with_sciantix.py` | checks that the C++ reproduces this script |
 | `compare_formation_options.py` | runs formation options 1-4 on one irradiation and compares them |
 | `validation.py` | validation against both experimental datasets |
@@ -501,6 +503,28 @@ diffable in git and loadable from the standard library.
 The misorientations, the restructured fractions and the ECD50 % are measured by EBSD. The
 local conditions — burnup, effective burnup, temperature, fission-rate density, strain and
 stress — come from TRANSURANUS runs of the same rods.
+
+### JSON datasets (default when found)
+
+`load_ebsd`, `validate`, `calibrate.py` and `validation.py` read the four JSON files of
+`HBS_2026/data/json/` when they are found (argument, `$HBS_DATASET`, or
+`../../../HBS_2026/data/json`); `HBS_DATA=legacy` forces the CSV above.
+`hbs_dataset.py` turns their radial points into the same row dicts, adding `sample_id`,
+`r_over_R`, the paper group, the Rose rank and relevance of the values behind each
+observable, a study weight (rank factor x relevance / 3) and the flags
+(`python3 hbs_dataset.py` prints a summary).
+
+### Calibration study
+
+    python3 calibration_study.py [--seeds 3 --maxiter 300 --popsize 20]
+
+Fits the Landau model (k, beta, rho_c) and a KJMA sigmoid X = 1 - exp(-ln2 (bu/bu50(T))^gamma)
+on three data scenarios — A ZAC2022+ONO2025 undoped, uniform; B all four papers (Cr-doped,
+NOI2015 Xe-depleted area, GER2018 Barani area fraction and rim dA), uniform; C as B with the
+rank x relevance weights — and maps, in the (local burnup, temperature) plane, the leverage and
+Cook's distance of every point (`figures/calibration_study/`: `weights_*.png`, `influence_*.png`,
+`curves.png` (value vs burnup, vs temperature, vs burnup coloured by temperature), `metrics.csv`, `points.csv`, `parameters.csv`, `log.txt`). The Barani 2020 KJMA
+(K = 2.77e-7, gamma = 3.35) is scored as a reference, not fitted.
 
 ---
 

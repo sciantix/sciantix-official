@@ -519,8 +519,12 @@ def hbs_state_array(burnup, temperature, **keywords):
 # VALIDATION AGAINST THE EBSD DATASET
 # ---------------------------------------------------------------------------
 
-DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                         "data", "ebsd_zacharie_onofri.csv")
+def _default_data():
+    """The curated HBS dataset folder when it can be found (see hbs_dataset.py), else the CSV."""
+    from hbs_dataset import dataset_dir
+    return dataset_dir()
+
+DATA_FILE =  _default_data()
 
 # Column names of `data/ebsd_zacharie_onofri.csv`, kept verbatim from the source
 # spreadsheets so that the file stays a faithful copy of them.
@@ -547,6 +551,10 @@ def _number(text):
 def load_ebsd(path=DATA_FILE):
     """The EBSD + TRANSURANUS dataset as a list of dicts of floats.
 
+    `path` a folder: the curated dataset, joined by hbs_dataset.load_rows (same keys, plus
+    sample_id, r_over_R, Rose ranks, provisional weights, flags).  `path` a .csv: the
+    original copy described below.
+
     42 rows: 28 from Zacharie-Aubrun et al. (2022) and 14 from Onofri et al.
     (2025).  The misorientations and the restructured fractions are measured by
     EBSD; the local conditions (burnup, temperature, fission rate, strain,
@@ -561,6 +569,9 @@ def load_ebsd(path=DATA_FILE):
     is the same TRANSURANUS run's effective burnup, carried for the comparison with
     the KJMA options of SCIANTIX, which are driven by that one instead.
     """
+    if os.path.isdir(path):
+        from hbs_dataset import load_rows
+        return load_rows(path, fabrication_porosity=FABRICATION_POROSITY, grain_radius=GRAIN_RADIUS)
     rows = []
     with open(path, newline="", encoding="utf-8") as handle:
         for record in csv.DictReader(handle):
@@ -675,7 +686,7 @@ def validate(path=DATA_FILE, verbose=True, parameters=DEFAULT_PARAMETERS):
                              r2=_r_squared(size_obs, size_mod))
 
     if verbose:
-        print("Validation against %s" % os.path.relpath(path, os.path.dirname(path) or "."))
+        print("Validation against %s" % path)
         print("  dislocation density: Nogita & Une (1994);  shear modulus: NEA/NSC/R(2024)1")
         print("  n = %g, beta = %g, k = %g, rho_c = %g m^-2"
               % (parameters.n_families, parameters.beta, parameters.k_sweep, parameters.rho_c))
