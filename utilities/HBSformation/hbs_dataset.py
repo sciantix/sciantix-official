@@ -1,4 +1,4 @@
-"""Targets read from the HBS experimental datasets (HBS_2026/data/json, one JSON file per paper).
+"""Targets read from the HBS experimental datasets (data/*.json, one JSON file per paper).
 
 Every radial point of the JSON files carries its measured values and the local conditions of
 that point (`temperature.value_C`, `burnup.value_GWd_tU`, with `basis` = reported | model |
@@ -10,7 +10,7 @@ ZAC2022/ONO2025, Barani 2020 for GER2018 and the NOI2015 76 GWd/tHM disc).
     load_rows(...)    EBSD rows of ZAC2022 / ONO2025 with the keys `load_ebsd` has always
                       returned, so that `validate`, `calibrate` and `validation.py` work unchanged
     load_points(...)  one target per (point, observable) for all four papers, for
-                      calibration_study.py
+                      calibrate.py
 
 Row keys added to the historical ones:
     sample_id, r_over_R, group               position and paper group (ZAC, ONO, GER, NOI; Cr = doped ZAC)
@@ -22,7 +22,9 @@ Row keys added to the historical ones:
     conditions                               "<temperature basis>/<burnup basis>"
     flags                                    measurement flags, ';'-separated
 
-Location of the JSON folder: the argument, else $HBS_DATASET, else ../../../HBS_2026/data/json.
+Location of the JSON folder: the argument, else $HBS_DATASET, else data/ next to this file.
+The files in data/ are copies of HBS_2026/data/json (the curated source): copy them again after
+any change there.
 
 @author  E. Cappellari
 @date    2026-09-15
@@ -35,7 +37,7 @@ import math
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_DATASET = os.path.normpath(os.path.join(HERE, "..", "..", "..", "HBS_2026", "data", "json"))
+DEFAULT_DATASET = os.path.join(HERE, "data")
 FILES = ("ZAC2022", "ONO2025", "GER2018", "NOI2015")
 
 QUANTITY_KEY = {

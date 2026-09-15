@@ -157,12 +157,13 @@ VALIDATION
 ---------------------------------------------------------------------------------
 Against the EBSD dataset shipped in `data/`, `--validate` gives
 
-  mean misorientation  Theta   N = 41   RMSE = 1.7616 deg   R2 = 0.7715
-  restructured fraction X      N = 27   RMSE = 0.2122       R2 = 0.7095
-  subgrain radius       r_n    N = 14   RMSE = 0.0678 um    R2 = 0.7737
+  mean misorientation  Theta   N = 41   RMSE = 1.7948 deg   R2 = 0.7628
+  restructured fraction X      N = 27   RMSE = 0.1995       R2 = 0.7433
+  subgrain radius       r_n    N = 14   RMSE = 0.1084 um    R2 = 0.4218
 
-and on the 8 PIE points of `validation.py`, which the model has never seen,
-RMSE = 0.1298 with R2 = +0.553 on the restructured fraction.
+(Zacharie-Aubrun + Onofri standard UO2 rows; the calibration itself uses all four papers, data
+set B of calibrate.py) and on the 8 PIE points of `validation.py` (Barani 2020 Fig. 4 read at
+T = 900 K), which the model has never seen, RMSE = 0.2369 with R2 = -0.491 on the fraction.
 
 References
 ---------------------------------------------------------------------------------
@@ -243,11 +244,11 @@ GRAIN_RADIUS = 5.0e-6           # m
 #       dislocations engaged in the LAGB over the total.
 # rho_c outer cut-off of the dislocation strain field in Eq. (4).
 #
-# beta, k and rho_c come from `calibrate.py`
+# beta, k and rho_c come from `calibrate.py` (data set B, w_r = 0.2, w_X = 1)
 N_FAMILIES = 2.0                        # -
-BETA       = 33.54724855333423          # -
-K_SWEEP    = 0.04696637283583627        # -
-RHO_C      = 1165846255229680.0         # m^-2
+BETA       = 26.605242364755867         # -
+K_SWEEP    = 0.4558161405789498         # -
+RHO_C      = 4540635588860424.0         # m^-2
 
 # --- Nogita & Une (1994), Eq. (1) ------------------------------------------
 NOGITA_SLOPE = 2.2e-2           # 1/(GWd/tU)

@@ -30,10 +30,9 @@ The dislocation density is fixed to **Nogita & Une (1994)**.
 | file | what it is |
 |---|---|
 | `hbs_formation_landau.py` | model |
-| `data/ebsd_zacharie_onofri.csv` | the EBSD dataset |
-| `calibrate.py` | the joint calibration of `beta`, `k` and `rho_c` |
-| `hbs_dataset.py` | reads the HBS JSON datasets (`HBS_2026/data/json`) into calibration rows and targets |
-| `calibration_study.py` | weight maps (leverage, Cook's distance), data-set scenarios and KJMA sigmoid comparison |
+| `data/*.json` | the experimental datasets, one file per paper (copies of `HBS_2026/data/json`) |
+| `calibrate.py` | calibration of the Landau model: single fit, `--front` (weights of the objective), `--study` (data sets, point influence, leave one paper out) |
+| `hbs_dataset.py` | reads `data/*.json` into calibration rows and targets |
 | `compare_with_sciantix.py` | checks that the C++ reproduces this script |
 | `compare_formation_options.py` | runs formation options 1-4 on one irradiation and compares them |
 | `validation.py` | validation against both experimental datasets |
@@ -66,10 +65,16 @@ python3 hbs_formation_landau.py --temperature 900 # the temperature the other fl
 python3 hbs_formation_landau.py --plot            # needs matplotlib; default hbs_formation_landau.png
 
 # re-fit beta, k and rho_c -- run this after ANY change to Eq. (1) or Eq. (2):
-python3 calibrate.py
-python3 calibrate.py --weight 0.05                # weight of the size term in the objective
-python3 calibrate.py --fraction-weight 0.1        # put X in the objective too (it is out by default)
+python3 calibrate.py                              # Landau, data set A (Zacharie-Aubrun + Onofri)
+python3 calibrate.py --scenario B                 # all four papers (C: weighted by rank x relevance)
+python3 calibrate.py --weight 0.05                # w_r, weight of the size term in the objective
+python3 calibrate.py --fraction-weight 1          # w_X, weight of the fraction term
 python3 calibrate.py --seeds 6 --fix-rho-c 3e-8   # repeats of the global search; rho_c from a length
+
+# choose the weights: one fit per (data set, w_r, w_X), errors on all the data, Pareto front
+python3 calibrate.py --front > figures/calibration/front_log.txt   # -> front.csv, front.png
+# at the chosen weights: point influence maps, all-data scores, leave one paper out
+python3 calibrate.py --study --weight W_R --fraction-weight W_X > figures/calibration/log.txt
 
 # after building SCIANTIX and running the regression case:
 python3 compare_with_sciantix.py ../../regression/hbs/test_UO2HBS_landau/output.txt
@@ -226,9 +231,9 @@ import hbs_formation_landau as m
 | G coefficients of Eq. (2) | 82.52, 94.91, 0.95275, 2.88078, 15.49419, 1.009549, 1.182e-5, 6.671e-8 | mixed | NEA/NSC/R(2024)1 p. 124 |
 | ν coefficients of Eq. (2) | 0.32051, 0.31882, 1.03223, 0.69962, 7.52905, 1.017906, 6.420e-5, 1.506e-8 | mixed | idem |
 | `n` | 2 | - | Gourdet & Montheillet (2003), range 1–3; the same reference for the balance of Eq. (5) and for sweeping the free dislocations only |
-| `beta` | 33.54724855333423 | - | `calibrate.py`, joint fit |
-| `k` | 0.04696637283583627 | - | idem |
-| `rho_c` | 1165846255229680.0 | m⁻² | idem; `rho_c^(-1/2)` = 0.029 µm |
+| `beta` | 26.605242364755867 | - | `calibrate.py`, joint fit (data set B, w_r = 0.2, w_X = 1) |
+| `k` | 0.4558161405789498 | - | idem |
+| `rho_c` | 4540635588860424.0 | m⁻² | idem; `rho_c^(-1/2)` = 0.015 µm |
 | `P`, `x`, `q` | from SCIANTIX; 0.05, 0, 0 by default | -, -, - | inputs of Eq. (2) |
 | `R_grain` | from SCIANTIX; 5 µm by default | m | ceiling of Eq. (9) |
 
@@ -273,29 +278,29 @@ size accuracy that `w = 1` gets.
 
 | bu [GWd/tU] | ρ_tot [m⁻²] | Θ [°] | r_n [µm] | X | set by |
 |---|---|---|---|---|---|
-| 20 | 1.7378e14 | 0.0000 | — | 0.000000 | `C2 > 0` |
-| 40 | 4.7863e14 | 0.0000 | — | 0.000000 | `C2 > 0` |
-| 49.5612 | 7.7686e14 | 0.0000 | — | 0.000000 | `C2 = 0` |
-| 50 | 7.9433e14 | 0.5810 | 3.6012 | 0.000000 | Eq. (7) |
-| 50.8088 | 8.2755e14 | 1.0000 | 2.0974 | 0.000000 | Eq. (7) |
-| 60 | 1.3183e15 | 3.6507 | 0.5899 | 0.294523 | Eq. (7) |
-| 70 | 2.1878e15 | 5.8274 | 0.3755 | 0.536379 | **Eq. (7b)** |
-| 80 | 3.6308e15 | 7.5072 | 0.2914 | 0.723018 | **Eq. (7b)** |
-| 91.3204 | 6.4424e15 | 10.0000 | 0.2188 | ≈1 | Eq. (7) |
-| 100 | 1.0000e16 | 10.0000 | 0.2153 | ≈1 | `theta_HAGB` cap |
-| 150 | 1.2589e17 | 10.0000 | 0.2095 | ≈1 | `theta_HAGB` cap |
+| 10 | 1.0471e+14 | 0.0000 | — | 0.000000 | `C2 > 0` |
+| 18.8766 | 1.6417e+14 | 0.0006 | 5.0000 | 0.000000 | Eq. (7) |
+| 30 | 2.8840e+14 | 0.4888 | 2.7929 | 0.000000 | Eq. (7) |
+| 42.9878 | 5.5684e+14 | 1.0000 | 1.4246 | 0.000000 | Eq. (7) |
+| 50 | 7.9433e+14 | 1.3570 | 1.0735 | 0.039663 | Eq. (7) |
+| 60 | 1.3183e+15 | 2.0094 | 0.7477 | 0.112157 | Eq. (7) |
+| 70 | 2.1878e+15 | 2.8863 | 0.5364 | 0.209584 | Eq. (7) |
+| 80 | 3.6308e+15 | 4.0656 | 0.3920 | 0.340627 | Eq. (7) |
+| 100 | 1.0000e+16 | 7.7732 | 0.2168 | 0.752575 | Eq. (7) |
+| 108.073 | 1.5052e+16 | 10.0000 | 0.1722 | ≈1 | Eq. (7) |
+| 150 | 1.2589e+17 | 10.0000 | 0.1363 | ≈1 | `theta_HAGB` cap |
 
-The last column says which of the three branches of Eq. (7)–(7b) set `eta`. Between roughly
-65.6 and 91.3 GWd/tU it is the dislocation balance, not the stationary point of the functional:
-every dislocation is in a wall and `Theta` follows `beta·b·sqrt(rho_tot)/(3n)`.
+The last column says which of the branches of Eq. (7)–(7b) set `eta`. With the parameters
+calibrated on the JSON datasets (data set B, w_r = 0.2, w_X = 1) the dislocation balance of
+Eq. (7b) **never binds**.
 
 Three burnups mark the changes of regime. They no longer depend on T, P or `x`:
 
 | event | condition | bu [GWd/tU] |
 |---|---|---|
-| transition threshold | `C2 = 0`, Θ leaves zero | **49.5612** |
-| restructuring starts | `Theta = theta_u` ⟹ X leaves zero | **50.8088** |
-| fully restructured | `Theta = theta_HAGB` ⟹ X reaches its cap | **91.3204** |
+| transition threshold | `C2 = 0`, Θ leaves zero | **18.8766** |
+| restructuring starts | `Theta = theta_u` ⟹ X leaves zero | **42.9878** |
+| fully restructured | `Theta = theta_HAGB` ⟹ X reaches its cap | **108.0728** |
 
 The three of them are properties of the local burnup only. `G(T,P,x)` and `nu(T,P,x)` still
 appear in `C2` and `C4`, but as the same factor `f(nu)·G·b²` in every term, so they cancel in
@@ -504,27 +509,29 @@ The misorientations, the restructured fractions and the ECD50 % are measured by 
 local conditions — burnup, effective burnup, temperature, fission-rate density, strain and
 stress — come from TRANSURANUS runs of the same rods.
 
-### JSON datasets (default when found)
+### JSON datasets (default)
 
-`load_ebsd`, `validate`, `calibrate.py` and `validation.py` read the four JSON files of
-`HBS_2026/data/json/` when they are found (argument, `$HBS_DATASET`, or
-`../../../HBS_2026/data/json`); `HBS_DATA=legacy` forces the CSV above.
-`hbs_dataset.py` turns their radial points into the same row dicts, adding `sample_id`,
-`r_over_R`, the paper group, the Rose rank and relevance of the values behind each
-observable, a study weight (rank factor x relevance / 3) and the flags
-(`python3 hbs_dataset.py` prints a summary).
+`load_ebsd`, `validate`, `calibrate.py` and `validation.py` read the four JSON files in `data/`
+(`ZAC2022.json`, `ONO2025.json`, `GER2018.json`, `NOI2015.json`), so the folder is self-contained.
 
-### Calibration study
+- Values not in the papers (fabrication porosity, Onofri grain size) use the module defaults.
+- Cr-doped samples stay out of `load_rows` by default (`dopant="none"`); `load_points` includes them.
 
-    python3 calibration_study.py [--seeds 3 --maxiter 300 --popsize 20]
+### Calibration on the JSON datasets
 
-Fits the Landau model (k, beta, rho_c) and a KJMA sigmoid X = 1 - exp(-ln2 (bu/bu50(T))^gamma)
-on three data scenarios — A ZAC2022+ONO2025 undoped, uniform; B all four papers (Cr-doped,
-NOI2015 Xe-depleted area, GER2018 Barani area fraction and rim dA), uniform; C as B with the
-rank x relevance weights — and maps, in the (local burnup, temperature) plane, the leverage and
-Cook's distance of every point (`figures/calibration_study/`: `weights_*.png`, `influence_*.png`,
-`curves.png` (value vs burnup, vs temperature, vs burnup coloured by temperature), `metrics.csv`, `points.csv`, `parameters.csv`, `log.txt`). The Barani 2020 KJMA
-(K = 2.77e-7, gamma = 3.35) is scored as a reference, not fitted.
+`calibrate.py` fits k, beta and rho_c of the Landau model on three data sets — **A**
+Zacharie-Aubrun + Onofri standard UO2; **B** all four papers (Cr-doped, NOI2015 Xe-depleted area,
+GER2018 Barani area fraction and rim dA); **C** as B weighted by rank x relevance — with the
+objective `<dΘ²>/var + w_r <dr²>/var + w_X <dX²>/var`. NOI2015 and GER2018 fractions act only
+when `w_X > 0`.
+
+- `--front` runs one fit per (data set, w_r, w_X) on the grid w_r ∈ {0, 0.01, 0.05, 0.2, 1},
+  w_X ∈ {0, 0.1, 0.3, 1, 3}, scores Θ, X and r_n on **all** the data, marks the Pareto-optimal
+  weights and draws the error trade-offs and a Σ RMSE/σ map with the fitted k and cut-off length
+  (`figures/calibration/front.csv`, `front.png`). Use it to choose `--weight` and `--fraction-weight`.
+- `--study` takes those weights and writes `decision.csv` (in-sample, all-data and
+  leave-one-paper-out RMSE of A, B, C), `paste_blocks.txt`, the leverage / Cook's distance maps
+  (`weights_landau.png`, `influence_landau.png`), `curves.png`, `metrics.csv`, `points.csv`.
 
 ---
 
