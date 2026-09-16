@@ -291,8 +291,8 @@
         },
         "verifiability": {
           "H": "Raw data provided (EBSD maps .ang/.ctf/.h5, TEM images at full resolution, EPMA line data) and the reported value can be recomputed",
-          "M": "Reported values tabulated or stated in the text, with the definition/processing of the indicator",
-          "I": "Value only available in a figure (digitized) or quoted second-hand"
+          "M": "Reported values tabulated or stated in the text, with the definition/processing of the indicator, OR read by the curator from a figure of the same paper with the reading recorded in the provenance (the number is reproducible from the publication)",
+          "I": "Value quoted second-hand, or a reading whose radial position or series cannot be identified"
         }
       },
       "overall_rank": {
@@ -333,7 +333,8 @@
       "verifiability_by_provenance": {
         "raw data published": "H",
         "table or text": "M",
-        "figure (digitized) or second-hand": "I"
+        "figure (digitized by the curator, reading recorded)": "M",
+        "second-hand or unidentifiable reading": "I"
       }
     },
     "license": "Curated tables: CC-BY-4.0 (to be confirmed by curator). Underlying values are facts extracted from the cited publications, which remain under their publishers' copyright; figures are not redistributed.",

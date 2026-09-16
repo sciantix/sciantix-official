@@ -157,13 +157,14 @@ VALIDATION
 ---------------------------------------------------------------------------------
 Against the EBSD dataset shipped in `data/`, `--validate` gives
 
-  mean misorientation  Theta   N = 41   RMSE = 1.7948 deg   R2 = 0.7628
-  restructured fraction X      N = 27   RMSE = 0.1995       R2 = 0.7433
-  subgrain radius       r_n    N = 14   RMSE = 0.1084 um    R2 = 0.4218
+  mean misorientation  Theta   N = 41   RMSE = 1.7713 deg   R2 = 0.7690
+  restructured fraction X      N = 27   RMSE = 0.1948       R2 = 0.7553
+  subgrain radius       r_n    N = 14   RMSE = 0.1030 um    R2 = 0.4771
 
 (Zacharie-Aubrun + Onofri standard UO2 rows; the calibration itself uses all four papers, data
-set B of calibrate.py) and on the 8 PIE points of `validation.py` (Barani 2020 Fig. 4 read at
-T = 900 K), which the model has never seen, RMSE = 0.2369 with R2 = -0.491 on the fraction.
+set C of calibrate.py).  `comparison.py` scores the same model on ALL 127 targets of the four
+papers, weighted by Rose rank x relevance: RMSE_w = 0.1942 with R2_w = +0.723 on the fraction,
+1.896 deg / +0.733 on Theta and 0.1216 um / +0.017 on the radius.
 
 References
 ---------------------------------------------------------------------------------
@@ -244,11 +245,13 @@ GRAIN_RADIUS = 5.0e-6           # m
 #       dislocations engaged in the LAGB over the total.
 # rho_c outer cut-off of the dislocation strain field in Eq. (4).
 #
-# beta, k and rho_c come from `calibrate.py` (data set B, w_r = 0.2, w_X = 1)
+# beta, k and rho_c come from `calibrate.py` (data set C, w_r = 0.2, w_X = 1):
+# all four papers, each point weighted by its Rose quality rank x relevance
+# (hbs_dataset.study_weight), which is also the weighting `comparison.py` scores with.
 N_FAMILIES = 2.0                        # -
-BETA       = 26.605242364755867         # -
-K_SWEEP    = 0.4558161405789498         # -
-RHO_C      = 4540635588860424.0         # m^-2
+BETA       = 26.681642770151456         # -
+K_SWEEP    = 0.5102476353172847         # -
+RHO_C      = 5741121567363591.0         # m^-2
 
 # --- Nogita & Une (1994), Eq. (1) ------------------------------------------
 NOGITA_SLOPE = 2.2e-2           # 1/(GWd/tU)

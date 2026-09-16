@@ -8,9 +8,9 @@ Alcyone radial profile for ONO2025, FTEMP disc temperature for NOI2015; rim burn
 ZAC2022/ONO2025, Barani 2020 for GER2018 and the NOI2015 76 GWd/tHM disc).
 
     load_rows(...)    EBSD rows of ZAC2022 / ONO2025 with the keys `load_ebsd` has always
-                      returned, so that `validate`, `calibrate` and `validation.py` work unchanged
-    load_points(...)  one target per (point, observable) for all four papers, for
-                      calibrate.py
+                      returned, so that `validate` and `calibrate` work unchanged
+    load_points(...)  one target per (point, observable) for all four papers, with its
+                      quality weight, for calibrate.py and comparison.py
 
 Row keys added to the historical ones:
     sample_id, r_over_R, group               position and paper group (ZAC, ONO, GER, NOI; Cr = doped ZAC)
@@ -249,9 +249,26 @@ def load_points(path=None, fabrication_porosity=None, grain_radius=None, theta_m
         for m in point["measurements"]:
             if m["quantity"] == "HBS_area_fraction_EBSD_image":
                 add("fraction", m["value"], "GER2018", ger, point, m["rose_rank"], m["relevance"], "Barani area")
-            if m["quantity"] == "grain_size_dA" and r >= ger_rim_min and m["provenance"].startswith("Fig."):
-                add("radius", m["value"] / 2.0 * 1e-6, "GER2018", ger, point, m["rose_rank"], m["relevance"], "dA/2")
+        # rim dA: the paper gives the same position both in the text and as a Fig. 8 marker, so
+        # keep ONE value per radius -- the best-ranked, and the text one when the ranks tie
+        # (a stated number is exact, a marker is read off the raster).
+        best = _best_rim_da(point, r, ger_rim_min)
+        if best is not None:
+            add("radius", best["value"] / 2.0 * 1e-6, "GER2018", ger, point,
+                best["rose_rank"], best["relevance"], "dA/2")
     return points, notes
+
+
+def _best_rim_da(point, r, ger_rim_min):
+    """The GER2018 rim grain size to use at this radius, or None."""
+    if r is None or r < ger_rim_min:
+        return None
+    candidates = [m for m in point["measurements"]
+                  if m["quantity"] == "grain_size_dA" and m["value"] is not None]
+    if not candidates:
+        return None
+    return min(candidates, key=lambda m: (RANK_ORDER.get(m["rose_rank"], 9),
+                                          (m["provenance"] or "").startswith("Fig.")))
 
 
 def summary(rows):

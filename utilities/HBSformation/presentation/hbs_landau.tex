@@ -16,7 +16,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
-\graphicspath{{../figures/}{../../../regression/hbs/figures/}}
+\graphicspath{{../figures/}{../figures/calibration/}{../../../regression/hbs/figures/}}
 
 \definecolor{good}{RGB}{20,120,60}
 \definecolor{bad}{RGB}{178,34,34}
@@ -68,25 +68,33 @@
 \end{frame}
 
 \begin{frame}{The data this model is built on}
-  \textbf{EBSD} --- Zacharie-Aubrun \emph{et al.} (2022), Onofri \emph{et al.} (2025).
-  42 radial positions on 7 rods, with TRANSURANUS local conditions.
-
-  \begin{center}
   \small
-  \begin{tabular}{lcl}
+  
+  \begin{center}
+  \footnotesize
+  \begin{tabular}{llccc}
     \toprule
-    quantity & $N$ & what it is \\
+    paper & technique & $\Theta$ & $X$ & $r_n$ \\
     \midrule
-    mean misorientation $\Theta$        & 41 & $[\,A_{\text{Mis}}(f_1-f_{10}) + 10 f_{10}\,]/100$ \\
-    restructured fraction $X$           & 27 & $f_{10}$, area fraction above $10^\circ$ \\
-    subgrain radius $r_n$               & 14 & ECD50\,\%\,$/2$\\
+    Zacharie-Aubrun (2022), standard UO$_2$ & EBSD                         & 27 & 27 & 14 \\
+    Zacharie-Aubrun (2022), Cr-doped        & EBSD                         & 11 & 11 &  8 \\
+    Onofri (2025)                           & EBSD, no restructuring ($\Theta = 0$) & 14 & -- & -- \\
+    Gerczak (2018)                          & image analysis (Barani 2020), $d_A/2$ & -- &  5 &  3 \\
+    Noirot (2015)                           & Xe-depleted area                &  -- &  6 & -- \\
+    \midrule
+    \textbf{total}                          &                              & \textbf{52} & \textbf{49} & \textbf{25} \\
     \bottomrule
   \end{tabular}
   \end{center}
 
-  \vspace{0.2em}
   \footnotesize
-  $1^\circ$ is the lower bin edge of the dataset.
+  $\Theta = [\,A_{\text{Mis}}(f_1-f_{10}) + 10 f_{10}\,]/100$; \quad
+  
+  $X = f_{10}$, area fraction above $10^\circ$; \quad
+  
+  $r_n = \text{ECD50}\,\%/2$.
+
+  $1^\circ$ is the lower bin edge of the EBSD data.
 \end{frame}
 
 % ---------------------------------------------------------------------
@@ -139,7 +147,7 @@
 % ---------------------------------------------------------------------
 \begin{frame}{Why a phase transition could be the right shape for this problem}
   \begin{columns}
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.35\textwidth}
       \textbf{The HBS forms \emph{continuously}}
 
       \small
@@ -149,7 +157,7 @@
       alternative to the nucleation-and-growth picture KJMA describes.\footnotemark[5]
 
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.6\textwidth}
       \textbf{A continuous transformation has an order parameter}
 
       \small
@@ -179,10 +187,10 @@
     \midrule
     what is solved      & a \emph{kinetic} law along a path & the \emph{equilibrium} of a state \\
     driver              & burnup or $\rho$ threshold      & $\rho (bu)$ through $C_2$ \\
-    free parameters     & $K$, $n$ fitted on $X$             & $\beta$, $k$, $\rho_c$ fitted on $\Theta$, $r_n$ \\
-    predicts $X$        & by construction                    & \good{yes} \\
+    free parameters     & $K$, $n$ fitted on $X$             & $\beta$, $k$, $\rho_c$ fitted jointly on $\Theta$, $X$, $r_n$ \\
+    predicts $X$        & by construction                    & \good{yes}, lever rule, no extra parameter \\
     predicts $\Theta$, $r_n$ & no                            & \good{yes} \\
-    reversible?         & no, monotone by construction       & \alert{yes} --- see below \\
+    reversible?         & no, by construction                & yes, see below \\
     \bottomrule
   \end{tabular}
   \end{center}
@@ -319,59 +327,195 @@
       \eta_{\text{eq}} = \min\!\left(\sqrt{-\tfrac{C_2}{2C_4}},\; \eta_{\text{bal}}\right)
     \]
   \end{block}
+
+  \small
+  With the current calibration the bound \alert{never binds} (0 of the 41 standard EBSD points,
+  no burnup at 600\,K): it stays in the model as a physical constraint, not as an active branch.
 \end{frame}
 % 
 % =====================================================================
-\section{Results}
+\section{Calibration}
 % =====================================================================
 
-\begin{frame}{Calibration}
+\begin{frame}{The objective and the three data sets}
   \begin{columns}[T]
-    \begin{column}{0.46\textwidth}
-      Joint fit of $\beta,k,\rho_c$ on $\Theta$ \emph{and} the subgrain sizes, while the restructured fraction is \emph{not} in the objective.
-      \[ J = \frac{\langle \Delta\Theta^2\rangle}{\mathrm{var}\,\Theta}
-           + w\,\frac{\langle \Delta r^2\rangle}{\mathrm{var}\,r} \]
-%      dimensionless and symmetric; \texttt{differential\_evolution}, 6 seeds, all
-%      converging to $J = 0.2398$.
+    \begin{column}{0.5\textwidth}
+      Joint fit of $\beta, k, \rho_c$ ($n = 2$ fixed) on all three observables:
+      \[ J = \frac{\langle \Delta\Theta^2\rangle_w}{\mathrm{var}\,\Theta}
+           + w_r\,\frac{\langle \Delta r^2\rangle_w}{\mathrm{var}\,r}
+           + w_X\,\frac{\langle \Delta X^2\rangle_w}{\mathrm{var}\,X} \]
+      \footnotesize
+      dimensionless; 
+      
+      $\langle\cdot\rangle_w$: average with a weight $w_i$ per point.
     \end{column}
-    \begin{column}{0.52\textwidth}
+    \begin{column}{0.48\textwidth}
       \small
-      \begin{tabular}{lr}
+      \begin{tabular}{cp{0.85\linewidth}}
         \toprule
-        $n$ (not fitted) & 2 \\
-        $\beta$   & 26.605 \\
-        $k$       & 0.4558 \\
-        $\rho_c$  & 4.541e15 m$^{-2}$ \\
+        set & points, weights \\
+        \midrule
+        A & Zacharie-Aubrun + Onofri, standard UO$_2$; $w_i = 1$ \\
+        B & all four papers; $w_i = 1$ \\
+        C & as B, $w_i = \text{rank factor}\times\text{relevance}/3$ \\
+        \bottomrule
+      \end{tabular}
+
+      \vspace{0.4em}
+      \footnotesize
+      rank factor: A, B $\to 1$; U$^*$ $\to 0.5$; U $\to 0.25$.
+    \end{column}
+  \end{columns}
+
+  \vspace{0.6em}
+  \small
+  Two questions:
+  \begin{enumerate}
+    \item \textbf{which weights} $w_r, w_X$? 
+    \item \textbf{which data set}? 
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Where the data come from: quality rank $\times$ relevance}
+
+  \[ w_i \;=\; \underbrace{f(\text{Rose rank})}_{\text{how well it was measured}}
+     \;\times\; \underbrace{\text{relevance}/3}_{\text{how close to our application}} \]
+
+  \vspace{0.5em}
+  \begin{columns}[T]
+    \begin{column}{0.53\textwidth}
+      \footnotesize
+      \textbf{1. Rose rank} --- M.A. Rose, ANL/CFCT-22/26 (2022) (MSTDB-TP), re-worded
+      for post-irradiation microscopy. Six aspects marked H/M/I: \emph{method,
+      calibration, sample characterisation, irradiation conditions, measurement
+      precision, verifiability}.
+
+      \vspace{0.3em}
+      \scriptsize
+      \begin{tabular}{@{}cl@{\hspace{0.8em}}r@{}}
+        \toprule
+        rank & assigned when & $f$ \\
+        \midrule
+        A     & all H/M \emph{and} verifiability H        & 1 \\
+        B     & $\geq 2$ H/M \emph{and} verifiab.\ H/M    & 1 \\
+        U$^*$ & all but verifiability H/M, unc.\ unusable & 0.5 \\
+        U     & uncertainties bar quantitative use        & 0.25 \\
+        \bottomrule
+      \end{tabular}
+
+    \end{column}
+
+    \begin{column}{0.44\textwidth}
+      \footnotesize
+      \textbf{2. Relevance} (1--3).
+
+      \vspace{0.2em}
+      \scriptsize
+      \begin{tabular}{@{}lc@{}}
+        \toprule
+        sample class & relevance \\
+        \midrule
+        PWR standard UO$_2$      & 3 \\
+        PWR Cr-doped UO$_2$      & 2 \\
+        Halden disc, std         & 2 \\
+        Halden disc, large grain & 1 \\
         \bottomrule
       \end{tabular}
     \end{column}
   \end{columns}
 
-  \vspace{1em}
-
-  The calibration results are summarized in the table below.
-
-  \begin{center}
-    \begin{tabular}{lc}
-      \toprule
-      & RMSE / $R^2$ \\
-      \midrule
-      $\Theta$ \quad ($N=41$, calibrated)  & 1.7616$^\circ$ /  0.772 \\
-      $X$ \quad ($N=27$, \emph{not} fitted)  & \good{0.2122 / 0.710} \\
-      $r_n$ \quad ($N=14$, calibrated)    & 0.0678\,$\mu$m /  0.774 \\
-      \midrule
-      PIE fraction ($N=8$, \alert{out-of-sample}) & 0.1461 / $+0.433$ \\
-      \bottomrule
-    \end{tabular}
-    \end{center}
-
 \end{frame}
 
-\begin{frame}{Validation against both datasets}
+\begin{frame}{Choosing the weights: the calibration front}
+  \center
+  \includegraphics[width=0.7\textwidth]{front.png}
+\end{frame}
+
+\begin{frame}{The calibrated parameters}
+  \begin{columns}[T]
+    \begin{column}{0.4\textwidth}
+      \small
+      \textbf{Set C}, $w_r = 0.2$, $w_X = 1$ \\
+      \footnotesize all four papers, each point weighted by
+      quality rank $\times$ relevance
+
+      \vspace{0.3em}
+      \small
+      \begin{tabular}{lr}
+        \toprule
+        $n$ (not fitted) & 2 \\
+        $\beta$   & 26.682 \\
+        $k$       & 0.5102 \\
+        $\rho_c$  & 5.741e15 m$^{-2}$ \\
+        \bottomrule
+      \end{tabular}
+
+      \vspace{0.4em}
+    \end{column}
+    \begin{column}{0.58\textwidth}
+      \small
+      \textbf{In sample, all four papers} \\
+      \footnotesize weighted, with the \textcolor{gray}{unweighted} beside it
+
+      \vspace{0.3em}
+      \small
+      \begin{tabular}{lccc}
+        \toprule
+        & $N$ & RMSE / $R^2$ & \textcolor{gray}{plain} \\
+        \midrule
+        $\Theta$ & 52 & 1.896$^\circ$ / 0.733 & \textcolor{gray}{1.864 / 0.749} \\
+        $X$      & 49 & 0.194 / 0.723         & \textcolor{gray}{0.184 / 0.744} \\
+        $r_n$    & 26 & 0.122\,$\mu$m / \bad{0.02} & \textcolor{gray}{0.122 / \bad{$-0.04$}} \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.8em}
+  \small
+  \begin{itemize}
+    \item $X$ is \textbf{in the objective}.
+    \item The size is still the price: $R^2 \approx 0$ on all 26 radii --- standard
+      UO$_2$ alone is $+0.47$, dragged down by the Cr-doped ($-1.41$).
+  \end{itemize}
+\end{frame}
+
+% =====================================================================
+\section{Results}
+% =====================================================================
+
+\begin{frame}{Comparison with the other options and with all the data}
   \begin{center}
-    \includegraphics[width=1\textwidth]{validation.png}
+          \includegraphics[width=0.8\textwidth]{comparison.png}
   \end{center}
-  \footnotesize
+
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \scriptsize
+      \textbf{Restructured fraction $X$}, all $N = 49$  (weighted; plain in grey)
+
+      \begin{tabular}{lrr}
+        \toprule
+        option & RMSE & $R^2$ \\
+        \midrule
+        1 KJMA              & 0.389 & $-0.11$ \\
+        2 KJMA$+bu_{\text{inc}}$ & 0.217 & $+0.65$ \\
+        3 $\rho_d$          & 0.232 & $+0.60$ \\
+        \textbf{4 Landau}   & \textbf{0.194} & $\mathbf{+0.72}$ \\
+        \midrule
+        \multicolumn{3}{@{}l@{}}{\textcolor{gray}{plain: 0.380 / 0.204 / 0.227 / \textbf{0.184}}} \\
+        \bottomrule
+      \end{tabular}
+  
+    \end{column}
+
+    \begin{column}{0.3\textwidth}
+                  \scriptsize
+           Option 4 only: $\Theta$ 1.90$^\circ$ / $+0.73$ ($N = 52$),
+      $r_n$ 0.122\,$\mu$m / $+0.02$ ($N = 26$). Fit \textbf{C}, the same weights.
+ 
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Against the three models SCIANTIX already had}
@@ -383,21 +527,21 @@
     \toprule
     threshold & 1 KJMA & 2 KJMA$+bu_{\text{inc}}$ & 3 $\rho_d$ & \textbf{4 Landau} \\
     \midrule
-    1\,\%  & 19.5  & 34.5  & 51.2  & \textbf{51.1} \\
-    10\,\% & 37.8  & 52.8  & 54.8  & \textbf{53.5} \\
-    50\,\% & 64.2  & 79.3  & 72.3  & \textbf{67.7} \\
-    90\,\% & 90.1  & 105.2 & 112.3 & \textbf{87.7} \\
-    99\,\% & 109.7 & 124.6 & 161.7 & \textbf{91.1} \\
+    1\,\%  & 19.5  & 34.5  & 51.2  & \textbf{45.0} \\
+    10\,\% & 37.8  & 52.8  & 54.8  & \textbf{58.6} \\
+    50\,\% & 64.2  & 79.3  & 72.3  & \textbf{89.2} \\
+    90\,\% & 90.1  & 105.2 & 112.3 & \textbf{105.1} \\
+    99\,\% & 109.7 & 124.6 & 161.7 & \textbf{107.8} \\
     \bottomrule
   \end{tabular}
   \end{center}
 
   \begin{itemize}
-    \item At the onset, option 4 lands \good{within 0.1 MWd/kgU of option 3}.
-    \item They part at the top: the lever rule \alert{saturates} when $\Theta$ hits the
-      $10^\circ$ cap, whereas KJMA approaches 1 asymptotically. Option 4 is done by
-      91 MWd/kgU, option 3 not before 162.
-    \item Option 4 spans the transition in \textbf{40 MWd/kgU} against 90 for option 1.
+    \item Option 4 starts \textbf{between options 2 and 3} (45 MWd/kgU) but rises more slowly:
+      its 50\,\% crossing is the \alert{latest of the four}.
+    \item It still \alert{saturates}: $\Theta$ hits the $10^\circ$ cap and $X = 1$ at
+      108 MWd/kgU, whereas KJMA approaches 1 asymptotically.
+    \item The 1--99\,\% span is \textbf{63 MWd/kgU}, against 90 for option 1 and 110 for option 3.
   \end{itemize}
 \end{frame}
 
@@ -413,12 +557,13 @@
     \begin{column}{0.25\textwidth}
       \small
       \vspace{0.6em}
-      Largest deviation \bad{$+0.044$ absolute at 91.3\,MWd/kgHM} ($+36\,\%$), exactly
-      the saturation burnup.
+      Largest deviation from option 2 (\texttt{test\_UO2HBS}):
+      \bad{$+0.044$ absolute at 95.2\,MWd/kgHM} ($+28\,\%$).
       \vspace{0.4em}
       \footnotesize
-      Held against option 2 in \texttt{test\_UO2HBS}; all four options end within
-      \good{0.17\,\%} of the same porosity.
+      Option 4 overshoots to 0.180 at 108\,MWd/kgU ---
+      its saturation --- and dips by \bad{14.5\,\%} after it.
+      All four options still end within \good{0.37\,\%} of the same porosity.
     \end{column}
   \end{columns}
 \end{frame}
@@ -691,6 +836,14 @@
       \emph{J.\ Nucl.\ Mater.} \textbf{615} (2025) 155981.
       \hfill{\itshape the other 14}
 
+    \bibitem{gerczak2018} T.J.\ Gerczak, C.M.\ Parish, P.D.\ Edmondson, C.A.\ Baldwin, K.A.\ Terrani,
+      \emph{J.\ Nucl.\ Mater.} \textbf{509} (2018) 245--259.
+      \hfill{\itshape rim fraction and $d_A$, H.B.\ Robinson}
+
+    \bibitem{noirot2015} J.\ Noirot, Y.\ Pontillon, S.\ Yagnik, J.A.\ Turnbull,
+      \emph{J.\ Nucl.\ Mater.} \textbf{462} (2015) 77--84.
+      \hfill{\itshape Xe-depleted area, Halden discs}
+
     \bibitem{nea2024} NEA,
       \emph{Recommendations on nuclear fuel properties}, NEA/NSC/R(2024)1 (2025), p.\ 124.
       \hfill{\itshape Eq.~(2), $G$ and $\nu$}
@@ -736,15 +889,15 @@
         \toprule
         condition & $bu$ [GWd/tU] \\
         \midrule
-        $C_2 = 0$, $\Theta$ leaves 0     & 49.56 \\
-        $\Theta = \theta_u$, $X$ leaves 0 & 50.81 \\
-        $\Theta = \theta_{\text{HAGB}}$   & 91.32 \\
+        $C_2 = 0$, $\Theta$ leaves 0     & 18.88 \\
+        $\Theta = \theta_u$, $X$ leaves 0 & 42.99 \\
+        $\Theta = \theta_{\text{HAGB}}$   & 108.07 \\
         \bottomrule
       \end{tabular}
 
       \vspace{0.8em}
-      The balance bound sets $\eta$ over roughly \textbf{65.6--91.3 GWd/tU}, and at
-      11 of the 41 EBSD points.
+      With the set-B parameters the balance bound of Eq.~(7b) \textbf{never binds}:
+      $\eta$ is always the stationary point of Eq.~(7).
     \end{column}
     \begin{column}{0.5\textwidth}
       \textbf{Fixed constants}
@@ -777,6 +930,14 @@
   \end{center}
   \footnotesize
   \texttt{python3 hbs\_formation\_landau.py -{}-plot}
+\end{frame}
+
+\begin{frame}{Backup --- fits A, B, C against the data}
+  \begin{center}
+    \includegraphics[height=0.82\textheight]{curves.png}
+  \end{center}
+  \footnotesize
+  \texttt{python3 calibrate.py -{}-study -{}-weight 0.2 -{}-fraction-weight 1}
 \end{frame}
 
 \begin{frame}{Backup --- the four regression cases, as they ship}

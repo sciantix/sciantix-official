@@ -241,7 +241,9 @@
       "region_bounds_inferred": "radial bounds of the region inferred by curator",
       "third_party_image_analysis": "value obtained by another group analysing the published images",
       "assumed_value": "value assumed by the secondary source, not measured",
-      "derived_estimate": "estimate derived from another quantity by the secondary source"
+      "derived_estimate": "estimate derived from another quantity by the secondary source",
+      "position_inferred_from_layer_thickness": "radial position not stated; inferred from a reported layer thickness",
+      "burnup_extrapolated": "local burnup extrapolated beyond the end of the published radial profile"
     },
     "rose_quality_ranking": {
       "framework": {
@@ -283,8 +285,8 @@
         },
         "verifiability": {
           "H": "Raw data provided (EBSD maps .ang/.ctf/.h5, TEM images at full resolution, EPMA line data) and the reported value can be recomputed",
-          "M": "Reported values tabulated or stated in the text, with the definition/processing of the indicator",
-          "I": "Value only available in a figure (digitized) or quoted second-hand"
+          "M": "Reported values tabulated or stated in the text, with the definition/processing of the indicator, OR read by the curator from a figure of the same paper with the reading recorded in the provenance (the number is reproducible from the publication)",
+          "I": "Value quoted second-hand, or a reading whose radial position or series cannot be identified"
         }
       },
       "overall_rank": {
@@ -325,7 +327,8 @@
       "verifiability_by_provenance": {
         "raw data published": "H",
         "table or text": "M",
-        "figure (digitized) or second-hand": "I"
+        "figure (digitized by the curator, reading recorded)": "M",
+        "second-hand or unidentifiable reading": "I"
       }
     },
     "license": "Curated tables: CC-BY-4.0 (to be confirmed by curator). Underlying values are facts extracted from the cited publications, which remain under their publishers' copyright; figures are not redistributed.",
@@ -1698,8 +1701,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1726,8 +1729,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1755,8 +1758,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1784,8 +1787,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1812,8 +1815,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -1868,8 +1871,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1896,8 +1899,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1925,8 +1928,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1954,8 +1957,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -1982,8 +1985,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -2038,8 +2041,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2066,8 +2069,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2095,8 +2098,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2124,8 +2127,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2152,8 +2155,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -2208,8 +2211,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2236,8 +2239,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2265,8 +2268,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2294,8 +2297,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2322,8 +2325,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -2378,8 +2381,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2406,8 +2409,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2435,8 +2438,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2464,8 +2467,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2492,8 +2495,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -2548,8 +2551,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2576,8 +2579,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2605,8 +2608,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2634,8 +2637,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2662,8 +2665,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -2745,8 +2748,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2773,8 +2776,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2802,8 +2805,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2831,8 +2834,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -2859,8 +2862,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -2975,8 +2978,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3003,8 +3006,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3032,8 +3035,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3061,8 +3064,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3089,8 +3092,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -3145,8 +3148,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3173,8 +3176,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3202,8 +3205,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3231,8 +3234,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3259,8 +3262,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3374,8 +3377,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3402,8 +3405,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3431,8 +3434,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3460,8 +3463,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3488,8 +3491,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -3544,8 +3547,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3572,8 +3575,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3601,8 +3604,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3630,8 +3633,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3659,8 +3662,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3687,8 +3690,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3802,8 +3805,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3830,8 +3833,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3859,8 +3862,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3888,8 +3891,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -3916,8 +3919,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -3972,8 +3975,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4000,8 +4003,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4029,8 +4032,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4058,8 +4061,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4086,8 +4089,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -4142,8 +4145,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4170,8 +4173,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4199,8 +4202,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4228,8 +4231,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4256,8 +4259,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4371,8 +4374,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4399,8 +4402,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4428,8 +4431,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4457,8 +4460,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4486,8 +4489,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4515,8 +4518,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4543,8 +4546,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4658,8 +4661,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4686,8 +4689,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4715,8 +4718,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4744,8 +4747,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4772,8 +4775,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -4829,8 +4832,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -4858,14 +4861,14 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
         },
         {
-          "r_over_R": null,
+          "r_over_R": 1.0,
           "r_over_R_range": [
             0.97,
             1.0
@@ -4876,21 +4879,21 @@
             "EBSD"
           ],
           "temperature": {
-            "value_C": 433.6,
+            "value_C": 419.0,
             "range_C": null,
             "centreline_C": 912.5,
             "basis": "model",
-            "definition": "local temperature at the middle of the range (r/ro = 0.985), burnup-averaged (Halden conductivity, Gerczak Fig. 1, power shape from Barani 2020)",
+            "definition": "local temperature at r/ro = 1.0 (outer edge of the 150 um HBS layer, M0278), burnup-averaged (Halden conductivity, Gerczak Fig. 1, power shape from Barani 2020); was 433.6 C at the range midpoint r/ro = 0.985",
             "code": "Halden correlation (Gerczak) centreline history + Halden k (local_conditions_model)",
-            "source": "GER2018 Fig. 1 digitized, trapezoid average over burnup 0.275656-71.6317 MWd/kgU [automatic]"
+            "source": "GER2018 Fig. 1 digitized + local_conditions_model, quadratic through the r/ro 0.95-0.99 nodes evaluated at 1.0"
           },
           "burnup": {
-            "value_GWd_tU": 72.0,
+            "value_GWd_tU": 149.0,
             "specimen_average_GWd_tU": 72.0,
             "rod_average_GWd_tU": null,
-            "basis": "average",
-            "definition": "specimen burnup (no radial position)",
-            "source": "GER2018 table 1 ('Specimen burnup [MWd/kgU]') x local_conditions_model.burnup_profile"
+            "basis": "model",
+            "definition": "local burnup at r/ro = 1.0, EXTRAPOLATED beyond the end of the Barani 2020 profile (last node r/ro = 0.99, 129.4 MWd/kgU). Quadratic through the 0.95-0.99 nodes and a linear extension of the last segment both give 149; an exponential fit gives 135. Specimen average 72.0.",
+            "source": "Barani 2020 Fig. 2 (TRANSURANUS TUBRNP local burnup), extrapolated to r/ro = 1.0"
           },
           "measurements": [
             {
@@ -4914,9 +4917,11 @@
               "provenance": "text p.251",
               "flags": [
                 "no_uncertainty",
-                "range_midpoint"
+                "range_midpoint",
+                "position_inferred_from_layer_thickness",
+                "burnup_extrapolated"
               ],
-              "note": "field ~25x40 um",
+              "note": "field ~25x40 um; placed at the outer edge r/ro = 1.0 of the 150 um HBS layer (M0278), the position the paper's text implies; the value is a field average over the layer, so the burnup assigned is the layer maximum, not its average",
               "rose_rank": "B",
               "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3.0
@@ -4973,8 +4978,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5001,8 +5006,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5030,8 +5035,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5059,8 +5064,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5087,8 +5092,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -5144,8 +5149,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5173,8 +5178,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -5229,8 +5234,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5257,8 +5262,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5285,8 +5290,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -5342,8 +5347,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5371,8 +5376,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]
@@ -5484,8 +5489,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5512,8 +5517,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5540,8 +5545,8 @@
                 "no_uncertainty"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5658,8 +5663,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             },
             {
@@ -5687,8 +5692,8 @@
                 "x_read_pm_0.005"
               ],
               "note": null,
-              "rose_rank": "U",
-              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:I",
+              "rose_rank": "B",
+              "quality_marks": "meth:M cali:I samp:M irra:M meas:I veri:M",
               "relevance": 3
             }
           ]

@@ -1,0 +1,33 @@
+dataset: /home/ecappellari/Work/sciantix-official/utilities/HBSformation/data   w_r = 0.2   w_X = 1
+
+Fit A · Zacharie-Aubrun + Onofri (standard UO₂), equal weights: theta N=41, radius N=14, fraction N=27
+  k = 0.6611  beta = 26.28  rho_c = 1.185e+16 (cut-off 0.00919 um)   J = 0.5443
+    theta    N=41  RMSE 1.726  R2 +0.781
+    radius   N=14  RMSE 0.1016 um  R2 +0.492
+    fraction N=27  RMSE 0.186  R2 +0.777
+
+Fit B · all four papers, equal weights: theta N=52, radius N=25, fraction N=49
+  k = 0.4558  beta = 26.61  rho_c = 4.541e+15 (cut-off 0.0148 um)   J = 0.6947
+    theta    N=52  RMSE 1.866  R2 +0.749
+    radius   N=25  RMSE 0.1178 um  R2 +0.062
+    fraction N=49  RMSE 0.1841  R2 +0.744
+
+Fit C · all four papers, weighted by quality rank × relevance: theta N=52, radius N=25, fraction N=49
+  k = 0.5018  beta = 26.1  rho_c = 5.547e+15 (cut-off 0.0134 um)   J = 0.7703
+    theta    N=52  RMSE 1.864  R2 +0.749
+    radius   N=25  RMSE 0.1193 um  R2 +0.038
+    fraction N=49  RMSE 0.1847  R2 +0.743
+
+leave one paper out (all data, equal weights):
+  without ZAC  k=0.202 beta=27.6 rho_c=1.95e+15   held-out RMSE  Θ 2.398   X 0.2414   r_n 0.1381 um
+  without Cr   k=0.74 beta=27.3 rho_c=1.1e+16   held-out RMSE  Θ 2.301   X 0.2191   r_n 0.1872 um
+  without ONO  k=0.487 beta=26.6 rho_c=4.41e+15   held-out RMSE  Θ 0.8578   X    r_n  um
+  without GER  k=0.407 beta=26.1 rho_c=4.51e+15   held-out RMSE  Θ    X 0.1004   r_n 0.1619 um
+  without NOI  k=0.451 beta=26.4 rho_c=4.77e+15   held-out RMSE  Θ    X 0.1397   r_n  um
+
+  set  in sample Θ | X | r_n       all data Θ | X | r_n       leave one paper out (fit B)
+  A     1.726 |  0.186 | 0.1016   1.891 | 0.1916 | 0.1338         |        |       
+  B     1.866 | 0.1841 | 0.1178   1.866 | 0.1841 | 0.1178   2.074 | 0.2152 | 0.1583
+  C     1.864 | 0.1847 | 0.1193   1.864 | 0.1847 | 0.1193         |        |       
+
+written: /home/ecappellari/Work/sciantix-official/utilities/HBSformation/figures/calibration/{decision.csv, paste_blocks.txt, metrics.csv, points.csv, weights_landau.png, influence_landau.png, curves.png}

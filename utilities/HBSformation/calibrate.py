@@ -13,7 +13,7 @@ with `differential_evolution` over (k, beta, log10 rho_c) from several seeds.
 
 MODES
     python3 calibrate.py [--scenario A|B|C] [--weight W_R] [--fraction-weight W_X] ...
-        defaults: data set B, w_r = 0.2, w_X = 1, 6 seeds (the choice made on the calibration front)
+        defaults: data set C, w_r = 0.2, w_X = 1, 6 seeds (the choice made on the calibration front)
         one fit; prints the parameters ready to paste into hbs_formation_landau.py and into the
         case 4 parameter push of src/models/HighBurnupStructureFormation.C
 
@@ -89,7 +89,7 @@ BOUNDS_LOG10_RHO_C = (8.0, 20.0)
 WEIGHT_DEFAULT = 0.2           # w_r, size term (chosen on the calibration front)
 FRACTION_WEIGHT_DEFAULT = 1.0  # w_X, fraction term (chosen on the calibration front)
 SEEDS_DEFAULT = 6
-SCENARIO_DEFAULT = "B"         # all four papers, equal weights
+SCENARIO_DEFAULT = "C"         # all four papers, weighted by quality rank x relevance
 
 FRONT_W_R = (0.0, 0.01, 0.05, 0.2, 1.0)
 FRONT_W_X = (0.0, 0.1, 0.3, 1.0, 3.0)

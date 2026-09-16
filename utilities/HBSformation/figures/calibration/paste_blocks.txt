@@ -1,0 +1,38 @@
+# Landau model — Fit A · Zacharie-Aubrun + Onofri (standard UO₂), equal weights, w_r = 0.2, w_X = 1
+#   utilities/HBSformation/hbs_formation_landau.py
+N_FAMILIES = 2.0   # -
+BETA       = 26.282704549278066   # -
+K_SWEEP    = 0.661134259037766   # -
+RHO_C      = 1.1845451054599884e+16   # m^-2
+#   src/models/HighBurnupStructureFormation.C, case 4 parameter push (offsets 0-3)
+parameter.push_back(2.0);  // n, dislocation families in a wall
+parameter.push_back(26.282704549278066);  // beta, wall geometry
+parameter.push_back(0.661134259037766);  // k, sweeping
+parameter.push_back(1.1845451054599884e+16);  // rho_c, strain-field cut-off (m^-2)
+#   rho_c^(-1/2) = 0.0092 um
+
+# Landau model — Fit B · all four papers, equal weights, w_r = 0.2, w_X = 1
+#   utilities/HBSformation/hbs_formation_landau.py
+N_FAMILIES = 2.0   # -
+BETA       = 26.76175572543447   # -
+K_SWEEP    = 0.45364140428511845   # -
+RHO_C      = 4572167061544423.0   # m^-2
+#   src/models/HighBurnupStructureFormation.C, case 4 parameter push (offsets 0-3)
+parameter.push_back(2.0);  // n, dislocation families in a wall
+parameter.push_back(26.76175572543447);  // beta, wall geometry
+parameter.push_back(0.45364140428511845);  // k, sweeping
+parameter.push_back(4572167061544423.0);  // rho_c, strain-field cut-off (m^-2)
+#   rho_c^(-1/2) = 0.0148 um
+
+# Landau model — Fit C · all four papers, weighted by quality rank × relevance, w_r = 0.2, w_X = 1
+#   utilities/HBSformation/hbs_formation_landau.py
+N_FAMILIES = 2.0   # -
+BETA       = 26.681642770151456   # -
+K_SWEEP    = 0.5102476353172847   # -
+RHO_C      = 5741121567363591.0   # m^-2
+#   src/models/HighBurnupStructureFormation.C, case 4 parameter push (offsets 0-3)
+parameter.push_back(2.0);  // n, dislocation families in a wall
+parameter.push_back(26.681642770151456);  // beta, wall geometry
+parameter.push_back(0.5102476353172847);  // k, sweeping
+parameter.push_back(5741121567363591.0);  // rho_c, strain-field cut-off (m^-2)
+#   rho_c^(-1/2) = 0.0132 um
