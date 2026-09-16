@@ -89,20 +89,20 @@ T0 = 1.0                            # s      time unit of the mobilities
 class PhaseFieldParameters:
     """Table 1 of the paper (Cu), plus the dislocation-energy inputs."""
 
-    f0: float = 371.0e3             # Pa
+    f0: float = 371.0e3             # Pa     normalization coefficient
     nu: float = 1.0e-6              # m
     alpha: float = 20.0             # -
     mu: float = 2.5e-6 / math.pi    # m
     c: float = 3.0                  # -      Read-Shockley log term, Eq. (35)
     tau_eta: float = 1.0e4          # f0*t0  heat-treatment value
     tau_hat: float = 1.0e1          # f0*t0  heat-treatment value
-    lam: float = 0.3                # -      lambda, Eq. (15)
+    lam: float = 0.3                # -      lambda
     shear_modulus: float = 75.0e9   # Pa     mu^e
     burgers: float = 0.2556e-9      # m
-    c1: float = 100.0               # -      Eq. (37)
-    c2: float = 0.95                # -
-    c3: float = 1.7                 # -
-    c_d: float = 100.0              # -      recovery, Eq. (28)
+    c1: float = 100.0               # -      Fig. 4 of the paper
+    c2: float = 0.95                # -      Fig. 4 of the paper
+    c3: float = 1.7                 # -      Fig. 4 of the paper
+    c_d: float = 100.0              # -      recovery, Eq. (28), fig. 4 of the paper
 
     @property
     def stored_energy_per_rho(self):
@@ -117,7 +117,7 @@ def _g_raw(eta, c):
     return (7.0 * eta ** 3 - 6.0 * eta ** 4) / (1.0 - eta) ** 3 + c * np.log(1.0 - eta)
 
 
-def g_offset(c):
+def g_offset(c): #TBC
     """Eq. (36): shift so that g >= 0.01 on [0, 1)."""
     eta = np.linspace(0.0, ETA_CUTOFF, 200001)
     return -min(_g_raw(eta, c).min(), 0.0) + 0.01
@@ -279,12 +279,14 @@ def run_case(p, delta_theta_deg, rho0, t_end=1.0e4, grid=None, samples=(), every
     hit = np.flatnonzero(rho_c < 0.1 * rho0) if rho0 > 0 else np.array([], int)
     t_recovery = float(sol.t[hit[0]]) if hit.size else math.nan
     ends_crystalline = hit.size and min(sol.y[0, hit[0]], sol.y[n - 1, hit[0]]) > p.c2
+    # recovery alone is not a nucleus: the centre must also become crystalline
+    centre_ordered = hit.size and sol.y[centre, hit[0]:].max() > 0.95
 
     theta_c = math.degrees(sol.y[n + centre, -1])
     rho = sol.y[2 * n:, -1]
     recrystallised = float(np.mean(rho < 0.1 * rho0)) if rho0 > 0 else 0.0
     return Outcome(delta_theta_deg, rho0, eta_equilibrium(rho0, p), eta_gb0,
-                   bool(ends_crystalline), t_recovery, recrystallised, theta_c,
+                   bool(ends_crystalline and centre_ordered), t_recovery, recrystallised, theta_c,
                    relaxed, sol)
 
 
@@ -480,8 +482,8 @@ def plot_profiles(p, delta_theta_deg, rho0, path, title, grid=None):
 
     grid = grid or Grid()
     n = grid.cells
-    times = [1e2, 1e3, 2e3]
-    styles = ["-", "--", ":"]
+    times = [0.0, 1e1, 1e2, 1e3, 2e3, 5e3, 1e4]
+    colors = ["tab:red", "tab:blue", "tab:green", "tab:orange", "tab:purple", "tab:brown", "tab:pink"]
     fig, axes = plt.subplots(1, 3, figsize=(13, 3.8))
 #    for c_d, colour in [(0.0, "tab:red"), (p.c_d, "tab:blue")]:
     for c_d, colour in [(p.c_d, "tab:blue")]:
@@ -490,12 +492,12 @@ def plot_profiles(p, delta_theta_deg, rho0, path, title, grid=None):
         print(f"  C_D = {c_d:g}: nucleated = {out.nucleated}, "
               f"t_recovery = {out.t_recovery:g} s")
         x = grid.x * 1e6
-        for k, ls in enumerate(styles):
+        for k, colour in enumerate(colors):
             y = state_at(out, times[k])
             label = f"$C_D$={c_d:g}, t={times[k]:g} s"
-            axes[0].plot(x, y[:n], ls, color=colour, label=label)
-            axes[1].plot(x, np.degrees(y[n:2 * n]), ls, color=colour)
-            axes[2].plot(x, y[2 * n:], ls, color=colour)
+            axes[0].plot(x, y[:n], color=colour, label=label)
+            axes[1].plot(x, np.degrees(y[n:2 * n]), color=colour)
+            axes[2].plot(x, y[2 * n:], color=colour)
     axes[0].axhline(eta_equilibrium(rho0, p), color="grey", lw=0.8)
     axes[0].set_ylabel(r"$\eta_T$")
     axes[1].set_ylabel(r"$\theta$ [deg]")
