@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{SCIANTIX status}{3}{0}{1}
+\beamer@sectionintoc {2}{The model}{10}{0}{2}
+\beamer@sectionintoc {3}{Calibration}{16}{0}{3}
+\beamer@sectionintoc {4}{Results}{21}{0}{4}
+\beamer@sectionintoc {5}{Model applied to SCIANTIX}{24}{0}{5}
+\beamer@sectionintoc {6}{Outlook: from a local functional to a phase field}{26}{0}{6}

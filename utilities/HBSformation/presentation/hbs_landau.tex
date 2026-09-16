@@ -741,6 +741,40 @@
   \end{columns}
 \end{frame}
 
+% ---------------------------------------------------------------------
+\begin{frame}{Prototype: Tandogan in 1D, driven by the Landau model}
+  \footnotesize
+  \center
+  \textbf{What is solved} --- one GB at $x = L/2$, $L = 10$\,µm, no load ($u = 0$, no
+  slip, $\overset{\times}{e}{}^{e} = 0$):
+  \begin{align*}
+    \tau_\eta\,\dot\eta_{\text{T}} &= f_0\nu^2\eta_{\text{T}}''
+      - f_0\big[\alpha V' + \mu^2 g'\,\theta'^2\big]
+      - \phi_{,\eta}\,\tfrac{\lambda}{2}Gb^2\rho \\
+    \hat\tau_*\,g\,\dot\theta &= f_0\,\big(\mu^2 g\,\theta'\big)' \\
+    \dot\rho &= \alert{S(bu)} - \rho\,C_D\,A(\eta_{\text{T}})\,\langle\dot\eta_{\text{T}}\rangle
+  \end{align*}
+  \vspace{-0.8em}
+  \begin{itemize}
+    \item \alert{Irradiation source} instead of plasticity:
+      $S = \dfrac{\mathrm{d}\rho_{\text{free}}}{\mathrm{d}bu}\,\dot{bu}$, uniform, independent of the
+      local $\rho$ $\Rightarrow$ a recovered region is loaded again.
+  \end{itemize}
+  \textbf{From the Landau model}:
+  \begin{itemize}
+    \item $\Delta\theta \leftarrow \Theta(bu)$, $\rho \leftarrow \rho_{\text{free}}(bu)$
+      (the random array = Tandogan's SSDs), $G(T)$, $b_{\text{UO}_2}$;
+    \item  other parameters as in the paper
+  \end{itemize}
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{Prototype: what comes out}
+  \begin{center}
+    \includegraphics[width=\textwidth]{tandogan_uo2_bu80.png}
+  \end{center}
+\end{frame}
+
 \begin{frame}[standout]
   Summary
 \end{frame}
@@ -1039,6 +1073,63 @@
   \begin{center}
     \includegraphics[width=0.95\textwidth]{formation_options.png}
   \end{center}
+\end{frame}
+
+\begin{frame}{Backup --- the 1D HMP prototype: implemented equations}
+  \scriptsize
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \textbf{Fields} $\eta_{\text{T}}(x,t)$, $\theta(x,t)$, $\rho(x,t)$ on $x\in[0,L]$, one GB at $L/2$;
+      $u=0$, no slip, $\theta=-e^*$ (Eq.~27)
+      \begin{align*}
+        \text{(32)}\;\; & \tau_\eta\,\dot\eta_{\text{T}} = f_0\nu^2\eta_{\text{T}}''
+          - f_0\big[\alpha V'(\eta_{\text{T}}) + \mu^2 g'(\eta_{\text{T}})\,\theta'^2\big]
+          - \phi'(\eta_{\text{T}})\,\tfrac{\lambda}{2}Gb^2\rho \\
+        \text{(34)}\;\; & \hat\tau\, g(\eta_{\text{T}})\,\dot\theta
+          = f_0\,\big(\mu^2 g(\eta_{\text{T}})\,\theta'\big)' \\
+        \text{(28)}\;\; & \dot\rho = S(bu) - \rho\, C_D\, A(\eta_{\text{T}})\,\langle\dot\eta_{\text{T}}\rangle,
+          \qquad \langle\cdot\rangle = \max(\cdot,0)
+      \end{align*}
+      \vspace{-1.2em}
+      \begin{align*}
+        & V = \tfrac12(1-\eta_{\text{T}})^2,\qquad
+          A = \frac{7\eta_{\text{T}}^3-6\eta_{\text{T}}^4}{1-\eta_{\text{T}}} \\
+        & g = \frac{7\eta_{\text{T}}^3-6\eta_{\text{T}}^4}{(1-\eta_{\text{T}})^3}
+            + c\ln(1-\eta_{\text{T}}) + g_{\text{off}},\quad \min g = 0.01 \\
+        & \phi' = \tfrac{c_3}{2}\big[1-\tanh\big(c_1(\eta_{\text{T}}-c_2)\big)\big] \\
+        \text{(42)}\;\; & \eta_{\text{T}}^{\text{eq}} = 1 - \frac{c_3\,\tfrac{\lambda}{2}Gb^2\rho}{f_0\,\alpha}
+      \end{align*}
+      $g$, $g'$, $A$ frozen for $\eta_{\text{T}} > 1-10^{-4}$; $\eta_{\text{T}}'=\theta'=0$ at $x=0,L$.
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \textbf{Coupling to the Landau model}, \texttt{hbs\_state($bu$,$T$)}
+      \[
+        \Delta\theta = \Theta(bu),\qquad \rho \leftarrow \rho_{\text{free}}(bu),\qquad G = G(T,\dots)
+      \]
+      \[
+        c_3 = \frac{(1-0.579)\,f_0\,\alpha}{\tfrac{\lambda}{2}Gb^2\,\rho_{\text{free}}(bu_{\text{sat}})}
+      \]
+      so that Eq.~(42) gives the paper's Cu value $0.579$ where $\Theta=\theta_{\text{HAGB}}$.
+
+      \vspace{0.4em}
+      \textbf{Two protocols for $\rho$}
+      \begin{itemize}
+        \item \emph{step}: $S=0$, $\rho(x,0)=\rho_{\text{free}}(bu)$ (as in §3.2);
+        \item \emph{irradiation}: $\rho(x,0)=0$,
+          $S = \dfrac{d\rho_{\text{ref}}}{d\,bu}\,\dot{bu}$, uniform in $x$,
+          $\rho_{\text{ref}}\in\{\rho_{\text{free}},\rho_{\text{tot}}\}$,
+          $bu = bu_0 + \dot{bu}\,t$ (compressed).
+      \end{itemize}
+
+      \vspace{0.2em}
+      \textbf{Nucleus}: $\rho(L/2) < 0.1\,\rho_0$ while $\min\eta_{\text{T}}(0,L) > c_2$.
+      \textbf{Capillarity} (absent in 1D): $r^* = 2\gamma\big/\big(\tfrac{\lambda}{2}Gb^2\rho\big)$.
+
+      \vspace{0.2em}
+      Interface parameters: Cu, Table~1 ($f_0,\nu,\alpha,\mu,c,\tau_\eta,\hat\tau,C_D$), not calibrated for UO$_2$.
+      FV, 400 cells, BDF.
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}
