@@ -593,7 +593,7 @@
      & Subgrain growth, Khajezade \emph{et al.} (2024) \\
     \textbf{HMP}
      & Removes nonphysical linear gradient term; handles inclination-dependent GB energy 
-     & Coupled Cosserat crystal plasticity, Tandogan \emph{et al.} (2024), Ghiglione \emph{et al.} (2024) \\
+     & Coupled Cosserat crystal plasticity, Tandogan \emph{et al.} (2024); dislocation-driven nucleation, Tandogan \emph{et al.} (2026) \\
     \textbf{PFC} 
      & Atomic-resolution density field; diffusive timescales 
      & Interface morphology development during solidification, Nittala (2025) \\
@@ -604,7 +604,8 @@
   \footnotesize
   Nucleation is usually \alert{seeded ad hoc} at a critical density or stress;
       spontaneous nucleation from lattice-curvature gradients is obtained when coupling KWC
-      with Cosserat crystal plasticity (Ghiglione, 2024).
+      with Cosserat crystal plasticity (Ghiglione, 2024), and from stored dislocations at
+      grain boundaries when coupling HMP with it (Tandogan, 2026).
 
 \end{frame}
 
@@ -664,6 +665,80 @@
       Left: Eq.~(7) at three stored energies. Right: $f_{\text{new}}$ below, at, and above the
       threshold.
       \end{center}
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{Tandogan \emph{et al.}~(2026): nucleation \emph{from} the free energy}
+  \footnotesize
+      \begin{itemize}
+      \item Recrystallization is usually modelled with an imposed nucleation (Muramatsu);
+      \item Tandogan \emph{et al.}\footnotemark[8] obtain it spontaneously, from stored dislocations at grain boundaries through a one thermodynamically consistent field theory,
+        Cosserat crystal plasticity $+$ Henry--Mellenthin--Plapp (HMP) orientation phase field (HMP-CCP).
+    \end{itemize}
+
+    \textbf{Order parameters}
+    \begin{itemize}
+      \item $\eta_{\text{T}}\in[0,1]$: coarse-grained \textbf{crystalline order}, $=1$ in
+        the grain bulk, $<1$ inside the diffuse GB.
+      \item $\theta$: lattice orientation, identified with the Cosserat microrotation
+      \item 2D, small strain: dofs $(\eta_{\text{T}},\theta,u_1,u_2)$, FEniCS $+$
+        Mfront.
+    \end{itemize}
+
+  \footnotetext[8]{Tandogan, Budnitzki, Sandfeld, \emph{J.\ Mech.\ Phys.\ Solids}
+    \textbf{206} (2026) 106325. Presented here up to §3.2.}
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{The HMP-CCP free energy and the coupling function $\phi(\eta_{\text{T}})$}
+  \footnotesize
+  \[
+    \psi = f_0\Big[\alpha V(\eta_{\text{T}}) + \tfrac{\nu^2}{2}|\nabla\eta_{\text{T}}|^2
+      + \mu^2 g(\eta_{\text{T}})|\nabla\theta|^2\Big]
+      + \tfrac12\,\boldsymbol{e}^e\!:\!\mathbb{E}\!:\!\boldsymbol{e}^e
+      + 2\mu_c\big(\overset{\times}{e}{}^{e}\big)^2
+      + \underbrace{\phi(\eta_{\text{T}})\sum_\alpha \tfrac{\lambda}{2}\mu b^2\rho_\alpha}_{\text{stored dislocations}}
+  \]
+  \vspace{-0.6em}
+
+      \begin{itemize}
+        \item $V = \tfrac12(1-\eta_{\text{T}})^2$: single well, penalises GBs.
+        \item $g(\eta_{\text{T}})$ singular at 1, with a $\ln$ term $\Rightarrow$
+          \textbf{Read--Shockley} GB energy.
+        \item $\phi_{,\eta} = \tfrac{c_3}{2}\big[1-\tanh(c_1(\eta_{\text{T}}-c_2))\big]$: a
+          \textbf{step}. The stored energy pushes on $\eta_{\text{T}}$ only inside the GB
+          ($\eta_{\text{T}}<c_2$); the bulk is ``crystalline enough''.
+        \item Recovery (Kocks--Mecking): extra sink $-\rho\,C_D A(\eta_{\text{T}})\,\dot\eta_{\text{T}}$,
+          active only where $\dot\eta_{\text{T}}>0$: \textbf{behind a moving GB}.
+      \end{itemize}
+
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{The nucleation mechanism: a Cu bicrystal}
+  \footnotesize
+  \begin{columns}[T]
+    \begin{column}{0.4\textwidth}
+      Periodic bicrystal, $\Delta\theta = 15^\circ$, uniform
+      $\rho_0 = 2.5\times10^{15}$\,m$^{-2}$ switched on at $t=0$.
+
+      \vspace{0.3em}
+      \textbf{$C_D = 0$, no recovery}: the stored-energy force widens the GB into a
+      non-localised orientation gradient, an \emph{unstable} state.
+
+      \vspace{0.3em}
+      \textbf{$C_D > 0$}: recovery at the GB centre: a dislocation-free nucleus
+      bounded by two GBs that move outward.
+
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      \includegraphics[width=\textwidth]{tandogan_fig4.png}
+
+      \scriptsize
+      Tandogan \emph{et al.}, Fig.~4: $\eta_{\text{T}}$, $\theta$, $\rho$ and the forces on
+      $\eta_{\text{T}}$; red $C_D=0$, blue $C_D=100$.
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[standout]
@@ -768,7 +843,9 @@
     \bibitem{tandogan2025} I.T.\ Tandogan, M.\ Budnitzki, S.\ Sandfeld,
       \emph{A multi-physics model for dislocation driven spontaneous grain nucleation and
       microstructure evolution in polycrystals},
-      \emph{J.\ Mech.\ Phys.\ Solids} (2025) 106325.
+      \emph{J.\ Mech.\ Phys.\ Solids} \textbf{206} (2026) 106325,
+      doi:10.1016/j.jmps.2025.106325.
+      \hfill{\itshape spontaneous nucleation from SSDs}
 
     \bibitem{ghiglione2024} F.\ Ghiglione, A.\ Ask, K.\ Ammar, B.\ Appolaire, S.\ Forest,
       \emph{Cosserat-phase-field modeling of grain nucleation in plastically deformed single
