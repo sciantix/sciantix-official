@@ -144,10 +144,10 @@ void Simulation::HighBurnupStructureFormation()
             double burgers = 3.889087296526011e-10;  // (m)     Djonovic thesis
 
             // --- calibrated, offsets 0-3, printed ready to paste by calibrate.py ---
-            parameter.push_back(2.0);                  // n, dislocation families in a wall
-            parameter.push_back(26.681642770151456);   // beta, wall geometry
-            parameter.push_back(0.5102476353172847);   // k, sweeping
-            parameter.push_back(5741121567363591.0);   // rho_c, strain-field cut-off (m^-2)
+            parameter.push_back(2.0);                 // n, dislocation families in a wall
+            parameter.push_back(26.681642770151456);  // beta, wall geometry
+            parameter.push_back(0.5102476353172847);  // k, sweeping
+            parameter.push_back(5741121567363591.0);  // rho_c, strain-field cut-off (m^-2)
             parameter.push_back(theta_max);
             parameter.push_back(theta_hagb);
             parameter.push_back(theta_u);
