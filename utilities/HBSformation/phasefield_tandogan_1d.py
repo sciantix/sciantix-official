@@ -12,6 +12,9 @@ References
 [PFRP] N. Ofori-Opoku, J. Warren, P.-C. Simon, "Phase Field Method Recommended
        Practices - Model Formulation".
 [HBS]  hbs_formation_landau.py in this folder (Landau model of the HBS).
+[Z21]  J. Zhang et al., J. Am. Ceram. Soc. (2021): the Bulatov-Reed-Kumar
+       5-DOF grain boundary energy function refitted for UO2 (eRGB = 1.545
+       J/m^2).  uo2_gb_energy.py in this folder wraps the Zhang/ translation.
 
 
 1. THE MODEL OF [T26], SECTION 2
@@ -224,6 +227,36 @@ and 90 GWd/tU.  Not yet usable because:
     be recalibrated with the rotation on;
   * the subgrain size is fixed, while r_n(bu) decreases with burnup.
 
+3.6 GB energy: gamma(Delta theta) fitted on UO2
+-----------------------------------------------
+[T26] fits f0 and c of Eq. (35) to atomistic Cu <100> tilt energies (Fig. 2),
+which gives gamma(15 deg) = 0.71 J/m^2 - about half the UO2 value.  Since
+gamma sets the whole energy scale of Eq. (15), and hence eta_eq of Eq. (42),
+c3 and the critical radius, f0 and c are refitted here on [Z21].
+
+The 5-DOF function of [Z21] gives gamma(misorientation, boundary plane); 
+the phase field assumes isotropic interfaces, a(n_gb, theta) = 1, so the 
+consistent one-degree-of-freedom reduction is the average over random 
+misorientation axes and random boundary planes at fixed misorientation angle
+(uo2_gb_energy.random_gamma).  Two symmetric-tilt cross sections are
+tabulated next to it for comparison: <100>, the literal analogue of the Cu
+choice of Fig. 2, and <110>, the wall built from the a/2<110> Burgers vector
+of UO2.  Fitted over 0-30 deg with fit_interface_parameters():
+
+    target                     c     f0 [kPa]   rms [J/m^2]   max
+    random axis and plane      7       819        0.009       2.2 %
+    symmetric tilt <110>       6       882        0.024       3.4 %
+    symmetric tilt <100>      10       982        0.037       5.4 %
+
+The random average is the one used (UO2_F0, UO2_C).  The rms minimum in c is
+FLAT (c = 7: rms 0.0089, max 2.2%; c = 8: 0.0092, max 1.2%), so c is pinned
+only to 7-8 and f0 to 820-850 kPa, and the residual is of the order of the
+Monte Carlo scatter of the target itself (s.e.m. ~0.002 J/m^2 at 2000
+samples per angle).  c = 7 is the rms optimum fit_uo2_interface() returns.
+c is the Read-Shockley coefficient of the log term of Eq. (35).
+nu, alpha and mu are left at the Cu values of Table 1: they set the diffuse
+width, which is numerical in any case (limitation 5). # TODO later
+
 
 4. LIMITATIONS
 ==============
@@ -234,19 +267,23 @@ and 90 GWd/tU.  Not yet usable because:
    constant (the switch of Eq. 39 is not used).  Hence no new lattice
    rotation: see 3.1.
 3. One slip system (h = 1), isotropic GB energy (a(n_gb, theta) = 1).
-4. The GB energy is calibrated (Fig. 2) only up to 30 deg for Cu <100> tilt
-   boundaries; no HAGB cusps.
-   TODO (later): calibrate gamma(Delta theta) on UO2 values.
-5. For UO2 the interface parameters are still the Cu values of Table 1; only
-   G, b, c3 and t0 are changed (t0 is a placeholder, 3.4).
+4. The GB energy is fitted only over 0-30 deg (Cu: <100> tilt, Fig. 2; UO2:
+   the random average of [Z21], 3.6).  gamma(Delta theta) is monotone by
+   construction: no HAGB cusps, and the maximum near 20-25 deg of the UO2
+   tilt cross sections is not reproduced.  Above 30 deg the curve is an
+   extrapolation, so GRAIN_MISORIENTATION_DEG should stay at or below 30.
+5. For UO2 the diffuse-interface parameters nu, alpha, mu, c1, c2 and the
+   mobilities are still the Cu values of Table 1; f0, c, G, b, c3, C_D and t0
+   are changed (f0 and c fitted in 3.6; t0 is a placeholder, 3.4).
    Physical meaning of each parameter for UO2:
 
    parameter        role                                   UO2 counterpart
    ---------------  -------------------------------------  -----------------------------
    G, b, lambda     line energy of a dislocation           PHYSICAL: G(T, porosity, bu)
                     (lambda/2 G b^2)                       and b from [HBS]; lambda ~ 0.3
-   f0, c            GB energy vs misorientation (Fig. 2)   PHYSICAL target: UO2
-                                                           gamma(Delta theta), fitted
+   f0, c            GB energy vs misorientation (Fig. 2)   PHYSICAL: fitted on the
+                                                           UO2 gamma(Delta theta)
+                                                           of [Z21], see 3.6
    nu, alpha, mu    GB width and shape (width ~            NUMERICAL: diffuse width >>
                     nu/sqrt(alpha)); with f0 also gamma    real GB, chosen for resolution
    tau_eta,         inverse GB / rotation mobilities       PHYSICAL in principle (UO2 GB
@@ -263,13 +300,28 @@ and 90 GWd/tU.  Not yet usable because:
    calibrated for UO2 (3.4); the source is uniform; no recovery other than
    Eq. (28); without the rotation source symmetry is broken only by
    round-off, so the onset also depends on the numerics.
-   The calibrated c3 drives eta_eq below 0 at high burnup with rho_tot
-   (e.g. 110 GWd/tU): results there are outside the model.
+   The calibrated c3 drives eta_eq below 0 at high burnup with rho_tot:
+   with the UO2 GB energy of 3.6 (c3 = 2.07 for an onset at 60 GWd/tU)
+   eta_eq is 0.74 at 60, 0.28 at 80 and negative above ~85 GWd/tU.  Results
+   there are outside the model.  The refit of 3.6 made this slightly worse,
+   not better: f0 alpha grew by 2.21 but the calibrated c3 grew by 2.9, so
+   the ratio c3 / (f0 alpha) that sets eta_eq rose by ~30%.
    TODO (later): t0 from the UO2 GB mobility; a small physical seed
    (e.g. a few % noise in rho) instead of round-off.
 7. The "nucleus" criteria (rho < 0.1 rho0 at the centre, ends still above
    c2, centre back above 0.95; nucleus vs migration from theta_centre) are
-   thresholds chosen in this script, not in [T26].
+   thresholds chosen in this script, not in [T26].  When no nucleus forms,
+   t_recovery is NOT the paper's nucleation time: at Delta theta = 2.5 deg
+   [T26] reports that rho is never recovered, while here the uniform eta_eq
+   state that fills the domain does eventually recover everywhere at once
+   (t_recovery ~ 4.5e3 s) - the event is still correctly classified "none".
+8. A(eta) of Eq. (29) is frozen above eta_cutoff in the same way as g.  [T26]
+   states the cutoff only for g; A diverges as 1/(1 - eta), so the freeze is
+   a numerical necessity of this implementation, not a statement of [T26].
+9. The domain is the half period of Fig. 3, from grain centre to grain centre,
+   with zero-flux walls.  This is exact for the symmetric bicrystal (dtheta/dx
+   = 0 at the grain centres), but it FORBIDS the antisymmetric mode, i.e. a
+   rigid drift of the whole two-GB structure.
 
 
 5. NUMERICS  (checked against [PFRP])
@@ -278,8 +330,27 @@ and 90 GWd/tU.  Not yet usable because:
   faces by harmonic (series) average; theta'^2 at the cell centres as the
   mean of the two face values.  Method of lines, stiff BDF (scipy) with
   adaptive time step and a sparse Jacobian pattern ([PFRP] item 8).
-* Interface resolution: GB width ~ nu/sqrt(alpha) = 0.22 um, dx = 25 nm,
-  i.e. ~9 cells across the GB ([PFRP] item 3 asks for 5-10).
+* Interface resolution.  The eta well is ~ nu/sqrt(alpha) = 0.22 um wide, i.e.
+  ~22 cells at dx = 10 nm (Grid.cells = 1000 over 10 um; [T26] uses 400 blocks
+  over the 20 um period, dx = 50 nm).  The THETA transition is much narrower,
+  it shrinks with c and with Delta theta, and it is what sets the grid: with
+  the UO2 fit (c = 7) its 10-90% width is 0.12 um at Delta theta = 15 deg
+  (12 cells), 0.06 um at 20 deg (6 cells) and 0.04 um at 30 deg (4 cells), so
+  [PFRP] item 3 (5-10 cells) is met up to ~25 deg and not at 30 deg.
+* Grid convergence of gamma (5, 15, 30 deg), the quantity fitted in 3.6:
+
+      cells     Cu, c = 3                 UO2, c = 8, f0 = 842 kPa
+       400      0.3686  0.7045  0.8774    0.8022  1.3706  1.5340
+      1000      0.3686  0.7045  0.8722    0.8022  1.3681  1.5054
+      2000      0.3686  0.7046  0.8722    0.8022  1.3684  1.5026
+
+  (run at the neighbouring fit c = 8; the behaviour is the same at c = 7.)
+  Cu is converged already at 400 cells, UO2 is not - 1.9% high at 30 deg -
+  because of the narrower theta transition; this is why the fit of 3.6 is run
+  at the default grid and not at 400 cells.  From 1000 to 2000 cells nothing
+  moves by more than 0.2%, so gamma is converged at the default grid even
+  where the theta core is only ~4 cells wide: g is floored at 0.01 (Eq. 36),
+  so mu^2 g |grad theta|^2 stays bounded as the core sharpens.
 * g and A are frozen above eta_cutoff = 1 - 1e-4 (Sec. 2.2.2), to control
   the singularity.  As [PFRP] recommends ("plot your state functions"),
   plot_state_functions() draws V, g, g', phi, phi' (Fig. 1) and A, and
@@ -436,7 +507,10 @@ def eta_equilibrium(rho, p):
 @dataclass
 class Grid:
     length: float = 10.0e-6         # m      grain-centre to grain-centre, Fig. 3
-    cells: int = 400                # -      as in Sec. 3.2
+    cells: int = 1000               # -      dx = 10 nm; [T26] uses 400 blocks over
+                                    #        the 20 um period (dx = 50 nm), but the
+                                    #        UO2 fit (c = 8) narrows the theta
+                                    #        transition to ~0.09 um, see NUMERICS
 
     @property
     def dx(self):
@@ -745,20 +819,77 @@ def plot_state_functions(p, path):
     print(f"wrote {path}")
 
 
-def plot_gb_energy(p, path, angles=(1.0, 2.5, 5.0, 7.5, 10.0, 15.0, 20.0, 25.0, 30.0)):
-    """Fig. 2 of [T26]: GB energy of the relaxed 1D profile vs misorientation."""
+FIT_ANGLES = (2.5, 5.0, 7.5, 10.0, 15.0, 20.0, 25.0, 30.0)
+
+
+def gamma_curve(p, angles, grid=None):
+    """gamma(Delta theta) [J/m^2] of the relaxed 1D profiles, Fig. 2."""
+    grid = grid or Grid()
+    return np.array([gb_energy(p, grid, initial_state(p, grid, a)) for a in angles])
+
+
+def fit_interface_parameters(targets, angles=FIT_ANGLES,
+                             c_grid=(3.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 12.0),
+                             base=None, grid=None):
+    """(f0, c) reproducing each target curve [J/m^2] at `angles`, docstring 3.6.
+
+    Eq. (15) is linear in f0 at fixed nu, alpha, mu, so for each c the optimal
+    f0 is in closed form, f0 = f0_base * (gamma . target) / (gamma . gamma),
+    and only the SHAPE parameter c has to be scanned; c is the Read-Shockley
+    coefficient of the log term of Eq. (35).
+
+    targets: {label: gamma at `angles`}.  The 1D profiles are relaxed once per
+    c and shared by all the targets - that relaxation is the whole cost.
+
+    Returns {label: (f0, c, rms, table)}, table = (c, f0, rms, max relative
+    error) for every c of c_grid.
+    """
+    base = base or CU
+    curves = {}
+    for c in c_grid:
+        curves[c] = gamma_curve(replace(base, c=c), angles, grid)
+
+    fits = {}
+    for label, target in targets.items():
+        target = np.asarray(target, dtype=float)
+        table = []
+        for c in c_grid:
+            gamma = curves[c]
+            scale = float(gamma @ target / (gamma @ gamma))
+            residual = scale * gamma - target
+            table.append((c, base.f0 * scale, float(np.sqrt(np.mean(residual ** 2))),
+                          float(np.max(np.abs(residual / target)))))
+            print(f"  {label}: c = {c:5.2f}, f0 = {table[-1][1] / 1e3:7.1f} kPa, "
+                  f"rms = {table[-1][2]:.4f} J/m^2, max = {100 * table[-1][3]:4.1f} %")
+        best = min(table, key=lambda row: row[2])
+        print(f"  -> {label}: f0 = {best[1] / 1e3:.1f} kPa, c = {best[0]:g} "
+              f"(rms = {best[2]:.4f} J/m^2, max = {100 * best[3]:.1f} %)")
+        fits[label] = (best[1], best[0], best[2], table)
+    return fits
+
+
+def plot_gb_energy(p, path, angles=(1.0, 2.5, 5.0, 7.5, 10.0, 15.0, 20.0, 25.0, 30.0),
+                   targets=None):
+    """Fig. 2 of [T26]: GB energy of the relaxed 1D profile vs misorientation.
+
+    targets: optional dict {label: gamma at `angles`} drawn as reference, e.g.
+    the UO2 curves of uo2_gb_energy (docstring 3.6).
+    """
     plt = _pyplot()
     grid = Grid()
-    gammas = [gb_energy(p, grid, initial_state(p, grid, a)) for a in angles]
+    gammas = gamma_curve(p, angles, grid)
     for a, gamma in zip(angles, gammas):
         print(f"  Delta theta = {a:5.1f} deg: gamma = {gamma:.3f} J/m^2")
-    fig, ax = plt.subplots(figsize=(5, 3.8))
-    ax.plot(angles, gammas, "x-", label="1D, numerical")
+    fig, ax = plt.subplots(figsize=(5.4, 3.8))
+    for label, values in (targets or {}).items():
+        ax.plot(angles, values, "--", lw=1.0, label=label)
+    ax.plot(angles, gammas, "x-", color="k",
+            label=rf"1D, $f_0$ = {p.f0 / 1e3:.0f} kPa, $c$ = {p.c:g}")
     ax.axvline(30.0, color="grey", lw=0.8, ls=":")
     ax.set_xlabel(r"$\Delta\theta$ [deg]")
     ax.set_ylabel(r"$\gamma$ [J/m$^2$]")
     ax.set_title(f"Fig. 2: GB energy, c = {p.c:g}", fontsize=9)
-    ax.legend(fontsize=8)
+    ax.legend(fontsize=7)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     print(f"wrote {path}")
@@ -866,6 +997,17 @@ def selftest():
         check(f"Cu {angle:g} deg: nucleus = {expected} (paper: {paper})",
               out.nucleated == expected,
               f"t_recovery = {out.t_recovery:g} s")
+
+    # Docstring 3.6: with UO2_F0 and UO2_C the 1D gamma(Delta theta) must sit
+    # on the random-axis / random-plane average of [Z21].  The targets below
+    # are that average (uo2_gb_energy.target), frozen here as a regression
+    # guard so that selftest() does not depend on the sampled table.
+    uo2 = replace(CU, f0=UO2_F0, c=UO2_C)
+    for angle, expected, tol in [(5.0, 0.797, 0.02), (15.0, 1.368, 0.02),
+                                 (30.0, 1.531, 0.02)]:
+        gamma = gb_energy(uo2, Grid(), initial_state(uo2, Grid(), angle))
+        check(f"UO2 {angle:g} deg GB energy vs [Z21]", abs(gamma - expected) < tol,
+              f"gamma = {gamma:.3f} J/m^2 (target {expected:.3f})")
     return ok
 
 
@@ -894,8 +1036,11 @@ SECONDS_PER_YEAR = 365.25 * 86400.0
 
 def uo2_parameters(temperature=REFERENCE_TEMPERATURE, which="tot", rho_saturation=None,
                    **changes):
-    """Cu interface of Table 1 (limitation 5) + UO2 G, b, t0 and c3.
+    """UO2 parameters: Table 1 of [T26] with f0, c, G, b, t0, C_D and c3 changed.
 
+    f0 = UO2_F0, c = UO2_C (run configuration): the GB energy refitted on
+    [Z21], docstring 3.6.  nu, alpha, mu, c1, c2, lambda and the tau stay at
+    the Cu values of Table 1 (limitation 5).
     t0 = UO2_T0 (run configuration): the phase-field clock of UO2 GBs.
     C_D = UO2_C_D (run configuration): weaker recovery than Cu (docstring 3.4).
 
@@ -907,12 +1052,44 @@ def uo2_parameters(temperature=REFERENCE_TEMPERATURE, which="tot", rho_saturatio
     state = hbs_state(bu_saturation, temperature)
     if rho_saturation is None:
         rho_saturation = dislocation_density(bu_saturation, temperature, which)
-    p = replace(CU, shear_modulus=state.shear_modulus, burgers=BURGERS, t0=UO2_T0,
+    # >>> UO2 INPUT: GB energy, f0 and c fitted on [Z21] (docstring 3.6)
+    p = replace(CU, f0=UO2_F0, c=UO2_C,
+                shear_modulus=state.shear_modulus, burgers=BURGERS, t0=UO2_T0,
                 c_d=UO2_C_D)
     # >>> UO2 INPUT: c3 from the dislocation density at HBS saturation
     eta_eq_paper = eta_equilibrium(CU_RHO0, CU)
     c3 = (1.0 - eta_eq_paper) * p.f0 * p.alpha / (p.stored_energy_per_rho * rho_saturation)
     return replace(p, c3=c3, **changes)
+
+
+# ---------------------------------------------------------------------------
+# C.1b  GB energy: the [Z21] targets and the fit of docstring 3.6
+# ---------------------------------------------------------------------------
+
+UO2_GAMMA_LABELS = {"random": "[Z21], random axis and plane",
+                    "st110": r"[Z21], sym. tilt $\langle 110\rangle$",
+                    "st100": r"[Z21], sym. tilt $\langle 100\rangle$"}
+
+
+def uo2_gamma_targets(angles=FIT_ANGLES, which=UO2_GAMMA_LABELS):
+    """{label: gamma [J/m^2]} from uo2_gb_energy, for plots and the fit.
+
+    The table is built by `python3 uo2_gb_energy.py` and the
+    rest of this script does not need it.
+    """
+    import uo2_gb_energy
+    return {UO2_GAMMA_LABELS[key]: uo2_gb_energy.target(angles, key) for key in which}
+
+
+def fit_uo2_interface(angles=FIT_ANGLES, which=UO2_GAMMA_LABELS, **keywords):
+    """Re-run the fit of docstring 3.6 on the [Z21] curves; prints the table.
+
+    UO2_F0 and UO2_C are the "random axis and plane" entry of the result.
+    Returns {label: (f0, c, rms, table)} as fit_interface_parameters.
+    """
+    print("GB energy fit on [Z21] (Grid.cells = "
+          f"{(keywords.get('grid') or Grid()).cells}):")
+    return fit_interface_parameters(uo2_gamma_targets(angles, which), angles, **keywords)
 
 
 def uo2_at(burnup, temperature=REFERENCE_TEMPERATURE, p=None, which="tot"):
@@ -1155,13 +1332,15 @@ def run_irradiation(p, delta_theta_deg, bu_start, bu_end, bu_rate,
 
 def calibrate_c3(p, delta_theta_deg, bu_target, bu_start, bu_rate,
                  temperature=REFERENCE_TEMPERATURE, which="tot",
-                 bracket=(0.05, 5.0), tol=0.5, margin=10.0, rotation=False):
+                 bracket=(0.05, 10.0), tol=0.5, margin=10.0, rotation=False):
     """c3 such that recrystallisation starts at bu_target (docstring 3.3).
 
     Onset = first recovery at the GB centre in run_irradiation, nucleus or
     migration.  A larger c3 gives an earlier onset, so bisection (on log c3)
     within `bracket`; each run stops at bu_target + margin.  Stops when the
-    onset is within `tol` GWd/tU of the target.
+    onset is within `tol` GWd/tU of the target.  The bracket is wider than it
+    was with the Cu GB energy: c3 scales with f0 alpha in Eq. (42), so the
+    refit of docstring 3.6 multiplies every c3 by UO2_F0 / 371 kPa = 2.21.
     """
     lo, hi = bracket
     bu_end = bu_target + margin
@@ -1289,6 +1468,12 @@ SCAN_BURNUPS = [40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0]
 IRRADIATION_ANGLES = [15.0, 20.0, 30.0]                 # deg, parent HAGB misorientations
 BU_RANGE = (0.0, 110.0)                                 # GWd/tU
 BU_RATE = 10.0 / (365.25 * 86400.0)     # GWd/tU per s: ~10 GWd/tU per year (LWR average)
+# GB energy (docstring 3.6): f0 and c fitted by fit_uo2_interface() on the
+# random-axis / random-plane average of the 5-DOF function of [Z21], over the
+# 0-30 deg window of Fig. 2, at Grid.cells = 1000.  rms 0.009 J/m^2, max 2.2%;
+# gamma saturates at ~1.53 J/m^2 against 0.71 J/m^2 at 15 deg for Cu.
+UO2_F0 = 819.4e3                        # Pa
+UO2_C = 7.0                             # -
 # Phase-field clock of UO2 GBs (docstring 3.4).  NOT calibrated: this value
 # makes 10 GWd/tU/yr equivalent to the former compressed run (1e-3 GWd/tU per
 # t0 = 1 s), i.e. UO2 GBs ~3e3 times less mobile than the Cu values of Table 1.
@@ -1318,6 +1503,16 @@ def main():
     plot_paper_figures(FIGURES_DIR)
 
     p = uo2_parameters(TEMPERATURE, RHO_KIND)
+
+    print(f"\n=== UO2: GB energy, f0 = {p.f0 / 1e3:.0f} kPa, c = {p.c:g} ===")
+    try:
+        targets = uo2_gamma_targets()
+    except (ImportError, FileNotFoundError) as error:
+        print(f"  no [Z21] table ({error}); run: python3 uo2_gb_energy.py")
+        targets = None
+    plot_gb_energy(p, f"{FIGURES_DIR}/tandogan_uo2_gb_energy.png",
+                   angles=FIT_ANGLES, targets=targets)
+
     if CALIBRATE_C3:
         print(f"\n=== UO2: c3 for onset at {HBS_ONSET_BURNUP:g} GWd/tU, "
               f"Delta theta = {GRAIN_MISORIENTATION_DEG:g} deg ===")
