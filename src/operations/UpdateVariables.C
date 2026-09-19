@@ -101,6 +101,10 @@ std::map<int, std::string> update_sciantix_variable = {
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"},
+    {120, "trapping rate hbs"},
+    {121, "nucleation rate hbs"},
+    {122, "re-solution rate hbs"},
+    {123, "Xe at grain boundary HBS"},
     {150, "Chromium content"},
     {151, "Lattice parameter"},
     {152, "Theoretical density"},
@@ -111,6 +115,10 @@ std::map<int, std::string> update_sciantix_variable = {
     {157, "Chromia solution"},
     {158, "Chromia precipitate"},
     {160, "Diffusion coefficient"},
+    {200, "Vacancies per HBS pore"},
+    // 70 is taken by "Porosity" on the main line of development, so the HBS dislocation
+    // density, which used to live there on the porosity branch, is stored at 201.
+    {201, "Dislocation density"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])

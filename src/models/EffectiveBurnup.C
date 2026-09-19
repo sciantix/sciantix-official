@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
-//  Year: 2026                                                                      //
+//  Version: 2.1                                                                    //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo                                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////

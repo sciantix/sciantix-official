@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
-//  Year: 2026                                                                      //
+//  Version: 2.1                                                                    //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -38,14 +38,18 @@ void Simulation::GasProduction()
 
         // Model resolution
         if (system.getRestructuredMatrix() == 0)
+        {
             sciantix_variable[system.getGasName() + " produced"].setFinalValue(
                 solver.Integrator(sciantix_variable[system.getGasName() + " produced"].getInitialValue(),
                                   model["Gas production - " + system.getName()].getParameter().at(0),
                                   model["Gas production - " + system.getName()].getParameter().at(1)));
+        }
         else if (system.getRestructuredMatrix() == 1)
+        {
             sciantix_variable[system.getGasName() + " produced in HBS"].setFinalValue(
                 solver.Integrator(sciantix_variable[system.getGasName() + " produced in HBS"].getInitialValue(),
                                   model["Gas production - " + system.getName()].getParameter().at(0),
                                   model["Gas production - " + system.getName()].getParameter().at(1)));
+        }
     }
 }
