@@ -18,6 +18,8 @@
 #define SOLVER_h
 
 #include "InputVariable.h"
+#include "Source.h"
+
 #include <cmath>
 #include <string>
 #include <vector>
@@ -88,19 +90,22 @@ class Solver : virtual public InputVariable
      * approach. We apply a spectral approach in space, projecting the equation on the
      * eigenfunctions of the laplacian operator. We use the first order backward Euler solver in
      * time. The number of terms in the expansion, N, is fixed a priori.
+     * This version solves for a linear source S(r) = A * r + B; with A = 0 it reduces to the
+     * default spectral diffusion solver.
      *
      * @param initial_condition The initial conditions for the diffusion modes.
      * @param parameter A vector containing the parameters for the diffusion equation.
      * @param increment The time increment.
      * @return The updated value after solving the PDE.
-     *
+     * @author G. Zullo,  A. Zayat(Update)
      *
      *  Parameters :
      * 0 : N_modes
      * 1 : D
      * 2 : r
-     * 3 :production
-     * 4 :loss rate
+     * 3 :slope
+     * 4: production (intercept)
+     * 5 :loss rate
      */
     double SpectralDiffusion(double* initial_condition, std::vector<double> parameter, double increment);
 
@@ -162,6 +167,40 @@ class Solver : virtual public InputVariable
                                      double*             initial_condition_gas_3,
                                      std::vector<double> parameter,
                                      double              increment);
+
+    // Newly Added Solver for a Non Uniform Source (Quasi-stationary hypothesis)
+    /**
+     * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
+     * The difference from the SpectralDiffusion Solver is that it solves for a non uniform source S(r) that is a
+     * combination of piecewise linear and piecewise constant functions. We apply a spectral approach in space,
+     * projecting the equation on the eigenfunctions of the laplacian operator. We use the first order backward Euler
+     * solver in time. The number of terms in the expansion, N, is fixed a priori.
+     *
+     * @param initial_condition The initial conditions for the diffusion modes.
+     * @param parameter A vector containing the parameters for the diffusion equation.
+     * @param non_uniform_source Contains all information about the source; it is of the class "source"
+     * @param increment The time increment.
+     * @return The updated value after solving the PDE.
+     * @author A. Zayat
+     *
+     *
+     * Parameters : [N_modes, D, a , l]
+     * 0 : N_modes
+     * 1 : D
+     * 2 : a - Grain Radius
+     * 3 : Loss term
+     *
+     * Source : [time, Domain, Slopes, Intercepts]
+     * time : at which we have the current source
+     * Domain: [0,rho1,rho2, 1] (example)
+     * Slopes: [A1,A2,A3] (example)
+     * Intercepts [B1,B2,B3] (example)
+     */
+    double SpectralDiffusionNUS(double*             initial_condition,
+                                std::vector<double> parameter,
+                                Source              non_uniform_source,
+                                double              increment,
+                                int                 factor);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.
@@ -244,6 +283,31 @@ class Solver : virtual public InputVariable
      * @return The solution to the ODE.
      */
     double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
+
+    // Newly Added Function SourceProjection
+    /**
+     * @brief Gives the projection of the linear source present in a certain domain on the spatial mode i.
+     *
+     * @param GrainRadius The Grain Radius.
+     * @param Domian The domain where the source is present Domain = [r1,r2]
+     * @param Source_Function The source information S(r) = A * r + B Source = [A B]
+     * @param SpatialMode_i The spatial mode we're projecting this source on
+     * @return The source projection on the ith spatial mode
+     * @author A. Zayat
+
+     */
+    double SourceProjection_i(double              GrainRadius,
+                              std::vector<double> Domain,
+                              std::vector<double> Source_Function,
+                              double              SpatialMode_i);
+
+    /**
+     * @brief Function only used for the purpose of Rodeo Pilot Project
+     * Correction factor to account for the non-sym of the sample used in the experiment
+     * @author A. Zayat
+
+     */
+    double NonSym(int input);
 
     /**
      * @brief Constructor

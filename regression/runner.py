@@ -33,6 +33,7 @@ def main():
     parser.add_argument("--pulse", action="store_true")
     parser.add_argument("--analytics", action="store_true")
     parser.add_argument("--gpr", action="store_true")
+    parser.add_argument("--nus", action="store_true")
     parser.add_argument("--all", action="store_true")
 
     parser.add_argument(
@@ -99,6 +100,7 @@ def main():
         ("vercors", "test_Vercors"),
         ("analytics", "test_"), # 'pulse'/'analytics' arg; broad prefix covers all analytics cases
         ("gpr", "test_GPR"),
+        ("nus", "test_N"),  # test_NewSolver, test_NUS_*
     ]
 
     if not explicit_selection and not args.all:

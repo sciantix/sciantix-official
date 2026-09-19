@@ -113,13 +113,16 @@ std::map<int, std::string> update_sciantix_variable = {
     {160, "Diffusion coefficient"},
 };
 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
+void Simulation::update(double Sciantix_variables[],
+                        double Sciantix_diffusion_modes[],
+                        double Sciantix_diffusion_modes_NUS[])
 {
     for (int i = 0; i < n_modes; ++i)
     {
         for (int j = 0; j < N_MODE_BLOCKS; j++)
         {
-            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];
+            Sciantix_diffusion_modes[j * n_modes + i]     = modes_initial_conditions[j * n_modes + i];
+            Sciantix_diffusion_modes_NUS[j * n_modes + i] = modes_initial_conditions_NUS[j * n_modes + i];
         }
     }
 

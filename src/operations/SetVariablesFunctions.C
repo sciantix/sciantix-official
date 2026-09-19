@@ -53,7 +53,11 @@ std::vector<std::string> getInputVariableNames()
                                       "iBubbleDiffusivity",
                                       "iChromiumSolubility",
                                       "iDensification",
-                                      "iReleaseMode"};
+                                      "iReleaseMode",
+                                      "iNUSOutput",
+                                      "iNUSAnimation",
+                                      "iNonSym",
+                                      "iGrainBoundaryResolution"};
 
     return names;
 }

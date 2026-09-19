@@ -20,6 +20,7 @@
 #include "InputReading.h"
 #include "MainVariables.h"
 #include "Sciantix.h"
+#include "SourceHandler.h"
 #include "TimeStepCalculation.h"
 #include <ctime>
 #include <fstream>
@@ -89,11 +90,14 @@ int main(int argc, char** argv)
                  Hydrostaticstress_input,
                  Steampressure_input,
                  Time_end_h,
-                 Time_end_s);
+                 Time_end_s,
+                 sources_input,
+                 initial_distribution);
 
     Initialization(Sciantix_history,
                    Sciantix_variables,
                    Sciantix_diffusion_modes,
+                   Sciantix_diffusion_modes_NUS,
                    Temperature_input,
                    Fissionrate_input,
                    Hydrostaticstress_input,
@@ -106,6 +110,9 @@ int main(int argc, char** argv)
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
     timer = clock();
+
+    sources_interp  = sourceInterpolation(sources_input, Number_of_time_steps_per_interval);
+    sources_correct = subtractResolutionFromSource(sources_interp);
 
     while (Time_h <= Time_end_h)
     {
@@ -122,8 +129,12 @@ int main(int argc, char** argv)
         Sciantix_history[9]  = Sciantix_history[10];
         Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
-        Sciantix(
-            Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+        Sciantix(Sciantix_options,
+                 Sciantix_history,
+                 Sciantix_variables,
+                 Sciantix_scaling_factors,
+                 Sciantix_diffusion_modes,
+                 Sciantix_diffusion_modes_NUS);
 
         dTime_h = TimeStepCalculation(Input_history_points, Time_h, Time_input, Number_of_time_steps_per_interval);
         Sciantix_history[6] = dTime_h * 3600;

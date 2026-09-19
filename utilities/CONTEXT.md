@@ -4,14 +4,18 @@
 > substantive work on the code. It describes *how the code is structured and runs*;
 > physics-model rationale and validation belong in the papers and `references/`.
 >
-> Repo: `/home/giovanni/sciantix-official` · Branch: `main` · Code version: **2.2.1** (2025)
+> Repo: `/home/giovanni/sciantix-official` · Branch: `development/generalized_spectral_diffusion`
+> · Code version: **2.2.1** (2025)
 > Maintainers: G. Zullo, E. Cappellari, G. Nicodemo, A. Zayat, D. Pizzocri, L. Luzzi
 > (Politecnico di Milano, Nuclear Engineering Division).
 >
-> **Last audit: 2026-07-25** (previous: 2026-07-02, 2026-06-11) — clean rebuild OK with
-> `-Wall -Wextra` (zero warnings); full regression suite **110/110 PASS** (atol 1e-8 /
-> rtol 1e-6); unit tests pass (`ctest --test-dir build`). §9 records what each audit
-> fixed and what remains open.
+> **Last audit: 2026-07-26** (previous: 2026-07-25, 2026-07-02, 2026-06-11) — clean
+> rebuild OK with `-Wall -Wextra` (zero warnings); full regression suite **113/113 PASS**
+> (atol 1e-8 / rtol 1e-6); unit tests pass (`ctest --test-dir build`). §9 records what
+> each audit fixed and what remains open.
+>
+> This branch carries the **generalized spectral diffusion (NUS) solver** on top of
+> `main` — see §3.1 and §9.6. Everything below applies to both unless marked NUS-only.
 
 ---
 
@@ -38,11 +42,15 @@ src/                 implementation (.C)
   classes/             Simulation, System, Matrix, Solver, SciantixVariable
   models/              one .C per physics model (see §6)
   operations/          Set*/Update* — wire C arrays <-> SciantixArray objects
-  file_manager/        I/O: InputReading, InputInterpolation, Output, TimeStepCalculation, Initialization
+  file_manager/        I/O: InputReading, InputInterpolation, Output, TimeStepCalculation,
+                       Initialization, SourceHandler (NUS radial profiles)
   coupling/            TUSrcCoupling.C — TRANSURANUS coupling glue
   namespaces/          ErrorMessages
 include/               headers, mirrors src/ layout (several classes are header-only)
 regression/            Python regression suite + validation cases (§7)
+  <group>/             one folder per validation group, each holding its test_* cases
+  core/                shared runner/compare/parser/report logic
+  nus/                 NUS cases, plus studies/ (paper figures) and visualization/
 tests/                 unit tests (unit_tests.C, run via CTest — see §7)
 utilities/             InputExplanation.md + input-template generators + this file
 docs/                  Sphinx/Doxygen source for the online docs
@@ -110,6 +118,43 @@ Analytical/semi-analytical per-step integrators (each advances one variable over
 
 ---
 
+### 3.1 Non-uniform source (NUS) solver — this branch only
+
+`iDiffusionSolver = 4` selects a generalized spectral solver that relaxes the uniform
+source and uniform initial condition assumptions of options 1-3. Reference:
+A. Zayat, G. Zullo, L. Luzzi, D. Pizzocri, *A generalized spectral algorithm for
+fission gas diffusion: Implementation and verification in SCIANTIX*.
+
+- **`Source`** (`include/classes/Source.h`) — one radial profile at one instant, as a
+  piecewise-linear `S(r) = A_i r + B_i` over a normalised domain `r/a`. The domain
+  carries one value more than the coefficients: region `i` spans `[r_i, r_i+1]`.
+- **`SourceHandler`** (`src/file_manager/SourceHandler.C`) — reads the profiles,
+  interpolates them in time, evaluates volume averages, and strips the resolution term
+  from the production source.
+- **`Solver::SourceProjection_i`** — analytical projection of a linear source onto
+  spatial mode `n` over one interval (Eq. 10 of the paper). With `A = 0` over `[0, a]`
+  it reduces exactly to the uniform projection coefficient `-sqrt(8/pi)` used by
+  `SpectralDiffusion`, which is the cheapest available check that the two agree.
+- **`Simulation::GrainBoundarySource`** — grain-boundary re-solution as a source term
+  confined to the outer shell of width lambda.
+
+State: a second mode array `Sciantix_diffusion_modes_NUS[]` runs alongside the standard
+one, same size, plus `*_NUS` counterparts of the diffusivity, resolution, nucleation and
+production-rate setters on `System`.
+
+**Every NUS path is gated on `iDiffusionSolver == 4`.** This is load-bearing, not
+defensive: `loadSourcesFromFile()` calls `exit(EXIT_FAILURE)` when
+`non_uniform_source.txt` is missing, and the `*NUS` setters index the source list by
+time step, so an ungated call aborts every case that does not ship a source file.
+
+The source profiles are split as `S1 + S2` — a fission source over the grain plus a
+re-solution term in the outer shell. With `iGrainBoundaryResolution = 1` the production
+term consumes the S1-only profile (`sources_correct`) so re-solved gas is not counted as
+fresh fission, while `GrainBoundarySource` reads the full profile to recover `S2 - S1`.
+Lambda comes from the outermost interval of the source geometry, nowhere else.
+
+---
+
 ## 4. Execution flow
 
 **Standalone** (`src/MainSCIANTIX.C`):
@@ -121,7 +166,8 @@ Analytical/semi-analytical per-step integrators (each advances one variable over
 4. **Time loop** until `Time_h > Time_end_h`:
    - linearly interpolate Temperature, Fission rate, Hydrostatic stress, Steam pressure
      at the current time into `Sciantix_history[]`;
-   - call `Sciantix(options, history, variables, scaling_factors, diffusion_modes)`;
+   - call `Sciantix(options, history, variables, scaling_factors, diffusion_modes,
+     diffusion_modes_NUS)`;
    - `simulation->output()` appends the step to `output.txt`;
    - `TimeStepCalculation()` picks the next `dt` (each input interval is split into
      `Number_of_time_steps_per_interval`, default 100).
@@ -136,12 +182,16 @@ Burnup → EffectiveBurnup → Densification                 (skipped under COUP
 GapPartialPressure → UO2Thermochemistry → StoichiometryDeviation
 HighBurnupStructureFormation → HighBurnupStructurePorosity → Microstructure
 ChromiumSolubility → GrainGrowth → GrainBoundarySweeping
-GasProduction → GasDecay → IntraGranularBubbleBehavior → GasDiffusion
+GasProduction → GasDecay → GrainBoundarySource → IntraGranularBubbleBehavior → GasDiffusion
 GrainBoundaryMicroCracking → GrainBoundaryVenting → InterGranularBubbleBehavior → GasRelease
 ```
 
+`GrainBoundarySource` returns immediately unless the NUS solver is selected (§3.1), so
+the order above is the same one `main` runs.
+
 Under `-DCOUPLING_TU=ON`, Burnup/EffectiveBurnup/Densification are supplied by the
-host fuel-performance code, so they are compiled out here.
+host fuel-performance code, so they are compiled out here. The coupling entry point
+passes the global NUS mode array so its signature stays unchanged for the host.
 
 ---
 
@@ -159,6 +209,8 @@ is the authoritative syntax reference). Templates are generated by the scripts i
 | `input_initial_conditions.txt` | grain radius, initial Xe/Kr/He inventories (intragranular / GB / released), bubble props, burnup, irradiation time, fuel density, U-isotopics, stoichiometry |
 | `input_history.txt` | time (h), temperature (K), fission rate (fiss/m³·s), hydrostatic stress (MPa), optional steam pressure — **linearly interpolated** between rows |
 | `input_scaling_factors.txt` *(optional)* | multiplicative scaling factors (resolution, trapping, nucleation, diffusivity, temperature, fission rate, He production…); default 1.0 if absent |
+| `non_uniform_source.txt` *(NUS only)* | radial source profiles, one record per instant: `time # r0 r1 … rn # A1 … An # B1 … Bn`. **Required** when `iDiffusionSolver = 4` |
+| `initial_distribution.txt` *(NUS only, optional)* | non-uniform initial conditions, same format, one record per spectral mode block instead of per instant; absent means uniform |
 
 **Outputs:**
 
@@ -177,6 +229,13 @@ history-input vectors (`Time_input` etc.), which grow dynamically with the numbe
 history rows (no fixed cap). An out-of-range model flag in `input_settings.txt` is a
 **fatal error** (`ErrorMessages::Switch` → log + stderr + exit 1).
 
+Option slots 25-28 are the NUS flags (`iNUSOutput`, `iNUSAnimation`, `iNonSym`,
+`iGrainBoundaryResolution`). They sit past the 25 options `main` defines, so a settings
+file written for `main` reads them back as zero — the inactive value for all four — and
+needs no edit. A settings file written for the *pre-merge* NUS branch does need one: it
+has them at 22-25, where `iChromiumSolubility`, `iDensification` and `iReleaseMode` now
+live, and will silently read the wrong values.
+
 ---
 
 ## 6. Physics models (`src/models/`)
@@ -189,8 +248,9 @@ flags.
 | `Burnup.C`, `EffectiveBurnup.C` | local burnup (MWd/kgUO₂, FIMA), effective burnup |
 | `Densification.C` | fuel densification |
 | `GasProduction.C`, `GasDecay.C`, `GasRelease.C` | gas source from fission, radioactive decay, release to free volume |
-| `GasDiffusion.C` | intragranular diffusion (spectral) |
+| `GasDiffusion.C` | intragranular diffusion (spectral; option 4 is the NUS solver, §3.1) |
 | `GrainGrowth.C`, `GrainBoundarySweeping.C` | grain growth, GB sweeping of gas |
+| `GrainBoundarySource.C` | GB re-solution as a localized source in the outer shell (NUS only, §3.1) |
 | `IntraGranularBubbleBehavior.C` | intra-granular bubbles (3 model variants — nucleation/trapping/resolution; White-Tucker correlation; similarity-ratio) |
 | `InterGranularBubbleBehavior.C` | lenticular GB bubbles: nucleation, vacancy-driven growth, coalescence |
 | `GrainBoundaryMicroCracking.C`, `GrainBoundaryVenting.C` | crack/heal of GB faces under transients; venting release |
@@ -228,7 +288,26 @@ regression.runner --all -j $(nproc)`):
 - `--mode-gold`: `0` run+compare (default), `1` run+rewrite gold, `2` compare only,
   `3` rewrite gold only. **Regenerate gold deliberately**, never to paper over a diff.
 - Core logic: `regression/core/{generic_runner,compare,parser,common,report}.py`;
-  an HTML report is written to `regression/report.html`. Plots via `plotter.sh`.
+  an HTML report is written to `regression/report.html`.
+- Each group may carry its own plotting script, `regression/<group>/plot.py`, run by
+  `plotter.sh` at the repo root. These are diagnostics, not tests: the runner never
+  calls them. They write into `<group>/figures/`, which is **gitignored** — the figures
+  are regenerable artefacts, rebuilt by `plotter.sh` in about a minute.
+- The pre-`runner.py` drivers under `utilities/regression_scripts/` were removed on
+  2026-07-26 (see §9.6): they assumed the flat `regression/test_*` layout, could not
+  run, and their experimental-comparison plotting is covered by the per-group scripts.
+  Three sensitivity tools, answering three different questions.
+  `utilities/singleSensitivityAnalysis.py` perturbs **one** factor and measures the
+  response against a reference run — a normalised finite difference, no experimental
+  data involved. `utilities/globalSensitivityAnalysis.py` perturbs **all** of them at
+  once and ranks them by Spearman correlation. `regression/white/bias.py` sweeps a
+  deterministic grid over one or more factors and scores each combination against the
+  White (2004) experimental swelling with BIAS/RMSE/MAD, which is a calibration question
+  rather than a sensitivity one. All three leave the validation database untouched: the
+  first two run on copies under `build/SSA/` and `build/GSA/`, the third restores each
+  case byte-for-byte in a `finally`.
+- `output.txt` is **tracked alongside `output_gold.txt`** in every case and the two are
+  byte-identical. Do not delete it as a run artefact.
 
 **Validation groups** (each ↔ an experimental dataset / phenomenon):
 
@@ -244,10 +323,17 @@ regression.runner --all -j $(nproc)`):
 | `chromium` | Cr-doped fuel solubility + microstructure |
 | `contact` | contact / mechanics case |
 | `analytics`/`gpr` | analytic power-pulse checks (`pulse` is an alias for `analytics`); GPR series |
+| `nus` | non-uniform source solver (§3.1) — solver verification, no experimental counterpart |
 
 `regression/white/bias.py` is a parameter-selection utility (not a test): it sweeps
 scaling-factor combinations over the White (2004) cases and reports parity statistics
 (BIAS/RMSE/MAD) to support sensitivity-guided effective-parameter selection.
+
+`regression/nus/` carries two more non-test subdirectories: `studies/`, which
+regenerates the figures of the NUS paper by building source variants from
+`regression/baker/test_Baker1977__1273K` and running them, and `visualization/`, which
+holds interactive Tk inspectors for the source and initial-condition files. Neither is
+picked up by the runner, which matches only `test_N*` inside the group.
 
 **CI** (`.github/workflows/`): `ci.yml` builds `sciantix.x` and runs the regression
 suite on push/PR; `clang-format-auto.yml` auto-formats C++; `pages.yml` deploys the
@@ -415,7 +501,8 @@ New in 2026-07 (see the review conversation for file/line detail):
 
 ### 9.5 Fixed in the 2026-07-25 review
 
-Full suite 110/110 PASS after each change (the suite grew from 109 to 110 with
+Full suite 110/110 PASS after each change, the count at that time (the suite grew
+from 109 to 110 with
 `analytics/test_openPorosity`). Every fix below is gold-neutral except the
 densification one, which changed the physics and required a deliberate gold
 regeneration.
@@ -436,9 +523,9 @@ regeneration.
 - **A malformed value is now a fatal error** naming the entry, instead of latching
   failbit and zeroing everything after it. The check is deliberately `fail() && !eof()`:
   reaching the end of the file stays legal, because no case in the validation database
-  supplies all 14 initial-condition blocks (95 supply 12, 15 supply 13) and the trailing
-  defaults of zero come precisely from that tolerance. Making plain `fail()` fatal would
-  break all 110 cases.
+  supplies all 14 initial-condition blocks and the trailing defaults of zero come
+  precisely from that tolerance. Making plain `fail()` fatal would break every case in
+  the suite.
 - `comment` and `variable` are now initialised in the three read helpers; the
   `comment == '#'` test previously read an indeterminate value when extraction failed.
 - **The input generators no longer emit files the parser misreads.**
@@ -484,6 +571,60 @@ regeneration.
 
 ---
 
+### 9.6 Merge of `main` into the NUS branch (2026-07-26)
+
+`main` was merged into `development/generalized_spectral_diffusion`, which had not been
+updated since the August 2024 fork point — 249 commits behind. Suite **113/113 PASS**
+(110 from `main` plus the three NUS cases), no new warnings, no NaN.
+
+Resolved during the merge:
+
+- **Option-index collision.** Both sides claimed slots 22-24. `main` keeps
+  `iChromiumSolubility`/`iDensification`/`iReleaseMode`; the NUS options moved to 25-28.
+  See §5 for what this breaks.
+- **Three ungated NUS paths** aborted every non-NUS case once inside `main`'s `execute()`
+  order — observed as 110 SIGABRT on the first run, not a hypothetical. Now gated on
+  `iDiffusionSolver == 4`; see §3.1.
+- `iGrainBoundaryResolution` was read but never used; it now gates `GrainBoundarySource`.
+- **`subtractResolutionFromSource()` had lambda hardcoded** to `1e-7` m while the real
+  depth comes from the source file. They agree only up to lambda = 100 nm on a 5 um
+  grain; past that the resolution term stays in the production source and re-solved gas
+  is counted as fresh fission (+14.6% on Xe produced at lambda = 200 nm). Lambda is now
+  read from the source geometry.
+- The branch's edits to the standard Baker/Talip cases were debug leftovers with no gold
+  update, and were dropped. The three NUS golds were stale against their own committed
+  inputs and were regenerated; `test_NewSolver` also had an extra zero in its history
+  (550000 h instead of 5500 h), and with that corrected its regenerated gold came out
+  bit-identical to the pre-merge one.
+
+Also removed: `utilities/regression_scripts/`, nineteen scripts superseded by
+`runner.py`. Deprecating them first looked safer on a line-count argument — 1132 lines
+against 487 for Kashibe — but that difference is driver boilerplate, and reading the
+replacements showed `regression/kashibe/plot.py` covers the 1990, 1991 *and* 1993
+series and `regression/baker/plot.py` does load and compare the experimental data.
+`Summary_of_results.py` went with them: it imports the deleted drivers at module level,
+so it does not even import. `globalSensitivityAnalysis.py` was removed too and then
+restored and repaired — it was broken, not redundant, and nothing else in the repo ranks
+scaling factors against each other. The lot is in history.
+
+Cross-checks worth repeating after touching the solver: the NUS path with a uniform
+source reproduces `SpectralDiffusion` bit-identically, and `regression/nus/studies/`
+reproduces the paper's qualitative trends.
+
+### 9.7 Still open — NUS specific
+
+- **`GrainBoundarySource` assumes exactly two source regions.** With more it returns
+  without acting, silently. Fine for the paper's cases, blocking for multi-region
+  profiles combined with grain-boundary re-solution.
+- **S2 is prescribed, not computed.** The paper describes the re-solution source as
+  proportional to the fission rate and developing with the grain-boundary inventory; the
+  solver reads it from `non_uniform_source.txt`. Wiring it to `c_GB` would make it a
+  model rather than an input.
+- The NUS golds for `test_NUS_HeImplantation` and `test_NUS_SolverTest` are
+  current-behaviour baselines, not validated references — they were regenerated because
+  the committed ones did not match their own inputs.
+
+---
 *Maintenance: update this file when the model `execute()` order, the I/O file set, the
 class architecture, or the regression layout changes. Re-run the §9 audit (build +
 unit tests + full regression + spot checks) when touching Solver, InputReading, or
