@@ -7,7 +7,8 @@ References
 [Z21]  J. Zhang et al., "Grain boundary energy of UO2 and CeO2 from atomistic
        simulations and a 5-DOF interpolation", J. Am. Ceram. Soc. (2021).
        The Bulatov-Reed-Kumar 5-DOF function refitted for UO2 (Basak
-       potential); eRGB = 1.545 J/m^2.  Translated to Python in Zhang/.
+       potential); eRGB = 1.545 J/m^2.  Python translation of the Bulatov
+       code and the supplementary data in SupplementaryMaterial_Ggb/.
 [BRK]  V.V. Bulatov, B.W. Reed, M. Kumar, "Grain boundary energy function for
        fcc metals", Acta Mater. 65 (2014) 161.
 [T26]  I.T. Tandogan, M. Budnitzki, S. Sandfeld, JMPS 206 (2026) 106325.
@@ -34,7 +35,8 @@ The three agree to a few per cent below 10 deg and differ by up to ~10% at
 30 deg; only the first is used by the phase field, the other two are kept for
 the comparison plot and to document the spread.
 
-Note on the data: the MD set of [Z21] (Zhang/supplementarydata) has no
+Note on the data: the MD set of [Z21] (SupplementaryMaterial_Ggb/Zhang_2021)
+has no
 symmetric-tilt point below 12.7 deg, so the low-angle Read-Shockley branch of
 all three curves comes from the [BRK] interpolation, not from MD.
 """
@@ -50,7 +52,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(_HERE, "Zhang"))
+sys.path.insert(0, os.path.join(_HERE, "SupplementaryMaterial_Ggb"))
 
 from GB_functions import GB5DOF, makeparvec, set100, set110, set111
 
@@ -112,7 +114,7 @@ def tilt_gamma(angles_deg=ANGLES_DEG, axis="100"):
     """gamma(psi) of the SYMMETRIC TILT boundaries about <axis>.
 
     Cross section of the 5-DOF function at eta = 0 (symmetric) and
-    phi = pi/2 (tilt), as in Zhang/GB_plot.py.
+    phi = pi/2 (tilt), as in SupplementaryMaterial_Ggb/GB_plot.py.
     """
     parameters, _, energy_rgb = makeparvec(MATERIAL)
     ksi = np.radians(np.asarray(angles_deg, dtype=float))
