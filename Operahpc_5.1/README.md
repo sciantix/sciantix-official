@@ -260,19 +260,19 @@ Each case is a standalone script; run it from the repository root or from
 within the case folder:
 
 ```bash
-python3 verification_cases/case_01_spectral_diffusion_sinusoidal/run_case.py
-python3 verification_cases/case_02_spectral_diffusion_exponential/run_case.py
-python3 verification_cases/case_03_convergence_study/run_case.py
-python3 verification_cases/case_04_grain_boundary_release/run_case.py
-python3 verification_cases/case_05_hybrid_mode_allocation/run_case.py
-python3 verification_cases/case_06_coupled_precursor_daughter_diffusion/run_case.py
-python3 verification_cases/case_07_fission_gas_release/run_case.py
-python3 verification_cases/case_08_macro_step_restart/run_case.py
-python3 verification_cases/case_09_outer_iteration_relaxation/run_case.py
-python3 verification_cases/case_10_stress_coupled_bubble_growth/run_case.py
-python3 verification_cases/case_11_grain_growth/run_case.py
-python3 verification_cases/case_12_grain_boundary_bubble_coalescence/run_case.py
-python3 verification_cases/case_13_stoichiometry_deviation/run_case.py
+python3 Operahpc_5.1/case_01_spectral_diffusion_sinusoidal/run_case.py
+python3 Operahpc_5.1/case_02_spectral_diffusion_exponential/run_case.py
+python3 Operahpc_5.1/case_03_convergence_study/run_case.py
+python3 Operahpc_5.1/case_04_grain_boundary_release/run_case.py
+python3 Operahpc_5.1/case_05_hybrid_mode_allocation/run_case.py
+python3 Operahpc_5.1/case_06_coupled_precursor_daughter_diffusion/run_case.py
+python3 Operahpc_5.1/case_07_fission_gas_release/run_case.py
+python3 Operahpc_5.1/case_08_macro_step_restart/run_case.py
+python3 Operahpc_5.1/case_09_outer_iteration_relaxation/run_case.py
+python3 Operahpc_5.1/case_10_stress_coupled_bubble_growth/run_case.py
+python3 Operahpc_5.1/case_11_grain_growth/run_case.py
+python3 Operahpc_5.1/case_12_grain_boundary_bubble_coalescence/run_case.py
+python3 Operahpc_5.1/case_13_stoichiometry_deviation/run_case.py
 ```
 
 Each run prints error norms to stdout and writes comparison/convergence
