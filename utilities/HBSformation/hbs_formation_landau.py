@@ -90,11 +90,11 @@ Equations
   (7)  stationary point    dF/deta = 0  =>  eta^2 = -C2/(2*C4), clipped at 0
        eta = 0 wherever C2 >= 0, i.e. below the transition threshold
 
-  (7a)      eta = 1   <=>   Theta = theta_HAGB   <=>   rho_ord = rho_tot
+  (7a)      eta = 1   <=>   Theta = theta_HAGB
 
-       coincide at 91.32 GWd/tU: the order parameter saturates exactly where the
-       substructure becomes high-angle AND where the last free dislocation enters
-       a wall.  Eq. (8) then reduces to a clip of eta at 1.
+       with theta_max = theta_HAGB the order parameter saturates exactly where the
+       substructure becomes high-angle, and Eq. (8) reduces to a clip of eta at 1.  rho_ord = rho_tot
+       at the same burnup only if the bound (7b) binds up to saturation.
 
   (7b) dislocation balance   rho_ord <= rho_tot. 
        The equilibrium is the minimum of F on the admissible interval, 
@@ -108,7 +108,7 @@ Equations
        every dislocation is in a wall, the misorientation can only grow as fast
        as the dislocations that feed it, and the sweep stops because there is
        nothing free left to sweep. 
-
+       
   (8)  mean misorientation                                 <-- output 1
        Theta = min( eta_eq*theta_max*180/pi , theta_HAGB )              [deg]
        eta   = (Theta*pi/180)/theta_max
