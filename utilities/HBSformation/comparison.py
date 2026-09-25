@@ -22,11 +22,11 @@ to post-irradiation microscopy in `data/*.json`, key `vocabulary.rose_quality_ra
 and the relevance 1-3 is this project's own judgement of how close the sample is to the
 target application (PWR, standard undoped UO2, ~10 um grains).
 
-Since assessment v2.1 a value digitized by the curator from a figure of the same paper has
-verifiability M, like a value stated in a table or in the text, so it reaches rank B.
-Verifiability I -- and so rank U -- is kept for values quoted SECOND-HAND, which is why the
-five Gerczak fraction points stay at w = 0.25: they come from Barani et al. (2020) Table 2,
-not from Gerczak's own text.
+A value digitized by the curator from a figure of the same paper has verifiability M, like a
+value stated in a table or in the text, because the number is reproducible from the
+publication.  Verifiability I -- and so rank U -- is for values quoted SECOND-HAND, which is
+why the five Gerczak fraction points carry w = 0.25: they come from Barani et al. (2020)
+Table 2, not from Gerczak's own text.
 
 This is the same weight `calibrate.py` uses in its data set C, via
 `hbs_dataset.study_weight`.
@@ -231,11 +231,21 @@ def of(points, observable):
 # ---------------------------------------------------------------------------
 
 def scored(rows, predicted):
-    """(weighted RMSE, weighted R2, plain RMSE, plain R2) of one observable."""
-    observed = [r["y"] for r in rows]
-    weights = [r["w_study"] for r in rows]
+    """(weighted RMSE, weighted R2, plain RMSE, plain R2, n_unscorable) of one observable.
+
+    A point whose prediction is nan cannot be scored: the radius is nan below the
+    threshold of Eq. (1), where the model says there are no subgrains at all.  Those
+    points are dropped from the metrics and counted, so that a calibration that moves
+    the threshold past a measured size shows up as a shrinking N rather than as a
+    table full of nan.
+    """
+    keep = [(r, p) for r, p in zip(rows, predicted) if not math.isnan(p)]
+    dropped = len(rows) - len(keep)
+    observed = [r["y"] for r, _ in keep]
+    predicted = [p for _, p in keep]
+    weights = [r["w_study"] for r, _ in keep]
     return (rmse(observed, predicted, weights), r_squared(observed, predicted, weights),
-            rmse(observed, predicted), r_squared(observed, predicted))
+            rmse(observed, predicted), r_squared(observed, predicted), dropped)
 
 
 def composition(rows):
@@ -276,9 +286,10 @@ def report(points):
     for option in OPTIONS:
         number, label = option[0], option[1]
         predicted = [predict(option, p) for p in fraction]
-        w_rmse, w_r2, p_rmse, p_r2 = scored(fraction, predicted)
-        print("    %d  %-27s %.4f  %+.4f  |  %.4f  %+.4f  |  %s"
-              % (number, label, w_rmse, w_r2, p_rmse, p_r2, FRACTION_STATUS[number]))
+        w_rmse, w_r2, p_rmse, p_r2, dropped = scored(fraction, predicted)
+        print("    %d  %-27s %.4f  %+.4f  |  %.4f  %+.4f  |  %s%s"
+              % (number, label, w_rmse, w_r2, p_rmse, p_r2, FRACTION_STATUS[number],
+                 "" if not dropped else "   (%d not scorable)" % dropped))
     print()
 
     # What the weighting actually changed: the ranking of the options.
@@ -322,12 +333,16 @@ def report(points):
         for line in composition(rows):
             print(line)
         predicted = [landau_value(observable, r) for r in rows]
-        w_rmse, w_r2, p_rmse, p_r2 = scored(rows, predicted)
+        w_rmse, w_r2, p_rmse, p_r2, dropped = scored(rows, predicted)
         print()
         print("    4  %-27s weighted RMSE %.4f %s  R2 %+.4f"
               % ("Landau functional", w_rmse * scale, unit, w_r2))
         print("       %-27s plain    RMSE %.4f %s  R2 %+.4f"
               % ("", p_rmse * scale, unit, p_r2))
+        if dropped:
+            print("       %d of the %d targets lie below the threshold of Eq. (1), where the"
+                  % (dropped, len(rows)))
+            print("       model predicts no subgrains at all; they are not scored.")
         print()
 
 

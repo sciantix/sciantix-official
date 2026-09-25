@@ -45,8 +45,9 @@ import sys
 import itertools
 
 # Burnup unit conversion used by SCIANTIX: MWd/kgUO2 -> MWd/kgU = GWd/tU.
-# Not used by this script (which takes GWd/tU directly); quoted because the C++
-# applies it to sciantix_variable["Burnup"] before calling the model.
+# `Output.C` prints the burnup in MWd/kgUO2, while the model works in GWd/tU, so this
+# script applies the same conversion the C++ applies to sciantix_variable["Burnup"]
+# before calling the model.
 UO2_TO_U = 0.8814               # kgU/kgUO2
 
 from hbs_formation_landau import (ALPHA_MAX, FABRICATION_POROSITY, THETA_HAGB, THETA_MAX,
@@ -68,8 +69,8 @@ INPUTS = (COL_BURNUP, COL_TEMPERATURE, COL_POROSITY, COL_STOICHIOMETRY, COL_GRAI
 
 # Of those, the ones the output file must carry for the comparison to mean anything.
 # The porosity and the deviation from stoichiometry are NOT among them: they enter
-# only through G and nu, which cancel exactly in eta^2 = -C2/(2 C4) since the
-# grain-boundary surface term was dropped, so none of the four compared quantities
+# only through G and nu, i.e. through the common factor f(nu) G b^2 / (4 pi) of F,
+# which does not move its minimum, so none of the four compared quantities
 # depends on them.  `Output.C` gates those two columns on iGrainBoundaryVenting and
 # iStoichiometryDeviation, which the HBS cases leave at 0, so they are usually
 # absent.  When they ARE present the script uses them rather than the defaults, so
@@ -87,6 +88,11 @@ COMPARED = (
 
 # src/file_manager/Output.C, the branch used for iOutput = 1.
 OUTPUT_SIGNIFICANT_DIGITS = 7
+
+# Relative resolution of the numerical minimum of Eq. (7): F is flat at its bottom,
+# so eta is resolved only to ~sqrt(machine eps) ~ 1e-8, and the minimum need not be
+# monotone in the inputs below that scale.  Far below the 1e-7 of the printed column.
+MINIMUM_RESOLUTION = 1e-8
 
 
 def _split(line):
@@ -148,11 +154,13 @@ def at_imposed_theta(state, theta, grain_radius):
     Needed only when the monotonic lock binds; it reuses the geometry of the current
     burnup, which is what the C++ does, and keeps the same grain ceiling.
     """
-    _, s_over_v_max, dr_over_r_max = wall_geometry(state.rho_tot)
+    if state.rho_tot > 0.0:
+        _, s_over_v_max, swept_max = wall_geometry(state.rho_tot)
+    else:
+        s_over_v_max, swept_max = 0.0, 0.0
     eta = math.radians(theta) / THETA_MAX
-    s_over_v = s_over_v_max * eta
-    dr_over_r = dr_over_r_max * eta * eta
-    radius = min(1.5 / s_over_v * (1.0 + dr_over_r), grain_radius) if s_over_v > 0.0 else math.nan
+    s_over_v = s_over_v_max * eta * math.exp(-swept_max * eta * eta)
+    radius = min(1.5 / s_over_v, grain_radius) if s_over_v > 0.0 else math.nan
     fraction = min(ALPHA_MAX, max(0.0, (theta - THETA_U) / (THETA_HAGB - THETA_U)))
     return radius, fraction
 
@@ -211,8 +219,12 @@ def compare(path, verbose=True):
         for column, key, _ in COMPARED:
             got = row[index[column]]
             low, high = bounds[key]
-            # the printed column is itself rounded, so widen the bracket by its own quantum
-            slack = 0.5 * (printed_interval(got)[1] - printed_interval(got)[0])
+            # the printed column is itself rounded, so widen the bracket by its own quantum;
+            # and the equilibrium is a numerical minimum of a function flat at its bottom,
+            # resolved to ~sqrt(eps) in eta, so the corners bracket the C++ only up to
+            # that resolution (MINIMUM_RESOLUTION, relative)
+            slack = (0.5 * (printed_interval(got)[1] - printed_interval(got)[0])
+                     + MINIMUM_RESOLUTION * abs(got))
             residual = max(low - slack - got, got - high - slack, 0.0)
             relative = residual / abs(got) if got != 0.0 else residual
             if residual > worst[key][0]:

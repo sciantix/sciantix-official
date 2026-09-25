@@ -12,17 +12,18 @@ This is the reference implementation of the HBS-formation model that
 The HBS is interpreted as a second-order phase transition.  The order parameter
 is the mean misorientation of the subgrains normalized to its maximum,
 eta = theta/theta_max, with theta_max = theta_HAGB so that eta runs over [0, 1];
-the external condition is the local burnup.  The free
-energy is a Landau functional F = C0 + C2 eta^2 + C4 eta^4 built by splitting the
-dislocations into three populations that must add up to rho_tot -- free, stored
-in low-angle walls, annihilated by the sweeping boundaries -- and giving each the
-energy per unit length E_D = G b^2 f(nu)/(4 pi) ln(R/b) of the state it is in.
-Only even powers appear, because the energy is invariant under the sign of theta
-(the sign of the angle is a convention).  Minimizing F over the range of eta for
-which that partition is physical gives the equilibrium misorientation; the
-subgrain size follows from the same wall geometry; and the restructured fraction
-follows from the lever rule, because the measured misorientation is the mean of a
-two-phase mixture.
+the external condition is the local burnup.  The energy F(eta) is built by
+splitting the dislocations into three populations that must add up to rho_tot --
+free, stored in low-angle walls, annihilated by the sweeping boundaries -- and
+giving each the energy per unit length E_D = G b^2 f(nu)/(4 pi) ln(R/b) of the
+state it is in, with R the spacing of the dislocations in that state.  F depends
+on eta through eta^2 and |eta| only, because the energy is invariant under the
+sign of theta.  It is a constrained minimisation of the stored energy (no
+entropy term), with the Landau order parameter as its variable.  
+Minimizing F over the range of eta for which that partition is physical gives the 
+equilibrium misorientation; the subgrain size follows from the same wall geometry; 
+and the restructured fraction follows from the lever rule, because the measured 
+misorientation is the mean of a two-phase mixture.
 
 Three quantities are produced:
 
@@ -30,13 +31,18 @@ Three quantities are produced:
     output 2    r_n         subgrain radius                 [m]     Eq. (9)
     output 3    X           restructured volume fraction    [-]     Eq. (10)
 
-The dislocation density is fixed to Nogita & Une (1994).
+The dislocation density is fixed to Nogita & Une (1994), read as a pure source above a
+critical density rho_crit.
 
 Equations
 ---------------------------------------------------------------------------------
 
-  (1)  dislocation density -- Nogita & Une (1994)
-       rho_tot(bu) = 10^(2.2e-2*bu + 13.8)                              [m^-2]
+  (1)  dislocations available to polygonize -- Nogita & Une (1994), a pure source
+       rho_tot(bu) = max( 10^(2.2e-2*bu + 13.8) - rho_crit , 0 )        [m^-2]
+       only the density above the critical one takes part; below it
+       rho_tot = 0 and Theta = 0.  rho_crit is the fixed density scale that the
+       energy balance lacks, and it gives a continuous threshold at
+       rho_Nogita(bu_c) = rho_crit
 
   (2)  elastic constants -- NEA Recommendations on fuel properties (2025),
        Nuclear Science NEA/NSC/R(2024)1, p. 124.  Both depend on temperature,
@@ -61,34 +67,41 @@ Equations
        boundary area per unit volume is (S/V) = 3*sqrt(rho_LAGB)/beta
        rho_LAGB_max = (3*n*theta_max / (beta*b))^2                      [m^-2]
        SoverV_max   = 9*n*theta_max / (beta^2*b)                        [m^-1]
-       dRoverR_max  = k*rho_LAGB_max / rho_tot                          [-]
+       x_max        = k*rho_LAGB_max / rho_tot                          [-]
 
   (4)  dislocation line energies      E_D = G b^2 f(nu)/(4 pi) * ln(R/b)
-       A1 = f(nu)/(4 pi)*ln(rho_c^(-1/2)/b)     random array, cut-off rho_c
-       A2 = f(nu)/(4 pi)*ln(rho_tot^(-1/2)/b)   stress-screened inside the wall
+       with R the spacing of the dislocations (Humphreys et al. 2017, Eq. 2.6):
+       A1      = f(nu)/(4 pi)*ln( rho_tot^(-1/2) / b )               random array
+       A2(eta) = f(nu)/(4 pi)*ln( min(b/theta, rho_tot^(-1/2)) / b )  Read-Shockley wall
+       theta = eta*theta_max; b/theta is the spacing in the wall (Eq. 4.4).
 
   (5)  dislocation balance
-       rho_ord(eta)   = rho_LAGB_max * eta^2       condensed into LAGB walls
-       rho_swept(eta) = (rho_tot - rho_ord) * dRoverR(eta)   annihilated
-       rho_free(eta)  = rho_tot - rho_ord - rho_swept        still random
+       rho_ord(eta)   = rho_LAGB_max * eta^2                condensed into LAGB walls
+       x(eta)         = x_max * eta^2 = k*rho_ord/rho_tot   extended swept volume
+       rho_free(eta)  = (rho_tot - rho_ord) * exp(-x)       still random
+       rho_swept(eta) = (rho_tot - rho_ord) * (1 - exp(-x)) annihilated
+
+       exp(-x) is Gourdet & Montheillet's d(rho_i) = -rho_i dV (their Eq. 4)
+       integrated over the swept volume: linear in x for a small sweep, bounded
+       by the free dislocations there are for a large one.
 
        Each population carries the line energy of the state it is in:
 
            F = rho_free*A1*G b^2 + rho_ord*A2*G b^2                   [J/m^3]
 
-       whose four contributions, at eta = 1, are
-       E_free    = +rho_tot      * A1                * G b^2   order eta^0
-       E_wall    = +rho_LAGB_max * (A2 - A1)         * G b^2   order eta^2
-       E_sweep_2 = -rho_tot      * dRoverR_max * A1  * G b^2   order eta^2
-       E_sweep_4 = +rho_LAGB_max * dRoverR_max * A1  * G b^2   order eta^4
+  (6)  F = C0 + E_wall + E_sweep                                      [J/m^3]
+       C0      = rho_tot * A1 * G b^2          all dislocations random
+       E_wall  = rho_ord * (A2 - A1) * G b^2   condensing into walls, <= 0
+       E_sweep = -rho_swept * A1 * G b^2       annihilation, <= 0
 
-  (6)  Landau functional     F(bu, eta) = C0 + C2*eta^2 + C4*eta^4      [J/m^3]
-       C0 = E_free
-       C2 = E_wall + E_sweep_2
-       C4 = E_sweep_4
-
-  (7)  stationary point    dF/deta = 0  =>  eta^2 = -C2/(2*C4), clipped at 0
-       eta = 0 wherever C2 >= 0, i.e. below the transition threshold
+  (7)  equilibrium: the minimum of F on [0, min(eta_balance, 1)], found
+       numerically (A2 carries theta*ln(theta), the sweep an exponential).
+       Both terms are negative from eta = 0 on, so Theta > 0 wherever
+       rho_tot > 0.  F has no threshold of its own: every length in it (rho^-1/2,
+       b/theta with theta ~ sqrt(rho), beta/sqrt(rho)) scales with the density, so
+       the balance looks the same at any rho.  The threshold is set by rho_crit in
+       Eq. (1), and Theta leaves zero continuously, as sqrt(bu - bu_c) (the
+       mean-field exponent 1/2), with no jump.
 
   (7a)      eta = 1   <=>   Theta = theta_HAGB
 
@@ -97,11 +110,10 @@ Equations
        at the same burnup only if the bound (7b) binds up to saturation.
 
   (7b) dislocation balance   rho_ord <= rho_tot. 
-       The equilibrium is the minimum of F on the admissible interval, 
-       not the free stationary point:
+       The equilibrium is the minimum of F on the admissible interval:
 
            eta_balance = sqrt( min(rho_tot / rho_LAGB_max, 1) )         [-]
-           eta_eq      = min( sqrt(-C2/(2*C4)), eta_balance )
+           eta_eq      = argmin F  on  [0, min(eta_balance, 1)]
 
        On the bound this is exactly the classical theta ~ sqrt(rho_tot),
            theta_bal = eta_balance*theta_max = beta*b*sqrt(rho_tot) / (3n)
@@ -114,10 +126,11 @@ Equations
        eta   = (Theta*pi/180)/theta_max
 
   (9)  subgrain radius                                     <-- output 2
-       SoverV  = SoverV_max*eta
-       dRoverR = dRoverR_max*eta^2
-       r_n     = min( 1.5/SoverV * (1 + dRoverR) , R_grain )            [m]
-       Undefined where eta = 0 --> no substructure;
+       SoverV  = SoverV_max * eta * exp(-x)     the walls in the swept volume go
+                                                too (Gourdet & Montheillet Eq. 8)
+       r_n     = min( 1.5/SoverV , R_grain )                            [m]
+       Undefined where eta = 0: below the threshold there is no substructure,
+       so the radius is not a length.
 
   (10) restructured fraction                               <-- output 3
        X = clip( (Theta - theta_u) / (theta_HAGB - theta_u), 0, ALPHA_MAX )
@@ -132,39 +145,124 @@ Equations
        resolved population sits at that edge carries no restructuring.
 
   (11) driving force, reported for the nucleation criterion, not an output
-       dE_s = C0 + C2*eta^2 + C4*eta^4                                  [J/m^3]
-       Below the threshold eta = 0 and only C0 is left: the matrix has the
-       dislocations but has not organized them yet, so all of their energy is
-       available.
+       dE_s = C0 + E_wall + E_sweep = F(eta_eq)                         [J/m^3]
 
 
 No surface energy
 ---------------------------------------------------------------------------------
+[P] The stored energy is the dislocation energy alone, as in Gourdet &
+    Montheillet (2003) and the CDRX models built on it.  Read-Shockley
+    gamma(theta) appears there as the energy that sets the driving pressure and
+    the mobility of a MIGRATING boundary, never as a term added to the stored
+    energy.
+[P] Adding gamma(theta)*(S/V) would count the walls twice: Humphreys, Rohrer &
+    Rollett (2017) Eq. (2.13) shows that the Read-Shockley boundary energy IS
+    the summed strain energy of the dislocations in the wall, which is the same
+    object E_wall already carries through A2.
 
-  * In Gourdet & Montheillet (2003), the stored energy is the dislocation energy 
-    alone.
-  * It may count the walls twice.
+
+ASSUMPTIONS, IN THE TAGS USED THROUGHOUT THIS FOLDER
+---------------------------------------------------------------------------------
+  [P]  taken from the literature as written
+  [R]  reduction / modelling choice of this work
+  [N]  numerics
+  [?]  not measured or not calibrated; a placeholder
+  [E]  known error, deviation or internal inconsistency
+
+[P] The partition, Eq. (5).  HRR 2.2.3.1 splits the total density into the
+    dislocations stored in cell/subgrain walls and those inside the cells.
+    Eq. (5) is that split plus a third, annihilated population, and it closes:
+    rho_ord + rho_swept + rho_free = rho_tot to 2e-16 (selftest).
+[P] The line energy, Eq. (4), is HRR Eq. (2.6) term for term, including
+    f(nu) = (1 - nu/2)/(1 - nu) for a mixed edge/screw population (Hansen 1986).
+[P] The wall geometry, Eq. (3), is HRR Eq. (6.32): rho = (S/V)*L = 3 theta/(bD)
+    with S/V ~ 3/D (Eq. 2.12) and theta = b/h (Eq. 4.4), plus a factor n for the
+    families in a wall (Gourdet & Montheillet, range 1-3).
+[P] Only the FREE dislocations are swept: Gourdet & Montheillet Eq. (4),
+    d rho_i = -rho_i dV.  The walls inside the swept volume go too, their Eq. (8).
+
+[R] D = beta/sqrt(rho_LAGB) is a Holt-type similarity relation written on the
+    WALL density, not on the total.  It is what makes r_n a function of theta
+    alone, and it is why beta = 21 here rather than the value Holt's relation
+    takes on rho_tot.  beta is the analogue of the geometric parameter of Rest &
+    Hofman (2000), who use 5.
+[R] theta_max is a pure NORMALIZATION (Eq. 7a): rho_LAGB, S/V and x depend on
+    theta = eta*theta_max alone, so it cancels out of Theta, r_n and X at fixed
+    beta and k.  It is set to theta_HAGB so that eta = 1 and Theta = theta_HAGB
+    coincide.
+[R] F is a CONSTRAINED MINIMISATION of the stored energy, not a Landau free
+    energy.
+
+[?] Eq. (1) is used far outside the range it was fitted in.  Nogita & Une (1994)
+    state that the density "increases exponentially with burnup IN THE RANGE OF
+    6-44 GWd/t" and give log N = 2.2e-2 Bu + 13.8 for it.  This model evaluates
+    that correlation from the threshold at 47 GWd/tU up to 150, i.e. entirely
+    above the fitted range, and the paper's only datum beyond it disagrees with
+    the extrapolation by a factor 7: at 83 GWd/t the measurement is 6.0e14 m^-2
+    while Eq. (1) gives 4.2e15.  Nogita & Une attribute that to the Ham method
+    saturating on extremely tangled dislocations and do not resolve it.  Every
+    quantitative output of this model therefore rests on an extrapolated source.
+[?] n, the number of dislocation families in a wall, is fixed at 2 and not
+    fitted; Gourdet & Montheillet give the range 1-3.
+
+[E] rho_crit = 6.85e14 m^-2 is LARGER than the only measured high-burnup density
+    of the paper Eq. (1) comes from (6.0e14 m^-2 at 83 GWd/t): the threshold at
+    47 GWd/tU is reached only because the correlation is trusted over the
+    measurement.  The same paper reports sub-boundaries appearing between 30 and
+    44 GWd/t, i.e. the observed onset of polygonization is BELOW the model's
+    threshold, not above it.  rho_crit is calibrated on the EBSD misorientations,
+    not on Nogita & Une; its agreement to within 15 % with the independent
+    6e14 m^-2 of Veshchunov & Shestak (2009) is what supports the value.
+[E] Gourdet & Montheillet Eq. (8) is applied to the radius but not to the energy.
+    Eq. (9) removes the wall area inside the swept volume (S/V -> S/V exp(-x)),
+    while F still counts ALL of rho_ord.  The same walls are present for the
+    energy and absent for the geometry.  Making it consistent means rho_ord ->
+    rho_ord exp(-x) in F, which moves every calibrated number.
+[E] The sweep is slaved to the WALL content, not to a migrating boundary.  In
+    Gourdet & Montheillet Eq. (5) the swept volume is proportional to the HAGB
+    area fraction and the HAGB velocity, with "only the HABs are mobile"; here
+    x = k rho_ord/rho_tot is already active at eta -> 0+, when not one high-angle
+    boundary exists.  A sweep proportional to the HAGB fraction times a mobility
+    M(T) would be closer to the mechanism.
+[E] No temperature dependence.  f(nu)*G*b^2 multiplies every term of F, so it
+    cannot move the minimum and Theta, r_n and X are functions of the local
+    burnup alone.  The literature makes every step thermally activated: recovery
+    (HRR 6.2, 84-90 kJ/mol), climb (6.3), boundary mobility (ch. 5).  The largest
+    residuals on X are exactly the hot points (Noirot 1023-1081 K, Gerczak 845 K).
+    Temperature is meant to enter through a future rho_tot(bu, T) replacing
+    Eq. (1), and through rho_crit(T).
+[E] The lever rule of Eq. (10) is partly circular with Theta.  The measured
+    Theta = [AMis*(f1 - f10) + 10*f10]/100 is BUILT from f10, which is the
+    measured X, and data set C puts X in the calibration objective.  R2(X) is
+    therefore an in-sample score, not independent evidence; the leave-one-paper-
+    out columns of `calibrate.py --study` are the out-of-sample check.
+[E] The lever rule saturates with a corner: X reaches its cap exactly where
+    Theta reaches theta_HAGB, so dX/dbu drops to zero abruptly.  Downstream that
+    shows up as a transient dip in the HBS porosity, which is driven by
+    dalpha_r/dt (porosity option 3).
+
 
 Calibration
 ---------------------------------------------------------------------------------
-`calibrate.py`: it fits beta, k and rho_c jointly on the mean misorientation and
-on the measured sizes of subgrains, and prints the result ready to paste back 
-into the constants below and into the C++ parameter push. 
+`calibrate.py` fits beta, k and rho_crit jointly on the mean misorientation, the
+measured subgrain sizes and the restructured fraction, and prints the result ready
+to paste back into the constants below and into the `case 4` parameter push of
+`src/models/HighBurnupStructureFormation.C`.
 
     python3 calibrate.py
 
 VALIDATION
 ---------------------------------------------------------------------------------
-Against the EBSD dataset shipped in `data/`, `--validate` gives
+Against the EBSD rows of `data/`, `--validate` gives
 
-  mean misorientation  Theta   N = 41   RMSE = 1.7713 deg   R2 = 0.7690
-  restructured fraction X      N = 27   RMSE = 0.1948       R2 = 0.7553
-  subgrain radius       r_n    N = 14   RMSE = 0.1030 um    R2 = 0.4771
+  mean misorientation  Theta   N = 41   RMSE = 1.6958 deg   R2 = 0.7883
+  restructured fraction X      N = 27   RMSE = 0.1915       R2 = 0.7634
+  subgrain radius       r_n    N = 14   RMSE = 0.1198 um    R2 = 0.2931
 
 (Zacharie-Aubrun + Onofri standard UO2 rows; the calibration itself uses all four papers, data
 set C of calibrate.py).  `comparison.py` scores the same model on ALL 127 targets of the four
-papers, weighted by Rose rank x relevance: RMSE_w = 0.1942 with R2_w = +0.723 on the fraction,
-1.896 deg / +0.733 on Theta and 0.1216 um / +0.017 on the radius.
+papers, weighted by Rose rank x relevance: RMSE_w = 0.1880 with R2_w = +0.740 on the fraction,
+1.812 deg / +0.756 on Theta and 0.1350 um / -0.212 on the radius.
 
 References
 ---------------------------------------------------------------------------------
@@ -182,11 +280,11 @@ Onofri et al., J. Nucl. Mater. 615 (2025) 155981.
 from __future__ import annotations
 
 import argparse
-import csv
 import math
-import os
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+from hbs_dataset import dataset_dir, load_rows
 
 # ---------------------------------------------------------------------------
 # CONSTANTS
@@ -241,17 +339,22 @@ GRAIN_RADIUS = 5.0e-6           # m
 #       Gourdet & Montheillet, Acta Mater. 51 (2003) 2685-2699.  Not fitted.
 # beta  geometric parameter linking the dislocation density to the crystallite
 #       size; the analogue of the one of Rest & Hofman (2000).
-# k     links the volume seen by the mobile grain boundary to the fraction of
-#       dislocations engaged in the LAGB over the total.
-# rho_c outer cut-off of the dislocation strain field in Eq. (4).
+# k     swept volume per unit wall fraction, Eq. (5): x = k*rho_ord/rho_tot is the
+#       (extended) volume swept by the mobile boundaries.
+# rho_crit  critical dislocation density, Eq. (1): only the dislocations above it are
+#       available to polygonize, the rest stay as tangles.  It is the fixed density
+#       scale the energy balance lacks (every other length in F scales as rho^-1/2),
+#       and it gives the continuous threshold Theta ~ sqrt(bu - bu_c).  The analogue of
+#       rho_crit = 6e14 of Veshchunov & Shestak (2009), used by formation option 3;
+#       it must be >= rho_Nogita(0) = 10^13.8.
 #
-# beta, k and rho_c come from `calibrate.py` (data set C, w_r = 0.2, w_X = 1):
+# beta, k and rho_crit come from `calibrate.py` (data set C, w_r = 0.2, w_X = 1):
 # all four papers, each point weighted by its Rose quality rank x relevance
 # (hbs_dataset.study_weight), which is also the weighting `comparison.py` scores with.
 N_FAMILIES = 2.0                        # -
-BETA       = 26.681642770151456         # -
-K_SWEEP    = 0.5102476353172847         # -
-RHO_C      = 5741121567363591.0         # m^-2
+BETA       = 21.36831476383452          # -
+K_SWEEP    = 0.6787994413909928         # -
+RHO_CRIT   = 685421967748407.1          # m^-2   threshold at 47.1 GWd/tU
 
 # --- Nogita & Une (1994), Eq. (1) ------------------------------------------
 NOGITA_SLOPE = 2.2e-2           # 1/(GWd/tU)
@@ -272,6 +375,17 @@ ALPHA_MAX = 1.0 - 1.0e-9        # -
 REFERENCE_TEMPERATURE = 600.0    # K
 REFERENCE_POROSITY = FABRICATION_POROSITY
 
+# --- numerical minimization of Eq. (7) --------------------------------------
+# [N] F is unimodal on the admissible interval at every burnup, so the coarse scan
+#     brackets the minimum and the golden section refines it.  The tolerance is
+#     deliberately far below what the function can resolve: F is flat at its bottom,
+#     so eta is determined only to ~sqrt(eps) ~ 1e-8 whatever the tolerance (this is
+#     the MINIMUM_RESOLUTION of compare_with_sciantix.py).  It is kept at 1e-13 so
+#     that the search takes a FIXED number of steps, which is what lets the C++ port
+#     follow the same path statement by statement.
+MINIMIZATION_NODES = 400        # -      coarse scan of F(eta) before the golden section
+MINIMIZATION_TOLERANCE = 1e-13  # -      on eta
+
 
 # ---------------------------------------------------------------------------
 # THE MODEL
@@ -279,12 +393,12 @@ REFERENCE_POROSITY = FABRICATION_POROSITY
 
 @dataclass(frozen=True)
 class ModelParameters:
-    """The four parameters `calibrate.py` is allowed to move."""
+    """The parameters `calibrate.py` is allowed to move (n is held fixed)."""
 
     n_families: float = N_FAMILIES
     beta: float = BETA
     k_sweep: float = K_SWEEP
-    rho_c: float = RHO_C
+    rho_crit: float = RHO_CRIT
 
 
 DEFAULT_PARAMETERS = ModelParameters()
@@ -302,9 +416,9 @@ class HbsState:
     porosity: float           # -          input
     rho_tot: float            # m^-2       Eq. (1)
     shear_modulus: float      # Pa         Eq. (2)
-    c0: float                 # J/m3       Eq. (6)
-    c2: float                 # J/m3       Eq. (6)
-    c4: float                 # J/m3       Eq. (6)
+    c0: float                 # J/m3       Eq. (6), all dislocations random
+    e_wall: float             # J/m3       Eq. (6), at the equilibrium
+    e_sweep: float            # J/m3       Eq. (6), at the equilibrium
     eta: float                # -          Eq. (8), after the cap
     theta_deg: float          # deg        Eq. (8)   <-- output 1
     subgrain_radius_m: float  # m          Eq. (9)   <-- output 2
@@ -322,6 +436,21 @@ def dislocation_density_nogita(burnup):
     log10(rho_tot) = 2.2e-2*bu + 13.8, with bu in GWd/tU.
     """
     return math.pow(10.0, NOGITA_SLOPE * burnup + NOGITA_INTERCEPT)
+
+
+def dislocation_source(burnup, parameters=DEFAULT_PARAMETERS):
+    """Eq. (1) -- the dislocations available to polygonize [m^-2], the density the model partitions.
+
+        rho_tot(bu) = max( rho_Nogita(bu) - rho_crit , 0 )
+
+    Eq. (1) is read as a pure source term, and only its part above the critical
+    density rho_crit takes part in the partition.  With the Read-Shockley cut-offs any
+    rho_tot > 0 polygonizes, since F has no energetic threshold of its own (every
+    length in it scales as rho^-1/2); rho_crit is the fixed density scale that puts
+    the threshold at rho_Nogita(bu_c) = rho_crit.  Theta then leaves zero
+    continuously, roughly as sqrt(rho_tot), i.e. as sqrt(bu - bu_c) near the threshold.
+    """
+    return max(dislocation_density_nogita(burnup) - parameters.rho_crit, 0.0)
 
 
 def shear_modulus(temperature, porosity=FABRICATION_POROSITY,
@@ -364,67 +493,122 @@ def line_energy_prefactor(temperature, porosity=FABRICATION_POROSITY,
 def wall_geometry(rho_tot, parameters=DEFAULT_PARAMETERS):
     """Eq. (3) -- geometry of a fully developed low-angle boundary wall.
 
-    Returns (rho_LAGB_max [m^-2], SoverV_max [m^-1], dRoverR_max [-]), the values
-    the three geometric quantities take at eta = 1; the eta-dependence is applied
-    in `hbs_state`.
+    Returns (rho_LAGB_max [m^-2], SoverV_max [m^-1], x_max [-]), the values the
+    three geometric quantities take at eta = 1; x_max = k*rho_LAGB_max/rho_tot is
+    the extended swept volume of Eq. (5).  The eta-dependence is applied in
+    `dislocation_partition` and `hbs_state`.
     """
     n_families, beta, k_sweep = parameters.n_families, parameters.beta, parameters.k_sweep
     rho_lagb_max = math.pow(3.0 * n_families * THETA_MAX / (beta * BURGERS), 2.0)
     s_over_v_max = 9.0 * n_families * THETA_MAX / (beta * beta * BURGERS)
-    dr_over_r_max = k_sweep * rho_lagb_max / rho_tot
-    return rho_lagb_max, s_over_v_max, dr_over_r_max
+    swept_max = k_sweep * rho_lagb_max / rho_tot
+    return rho_lagb_max, s_over_v_max, swept_max
 
 
 def dislocation_partition(rho_tot, eta, parameters=DEFAULT_PARAMETERS):
     """Eq. (5) -- the three dislocation populations at a given eta [m^-2].
 
-        rho_ord   = rho_LAGB_max * eta^2      condensed into the LAGB walls
-        rho_swept = (rho_tot - rho_ord) * dRoverR     annihilated by the sweep
-        rho_free  = rho_tot - rho_ord - rho_swept     still a random array
+        rho_ord   = rho_LAGB_max * eta^2                  condensed into the LAGB walls
+        x         = k * rho_ord / rho_tot                 extended swept volume
+        rho_free  = (rho_tot - rho_ord) * exp(-x)         still a random array
+        rho_swept = (rho_tot - rho_ord) * (1 - exp(-x))   annihilated by the sweep
 
+    exp(-x) is Gourdet & Montheillet's d(rho_i) = -rho_i dV (their Eq. 4) integrated
+    over the swept volume: linear in x for a small sweep, and never more than the
+    free dislocations there are.
     """
-    rho_lagb_max, _, dr_over_r_max = wall_geometry(rho_tot, parameters)
-    # The `min` is the bound of Eq. (7b) written on the density instead of on
-    # eta.  `hbs_state` has already applied it, so here it only ever absorbs the
-    # last-bit rounding of eta = sqrt(rho_tot/rho_LAGB_max), which would
-    # otherwise leave rho_free at -1e-17*rho_tot exactly on the bound.
+    rho_lagb_max, _, swept_max = wall_geometry(rho_tot, parameters)
+    # The `min` is the bound of Eq. (7b) written on the density; it only ever
+    # absorbs the last-bit rounding of eta = sqrt(rho_tot/rho_LAGB_max).
     rho_ordered = min(rho_lagb_max * eta * eta, rho_tot)
-    rho_swept = (rho_tot - rho_ordered) * dr_over_r_max * eta * eta
-    return rho_ordered, rho_swept, rho_tot - rho_ordered - rho_swept
+    rho_free = (rho_tot - rho_ordered) * math.exp(-swept_max * eta * eta)
+    return rho_ordered, rho_tot - rho_ordered - rho_free, rho_free
 
 
-def landau_coefficients(temperature, rho_tot, porosity=FABRICATION_POROSITY,
-                        stoichiometry_deviation=0.0, parameters=DEFAULT_PARAMETERS):
-    """Eqs. (4)-(6) -- the coefficients of F = C0 + C2 eta^2 + C4 eta^4 [J/m^3].
+def line_energy_coefficients(temperature, rho_tot, eta, porosity=FABRICATION_POROSITY,
+                             stoichiometry_deviation=0.0):
+    """Eq. (4) -- (A1, A2(eta)), the line energies in units of G b^2 [-].
 
-    The functional is the energy of the three populations of Eq. (5), each
-    carrying the line energy of the state it is in:
+        A1      = f(nu)/(4 pi) * ln( rho_tot^(-1/2) / b )                random array
+        A2(eta) = f(nu)/(4 pi) * ln( min(b/theta, rho_tot^(-1/2)) / b )  wall
 
-        F = rho_free*A1*G b^2 + rho_ord*A2*G b^2
-
-    Returns (C0, C2, C4, [E_free, E_wall, E_sweep_2, E_sweep_4]).  The four
-    amplitudes are the energy contributions at eta = 1, in the order of Eq. (5).
+    Humphreys, Rohrer & Rollett (2017) Eq. (2.6), with the outer cut-off at the
+    spacing of the dislocations: rho_tot^(-1/2) in a random array, h = b/theta in a
+    Read-Shockley wall (their Eqs. 4.4-4.5).  The cap keeps a wall more dilute than
+    the random array from being dearer than it.
     """
-    rho_lagb_max, _, dr_over_r_max = wall_geometry(rho_tot, parameters)
-
-    gb2 = shear_modulus(temperature, porosity, stoichiometry_deviation) * BURGERS * BURGERS
     f_nu = line_energy_prefactor(temperature, porosity, stoichiometry_deviation)
+    spacing = math.pow(rho_tot, -0.5)
+    theta = eta * THETA_MAX
+    wall_spacing = spacing if theta * spacing <= BURGERS else BURGERS / theta
+    a1 = f_nu / (4.0 * math.pi) * math.log(spacing / BURGERS)
+    a2 = f_nu / (4.0 * math.pi) * math.log(wall_spacing / BURGERS)
+    return a1, a2
 
-    # Eq. (4): the two logarithmic cut-offs of the dislocation line energy.
-    a1 = f_nu / (4.0 * math.pi) * math.log(math.pow(parameters.rho_c, -0.5) / BURGERS)
-    a2 = f_nu / (4.0 * math.pi) * math.log(math.pow(rho_tot, -0.5) / BURGERS)
 
-    # Eq. (5)-(6): the partition, term by term.
-    e_free = rho_tot * a1 * gb2                          # order eta^0
-    e_wall = rho_lagb_max * (a2 - a1) * gb2              # order eta^2
-    e_sweep_2 = -rho_tot * dr_over_r_max * a1 * gb2      # order eta^2
-    e_sweep_4 = rho_lagb_max * dr_over_r_max * a1 * gb2  # order eta^4
+def energy_terms(temperature, rho_tot, eta, porosity=FABRICATION_POROSITY,
+                 stoichiometry_deviation=0.0, parameters=DEFAULT_PARAMETERS):
+    """Eq. (6) -- (C0, E_wall, E_sweep) at a given eta [J/m^3].
 
-    # Eq. (6).
-    c0 = e_free
-    c2 = e_wall + e_sweep_2
-    c4 = e_sweep_4
-    return c0, c2, c4, [e_free, e_wall, e_sweep_2, e_sweep_4]
+        F       = rho_free*A1*G b^2 + rho_ord*A2*G b^2 = C0 + E_wall + E_sweep
+        C0      = rho_tot * A1 * G b^2            all dislocations random
+        E_wall  = rho_ord * (A2 - A1) * G b^2     condensing into walls (< 0)
+        E_sweep = -rho_swept * A1 * G b^2         annihilation (< 0)
+    """
+    gb2 = shear_modulus(temperature, porosity, stoichiometry_deviation) * BURGERS * BURGERS
+    a1, a2 = line_energy_coefficients(temperature, rho_tot, eta, porosity, stoichiometry_deviation)
+    rho_ordered, rho_swept, _ = dislocation_partition(rho_tot, eta, parameters)
+    return rho_tot * a1 * gb2, rho_ordered * (a2 - a1) * gb2, -rho_swept * a1 * gb2
+
+
+def reduced_energy(rho_tot, eta, parameters=DEFAULT_PARAMETERS):
+    """(F - C0) / (f(nu) G b^2 / 4 pi) at a given eta [m^-2].
+
+        = -rho_swept * L1 + rho_ord * (L2 - L1),   L = ln(R/b) of Eq. (4)
+
+    f(nu) G b^2 / (4 pi) multiplies every term of F, so the minimum does not depend on
+    it; this is what `equilibrium_eta` compares, and what the C++ port evaluates with
+    the same arithmetic, statement by statement.
+    """
+    rho_lagb_max, _, swept_max = wall_geometry(rho_tot, parameters)
+    spacing = math.pow(rho_tot, -0.5)
+    log_free = math.log(spacing / BURGERS)
+    theta = eta * THETA_MAX
+    log_wall = log_free if theta * spacing <= BURGERS else math.log(BURGERS / theta / BURGERS)
+    rho_ordered = min(rho_lagb_max * eta * eta, rho_tot)
+    rho_free = (rho_tot - rho_ordered) * math.exp(-swept_max * eta * eta)
+    rho_swept = rho_tot - rho_ordered - rho_free
+    return -rho_swept * log_free + rho_ordered * (log_wall - log_free)
+
+
+def equilibrium_eta(rho_tot, eta_upper, parameters=DEFAULT_PARAMETERS):
+    """Eq. (7) -- the eta that minimizes F on the admissible interval [0, eta_upper].
+
+    A2 carries the Read-Shockley theta*ln(theta) and the sweep an exponential, so F is
+    not a polynomial in eta: a coarse scan brackets the minimum, a golden section
+    refines it.  Temperature, porosity and stoichiometry do not enter (see
+    `reduced_energy`).
+    """
+    def energy(eta):
+        return reduced_energy(rho_tot, eta, parameters)
+
+    nodes = MINIMIZATION_NODES
+    grid = [eta_upper * i / nodes for i in range(nodes + 1)]
+    best = min(range(nodes + 1), key=lambda i: energy(grid[i]))
+    low, high = grid[max(best - 1, 0)], grid[min(best + 1, nodes)]
+    ratio = (math.sqrt(5.0) - 1.0) / 2.0
+    while high - low > MINIMIZATION_TOLERANCE:
+        left, right = high - ratio * (high - low), low + ratio * (high - low)
+        if energy(left) < energy(right):
+            high = right
+        else:
+            low = left
+    eta = 0.5 * (low + high)
+    # on the bound (7b) or the HAGB cap, exactly: F is flat there to rounding, so a
+    # bracket closing on eta_upper counts as reaching it
+    if eta_upper - eta <= MINIMIZATION_TOLERANCE or energy(eta_upper) <= energy(eta):
+        eta = eta_upper
+    return eta if energy(eta) < 0.0 else 0.0
 
 
 def hbs_state(burnup, temperature, porosity=FABRICATION_POROSITY,
@@ -432,42 +616,48 @@ def hbs_state(burnup, temperature, porosity=FABRICATION_POROSITY,
               parameters=DEFAULT_PARAMETERS):
     """The model. Eqs. (1)-(11) for one (burnup [GWd/tU], temperature [K]) point.
 
-    This is the function the C++ port must mirror.  It is scalar and uses only
-    `math`, and the statements are in the order `HighBurnupStructureFormation.C`
-    case 4 should use, so the two can be read side by side and compared
-    numerically once that case exists.
+    This is the function `case 4` of `src/models/HighBurnupStructureFormation.C`
+    mirrors, statement by statement: scalar, `math` only, same order, same arithmetic,
+    so that `compare_with_sciantix.py` can check the two against each other.
 
-    Returns an `HbsState`.  `subgrain_radius_m` is `nan` below the transition
-    threshold, where there are no subgrains; SCIANTIX writes 0.0 there instead.
+    Returns an `HbsState`.  `subgrain_radius_m` is `nan` where eta = 0, where there
+    are no subgrains; SCIANTIX writes 0.0 there instead.
     """
-    # (1) dislocation density
-    rho_tot = dislocation_density_nogita(burnup)
+    # (1) dislocation density produced by irradiation
+    rho_tot = dislocation_source(burnup, parameters)
 
-    # (2) shear modulus, (3) wall geometry, (4)-(6) Landau coefficients
-    rho_lagb_max, s_over_v_max, dr_over_r_max = wall_geometry(rho_tot, parameters)
-    c0, c2, c4, _ = landau_coefficients(temperature, rho_tot, porosity,
-                                        stoichiometry_deviation, parameters)
+    # (2)-(3) elastic constants, wall geometry
+    rho_lagb_max, s_over_v_max, swept_max = (wall_geometry(rho_tot, parameters) if rho_tot > 0.0
+                                             else (0.0, 0.0, 0.0))
 
-    # (7) stationary point.
-    eta_stationary = math.sqrt(max(-c2 / (2.0 * c4), 0.0))
+    if rho_tot > 0.0:
+        # (7b) admissibility, and the LAGB/HAGB cap of Eq. (8).
+        #      eta_hagb is 1.0 by construction, since THETA_MAX = radians(THETA_HAGB)
+        #      (Eq. 7a).  It is written out because the C++ carries theta_max and
+        #      theta_HAGB as two parameters (offsets 4 and 5) and evaluates this same
+        #      quotient; keeping the statement here is what keeps the two in step.
+        eta_balance = math.sqrt(min(rho_tot / rho_lagb_max, 1.0))
+        eta_hagb = math.radians(THETA_HAGB) / THETA_MAX
 
-    # (7b) admissibility
-    eta_balance = math.sqrt(min(rho_tot / rho_lagb_max, 1.0))
+        # (4)-(7) minimum of F on the admissible interval
+        eta = equilibrium_eta(rho_tot, min(eta_balance, eta_hagb), parameters)
+        balance_limited = eta_balance < eta_hagb and eta >= eta_balance * (1.0 - 1e-9)
+    else:
+        eta, balance_limited = 0.0, False          # fresh fuel: nothing to partition
 
-    # (8) mean misorientation, capped at the LAGB/HAGB boundary   <-- output 1
-    eta_hagb = math.radians(THETA_HAGB) / THETA_MAX
-    eta = min(eta_stationary, eta_balance, eta_hagb)
-    balance_limited = eta_balance < min(eta_stationary, eta_hagb)
-
+    # (8) mean misorientation                                     <-- output 1
     theta = math.degrees(eta * THETA_MAX)
-    eta = math.radians(theta) / THETA_MAX          # re-derived after the cap
+    # exact inverse of the line above, so a no-op in Python.  It is kept because the
+    # C++ applies the cap of Eq. (8) here and must re-derive eta from the capped
+    # angle; both files therefore carry the same two statements in the same order.
+    eta = math.radians(theta) / THETA_MAX
 
     # (9) subgrain radius, capped at the host grain               <-- output 2
-    s_over_v = s_over_v_max * eta
-    dr_over_r = dr_over_r_max * eta * eta
+    #     the walls inside the swept volume go with it (Gourdet & Montheillet
+    #     Eq. 8), so the wall area left is S/V * exp(-x)
+    s_over_v = s_over_v_max * eta * math.exp(-swept_max * eta * eta)
     if s_over_v > 0.0:
-        radius = min(1.5 / s_over_v * (1.0 + dr_over_r), grain_radius_m)
-        # a subgrain cannot exceed its grain
+        radius = min(1.5 / s_over_v, grain_radius_m)   # a subgrain cannot exceed its grain
     else:
         radius = math.nan                          # no substructure, not a length
 
@@ -479,9 +669,14 @@ def hbs_state(burnup, temperature, porosity=FABRICATION_POROSITY,
         fraction = ALPHA_MAX
 
     # (11) driving force, for the nucleation criterion
-    driving_force = c0 + c2 * eta * eta + c4 * eta * eta * eta * eta
-
-    rho_ordered, rho_swept, rho_free = dislocation_partition(rho_tot, eta, parameters)
+    if rho_tot > 0.0:
+        c0, e_wall, e_sweep = energy_terms(temperature, rho_tot, eta, porosity,
+                                           stoichiometry_deviation, parameters)
+        rho_ordered, rho_swept, rho_free = dislocation_partition(rho_tot, eta, parameters)
+    else:
+        c0, e_wall, e_sweep = 0.0, 0.0, 0.0
+        rho_ordered, rho_swept, rho_free = 0.0, 0.0, 0.0
+    driving_force = c0 + e_wall + e_sweep
 
     return HbsState(
         burnup=burnup,
@@ -490,8 +685,8 @@ def hbs_state(burnup, temperature, porosity=FABRICATION_POROSITY,
         rho_tot=rho_tot,
         shear_modulus=shear_modulus(temperature, porosity, stoichiometry_deviation),
         c0=c0,
-        c2=c2,
-        c4=c4,
+        e_wall=e_wall,
+        e_sweep=e_sweep,
         eta=eta,
         theta_deg=theta,
         subgrain_radius_m=radius,
@@ -523,84 +718,26 @@ def hbs_state_array(burnup, temperature, **keywords):
 # VALIDATION AGAINST THE EBSD DATASET
 # ---------------------------------------------------------------------------
 
-def _default_data():
-    """The curated HBS dataset folder when it can be found (see hbs_dataset.py), else the CSV."""
-    from hbs_dataset import dataset_dir
-    return dataset_dir()
-
-DATA_FILE =  _default_data()
-
-# Column names of `data/ebsd_zacharie_onofri.csv`, kept verbatim from the source
-# spreadsheets so that the file stays a faithful copy of them.
-COL_BURNUP = "Calculated radial burnup (GWd/tU)"
-COL_BURNUP_EFFECTIVE = "Calculated radial effective burnup (GWd/tU)"
-COL_TEMPERATURE = "Calculated radial temperature (°C)"
-COL_F1 = "Restructured fraction at 1° (%)"
-COL_F10 = "Restructured fraction at 10° (%)"
-COL_AMIS = "AMis2Mean (°)"
-COL_ECD_SUB = "Sub-grains ECD50% (μm)"
-COL_ECD_NEW = "New grains ECD50% (μm)"
-COL_POROSITY = "Porosity (%)"
-COL_GRAIN_SIZE = "Grain size (μm)"
-
-
-def _number(text):
-    """A CSV cell as a float; empty cells and bare dashes become nan."""
-    text = text.strip()
-    if not text or text == "-":
-        return math.nan
-    return float(text)
+DATA_FILE = dataset_dir()          # the data/ folder of curated JSON datasets
 
 
 def load_ebsd(path=DATA_FILE):
-    """The EBSD + TRANSURANUS dataset as a list of dicts of floats.
+    """The EBSD rows of the curated datasets, as a list of dicts of floats.
 
-    `path` a folder: the curated dataset, joined by hbs_dataset.load_rows (same keys, plus
-    sample_id, r_over_R, Rose ranks, provisional weights, flags).  `path` a .csv: the
-    original copy described below.
+    Joined by `hbs_dataset.load_rows` from `data/*.json`: the standard-UO2 EBSD maps of
+    Zacharie-Aubrun et al. (2022) and Onofri et al. (2025), with the local conditions
+    (burnup, temperature) of each radial point.
 
-    42 rows: 28 from Zacharie-Aubrun et al. (2022) and 14 from Onofri et al.
-    (2025).  The misorientations and the restructured fractions are measured by
-    EBSD; the local conditions (burnup, temperature, fission rate, strain,
-    stress) come from TRANSURANUS runs of the same rods.
+    `porosity` and `grain_radius` are the as-fabricated values of the specimen, used
+    respectively in Eq. (2) and as the ceiling of Eq. (9); the module defaults stand in
+    wherever the JSON files carry no value.
 
-    `porosity` and `grain_radius` are the as-fabricated values of the specimen,
-    used respectively in Eq. (2) and as the ceiling of Eq. (9).  Both are given
-    for the Zacharie rods and absent for the Onofri ones, where the module
-    defaults are substituted.
-
-    `burnup` is the local burnup, which is what this model uses; `burnup_effective`
-    is the same TRANSURANUS run's effective burnup, carried for the comparison with
-    the KJMA options of SCIANTIX, which are driven by that one instead.
+    `burnup` is the local burnup, which is what this model uses; `burnup_effective` is
+    carried for the comparison with the KJMA options of SCIANTIX, which are driven by
+    the effective burnup instead.
     """
-    if os.path.isdir(path):
-        from hbs_dataset import load_rows
-        return load_rows(path, fabrication_porosity=FABRICATION_POROSITY, grain_radius=GRAIN_RADIUS)
-    rows = []
-    with open(path, newline="", encoding="utf-8") as handle:
-        for record in csv.DictReader(handle):
-            porosity = _number(record[COL_POROSITY])
-            # "Grain size" is a DIAMETER, as it is for the ECD50% columns.
-            grain_size = _number(record[COL_GRAIN_SIZE])
-            rows.append({
-                "label": "%s/%s" % (record["Dataset"], record["Label"]),
-                "Dataset": "%s"%(record["Dataset"]),
-                "burnup": _number(record[COL_BURNUP]),
-                # The effective burnup of the same TRANSURANUS run.  Carried because
-                # the KJMA formation options of SCIANTIX (1 and 2) are driven by
-                # sciantix_variable["Effective burnup"], not by the local burnup that
-                # drives options 3 and 4.
-                "burnup_effective": _number(record[COL_BURNUP_EFFECTIVE]),
-                "temperature": _number(record[COL_TEMPERATURE]) + 273.15,
-                "f1": _number(record[COL_F1]),
-                "f10": _number(record[COL_F10]),
-                "amis": _number(record[COL_AMIS]),
-                "ecd_sub": _number(record[COL_ECD_SUB]),
-                "ecd_new": _number(record[COL_ECD_NEW]),
-                "porosity": porosity / 100.0 if not math.isnan(porosity) else FABRICATION_POROSITY,
-                "grain_radius": grain_size / 2.0 * 1e-6 if not math.isnan(grain_size) else GRAIN_RADIUS,
-            })
-    return rows
+    return load_rows(path, fabrication_porosity=FABRICATION_POROSITY,
+                     grain_radius=GRAIN_RADIUS)
 
 
 def theta_measured(row):
@@ -651,6 +788,11 @@ def validate(path=DATA_FILE, verbose=True, parameters=DEFAULT_PARAMETERS):
 
     Each point is evaluated with the porosity and the grain radius of its own
     specimen, so Eq. (2) and the ceiling of Eq. (9) see the real fuel.
+
+    A size point below the threshold of Eq. (1) has no predicted radius -- there
+    are no subgrains there -- so it cannot be scored.  Such points are counted and
+    reported rather than scored, because which points fall below the threshold is a
+    property of the calibration and must stay visible when rho_crit moves.
     """
     rows = load_ebsd(path)
     metrics = {}
@@ -658,6 +800,7 @@ def validate(path=DATA_FILE, verbose=True, parameters=DEFAULT_PARAMETERS):
     theta_obs, theta_mod = [], []
     frac_obs, frac_mod = [], []
     size_obs, size_mod = [], []
+    size_below_threshold = []
 
     for row in rows:
         if not row["burnup"] > 0.0:
@@ -676,11 +819,10 @@ def validate(path=DATA_FILE, verbose=True, parameters=DEFAULT_PARAMETERS):
         radius = measured_radius(row)
         if not math.isnan(radius):
             if math.isnan(state.subgrain_radius_m):
-                raise AssertionError(
-                    "size point at bu = %g GWd/tU lies below the transition "
-                    "threshold, where the radius is undefined" % row["burnup"])
-            size_obs.append(radius)
-            size_mod.append(state.subgrain_radius_m)
+                size_below_threshold.append((row["label"], row["burnup"]))
+            else:
+                size_obs.append(radius)
+                size_mod.append(state.subgrain_radius_m)
 
     metrics["theta"] = dict(n=len(theta_obs), rmse=_rmse(theta_obs, theta_mod),
                             r2=_r_squared(theta_obs, theta_mod))
@@ -688,12 +830,13 @@ def validate(path=DATA_FILE, verbose=True, parameters=DEFAULT_PARAMETERS):
                                r2=_r_squared(frac_obs, frac_mod))
     metrics["radius"] = dict(n=len(size_obs), rmse=_rmse(size_obs, size_mod),
                              r2=_r_squared(size_obs, size_mod))
+    metrics["radius_below_threshold"] = size_below_threshold
 
     if verbose:
         print("Validation against %s" % path)
         print("  dislocation density: Nogita & Une (1994);  shear modulus: NEA/NSC/R(2024)1")
-        print("  n = %g, beta = %g, k = %g, rho_c = %g m^-2"
-              % (parameters.n_families, parameters.beta, parameters.k_sweep, parameters.rho_c))
+        print("  n = %g, beta = %g, k = %g"
+              % (parameters.n_families, parameters.beta, parameters.k_sweep))
         print()
         print("  mean misorientation  Theta   N = %2d   RMSE = %.4f deg   R2 = %.4f"
               % (metrics["theta"]["n"], metrics["theta"]["rmse"], metrics["theta"]["r2"]))
@@ -701,6 +844,13 @@ def validate(path=DATA_FILE, verbose=True, parameters=DEFAULT_PARAMETERS):
               % (metrics["fraction"]["n"], metrics["fraction"]["rmse"], metrics["fraction"]["r2"]))
         print("  subgrain radius       r_n    N = %2d   RMSE = %.4f um    R2 = %.4f"
               % (metrics["radius"]["n"], metrics["radius"]["rmse"] * 1e6, metrics["radius"]["r2"]))
+        if size_below_threshold:
+            print()
+            print("  %d size point(s) not scored: below the threshold of Eq. (1), where there"
+                  % len(size_below_threshold))
+            print("  are no subgrains and the radius is not a length --")
+            for label, burnup in size_below_threshold:
+                print("    %-20s bu = %g GWd/tU" % (label, burnup))
     return metrics
 
 def _bisect(function, low, high, tolerance=1e-9):
@@ -717,50 +867,19 @@ def _bisect(function, low, high, tolerance=1e-9):
 
 def regime_boundaries(temperature=REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY,
                       parameters=DEFAULT_PARAMETERS):
-    """(threshold, onset, saturation) in GWd/tU, by bisection on Theta."""
+    """(threshold, onset, saturation) in GWd/tU, by bisection on Theta.
+
+    threshold is where Theta leaves zero, 0.0 if it is already positive in fresh
+    fuel (as it is with the Read-Shockley cut-offs, which have no energetic
+    threshold); onset is Theta = theta_u, where X leaves zero.
+    """
     def theta(burnup):
         return hbs_state(burnup, temperature, porosity=porosity, parameters=parameters).theta_deg
 
-    threshold = _bisect(lambda b: theta(b) - 1e-12, 1.0, 200.0)
+    threshold = 0.0 if theta(0.0) > 0.0 else _bisect(lambda b: theta(b) - 1e-12, 0.0, 200.0)
     onset = _bisect(lambda b: theta(b) - THETA_U, threshold, 300.0)
     saturation = _bisect(lambda b: theta(b) - THETA_HAGB * (1.0 - 1e-12), onset, 400.0)
     return threshold, onset, saturation
-
-def _outputs_at_theta_max(burnup, theta_max, temperature=REFERENCE_TEMPERATURE,
-                          porosity=REFERENCE_POROSITY, grain_radius_m=GRAIN_RADIUS,
-                          parameters=DEFAULT_PARAMETERS):
-    """(Theta [deg], r_n [m], X [-]) with THETA_MAX replaced by `theta_max`.
-
-    The model of `hbs_state`, re-derived with a different normalization of the order
-    parameter and nothing else, so that `selftest` can check the invariance claimed
-    in the comment on THETA_MAX instead of taking it on trust.  Used only there.
-    """
-    n_families, beta, k_sweep = parameters.n_families, parameters.beta, parameters.k_sweep
-    rho_tot = dislocation_density_nogita(burnup)
-
-    rho_lagb_max = math.pow(3.0 * n_families * theta_max / (beta * BURGERS), 2.0)
-    s_over_v_max = 9.0 * n_families * theta_max / (beta * beta * BURGERS)
-    dr_over_r_max = k_sweep * rho_lagb_max / rho_tot
-
-    gb2 = shear_modulus(temperature, porosity) * BURGERS * BURGERS
-    f_nu = line_energy_prefactor(temperature, porosity)
-    a1 = f_nu / (4.0 * math.pi) * math.log(math.pow(parameters.rho_c, -0.5) / BURGERS)
-    a2 = f_nu / (4.0 * math.pi) * math.log(math.pow(rho_tot, -0.5) / BURGERS)
-
-    c2 = rho_lagb_max * (a2 - a1) * gb2 - rho_tot * dr_over_r_max * a1 * gb2
-    c4 = rho_lagb_max * dr_over_r_max * a1 * gb2
-
-    eta = min(math.sqrt(max(-c2 / (2.0 * c4), 0.0)),
-              math.sqrt(min(rho_tot / rho_lagb_max, 1.0)),
-              math.radians(THETA_HAGB) / theta_max)
-    theta = math.degrees(eta * theta_max)
-    eta = math.radians(theta) / theta_max
-
-    s_over_v = s_over_v_max * eta
-    radius = (min(1.5 / s_over_v * (1.0 + dr_over_r_max * eta * eta), grain_radius_m)
-              if s_over_v > 0.0 else math.nan)
-    fraction = min(ALPHA_MAX, max(0.0, (theta - THETA_U) / (THETA_HAGB - THETA_U)))
-    return theta, radius, fraction
 
 
 def selftest(verbose=True):
@@ -770,23 +889,40 @@ def selftest(verbose=True):
     def check(name, condition, detail=""):
         checks.append((name, bool(condition), detail))
 
-    # virgin fuel carries no structure.
+    # below the critical density of Eq. (1) there is nothing to polygonize
+    bu_crit = (math.log10(DEFAULT_PARAMETERS.rho_crit) - NOGITA_INTERCEPT) / NOGITA_SLOPE
     for temperature in (300.0, 723.0, 1200.0):
-        virgin = hbs_state(0.0, temperature)
-        check("virgin fuel at T = %g K carries no structure" % temperature,
-              virgin.theta_deg == 0.0 and virgin.restructured_fraction == 0.0
-              and math.isnan(virgin.subgrain_radius_m))
-        check("Theta = 0 at bu = 0 comes from C2 > 0, not from a special case (T = %g K)"
-              % temperature, virgin.c2 > 0.0, "C2 = %+.4e J/m3" % virgin.c2)
+        for burnup in (0.0, 0.999 * bu_crit):
+            virgin = hbs_state(burnup, temperature)
+            check("below rho_crit (bu = %.2f, T = %g K): no structure" % (burnup, temperature),
+                  virgin.rho_tot == 0.0 and virgin.theta_deg == 0.0
+                  and virgin.restructured_fraction == 0.0 and math.isnan(virgin.subgrain_radius_m))
+
+    # the threshold is continuous: Theta leaves zero as sqrt(bu - bu_c), with no jump
+    steps = (1e-4, 1e-3, 1e-2, 1e-1)
+    thetas = [hbs_state(bu_crit + d, REFERENCE_TEMPERATURE).theta_deg for d in steps]
+    exponents = [math.log(thetas[i + 1] / thetas[i]) / math.log(10.0) for i in range(len(steps) - 1)]
+    check("continuous threshold at bu_c = %.3f: Theta -> 0, exponent ~ 1/2" % bu_crit,
+          0.0 < thetas[0] < 0.01 and all(0.4 < e < 0.6 for e in exponents),
+          "Theta(bu_c + 1e-4) = %.2e deg, local exponents %s"
+          % (thetas[0], ", ".join("%.3f" % e for e in exponents)))
+
+    # a wall is never dearer than the random array (Humphreys et al. 2017, 6.4.1).
+    # Only burnups above the threshold can test this: below it rho_tot = 0 and every
+    # energy term is exactly 0, which would satisfy "<= 0" without testing anything.
+    wall_states = [hbs_state(b, REFERENCE_TEMPERATURE) for b in (50.0, 60.0, 90.0, 120.0, 150.0)]
+    assert all(s.rho_tot > 0.0 for s in wall_states), "E_wall check needs rho_tot > 0"
+    worst_wall = max(s.e_wall for s in wall_states)
+    check("E_wall < 0 wherever rho_tot > 0: condensing into walls lowers the energy",
+          worst_wall < 0.0,
+          "max E_wall = %+.3e J/m3 over bu = 50-150 GWd/tU" % worst_wall)
 
     # the regimes on either side
-    BU_THRESHOLD, BU_ONSET, BU_SATURATION = regime_boundaries(
+    _, BU_ONSET, BU_SATURATION = regime_boundaries(
         temperature=REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY, parameters=DEFAULT_PARAMETERS)
-    below = hbs_state(BU_THRESHOLD - 0.01, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
+    below = hbs_state(BU_ONSET - 0.01, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
     above = hbs_state(BU_SATURATION + 0.01, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
-    check("below the threshold Theta = 0 and X = 0",
-          below.theta_deg == 0.0 and below.restructured_fraction == 0.0)
-    check("below the threshold the radius is undefined", math.isnan(below.subgrain_radius_m))
+    check("below the onset X = 0", below.restructured_fraction == 0.0)
     check("above saturation Theta = theta_HAGB and X = ALPHA_MAX",
           above.theta_deg == THETA_HAGB and above.restructured_fraction == ALPHA_MAX)
     check("X is never exactly 1 (SCIANTIX divides by 1 - X)",
@@ -802,7 +938,7 @@ def selftest(verbose=True):
           all(b.restructured_fraction >= a.restructured_fraction - 1e-15
               for a, b in zip(states, states[1:])))
     radii = [s.subgrain_radius_m for s in states if not math.isnan(s.subgrain_radius_m)]
-    check("the subgrain radius is non-increasing above the threshold",
+    check("the subgrain radius is non-increasing in burnup",
           all(b <= a + 1e-20 for a, b in zip(radii, radii[1:])))
 
     # the subgrain radius never exceeds the grain that hosts it
@@ -829,26 +965,33 @@ def selftest(verbose=True):
                                       (other.restructured_fraction,
                                        base.restructured_fraction)):
                         worst_invariance = max(worst_invariance, abs(got - want))
-    check("Theta and X depend on burnup alone: f(nu) G b^2 cancels in -C2/(2 C4)",
-          worst_invariance < 1e-12, "max absolute difference %.2e" % worst_invariance)
+    check("Theta and X depend on burnup alone: f(nu) G b^2 multiplies every term of F",
+          # F is flat at its minimum, so the numerical eta is resolved to ~sqrt(eps)
+          worst_invariance < 1e-6, "max absolute difference %.2e" % worst_invariance)
     check("the driving force still moves with temperature",
           hbs_state(70.0, 500.0).driving_force > hbs_state(70.0, 1200.0).driving_force)
 
-    # eta_eq is a stationary point of the functional
-    worst_stationarity = 0.0
-    for burnup in (50.0, 55.0, 60.0, 65.0, 70.0, 75.0, 80.0, 85.0):
+    # eta_eq is the minimum of F on the admissible interval
+    worst_minimum = 0.0
+    for burnup in (40.0, 50.0, 60.0, 70.0, 80.0, 100.0):
         state = hbs_state(burnup, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
-        if not 0.0 < state.theta_deg < THETA_HAGB or state.balance_limited:
+        if state.rho_tot == 0.0:
             continue
-        derivative = 2.0 * state.c2 * state.eta + 4.0 * state.c4 * state.eta ** 3
-        scale = abs(2.0 * state.c2 * state.eta) + abs(4.0 * state.c4 * state.eta ** 3)
-        worst_stationarity = max(worst_stationarity, abs(derivative) / scale)
-    check("dF/deta = 0 wherever the equilibrium is interior", worst_stationarity < 1e-14,
-          "max normalized residual %.2e" % worst_stationarity)
+        rho_lagb_max, _, _ = wall_geometry(state.rho_tot)
+        upper = min(math.sqrt(min(state.rho_tot / rho_lagb_max, 1.0)), 1.0)
+        f_eq = state.e_wall + state.e_sweep
+        for i in range(201):
+            _, e_wall, e_sweep = energy_terms(REFERENCE_TEMPERATURE, state.rho_tot, upper * i / 200,
+                                              REFERENCE_POROSITY)
+            worst_minimum = max(worst_minimum, (f_eq - (e_wall + e_sweep)) / abs(f_eq))
+    check("F(eta_eq) <= F(eta) on the admissible interval", worst_minimum < 1e-12,
+          "max relative excess %.2e" % worst_minimum)
 
     # the dislocation balance, Eq. (5) and Eq. (7b).
-    worst_closure, worst_free, worst_swept, worst_dr = 0.0, 0.0, 0.0, 0.0
+    worst_closure, worst_free, worst_swept = 0.0, 0.0, 0.0
     for state in states:
+        if state.rho_tot == 0.0:                    # below rho_crit: nothing to partition
+            continue
         rho_ordered, rho_swept, rho_free = (state.rho_ordered, state.rho_swept,
                                             state.rho_free)
         worst_closure = max(worst_closure,
@@ -856,63 +999,82 @@ def selftest(verbose=True):
                             / state.rho_tot)
         worst_free = min(worst_free, rho_free / state.rho_tot)
         worst_swept = min(worst_swept, rho_swept / state.rho_tot)
-        _, _, dr_over_r_max = wall_geometry(state.rho_tot)
-        worst_dr = max(worst_dr, dr_over_r_max * state.eta * state.eta)
     check("rho_ord + rho_swept + rho_free = rho_tot", worst_closure < 1e-15,
           "max relative closure error %.2e" % worst_closure)
     check("rho_free >= 0: the walls never hold more dislocations than exist",
           worst_free == 0.0, "min rho_free / rho_tot = %.3e" % worst_free)
     check("rho_swept >= 0: the sweep is a sink, never a source",
           worst_swept == 0.0, "min rho_swept / rho_tot = %.3e" % worst_swept)
-    check("dR/R <= 1: the swept volume is a fraction of the volume",
-          worst_dr <= 1.0, "max dR/R = %.6f" % worst_dr)
+
+    # the sweep, Eq. (5): 1 - exp(-x) is linear in x for a small sweep (the
+    #     d(rho_i) = -rho_i dV of Gourdet & Montheillet) and saturates at 1
+    rho_test = dislocation_density_nogita(60.0)
+    rho_lagb_max, _, swept_max = wall_geometry(rho_test)
+    eta_balance = math.sqrt(min(rho_test / rho_lagb_max, 1.0))
+    for eta_test in (1e-4 * eta_balance, 0.5 * eta_balance, 0.99 * eta_balance):
+        _, swept, _ = dislocation_partition(rho_test, eta_test)
+        x = swept_max * eta_test * eta_test
+        linear = (rho_test - rho_lagb_max * eta_test * eta_test) * x
+        check("sweep at x = %.3g: 0 <= rho_swept <= linear sweep, equal as x -> 0" % x,
+              # rho_swept = rho_tot - rho_ord - rho_free cancels to ~eps/x at tiny x
+              0.0 <= swept <= linear * (1.0 + 1e-6)
+              and (x > 1e-6 or abs(swept / linear - 1.0) < 1e-6),
+              "rho_swept / linear = %.6f" % (swept / linear))
 
     # on the bound the model is the classical theta ~ sqrt(rho_tot): with
     #     every dislocation in a wall, the misorientation can only grow as fast
     #     as the dislocations that feed it.
+    #     Whether the bound binds at all depends on the calibration: with the shipped
+    #     parameters it never does, so the law is checked on a small-k set that
+    #     binds (the sweep is weak, the walls take everything), and the shipped set
+    #     is only counted.
+    binding_parameters = ModelParameters(beta=22.0, k_sweep=0.1)
+    shipped_bound_points = sum(state.balance_limited for state in states)
     worst_sqrt_law, bound_points = 0.0, 0
-    for state in states:
+    for burnup in burnups:
+        state = hbs_state(burnup, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY,
+                          parameters=binding_parameters)
         if not state.balance_limited:
             continue
         bound_points += 1
-        classical = math.degrees(DEFAULT_PARAMETERS.beta * BURGERS * math.sqrt(state.rho_tot)
-                                 / (3.0 * DEFAULT_PARAMETERS.n_families))
+        classical = math.degrees(binding_parameters.beta * BURGERS * math.sqrt(state.rho_tot)
+                                 / (3.0 * binding_parameters.n_families))
         worst_sqrt_law = max(worst_sqrt_law,
                              abs(state.theta_deg - classical) / classical)
     check("on the balance bound Theta = beta b sqrt(rho_tot) / 3n",
           bound_points > 0 and worst_sqrt_law < 1e-14,
-          "%d points on the bound, max relative error %.2e" % (bound_points, worst_sqrt_law))
+          "%d points on the bound with the binding set, max relative error %.2e; "
+          "%d with the shipped set" % (bound_points, worst_sqrt_law, shipped_bound_points))
 
-    # and with theta_max = theta_HAGB the three saturations coincide: the order
-    #     parameter reaches 1 exactly where the substructure becomes high-angle and
-    #     where the last free dislocation enters a wall.
-    saturated = hbs_state(BU_SATURATION + 0.01, REFERENCE_TEMPERATURE,
-                          porosity=REFERENCE_POROSITY)
-    rho_lagb_max, _, _ = wall_geometry(saturated.rho_tot)
-    at_cap = hbs_state(BU_SATURATION, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
-    check("eta = 1 <=> Theta = theta_HAGB <=> rho_ord = rho_tot",
+    # with theta_max = theta_HAGB the order parameter reaches 1 exactly where the
+    #     substructure becomes high-angle.  That the last free dislocation enters a
+    #     wall at the same burnup holds only when the bound binds up to saturation
+    #     (the binding set above); in general the walls hold a fraction <= 1.
+    # just past the bisected saturation burnup, where the minimum sits on the cap exactly
+    at_cap = hbs_state(BU_SATURATION + 1e-3, REFERENCE_TEMPERATURE, porosity=REFERENCE_POROSITY)
+    check("eta = 1 <=> Theta = theta_HAGB, with rho_ord <= rho_tot there",
           abs(at_cap.eta - 1.0) < 1e-9
           and abs(math.degrees(THETA_MAX) - THETA_HAGB) < 1e-12
-          and abs(rho_lagb_max / dislocation_density_nogita(BU_SATURATION) - 1.0) < 1e-4,
-          "eta = %.9f at bu = %.4f, rho_LAGB_max / rho_tot = %.6f"
-          % (at_cap.eta, BU_SATURATION,
-             rho_lagb_max / dislocation_density_nogita(BU_SATURATION)))
+          and at_cap.rho_ordered <= at_cap.rho_tot,
+          "eta = %.9f at bu = %.4f, rho_ord / rho_tot = %.6f"
+          % (at_cap.eta, BU_SATURATION, at_cap.rho_ordered / at_cap.rho_tot))
 
     # the exact bridge to the stored energy of Muramatsu et al. (2014), Eq. 8:
-    #    E_s = rho_tot*G*b^2/2, so C0/E_s = f(nu)*ln(rho_c^(-1/2)/b)/(2 pi),
-    #    a constant at every burnup and temperature.
-    #    f(nu) now varies with the state, so the ratio is constant in burnup at fixed
-    #    (T, P, x) rather than everywhere: the check is per temperature.
+    #    E_s = rho_tot*G*b^2/2, so C0/E_s = f(nu)*ln(rho_tot^(-1/2)/b)/(2 pi): the
+    #    constant 1/2 of Muramatsu is Humphreys' c2 ~ 0.5 (Eq. 2.8), here resolved
+    #    into its logarithm, which grows slowly as the dislocations crowd.
     worst_ratio = 0.0
     for temperature in (600.0, 1000.0):
-        expected_ratio = (line_energy_prefactor(temperature)
-                          * math.log(math.pow(RHO_C, -0.5) / BURGERS) / (2.0 * math.pi))
-        for burnup in (10.0, 40.0, 80.0, 150.0):
+        for burnup in (40.0, 60.0, 80.0, 150.0):
             state = hbs_state(burnup, temperature)
+            if state.rho_tot == 0.0:
+                continue
+            expected_ratio = (line_energy_prefactor(temperature)
+                              * math.log(math.pow(state.rho_tot, -0.5) / BURGERS) / (2.0 * math.pi))
             stored = state.rho_tot * state.shear_modulus * BURGERS ** 2 / 2.0
             worst_ratio = max(worst_ratio,
                               abs(state.c0 / stored - expected_ratio) / expected_ratio)
-    check("C0 / E_s(Muramatsu Eq. 8) = f(nu) ln(rho_c^-1/2 / b) / 2pi, constant in burnup",
+    check("C0 / E_s(Muramatsu Eq. 8) = f(nu) ln(rho_tot^-1/2 / b) / 2pi",
           worst_ratio < 1e-14, "max relative spread %.2e" % worst_ratio)
 
     # the numpy wrapper carries no physics of its own

@@ -123,19 +123,21 @@ void Simulation::HighBurnupStructureFormation()
 
         case 4:
         {
-            // HBS formation as a second-order phase transition (Landau functional).
+            // HBS formation as a continuous transition, order parameter the mean
+            // misorientation, equilibrium of the dislocation energy.
             // Reference implementation and calibration:
             //   utilities/HBSformation/hbs_formation_landau.py  (the model)
-            //   utilities/HBSformation/calibrate.py             (beta, k, rho_c)
+            //   utilities/HBSformation/calibrate.py             (beta, k, rho_crit)
             //   utilities/HBSformation/README.md                (the derivation)
-            reference += ": Landau functional, HBS as a second-order phase transition, Cappellari (2026); "
-                         "dislocation density Nogita & Une Nucl. Instrum. Methods B 91 (1994) 301-306; "
-                         "elastic constants NEA/NSC/R(2024)1 (2025) p. 124; "
+            reference += ": Landau functional, HBS as a continuous transition, Cappellari (2026); "
+                         "dislocation source Nogita & Une Nucl. Instrum. Methods B 91 (1994) 301-306, above a critical density "
+                         "(cf. Veshchunov & Shestak J. Nucl. Mater. 384 (2009) 12-18); "
+                         "Read-Shockley line-energy cut-offs, Humphreys, Rohrer & Rollett (2017) Eqs. 2.6, 4.4-4.5; "
                          "dislocation balance after Gourdet & Montheillet Acta Mater. 51 (2003) 2685-2699";
 
             // --- fixed, offsets 4-7 -------------------------------------------
-            double theta_hagb = 10.0;                       // (deg)   LAGB/HAGB boundary
-            double theta_max  = theta_hagb * M_PI / 180.0;  // (rad) = 0.174533
+            double theta_hagb = 10.0;                         // (deg)   LAGB/HAGB boundary
+            double theta_max  = theta_hagb * (M_PI / 180.0);  // (rad) = 0.174533, as Python's math.radians
             // (deg) lower end member of the mixture Eq. (10) inverts. Set by the EBSD
             // binning, not fitted: the dataset reports a restructured fraction at 1 deg
             // and one at 10 deg, so 1 deg is the threshold below which a boundary is
@@ -145,9 +147,9 @@ void Simulation::HighBurnupStructureFormation()
 
             // --- calibrated, offsets 0-3, printed ready to paste by calibrate.py ---
             parameter.push_back(2.0);                 // n, dislocation families in a wall
-            parameter.push_back(26.681642770151456);  // beta, wall geometry
-            parameter.push_back(0.5102476353172847);  // k, sweeping
-            parameter.push_back(5741121567363591.0);  // rho_c, strain-field cut-off (m^-2)
+            parameter.push_back(21.36831476383452);   // beta, wall geometry
+            parameter.push_back(0.6787994413909928);  // k, sweeping
+            parameter.push_back(685421967748407.1);   // rho_crit, critical dislocation density (m^-2)
             parameter.push_back(theta_max);
             parameter.push_back(theta_hagb);
             parameter.push_back(theta_u);
@@ -252,82 +254,112 @@ void Simulation::HighBurnupStructureFormation()
     }
     else if (option == 4)
     {
-        // Landau functional. This block mirrors hbs_state() of
-        // utilities/HBSformation/hbs_formation_landau.py;
-        // compare_with_sciantix.py checks them against each other with no tolerance.
+        // This block mirrors hbs_state() of utilities/HBSformation/hbs_formation_landau.py
+        // statement by statement, with the same arithmetic, so that
+        // compare_with_sciantix.py can check the two against each other. The
+        // equilibrium is a numerical minimum: any change to the order of the
+        // operations below must be made in the Python as well.
         double n_families = model["High-burnup structure formation"].getParameter().at(0);
         double beta       = model["High-burnup structure formation"].getParameter().at(1);
         double k_sweep    = model["High-burnup structure formation"].getParameter().at(2);
-        double rho_c      = model["High-burnup structure formation"].getParameter().at(3);
+        double rho_crit   = model["High-burnup structure formation"].getParameter().at(3);
         double theta_max  = model["High-burnup structure formation"].getParameter().at(4);
         double theta_hagb = model["High-burnup structure formation"].getParameter().at(5);
         double theta_u    = model["High-burnup structure formation"].getParameter().at(6);
         double burgers    = model["High-burnup structure formation"].getParameter().at(7);
 
         double bu_local_HM = sciantix_variable["Burnup"].getFinalValue() / 0.8814;
-        double T           = history_variable["Temperature"].getFinalValue();
-        double P           = sciantix_variable["Porosity"].getFinalValue();
-        // StoichiometryDeviation() runs after this model, so this is the value of
-        // the previous time step. It is immaterial: as shown below, it cancels out
-        // of the three outputs entirely and survives only in C0.
-        double x_dev = sciantix_variable["Stoichiometry deviation"].getFinalValue();
-        // GrainGrowth() also runs after this model, so this is the grain radius at
-        // the start of the step. It is used only as the ceiling of Eq. (9).
+        // GrainGrowth() runs after this model, so this is the grain radius at the
+        // start of the step. It is used only as the ceiling of Eq. (9).
         double R_grain = sciantix_variable["Grain radius"].getFinalValue();
+        // Temperature, porosity and stoichiometry enter F only through the common
+        // factor f(nu) G b^2 / (4 pi), which does not move its minimum: none of the
+        // three outputs depends on them, so they are not read here.
 
-        // (1) dislocation density -- Nogita & Une (1994)
-        //     log10(rho_tot) = 2.2e-2 * bu + 13.8, bu in MWd/kgU = GWd/tU
-        double rho_tot = std::pow(10.0, 2.2e-2 * bu_local_HM + 13.8);
+        // (1) dislocations available to polygonize -- Nogita & Une (1994), read as a
+        //     pure source above the critical density: max(rho(bu) - rho_crit, 0),
+        //     bu in MWd/kgU = GWd/tU. rho_crit is the fixed density scale that sets the
+        //     continuous threshold; F itself has none (every length in it scales as rho^-1/2).
+        double rho_tot = std::max(std::pow(10.0, 2.2e-2 * bu_local_HM + 13.8) - rho_crit, 0.0);
 
-        // (2) elastic constants -- NEA/NSC/R(2024)1 p. 124. Both correlations have
-        //     the same four-factor shape: composition, porosity, deviation from
-        //     stoichiometry, temperature. The plutonium fraction q is 0 for UO2.
-        double G_matrix = 1.0e9 * 82.52 * std::pow(1.0 - P, 2.0) / (1.0 + 0.95275 * P) *
-                          (1.0 - 2.88078 * x_dev + 15.49419 * x_dev * x_dev) *
-                          (1.009549 - 1.182e-5 * T - 6.671e-8 * T * T);
-        double nu = 0.32051 * (1.0 - 1.03223 * P) * (1.0 + 0.69962 * x_dev - 7.52905 * x_dev * x_dev) *
-                    (1.017906 - 6.420e-5 * T + 1.506e-8 * T * T);
-        // f(nu) = (1 - nu/2)/(1 - nu), the edge/screw average of the dislocation
-        // line energy prefactor (Hansen, Mater. Sci. Eng. 81 (1986) 141).
-        double f_nu = (1.0 - 0.5 * nu) / (1.0 - nu);
-        double gb2  = G_matrix * burgers * burgers;
+        double eta = 0.0;
+        double rho_lagb_max = 0.0, s_over_v_max = 0.0, swept_max = 0.0;
+        if (rho_tot > 0.0)
+        {
+            // (3) wall geometry. Dislocations at spacing d give theta = b/d, so a wall
+            //     carrying n families has line length n*theta/b per unit area, and the
+            //     low-angle boundary area per unit volume is (S/V) = 3*sqrt(rho_LAGB)/beta.
+            //     x = k rho_ord / rho_tot is the extended volume swept by the boundaries.
+            rho_lagb_max = std::pow(3.0 * n_families * theta_max / (beta * burgers), 2.0);
+            s_over_v_max = 9.0 * n_families * theta_max / (beta * beta * burgers);
+            swept_max    = k_sweep * rho_lagb_max / rho_tot;
 
-        // (3) wall geometry. Dislocations at spacing d give theta = b/d, so a wall
-        //     carrying n families has line length n*theta/b per unit area, and the
-        //     low-angle boundary area per unit volume is (S/V) = 3*sqrt(rho_LAGB)/beta.
-        double rho_lagb_max  = std::pow(3.0 * n_families * theta_max / (beta * burgers), 2.0);
-        double s_over_v_max  = 9.0 * n_families * theta_max / (beta * beta * burgers);
-        double dr_over_r_max = k_sweep * rho_lagb_max / rho_tot;
+            // (7b) admissibility, and the LAGB/HAGB cap of Eq. (8)
+            double eta_balance = std::sqrt(std::min(rho_tot / rho_lagb_max, 1.0));
+            double eta_hagb    = (theta_hagb * (M_PI / 180.0)) / theta_max;
+            double eta_upper   = std::min(eta_balance, eta_hagb);
 
-        // (4) the two logarithmic cut-offs of the dislocation line energy,
-        //     E_D = G b^2 f(nu)/(4 pi) * ln(R/b)
-        double a1 = f_nu / (4.0 * M_PI) * std::log(std::pow(rho_c, -0.5) / burgers);    // random array
-        double a2 = f_nu / (4.0 * M_PI) * std::log(std::pow(rho_tot, -0.5) / burgers);  // screened in the wall
+            // (4)-(6) (F - C0) / (f(nu) G b^2 / 4 pi) = -rho_swept L1 + rho_ord (L2 - L1),
+            //     L = ln(R/b), R = spacing of the dislocations: rho_tot^-1/2 in the random
+            //     array, b/theta in a Read-Shockley wall (capped at rho_tot^-1/2).
+            //     rho_free = (rho_tot - rho_ord) exp(-x): Gourdet & Montheillet's
+            //     d rho_i = -rho_i dV integrated over the swept volume.
+            auto reduced_energy = [&](double e) {
+                double spacing  = std::pow(rho_tot, -0.5);
+                double log_free = std::log(spacing / burgers);
+                double theta_e  = e * theta_max;
+                double log_wall = (theta_e * spacing <= burgers) ? log_free : std::log(burgers / theta_e / burgers);
+                double rho_ord  = std::min(rho_lagb_max * e * e, rho_tot);
+                double rho_free = (rho_tot - rho_ord) * std::exp(-swept_max * e * e);
+                double rho_swep = rho_tot - rho_ord - rho_free;
+                return -rho_swep * log_free + rho_ord * (log_wall - log_free);
+            };
 
-        // (5)-(6) the partition, collected into F = C0 + C2 eta^2 + C4 eta^4
-        double c0 = rho_tot * a1 * gb2;                       // free dislocations
-        double c2 = rho_lagb_max * (a2 - a1) * gb2            // condensed into walls
-                    - rho_tot * dr_over_r_max * a1 * gb2;     // sweep, second order
-        double c4 = rho_lagb_max * dr_over_r_max * a1 * gb2;  // sweep, fourth order
-
-        // (7) stationary point
-        double eta_stationary = std::sqrt(std::max(-c2 / (2.0 * c4), 0.0));
-
-        // (7b) admissibility
-        double eta_balance = std::sqrt(std::min(rho_tot / rho_lagb_max, 1.0));
+            // (7) minimum of F on [0, eta_upper]: coarse scan, then golden section
+            const int    nodes     = 400;
+            const double tolerance = 1e-13;
+            int          best      = 0;
+            double       best_e    = reduced_energy(0.0);
+            for (int i = 1; i <= nodes; ++i)
+            {
+                double e_i = reduced_energy(eta_upper * i / nodes);
+                if (e_i < best_e)
+                {
+                    best_e = e_i;
+                    best   = i;
+                }
+            }
+            double low   = eta_upper * std::max(best - 1, 0) / nodes;
+            double high  = eta_upper * std::min(best + 1, nodes) / nodes;
+            double ratio = (std::sqrt(5.0) - 1.0) / 2.0;
+            while (high - low > tolerance)
+            {
+                double left  = high - ratio * (high - low);
+                double right = low + ratio * (high - low);
+                if (reduced_energy(left) < reduced_energy(right))
+                    high = right;
+                else
+                    low = left;
+            }
+            eta = 0.5 * (low + high);
+            // on the bound (7b) or the HAGB cap, exactly: F is flat there to rounding,
+            // so a bracket closing on eta_upper counts as reaching it
+            if (eta_upper - eta <= tolerance || reduced_energy(eta_upper) <= reduced_energy(eta))
+                eta = eta_upper;
+            if (!(reduced_energy(eta) < 0.0))
+                eta = 0.0;
+        }
 
         // (8) mean misorientation
-        double eta_hagb = (theta_hagb * M_PI / 180.0) / theta_max;
-        double eta      = std::min(std::min(eta_stationary, eta_balance), eta_hagb);
-        double theta    = eta * theta_max * 180.0 / M_PI;
-        eta             = (theta * M_PI / 180.0) / theta_max;  // re-derived after the cap
+        double theta = eta * theta_max * (180.0 / M_PI);
+        eta          = (theta * (M_PI / 180.0)) / theta_max;  // re-derived after the cap
 
-        // (9) subgrain radius, capped at the host grain
-        double s_over_v  = s_over_v_max * eta;
-        double dr_over_r = dr_over_r_max * eta * eta;
-        double r_n       = 0.0;
+        // (9) subgrain radius, capped at the host grain; the walls in the swept volume
+        //     go too (Gourdet & Montheillet Eq. 8), so the wall area is S/V exp(-x)
+        double s_over_v = s_over_v_max * eta * std::exp(-swept_max * eta * eta);
+        double r_n      = 0.0;
         if (s_over_v > 0.0)
-            r_n = std::min(1.5 / s_over_v * (1.0 + dr_over_r), R_grain);
+            r_n = std::min(1.5 / s_over_v, R_grain);
 
         // (10) restructured fraction, lever rule
         const double f_max     = 1.0 - 1.0e-9;
@@ -342,11 +374,5 @@ void Simulation::HighBurnupStructureFormation()
         sciantix_variable["Dislocation density"].setFinalValue(rho_tot);
         sciantix_variable["Mean misorientation"].setFinalValue(theta);
         sciantix_variable["Subgrain radius"].setFinalValue(r_n);
-
-        // c0 is the stored energy available for the nucleation criterion. It is not
-        // an output; referenced here so the compiler does not warn it away, and so
-        // that the bridge to Muramatsu et al. (2014) Eq. 8 stays visible in the port:
-        //   C0 / (rho_tot G b^2 / 2) = f(nu) ln(rho_c^-1/2 / b) / (2 pi).
-        (void)c0;
     }
 }

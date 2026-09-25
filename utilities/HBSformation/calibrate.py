@@ -3,13 +3,15 @@
 @author  E. Cappellari
 @date    2026-09-15
 ---------------------------------------------------------------------------------
-Fits k, beta and rho_c of `hbs_formation_landau.py` (n fixed) by minimising
+Fits k, beta and rho_crit of `hbs_formation_landau.py` (n fixed) by minimising
 
     J = <(Theta_pred - Theta_obs)^2>_w / var(Theta)
       + w_r <(r_pred - r_obs)^2>_w / var(r)
       + w_X <(X_pred - X_obs)^2>_w / var(X)
 
-with `differential_evolution` over (k, beta, log10 rho_c) from several seeds.
+with `differential_evolution` over (k, beta, log10 rho_crit) from several seeds.  Both
+line-energy cut-offs follow from rho_tot and theta; rho_crit is the critical density of
+Eq. (1), the fixed scale that sets the (continuous) threshold.
 
 MODES
     python3 calibrate.py [--scenario A|B|C] [--weight W_R] [--fraction-weight W_X] ...
@@ -63,12 +65,12 @@ sys.path.insert(0, HERE)
 
 from hbs_formation_landau import (  # noqa: E402
     DATA_FILE,
+    dislocation_density_nogita,
     FABRICATION_POROSITY,
     GRAIN_RADIUS,
     N_FAMILIES,
     ModelParameters,
     hbs_state,
-    load_ebsd,
     measured_radius,
     theta_measured,
     validate,
@@ -81,10 +83,18 @@ except ImportError as error:  # pragma: no cover
     sys.exit("calibrate.py needs numpy and scipy (%s).\n"
              "Install them, or use hbs_formation_landau.py alone, which does not." % error)
 
-# Search box: (k, beta, log10 rho_c).
+# Search box: (k, beta, log10 rho_crit).  rho_crit cannot go below rho_Nogita(0) = 10^13.8.
 BOUNDS_K = (0.001, 50.0)
 BOUNDS_BETA = (2.0, 300.0)
-BOUNDS_LOG10_RHO_C = (8.0, 20.0)
+BOUNDS_LOG10_RHO_CRIT = (13.8, 15.5)
+
+# rho_crit sets the threshold of Eq. (1), and above the threshold there are no subgrains,
+# so the model has NO radius to compare with a measured one.  A rho_crit past the smallest
+# burnup at which a size was measured therefore makes the size term undefined rather than
+# large, which the optimizer cannot descend.  The bound is made explicit instead: when the
+# size term is active, rho_crit may not exceed rho_Nogita at the lowest size target, less
+# this margin in the exponent, so that every size target keeps a defined radius.
+RHO_CRIT_MARGIN_DECADES = 0.01
 
 WEIGHT_DEFAULT = 0.2           # w_r, size term (chosen on the calibration front)
 FRACTION_WEIGHT_DEFAULT = 1.0  # w_X, fraction term (chosen on the calibration front)
@@ -146,23 +156,8 @@ def pack(sel, obs):
 
 
 def load_targets(path=None, ranks=None, rank_weights=False, scenario="A"):
-    """(theta, size, fraction) target dicts. A .csv path uses the legacy spreadsheet copy (data set A only)."""
-    path = path or DATA_FILE
-    if os.path.isfile(path) and path.endswith(".csv"):
-        rows = [r for r in load_ebsd(path) if r["burnup"] > 0.0]
-
-        def legacy(subset, values):
-            return {"w": np.ones(len(subset)), "burnup": np.array([r["burnup"] for r in subset]),
-                    "temperature": np.array([r["temperature"] for r in subset]),
-                    "porosity": np.array([r["porosity"] for r in subset]),
-                    "grain_radius": np.array([r["grain_radius"] for r in subset]),
-                    "label": [r["label"] for r in subset], "y": np.array(values), "points": []}
-        with_size = [r for r in rows if not math.isnan(measured_radius(r))]
-        with_fraction = [r for r in rows if not math.isnan(r["f10"])]
-        return (legacy(rows, [theta_measured(r) for r in rows]),
-                legacy(with_size, [measured_radius(r) for r in with_size]),
-                legacy(with_fraction, [r["f10"] / 100.0 for r in with_fraction]))
-    _, points, _ = all_points(path)
+    """(theta, size, fraction) target dicts of data set A, B or C."""
+    _, points, _ = all_points(path or DATA_FILE)
     sel = scenario_points(points, scenario, ranks, rank_weights)
     return pack(sel, "theta"), pack(sel, "radius"), pack(sel, "fraction")
 
@@ -184,14 +179,10 @@ def predict(parameters, targets):
     return np.array(theta), np.array(radius), np.array(fraction)
 
 
-def build_parameters(vector, n_families, fixed_rho_c=None):
-    """A `ModelParameters` from the optimizer's vector, cast to plain floats (for the paste block)."""
-    if fixed_rho_c is None:
-        k_sweep, beta, rho_c = vector[0], vector[1], 10.0 ** vector[2]
-    else:
-        k_sweep, beta, rho_c = vector[0], vector[1], fixed_rho_c
-    return ModelParameters(n_families=float(n_families), beta=float(beta),
-                           k_sweep=float(k_sweep), rho_c=float(rho_c))
+def build_parameters(vector, n_families):
+    """A `ModelParameters` from the optimizer's vector (k, beta, log10 rho_crit), as plain floats."""
+    return ModelParameters(n_families=float(n_families), beta=float(vector[1]),
+                           k_sweep=float(vector[0]), rho_crit=float(10.0 ** vector[2]))
 
 
 def _variance(t):
@@ -199,20 +190,37 @@ def _variance(t):
     return v if v > 0 else 1.0
 
 
+def size_bounds_log10_rho_crit(size):
+    """The (low, high) log10 rho_crit box that keeps every size target above the threshold.
+
+    Returns the plain bound when there is no size target to protect.
+    """
+    low, high = BOUNDS_LOG10_RHO_CRIT
+    if not len(size["y"]):
+        return low, high
+    lowest = float(np.min(size["burnup"]))
+    feasible = math.log10(dislocation_density_nogita(lowest)) - RHO_CRIT_MARGIN_DECADES
+    return low, min(high, max(feasible, low))
+
+
 def objective(vector, theta, size, fraction, weight, fraction_weight,
-              variance_theta, variance_radius, variance_fraction, n_families, fixed_rho_c):
-    parameters = build_parameters(vector, n_families, fixed_rho_c)
+              variance_theta, variance_radius, variance_fraction, n_families):
+    parameters = build_parameters(vector, n_families)
     cost = 0.0
     if len(theta["y"]):
         theta_model, _, _ = predict(parameters, theta)
-        if not np.all(np.isfinite(theta_model)):
-            return 1.0e6
         cost += float(np.average((theta_model - theta["y"]) ** 2, weights=theta["w"]) / variance_theta)
     if weight > 0.0 and len(size["y"]):
         _, radius_model, _ = predict(parameters, size)
-        if not np.all(np.isfinite(radius_model)):
-            return 1.0e6
-        cost += weight * float(np.average((radius_model - size["y"]) ** 2, weights=size["w"]) / variance_radius)
+        # Score the targets that HAVE a predicted radius, and charge the ones that do
+        # not (below the threshold of Eq. (1)) the spread of the data itself, so a
+        # parameter set that predicts no subgrain where one was measured is penalised
+        # proportionally rather than by a flat, unnavigable constant.  With the box of
+        # `size_bounds_log10_rho_crit` this branch does not fire during a normal fit.
+        defined = np.isfinite(radius_model)
+        residual = np.where(defined, radius_model - size["y"], 0.0) ** 2
+        residual = residual + np.where(defined, 0.0, variance_radius)
+        cost += weight * float(np.average(residual, weights=size["w"]) / variance_radius)
     if fraction_weight > 0.0 and len(fraction["y"]):
         _, _, fraction_model = predict(parameters, fraction)
         cost += fraction_weight * float(np.average((fraction_model - fraction["y"]) ** 2, weights=fraction["w"])
@@ -221,21 +229,22 @@ def objective(vector, theta, size, fraction, weight, fraction_weight,
 
 
 def fit(theta, size, fraction, weight=WEIGHT_DEFAULT, fraction_weight=FRACTION_WEIGHT_DEFAULT,
-        seeds=SEEDS_DEFAULT, n_families=N_FAMILIES, fixed_rho_c=None, maxiter=300, popsize=20, verbose=True):
+        seeds=SEEDS_DEFAULT, n_families=N_FAMILIES, maxiter=300, popsize=20, verbose=True):
     """Repeated global search. Returns (best ModelParameters, best cost, all runs)."""
     variances = (_variance(theta), _variance(size), _variance(fraction))
-    bounds = [BOUNDS_K, BOUNDS_BETA] + ([BOUNDS_LOG10_RHO_C] if fixed_rho_c is None else [])
+    bounds = [BOUNDS_K, BOUNDS_BETA,
+              size_bounds_log10_rho_crit(size) if weight > 0.0 else BOUNDS_LOG10_RHO_CRIT]
     runs = []
     for seed in range(seeds):
         result = differential_evolution(
             objective, bounds,
-            args=(theta, size, fraction, weight, fraction_weight) + variances + (n_families, fixed_rho_c),
+            args=(theta, size, fraction, weight, fraction_weight) + variances + (n_families,),
             seed=seed, tol=1e-12, maxiter=maxiter, popsize=popsize)
-        parameters = build_parameters(result.x, n_families, fixed_rho_c)
+        parameters = build_parameters(result.x, n_families)
         runs.append((float(result.fun), parameters))
         if verbose:
-            print("    seed %d   J = %.6f   k = %8.5f   beta = %7.3f   rho_c = %.4e"
-                  % (seed, result.fun, parameters.k_sweep, parameters.beta, parameters.rho_c))
+            print("    seed %d   J = %.6f   k = %8.5f   beta = %7.3f   rho_crit = %.4e"
+                  % (seed, result.fun, parameters.k_sweep, parameters.beta, parameters.rho_crit))
     runs.sort(key=lambda item: item[0])
     return runs[0][1], runs[0][0], runs
 
@@ -267,13 +276,12 @@ def paste_block(parameters, label=""):
         "N_FAMILIES = %r   # -" % parameters.n_families,
         "BETA       = %r   # -" % parameters.beta,
         "K_SWEEP    = %r   # -" % parameters.k_sweep,
-        "RHO_C      = %r   # m^-2" % parameters.rho_c,
+        "RHO_CRIT   = %r   # m^-2" % parameters.rho_crit,
         "#   src/models/HighBurnupStructureFormation.C, case 4 parameter push (offsets 0-3)",
         "parameter.push_back(%r);  // n, dislocation families in a wall" % parameters.n_families,
         "parameter.push_back(%r);  // beta, wall geometry" % parameters.beta,
         "parameter.push_back(%r);  // k, sweeping" % parameters.k_sweep,
-        "parameter.push_back(%r);  // rho_c, strain-field cut-off (m^-2)" % parameters.rho_c,
-        "#   rho_c^(-1/2) = %.4f um" % (parameters.rho_c ** -0.5 * 1e6),
+        "parameter.push_back(%r);  // rho_crit, critical dislocation density (m^-2)" % parameters.rho_crit,
     ])
 
 
@@ -297,7 +305,7 @@ def fit_points(sel, weight, fraction_weight, seeds, maxiter, popsize):
     """Fit on a list of points (worker-friendly: plain arguments, returns plain values)."""
     targets = {o: pack(sel, o) for o in OBS}
     params, cost, _ = fit(targets["theta"], targets["radius"], targets["fraction"], weight, fraction_weight,
-                          seeds, N_FAMILIES, None, maxiter, popsize, verbose=False)
+                          seeds, N_FAMILIES, maxiter, popsize, verbose=False)
     return params, cost
 
 
@@ -358,7 +366,7 @@ def annotate(sel, params, weight, fraction_weight):
                 out.append(np.sqrt(lam[obs] * t["w"] / t["w"].sum() / variances[obs]) * (model - t["y"]))
         return np.concatenate(out)
 
-    lev, cook = influence(residuals, [params.k_sweep, params.beta, math.log10(params.rho_c)])
+    lev, cook = influence(residuals, [params.k_sweep, params.beta, math.log10(params.rho_crit)])
     k = 0
     for i, obs in enumerate(OBS):
         t = targets[obs]
@@ -442,14 +450,14 @@ def draw_front(rows, scenarios, best):
             for b_ in range(len(FRONT_W_X)):
                 r = next(r for r in rs if r["w_r"] == FRONT_W_R[a_] and r["w_X"] == FRONT_W_X[b_])
                 dark = sum_norm(grid[a_, b_]) > 0.55
-                ax.text(b_, a_, "%.2f%s\nk=%.2g\nℓ=%.0f nm" % (grid[a_, b_], "*" if r["pareto_all_data"] else "",
-                                                               r["k"], r["cutoff_um"] * 1e3),
+                ax.text(b_, a_, "%.2f%s\nk=%.2g\nβ=%.3g" % (grid[a_, b_], "*" if r["pareto_all_data"] else "",
+                                                            r["k"], r["beta"]),
                         ha="center", va="center", fontsize=6.5, color="#fff" if dark else "#000")
         ax.set_xticks(range(len(FRONT_W_X)), [str(v) for v in FRONT_W_X])
         ax.set_yticks(range(len(FRONT_W_R)), [str(v) for v in FRONT_W_R])
         ax.set_xlabel("w_X, fraction weight")
         ax.set_ylabel("w_r, radius weight")
-        ax.set_title("%s · Σ RMSE/σ on all data (lower is better)\nk = fitted k, ℓ = ρc^-½ cut-off length, * = Pareto-optimal" % SCENARIO_SHORT[s],
+        ax.set_title("%s · Σ RMSE/σ on all data (lower is better)\nk, β = fitted parameters, * = Pareto-optimal" % SCENARIO_SHORT[s],
                      fontsize=8.5)
         fig.colorbar(im, ax=ax, fraction=0.046, pad=0.02).set_label("Σ RMSE/σ over Θ, X, r_n (clipped)", fontsize=8)
     fig.suptitle("Calibration front of the Landau model: one fit per (data set, w_r, w_X), errors on ALL the data\n"
@@ -481,8 +489,7 @@ def run_front(args):
         own = scenario_points(points, s)
         r_own = rmse_by_obs(own, predict_points(params, own))
         r_all = rmse_by_obs(everything, predict_points(params, everything))
-        rows.append(dict(data_set=s, w_r=wr, w_X=wx, k=params.k_sweep, beta=params.beta, rho_c=params.rho_c,
-                         cutoff_um=params.rho_c ** -0.5 * 1e6, J=cost,
+        rows.append(dict(data_set=s, w_r=wr, w_X=wx, k=params.k_sweep, beta=params.beta, rho_crit=params.rho_crit, J=cost,
                          **{"rmse_%s" % o: r_own[o] for o in OBS},
                          **{"all_rmse_%s" % o: r_all[o] for o in OBS},
                          all_error_sum=sum(r_all[o] / scale[o] for o in OBS)))
@@ -497,10 +504,10 @@ def run_front(args):
         for r in rows:
             w.writerow({k: (float("%.5g" % v) if isinstance(v, float) else v) for k, v in r.items()})
 
-    print("\n  set   w_r    w_X     k       beta    rho_c      cut-off   RMSE on all data: Θ(°)  X(–)   r_n(µm)   Σ/σ   Pareto")
+    print("\n  set   w_r    w_X     k       beta    rho_crit    RMSE on all data: Θ(°)  X(–)   r_n(µm)   Σ/σ   Pareto")
     for r in rows:
-        print("  %s  %5.2f  %5.2f  %7.4g  %7.4g  %9.3e  %7.4f um        %6.3f  %6.3f  %6.3f  %6.3f   %s"
-              % (r["data_set"], r["w_r"], r["w_X"], r["k"], r["beta"], r["rho_c"], r["cutoff_um"],
+        print("  %s  %5.2f  %5.2f  %7.4g  %7.4g  %9.3e        %6.3f  %6.3f  %6.3f  %6.3f   %s"
+              % (r["data_set"], r["w_r"], r["w_X"], r["k"], r["beta"], r["rho_crit"],
                  r["all_rmse_theta"], r["all_rmse_fraction"], r["all_rmse_radius"] * 1e6, r["all_error_sum"],
                  "*" if r["pareto_all_data"] else ""))
     best = min(rows, key=lambda r: r["all_error_sum"])
@@ -544,8 +551,7 @@ def run_study(args):
         results[s] = dict(sel=sel, params=params, cost=cost)
         paste.append(paste_block(params, "— %s, w_r = %g, w_X = %g" % (SCENARIO_TITLE[s], args.weight, args.fraction_weight)))
         print("\n%s: %s" % (SCENARIO_TITLE[s], ", ".join("%s N=%d" % (o, sum(p["obs"] == o for p in sel)) for o in OBS)))
-        print("  k = %.4g  beta = %.4g  rho_c = %.4g (cut-off %.3g um)   J = %.4f"
-              % (params.k_sweep, params.beta, params.rho_c, params.rho_c ** -0.5 * 1e6, cost))
+        print("  k = %.4g  beta = %.4g  rho_crit = %.4g   J = %.4f" % (params.k_sweep, params.beta, params.rho_crit, cost))
         for obs in OBS:
             pts = [p for p in sel if p["obs"] == obs]
             for g in ["all"] + [x for x in GROUP_STYLE if any(p["group"] == x for p in pts)]:
@@ -567,8 +573,8 @@ def run_study(args):
         test = [everything[i] for i in idx]
         loo_pred[idx] = predict_points(params, test)
         r = rmse_by_obs(test, loo_pred[idx])
-        print("  without %-4s k=%.3g beta=%.3g rho_c=%.3g   held-out RMSE  Θ %s   X %s   r_n %s um"
-              % (g, params.k_sweep, params.beta, params.rho_c, fmt(r["theta"]), fmt(r["fraction"]), fmt(r["radius"], "radius")))
+        print("  without %-4s k=%.3g beta=%.3g rho_crit=%.3g   held-out RMSE  Θ %s   X %s   r_n %s um"
+              % (g, params.k_sweep, params.beta, params.rho_crit, fmt(r["theta"]), fmt(r["fraction"]), fmt(r["radius"], "radius")))
     loo = rmse_by_obs(everything, loo_pred)
 
     for s in "ABC":
@@ -577,8 +583,7 @@ def run_study(args):
         alld = rmse_by_obs(everything, predict_points(res["params"], everything))
         pr = res["params"]
         row = dict(data_set=s, w_r=args.weight, w_X=args.fraction_weight,
-                   k=float("%.6g" % pr.k_sweep), beta=float("%.6g" % pr.beta), rho_c=float("%.6g" % pr.rho_c),
-                   cutoff_um=float("%.4g" % (pr.rho_c ** -0.5 * 1e6)))
+                   k=float("%.6g" % pr.k_sweep), beta=float("%.6g" % pr.beta), rho_crit=float("%.6g" % pr.rho_crit))
         for obs in OBS:
             row["in_sample_rmse_" + obs] = fmt(ins[obs], obs)
             row["all_data_rmse_" + obs] = fmt(alld[obs], obs)
@@ -743,12 +748,9 @@ def run_fit(args):
                                      "   rank x relevance weights" if args.rank_weights else ""))
     print("  Theta  N = %2d   sizes  N = %2d   fractions  N = %2d" % (len(theta["y"]), len(size["y"]), len(fraction["y"])))
     print("  w_r = %g (sizes)   w_X = %g (fraction)   seeds = %d   n = %g" % (args.weight, args.fraction_weight, args.seeds, args.n))
-    fixed_rho_c = args.fix_rho_c ** -2.0 if args.fix_rho_c is not None else None
-    if fixed_rho_c is not None:
-        print("  rho_c fixed at %.4e m^-2  (%.3f um)" % (fixed_rho_c, args.fix_rho_c * 1e6))
     print()
     parameters, cost, _ = fit(theta, size, fraction, args.weight, args.fraction_weight, args.seeds, args.n,
-                              fixed_rho_c, args.maxiter, args.popsize)
+                              args.maxiter, args.popsize)
     score = scores(parameters, theta, size, fraction)
     print()
     print("  best   J = %.6f" % cost)
@@ -783,10 +785,8 @@ def main(argv=None):
                         metavar="W_X", help="weight of the fraction term (default %g)" % FRACTION_WEIGHT_DEFAULT)
     parser.add_argument("--seeds", type=int, default=SEEDS_DEFAULT, metavar="N", help="global searches per fit")
     parser.add_argument("--n", type=float, default=N_FAMILIES, metavar="N", help="dislocation families, fixed")
-    parser.add_argument("--fix-rho-c", type=float, default=None, metavar="R",
-                        help="single fit: fix rho_c to R^-2 with R a length in metres")
     parser.add_argument("--data", default=DATA_FILE, metavar="PATH",
-                        help="JSON dataset folder (default %(default)s) or a legacy .csv (data set A only)")
+                        help="JSON dataset folder (default %(default)s)")
     parser.add_argument("--ranks", default=None, metavar="A,B,...", help="single fit: keep values of these Rose ranks")
     parser.add_argument("--rank-weights", dest="rank_weights", action="store_true",
                         help="single fit: weight the targets by rank x relevance (data set C does this already)")

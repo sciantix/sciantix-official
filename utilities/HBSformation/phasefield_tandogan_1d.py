@@ -145,28 +145,29 @@ U3  Dislocation source S(t) = d rho_ref/d bu * BU_RATE, with
 U4  rho = 0 at bu_start: the density present before (as-fabricated plus
     anything produced before bu_start) is not included. 
     # TODO future: include pre-existing dislocations.
-U5  GB energy: f0 and c refitted (fit_uo2_interface) on the "random axis and
-    random plane" average of [Z21], over 0-30 deg, at nu = UO2_NU:
+U5  GB energy: f0 and c fitted (fit_uo2_interface, FIT_GB_ENERGY) on the
+    "random axis and random plane" average of [Z21], over 0-30 deg, at
+    nu = UO2_NU.  UO2_F0 and UO2_C are the first row:
         target                     c     f0 [kPa]   rms [J/m^2]   max
-        random axis and plane     34       672        0.015       3.9 %
-        symmetric tilt <110>      30       716        0.017       3.1 %
-        symmetric tilt <100>      45       818        0.029       3.6 %
-    (values of the previous version of this script, NOT re-run for this
-    revision; selftest only checks gamma at 5, 15 and 30 deg.)
-    # TODO future: re-run the fit for the current revision.
+        random axis and plane     34      671.7       0.0153      3.9 %
+        symmetric tilt <110>      30      716.1       0.0172      3.1 %
+        symmetric tilt <100>      45      818.0       0.0286      3.6 %
+    Eq. (15) is linear in f0 at fixed (nu, alpha, mu, c), so only c is
+    scanned and f0 follows in closed form.  selftest checks gamma at 5, 15
+    and 30 deg against [Z21] with a tolerance of the fit residual.
 U6  Diffuse width nu = 2.5 um, chosen so that the eta well nu/sqrt(alpha)
     = 0.56 um matches the 500-600 nm enriched layer of [ON25].
 U7  Domain L = 25 um (~10 nu, the same ratio as Cu's 10 um at nu = 1 um):
     the GB first widens (Sec. 3.2.1) and only then splits; in a shorter
     domain the widened GB reaches the walls and the whole domain
     recrystallises as one grain ("collapse").
-U8  c3 is calibrated (calibrate_c3) so that the first nucleation at
-    Delta theta = 20 deg happens at HBS_ONSET_BURNUP = 60 GWd/tU.  UO2_C3 is
-    the result for the default configuration.  Other angles use the same c3.
-    !! It was calibrated with the [HBS] rho_tot(bu) BEFORE rho_crit was added
-    (hbs_formation_landau.py, 2026-09-22): with the present rho_tot = 0
-    below 47.1 GWd/tU the 20 deg onset moves to 68.5 GWd/tU.  Re-run
-    CALIBRATE_C3 (~1 h) before quoting any UO2 onset.
+U8  c3 is calibrated (calibrate_c3, CALIBRATE_C3) so that the first
+    nucleation at Delta theta = 20 deg happens at HBS_ONSET_BURNUP =
+    60 GWd/tU.  UO2_C3 = 2.659 is the result for the default configuration
+    and gives an onset of 60.25 GWd/tU; other angles use the same c3.
+    Re-run it after changing nu, f0, c, C_D, the source, the geometry or the
+    protocol -- it is the parameter that absorbs all of them [Q3].
+    The price of putting the onset at 60 is the validity range: see E4.
 U9  alpha, mu, c1, c2, lambda, tau_eta, tau_hat: Cu values of Table 1.
 U10 C_D = 10 instead of 100: C_D = 100 makes one irradiation history take
     > 17 min instead of ~1 min.  A numerical reason, not a physical one.
@@ -187,27 +188,14 @@ U12 Source gating (SOURCE_IN_SWEPT = 0, ON by default): irradiation makes
     production STOPS in a new grain, only that its density stays far below
     the matrix value.
     It does not move the onset, because m = 1 everywhere until the first
-    sweep: the 20 deg half period nucleates at 68.50 GWd/tU with and without
-    it, so the c3 calibration is untouched.
+    sweep, so the source is identical until then.  Measured at the shipped
+    c3, 20 deg half period: nucleus at 60.25 GWd/tU with SOURCE_IN_SWEPT = 0
+    AND with 1.  What it does change is what happens afterwards -- the
+    recrystallised fraction of E10 ends at 1.000 with the gating and 0.000
+    without it -- so the c3 calibration is untouched by this switch.
     m is reset to 1 after the relaxation of [N3]: that relaxation raises eta
     from eta0 to ~1 and would otherwise "sweep" the whole domain (measured:
     m = 0.069 everywhere before irradiation, which switched the source off).
-U13 Step B (Part 3b, LANDAU_ROTATION, OFF): the analogue of [T26]'s loading
-    phase (Sec. 3.3.1).  Eq. (26) with u = 0, e^e = 0 gives
-    theta = -e^slip - e*; e^slip is PRESCRIBED so that each subgrain turns at
-    W = 1/2 s(x) dTheta_L/dt, Theta_L = [HBS] Theta(bu), scaled by the local
-    share of the tangle rho / (rho_tot - rho_ord)_[HBS] (a recovered grain has
-    nothing to polygonise):
-        tau_hat g (d theta/dt - W) = f0 d/dx[ mu^2 g d theta/dx ]
-    Theta_L is used as a LOCAL wall angle, while [HBS] Eq. (10) reads it as
-    the mean of a two-phase mixture: a possible double count with X. [?]
-U14 s(x) = +-1 alternating on subgrains of width D = 2 r_n(HBS_ONSET_BURNUP),
-    an even number per parent grain, held fixed ([HBS] r_n shrinks).
-U15 Step B dislocations: production d rho_tot/d bu (uniform) and transfer of
-    the tangle into walls at the relative rate (d rho_ord/dt)/(rho_tot -
-    rho_ord) of [HBS].  [HBS]'s rho_swept is NOT subtracted: annihilation is
-    left to the recovery of Eq. (28), so it is not counted twice.
-    # TODO future: dislocation model temperature dependent.
 
 2.4 Numerics [N]
 ----------------
@@ -217,20 +205,22 @@ N1  Finite volumes on a uniform grid; zero flux on the two walls; g at the
     tridiagonal-block Jacobian pattern.  SI units throughout; t0 enters only
     through the mobilities.
 N2  A(eta) is frozen above eta_cutoff like g.  The paper states the cutoff
-    for g only; without it one UO2 history at 2500 cells goes from ~50 s to
-    more than 5 min (measured in the previous version).
+    for g only; without it a UO2 history at 2500 cells costs several times
+    more, because A diverges as 1/(1 - eta) in the bulk.
 N3  Initial GB: sharp tanh step of theta (width 2 dx), eta = 0.99, relaxed
     for 2e4 t0 with rho = 0 and the most mobile values found in Table 1 for
     each field separately (tau_eta = 1e2, tau_hat = 1e1 f0 t0; this pair is
     not one of Table 1's rows).  The relaxed profile does not depend on the
-    mobilities; it is cached.
+    mobilities.  It is cached in the process AND on disk, under
+    RELAXED_CACHE, keyed by the parameters it depends on and by
+    RELAXED_PROTOCOL, so that changing the relaxation invalidates the store.
 N4  Grids.  Cu: 400 cells over 10 um (dx = 25 nm).  UO2: 2500 cells over
     25 um (dx = 10 nm): the theta transition narrows with Delta theta, and
     at 20 deg it is ~0.09 um, i.e. ~9 cells; at 30 deg ~3 cells, below the
     5-10 cells of [PFRP].  gamma still converges there because g >= 0.01.
-    A COARSER grid is not cheaper: at 400 cells over 10 um one UO2 history
-    costs 4-10 times more (stiff) and onset(c3) stops being monotone.
-    (Numbers measured in the previous version, not re-measured here.)
+    A COARSER grid is not cheaper: at 400 cells over 10 um a UO2 history
+    costs several times more (the problem gets stiffer) and onset(c3) stops
+    being monotone, which breaks the bisection of calibrate_c3.
 N5  Event classification (classify_event), [T26]'s wording turned into three
     tests on the profiles:
       1. rho at the GB centre < 0.1 rho_ref (first time = birth);
@@ -239,33 +229,34 @@ N5  Event classification (classify_event), [T26]'s wording turned into three
     1+2+3 = "nucleus";  1 and centre theta ended on a parent = "migration";
     1 without 2 = "collapse" (whole domain disordered first);  not 1 = "none".
     0.1 and c2 are thresholds I put on continuous fields.
-N6  Tolerances: rtol = 1e-5; atol = 1e-8 for eta and theta, 1e4 m^-2 for
-    rho.  The previous version used atol = 1e-8 for ALL fields, i.e.
-    1e-8 m^-2 on a density that reaches 1e15: while rho ~ 0 (start of an
-    irradiation) the error test then chases the on/off switching of
-    <d eta/dt> in Eq. (28) and the step size collapses.  The old UO2 30 deg
-    history passed by luck of the step sequence (with scipy Jacobian
-    overflow warnings); after removing the always-zero 4th field it stalled
-    at bu = 0.008 (> 30 min).  With atol_rho = 1e4 it takes ~50 s.
+N6  Tolerances: rtol = 1e-5; atol = 1e-8 for eta and theta, and ATOL_RHO =
+    1e4 m^-2 for rho.  rho must have an absolute tolerance of its own: it
+    reaches 1e15 m^-2, so a tolerance meant for a field of order 1 asks the
+    error test for ~24 significant digits on it.  While rho ~ 0, at the start
+    of an irradiation, the test then chases the on/off switching of
+    <d eta/dt> in Eq. (28) and the step size collapses to nothing.  1e4 m^-2
+    is 11 orders below the densities that matter and costs no accuracy.
 
 
-N7  Step B: the [HBS] tangle is floored at max(1e-3 rho_tot, 1e12 m^-2)
-    (TANGLE_FLOOR).  Below rho_crit it is 0, and rho/tangle would turn
-    solver noise (~ATOL_RHO) into rotation: with a floor of 1 m^-2 the B0
-    test produced 9-32 deg spurious steps.
-N8  Recovery dead zone: <d eta/dt> in Eq. (28) is replaced by
+N7  Recovery dead zone: <d eta/dt> in Eq. (28) is replaced by
     <d eta/dt - 1e-9/t0> (RECOVERY_DEAD_ZONE).  In the grain A(eta) is frozen
     at ~1e4 and d eta/dt is solver noise that changes sign between Newton
-    iterations; once rho > 0 (e.g. when the [HBS] source switches on at
-    rho_crit, 47.1 GWd/tU) that kink stalls BDF: 46 -> 49 GWd/tU took
-    > 400 s instead of 8 s, one 20 deg history 966 s instead of ~50 s.
+    iterations; once rho > 0 (when the [HBS] source switches on at rho_crit,
+    47.1 GWd/tU) that kink stalls BDF, turning a ~50 s history into ~1000 s.
     1e-9/t0 (3e-13 /s for UO2) is far below the physical rates (GB widening
     ~1e-9 /s, nucleation ~1e-8 /s).  A model change, although a small one.
-N9  Jacobian: scipy's num_jac (what jac_sparsity does internally) with its
+N8  Jacobian: scipy's num_jac (what jac_sparsity does internally) with its
     relative column step capped at MAX_JAC_FACTOR.  Uncapped it overflows on
     a column whose derivative is exactly 0 - the swept marker before the
     first sweep [U12] - and BDF stops with "Factor is exactly singular".
-    num_jac and group_columns are PRIVATE scipy functions (checked: 1.17.1).
+    num_jac and group_columns are PRIVATE scipy functions, checked against
+    scipy SCIPY_CHECKED_AGAINST; the import is guarded and says what to do if
+    they move.
+N9  Irradiation source: d rho/d bu by centred differences on a table every
+    SOURCE_STEP = 0.05 GWd/tU, forced to 0 wherever rho = 0 so that the kink
+    of [HBS] rho_tot at rho_crit cannot produce dislocations BELOW the
+    threshold (see dislocation_source).  The integrated source reproduces
+    rho_tot(bu) to ~4e-5 relative over 0-110 GWd/tU.
 
 3. UNKNOWNS / UNCALIBRATED [?] # TODO future.
 ==============================
@@ -300,6 +291,14 @@ E3  Cu, Delta theta = 2.5 deg: [T26] report that rho is never recovered and
 E4  UO2: with the calibrated c3, eta_eq of Eq. (42) drops below 0 at high
     burnup (printed by main, column bu(eta=0)).  Results beyond that burnup
     are outside the model ([T26] Sec. 2.3: c3 must keep eta in [0, 1]).
+    Pulling the onset down to 60 GWd/tU costs validity range, because both
+    are set by the same c3:
+        c3      eta_eq(60)  eta_eq(80)   bu(eta_GB0)   bu(eta_eq = 0)
+        1.183      0.912       0.591         80.7          95.3
+        2.659      0.802       0.080         68.7          81.4
+    At the calibrated c3 = 2.659 the model is therefore valid only over
+    ~60-81 GWd/tU, i.e. about 21 GWd/tU above its own onset, and BU_RANGE
+    runs well past that.  Read anything above ~81 GWd/tU as out of range.
 E5  UO2: migration (SIBM) is unreachable (R1 + uniform source).  The
     asymmetric branch of Eq. (43) can only be tried in run_case, where two
     rho values are imposed (Fig. 6), and even there it does not come out as
@@ -314,37 +313,66 @@ E7  The model has no mechanism that CREATES misorientation from
     the parents; the Landau Theta(bu) of [HBS] is not something this model
     can produce, and the comparison in plot_diagnostics is only a
     side-by-side.
-E8  Cu, Fig. 6 (rho different in the two grains, Delta theta = 15 deg) is
-    NOT reproduced.  [T26]: a nucleus for every pair between (0, 2.5) and
-    (2.5, 2.5), closer to the less loaded grain (Eq. 43).  Here, in units
-    of 1e15 m^-2:
-        (0, 2.5) (1, 2.5) (1.5, 2.5) (2, 2.5) (2.5, 2)   migration
-        (2.3, 2.5)                                        nucleus, but it
-                                                          rotates to 0.3 deg
-    Likely causes, NOT verified: the half-period domain (R1, 10 um: the
-    nucleus is swept away before it separates), outputs every 50 s (a
-    short-lived bulge can fall between two outputs, N5), no mechanics (R2).
-E9  UO2 30 deg: "collapse" at ~68 GWd/tU, not a nucleus (the widened GB
-    fills the domain first).  The 20 deg case is calibrated (U8), so the
-    15 and 30 deg cases are predictions of the same c3.
-E10 UO2: "recrystallised" is ~0 at the end of every history, because the
-    source keeps loading the new grain (U3) and rho there climbs back above
-    0.1 rho_ref.  It measures dislocation-free volume, not restructured
-    volume; compare it with [HBS] X with that in mind.
+E8  Cu, Fig. 6 (rho different in the two grains, Delta theta = 15 deg): the
+    two LIMITS of Eq. (43) come out right, the branch between them does not.
+    Different rho in the two grains breaks the mirror symmetry the half
+    period of [R1] assumes, so this figure can only be tested on the FULL
+    period (run_ring_case, a 2-grain Ring at 0 and 15 deg, 10 um each,
+    800 cells at dx = 25 nm).  There, per pair (rho_1, rho_2) in 1e15 m^-2,
+    both GBs agreeing:
+        (2.5, 2.5)   nucleus at 7.50 deg   = (theta_s + theta_l)/2   [P] ok
+        (2.3, 2.5)   nucleus at 0.32 deg   -- on theta_s, not between
+        (2.0, 2.5)   migration
+        (1.5, 2.5)   migration
+        (1.0, 2.5)   migration
+        (0.0, 2.5)   migration             [T26]: "nucleation is not
+                                           possible ... pure SSD driven GB
+                                           migration"                 [P] ok
+    So the symmetric limit and the rho_s = 0 limit are both reproduced, but
+    [T26] get a nucleus for EVERY pair in between, sitting closer to the
+    less loaded grain; here the nucleus survives only within ~10 % of
+    symmetric, and even there it sits ON the parent orientation rather than
+    between the two.
+    The half-period domain is NOT the cause: the half period gives the same
+    pattern, including the 0.3 deg nucleus at (2.3, 2.5).  What is left,
+    still unverified: the outputs every 50 s (a short-lived bulge can fall
+    between two of them, N5) and the absence of mechanics (R2), which in
+    [T26] is what carries the asymmetry into the orientation field.
+E9  The half-period scan at the calibrated c3 = 2.659 (U8), 2500 cells:
+        dtheta   event      onset [GWd/tU]   nucleus dtheta   recrystallised
+         15      nucleus        58.00           7.50 deg          1.000
+         20      nucleus        60.25          10.00 deg          1.000
+         30      collapse       65.50             --              1.000
+    Only the 20 deg case is calibrated; 15 and 30 deg are predictions of the
+    same c3.  At 30 deg the widened GB fills the domain before it can split,
+    so the event is a collapse, not a nucleus.  All three sit inside the
+    60-81 GWd/tU validity window of E4, but only just.
+E10 "recrystallised" measures DISLOCATION-FREE volume (eta > c2 and
+    rho < 0.1 rho_ref), not restructured volume, so it is not [HBS] X and
+    should not be read as it.  With the source gating of [U12] in force
+    (SOURCE_IN_SWEPT = 0, the shipped setting) it reaches 1.000 by the end of
+    every history: once a boundary has swept the domain, nothing reloads it
+    with dislocations.  Without the gating it would instead fall back to ~0,
+    because the uniform source of [U3] keeps loading the new grain until rho
+    there climbs back above 0.1 rho_ref.
 E11 Under the uniform source the mirror symmetry about L/2 is broken only by
-    round-off, but nucleation amplifies it: at 15 deg the theta asymmetry
-    grows from 1e-8 deg (bu 50) to 7e-3 deg (bu 62), and keeps growing.
-    The nucleus misorientation is read at the LAST output where the bulge
-    still exists (N5), i.e. late: there it is 7.18 deg (6.79 in the previous
-    version), while at bu 62 theta(L/2) = 7.498 deg = Delta theta / 2.
-    Under this protocol read it as Delta theta / 2; the rest is numerical
-    drift.  Onsets are robust (55.5, 59.75, 68.25 GWd/tU at 15, 20, 30 deg,
-    identical in the previous and this version).
-E12 The polygonisation extension (tangle -> walls -> subgrain rotation) of
-    the previous version is removed from this file: it was off by default
-    and did not polygonise (HMP relaxes a subgrain rotation away in ~1 day
-    with Table 1's tau_hat).  Kept, unmaintained, in
-    archive/phasefield_tandogan_1d_with_polygonisation.py.
+    round-off, and nucleation amplifies it, so the nucleus misorientation is
+    a drifting quantity: it is read at the LAST output where the bulge still
+    exists (N5).  At the calibrated c3 it comes out at exactly Delta theta/2
+    (7.50 deg at 15 deg, 10.00 deg at 20 deg), which is what this protocol
+    can produce -- the model has no mechanism that CREATES misorientation
+    (E7), so the nucleus can only sit between its parents.  Read it as
+    Delta theta / 2 and treat any departure as numerical drift.
+E12 This model has no polygonisation branch (tangle -> walls -> subgrain
+    rotation) and cannot acquire one without a model change: HMP relaxes a
+    prescribed subgrain rotation away in ~1 day with Table 1's tau_hat,
+    because g' = 0 above eta_cutoff, so a theta step inside a perfect grain
+    exerts no force on eta, no eta dip forms to pin it, and e* relaxes it
+    (Eq. 34).  [T26] report the same for gradients that do not localise
+    (kink band, subgrains B1/B2 "rotate back").  Making it work needs a
+    lower cutoff or a bulk plateau of phi'.  An exploratory implementation
+    is in archive/phasefield_tandogan_1d_with_polygonisation.py, which is
+    not maintained against this file.
 E13 Half period: every history ends as ONE flat crystal (eta = 1, theta =
     Delta theta / 2).  After nucleation the two new boundaries run into the
     parents, driven by lambda/2 G b^2 (rho_parent - rho_nucleus), with no
@@ -353,66 +381,78 @@ E13 Half period: every history ends as ONE flat crystal (eta = 1, theta =
     GB, f_eta4 is ~0 everywhere (phi' ~ 0 for eta > c2) and nothing else can
     happen, whatever the burnup.  [T26] show the same full expansion
     (Figs. 4, 6).
-    The ring [R6] removes the mirror but NOT the flattening; it only delays
-    it.  5 grains (make_ring seed 0: 27.4, 18.2, 21.9, 16.3, 28.1 deg; the
-    last GB is only 0.67 deg), c3 = 1.183, new [HBS] rho_tot:
-        grains [count/theta spread]   bu 60     65      75      85     100
-        25 um grains (2498 s)         5/11.7   8/11.7  4/4.6   2/1.7  0/1.0
-        10 um grains (1008 s)         5/11.7   5/9.8   3/9.2   2/0.3  0/0.0
-    Nuclei at 58.5-63.75 GWd/tU at 4 (25 um) and 3 (10 um) of the 5 GBs,
-    then a sweep: the region swept last holds the least rho (the uniform
-    source reloads everything equally), so it always pushes into its
-    neighbours; a grain shrunk to zero merges its two boundaries and the
-    ring loses a grain.  Nothing opposes it in 1D: no curvature, no triple
-    junctions, and fewer boundaries is always lower energy.  By ~85-95
-    GWd/tU one orientation fills the ring; above ~90 the GB-free bulk flips
-    (phi' grows as eta drops, eta_eq < 0, E4) and the "0 grains" rows are
-    that flip.  In [T26]'s 2D polycrystals growth is stopped and reversed
-    by curvature (Sec. 3.3.2); a 1D model has no equivalent.
-    The 10 um grains do not collapse before nucleating (the U7 worry does
-    not apply at this nu).  Stencil check: a ring of 2 grains (0/20 deg,
-    25 um) gives the half-period result exactly (nucleus at 68.50 GWd/tU,
-    10.00 deg at both GBs).
-    WITH the source gating of [U12] (SOURCE_IN_SWEPT = 0) the ring no longer
-    coarsens: once a region is swept it is not reloaded, so rho -> 0 there,
-    the driving force disappears and the structure FREEZES.  25 um grains:
+    The ring [R6] removes the mirror image but not the flattening.  5 grains
+    (make_ring seed 0: 27.38, 18.20, 21.88, 16.31, 28.05 deg; the last GB is
+    only 0.67 deg), at the shipped c3 with the source gating of [U12] in
+    force (SOURCE_IN_SWEPT = 0):
+        GB  parents [deg]      25 um grains        10 um grains
+         0  27.38 -> 18.20   nucleus  55.50     nucleus  55.50
+         1  18.20 -> 21.88   nucleus  53.00     nucleus  53.00
+         2  21.88 -> 16.31   nucleus  53.75     nucleus  53.75
+         3  16.31 -> 28.05   nucleus  56.75     collapse 56.50
+         4  28.05 -> 27.38   migration 68.25    migration 61.00
+        end of history      4 grains            4 grains
+        theta spread        3.68 deg            7.49 deg
+        rho mean            7.5e12 m^-2         2.5e14 m^-2
+        unswept fraction    0.000               0.015
+    The 25 um ring resolved against burnup:
         bu                  60      65      70      75      80     110
-        grains              5       8       6       4       4       4
-        theta spread [deg]  11.7    11.7    9.2     1.5     1.5     1.5
-        rho mean [m^-2]     6.1e14  7.4e14  5.0e14  2.2e14  7.4e12  4.0e13
-    Nuclei at 57.25-63.25 GWd/tU at the four real GBs, the domain fully
-    swept by ~73, then nothing moves up to 110 GWd/tU.  E4 is no longer
-    reached either, because rho stays bounded (eta min 0.52 at 110 against
-    a bulk flip without the gating).
-    What it does NOT fix: the surviving grains are as wide as the original
-    ones (~20-30 um, i.e. the nucleation sites), and they differ by ~1.5 deg
-    in all.  HBS sub-grains are ~0.2-0.8 um at 10 deg.  Nucleation only
-    happens at pre-existing GBs in this model (E7), so the final grain count
-    is set by the parent microstructure, not by the physics of the HBS.
-E14 Step B fails the B0 go/no-go test (one 25 um grain on a ring, no GB,
-    0 -> 80 GWd/tU):
-        tau_hat = 1e1 (Table 1): lattice step 0.0005 deg vs Theta_L 0.7-4.2 deg
-        tau_hat = 1e4:           0.54 deg (76 %) at 50, 0.64 deg (15 %) at 80
-    and eta at the subgrain walls stays 1.0000: g' = 0 above eta_cutoff,
-    so a theta step inside a perfect grain exerts no force on eta, no eta
-    dip forms to pin it, and e* relaxes it (Eq. 34).  In [T26] the same
-    happens to gradients that do not localise (kink band, subgrains B1/B2
-    "rotate back").  Kept behind LANDAU_ROTATION = False; making it work
-    needs a model change (lower cutoff or a bulk plateau of phi', which the
-    archived option A showed flips the grain to the GB branch near
-    58 GWd/tU).
+        grains               9       4       4       4       4       4
+        theta spread [deg] 11.7     7.8     3.7     3.7     3.7     3.7
+        rho mean [m^-2]  3.8e14  2.2e14  8.0e11  1.1e12  1.4e12  7.5e12
+    Nuclei appear at the four GBs that carry a real misorientation, between
+    53.0 and 56.8 GWd/tU; the fifth, 0.67 deg apart, migrates instead.  The
+    structure then FREEZES: once a region is swept it is not reloaded, rho
+    falls, the driving force disappears and nothing moves afterwards.  The
+    25 um ring is swept completely (unswept 0.000, rho 7.5e12) and settles
+    at a 3.7 deg spread by ~70 GWd/tU; the 10 um ring keeps 1.5 % unswept
+    and 2.5e14 m^-2, so it retains a larger spread.
+    Without the gating (SOURCE_IN_SWEPT = 1) the ring coarsens instead: the
+    region swept last holds the least rho, so it always pushes into its
+    neighbours; a grain shrunk to zero merges its two boundaries and the
+    ring loses a grain.  Nothing opposes this in 1D -- no curvature, no
+    triple junctions, and fewer boundaries is always lower energy.  In
+    [T26]'s 2D polycrystals growth is stopped and reversed by curvature
+    (Sec. 3.3.2); a 1D model has no equivalent.
+    What the gating does NOT fix: the surviving grains are as wide as the
+    original ones (~20-30 um, i.e. the nucleation sites), while HBS
+    sub-grains are ~0.2-0.8 um at 10 deg.  Nucleation only happens at
+    pre-existing GBs in this model (E7), so the final grain count is set by
+    the parent microstructure, not by the physics of the HBS.
+    NOTE the validity window of E4: at the shipped c3 the model is valid to
+    ~81 GWd/tU, so the 110 GWd/tU column above records what the equations do
+    there, not a prediction.
 """
 
+import hashlib
 import math
 import os
 import sys
 from dataclasses import dataclass, replace
 
 import numpy as np
+import scipy
 from scipy.integrate import solve_ivp
-from scipy.integrate._ivp.common import num_jac      # private, see [N9]
-from scipy.optimize._numdiff import group_columns    # private, see [N9]
 from scipy.sparse import diags, kron
+
+# [N8] num_jac and group_columns are PRIVATE scipy functions, used to cap the Jacobian
+# step (see _capped_jacobian).  They are not part of the public API and may move or
+# change signature between releases, so the import is guarded and names the version
+# this file was written against.
+SCIPY_CHECKED_AGAINST = "1.17.1"
+try:
+    from scipy.integrate._ivp.common import num_jac
+    from scipy.optimize._numdiff import group_columns
+except ImportError as error:  # pragma: no cover
+    raise ImportError(
+        "%s\n"
+        "phasefield_tandogan_1d.py uses the private scipy helpers num_jac and "
+        "group_columns (see [N8] in the module docstring); they were checked against "
+        "scipy %s and this is scipy %s.\n"
+        "If they have moved, either locate them in the new layout or drop "
+        "_capped_jacobian and pass jac_sparsity=pattern to solve_ivp, which is the "
+        "public equivalent without the step cap."
+        % (error, SCIPY_CHECKED_AGAINST, scipy.__version__)) from error
 
 from hbs_formation_landau import (
     BURGERS,
@@ -447,21 +487,23 @@ UO2_F0 = 671.7e3                        # Pa       [U5]  fitted at nu = UO2_NU; 
 UO2_C = 34.0                            # -        [U5]
 UO2_T0 = 1.0e-3 / BU_RATE               # s        [Q1] placeholder, [Q2]
 UO2_C_D = 10.0                          # -        [U10], [Q5]
-UO2_C3 = 1.183                          # -        [U8]  output of calibrate_c3 for THIS
+UO2_C3 = 2.6591479484724942             # -        [U8]  output of calibrate_c3 for THIS
                                         #          configuration; re-run after changing nu,
                                         #          f0, c, C_D, geometry or protocol
 HBS_ONSET_BURNUP = 60.0                 # GWd/tU   [U8]  lower end of 60-75 GWd/tU
                                         #          (Rondinella & Wiss, Mater. Today 13 (2010) 24)
 CALIBRATE_C3 = False                    # True: re-run the bisection (~1 h) and print c3.
                                         #       Always on the production grid [N4].
+FIT_GB_ENERGY = False                   # True: re-run fit_uo2_interface and print the
+                                        #       (f0, c) of each [Z21] reduction [U5].
+                                        #       Run this BEFORE CALIBRATE_C3: c3 is
+                                        #       bisected with f0 and c in force.
 
 # --- polycrystal ring, Part 3b [R6] ----------------------------------------
 N_GRAINS = 5                            # -        parent grains on the ring
 RING_GRAIN_WIDTHS = (25.0e-6, 10.0e-6)  # m        both tested: 25 um keeps ~10 nu per grain
                                         #          [U7], 10 um is a real UO2 grain
 RING_SEED = 0                           # -        orientations and widths (make_ring)
-LANDAU_ROTATION = False                 # -        Step B: lattice rotation from [HBS]
-                                        #          [U13]-[U15]; see E14 before switching on
 
 
 # ###########################################################################
@@ -610,14 +652,11 @@ def theta_at_gb(y, n, cell=None):
     return 0.5 * (y[n + (cell - 1) % n] + y[n + cell])
 
 
-def _right_hand_side(p, grid, source=None, sink=None, rotation=None):
-    """d/dt [eta, theta, rho], Eqs. (32), (34), (28).
+def _right_hand_side(p, grid, source=None):
+    """d/dt [eta, theta, rho, m], Eqs. (32), (34), (28) plus the swept marker [U12].
 
     source(t) [m^-2/s]: uniform dislocation production [U3]; None = no
     production, as in the Cu protocol of [T26] [R3].
-    sink(t) [1/s] and rotation = (s(x), rate(t)) [-, rad/s]: the transfer of
-    the tangle into walls and the lattice rotation it makes, prescribed by
-    [HBS] (Part 3b, Step B, [U13]-[U15]).  None = off.
     """
     n, dx = grid.cells, grid.dx
     offset = g_offset(p.c)
@@ -632,7 +671,7 @@ def _right_hand_side(p, grid, source=None, sink=None, rotation=None):
         return SOURCE_IN_SWEPT + (1.0 - SOURCE_IN_SWEPT) * np.clip(marker, 0.0, 1.0)
 
     def growth(eta_dot):
-        """<d eta/dt> of Eq. (28) with a dead zone [N8]: 0 below dead_zone."""
+        """<d eta/dt> of Eq. (28) with a dead zone [N7]: 0 below dead_zone."""
         return np.maximum(eta_dot - dead_zone, 0.0)
 
     def rhs(t, y):
@@ -656,7 +695,7 @@ def _right_hand_side(p, grid, source=None, sink=None, rotation=None):
         # Eq. (32) with the forces of Eq. (41), same signs as the paper.
         # f_eta2 and f_eta3 are summed inside ONE bracket on purpose: the
         # irradiation runs are sensitive to the round-off of this sum, and
-        # this is the grouping UO2_C3 was calibrated with.
+        # this is the grouping UO2_C3 is calibrated with.
         theta_prime_sq = 0.5 * (dtheta[:-1] ** 2 + dtheta[1:] ** 2)  # at cell centres
         f_eta1 = p.f0 * p.nu ** 2 * np.diff(deta) / dx
         f_eta23 = -p.f0 * (p.alpha * potential_derivative(eta)
@@ -694,15 +733,6 @@ def _right_hand_side(p, grid, source=None, sink=None, rotation=None):
         marker_dot = -marker * swept             # [U12]
         if source is not None:
             rho_dot = rho_dot + source(t) * injected(marker)
-        if sink is not None:
-            # [U15] the tangle goes into walls at the relative rate [HBS] asks
-            rho_dot = rho_dot - sink(t) * rho
-        if rotation is not None:
-            # (A4): tau_hat g (theta_dot - W) = f0 d/dx[mu^2 g theta'],
-            # W = 1/2 s(x) dTheta_L/dt, scaled by the local share of the tangle
-            # (a recovered grain has nothing to polygonise) [U13], [U14]
-            sign, rate, tangle = rotation
-            theta_dot = theta_dot + 0.5 * sign * rate(t) * rho / tangle(t)
         return np.concatenate([eta_dot, theta_dot, rho_dot, marker_dot])
 
     return rhs
@@ -711,18 +741,18 @@ def _right_hand_side(p, grid, source=None, sink=None, rotation=None):
 RTOL = 1.0e-5                           # -      BDF relative tolerance [N1]
 ATOL = 1.0e-8                           # -, rad absolute tolerance on eta and theta
 ATOL_RHO = 1.0e4                        # m^-2   absolute tolerance on rho [N6]
-RECOVERY_DEAD_ZONE = 1.0e-9              # 1/t0   <d eta/dt> ignored below this [N8]
+RECOVERY_DEAD_ZONE = 1.0e-9              # 1/t0   <d eta/dt> ignored below this [N7]
 SOURCE_IN_SWEPT = 0.0                   # -      share of the source that still reaches
                                         #        material a boundary has swept [U12]:
                                         #        0 = new grains are not reloaded,
                                         #        1 = the uniform source of [U3]
 
 
-MAX_JAC_FACTOR = 1.0e-2                 # -      cap on scipy's relative Jacobian step [N9]
+MAX_JAC_FACTOR = 1.0e-2                 # -      cap on scipy's relative Jacobian step [N8]
 
 
 def _capped_jacobian(rhs, pattern, atol):
-    """scipy's own sparse finite-difference Jacobian, with its step capped [N9].
+    """scipy's own sparse finite-difference Jacobian, with its step capped [N8].
 
     This is what solve_ivp(jac_sparsity=...) does internally (num_jac with the
     same column grouping and threshold, scipy 1.17), with ONE change: scipy
@@ -746,8 +776,7 @@ def _capped_jacobian(rhs, pattern, atol):
     return jac
 
 
-def evolve(p, grid, y0, t_end, times, source=None, max_step=np.inf, sink=None,
-           rotation=None):
+def evolve(p, grid, y0, t_end, times, source=None, max_step=np.inf):
     """Integrate from 0 to t_end, output at `times` (stiff BDF, adaptive) [N1]."""
     n = grid.cells
     offsets = [-1, 0, 1] + ([-(n - 1), n - 1] if grid.periodic else [])  # ring: cell 0
@@ -755,7 +784,7 @@ def evolve(p, grid, y0, t_end, times, source=None, max_step=np.inf, sink=None,
     pattern = kron(np.ones((4, 4)), neighbours, format="csr")   # every field of a cell
     atol = np.concatenate([np.full(2 * n, ATOL), np.full(n, ATOL_RHO),  # sees every
                            np.full(n, ATOL)])
-    rhs = _right_hand_side(p, grid, source, sink, rotation)              # field of the
+    rhs = _right_hand_side(p, grid, source)                              # field of the
     sol = solve_ivp(rhs, (0.0, t_end), y0,                               # cell and its
                     method="BDF", t_eval=times, max_step=max_step,       # neighbours
                     jac=_capped_jacobian(rhs, pattern.tocsc(), atol),
@@ -771,30 +800,53 @@ def evolve(p, grid, y0, t_end, times, source=None, max_step=np.inf, sink=None,
 
 _RELAXED = {}
 
+# [N3] relaxing a profile costs a full time integration, and the result depends only on
+# `key` below, so it is cached on disk as well as in the process: the checks and the
+# figures all start from the same handful of profiles, and without the disk cache every
+# invocation of this module pays for them again.  RELAXED_PROTOCOL is part of the file
+# name, so changing the relaxation invalidates what is stored.
+RELAXED_CACHE = os.path.join(FIGURES_DIR, "relaxed")
+RELAXED_PROTOCOL = "v1-t2e4-taueta1e2-tauhat1e1"
+
+
+def _relaxed_path(key):
+    digest = hashlib.sha1(repr(key).encode()).hexdigest()[:16]
+    return os.path.join(RELAXED_CACHE, f"{RELAXED_PROTOCOL}-{digest}.npy")
+
 
 def initial_state(p, grid, delta_theta_deg, eta0=0.99):
-    """Relaxed GB without dislocations: y = [eta, theta, rho = 0].
+    """Relaxed GB without dislocations: y = [eta, theta, rho = 0, m = 1].
 
     theta: a step of height delta_theta at L/2 (smoothed over 2 dx);
     eta = eta0; then relaxed for 2e4 t0 with rho = 0 [N3].
 
-    Cached: only the parameters in `key` enter (rho = 0, so c3, C_D, lambda,
-    G, b do not).  A copy is returned because callers write rho into it.
+    Cached in the process and on disk: only the parameters in `key` enter (rho = 0, so
+    c3, C_D, lambda, G, b do not).  A copy is returned because callers write rho into it.
     """
     key = (p.f0, p.nu, p.alpha, p.mu, p.c, p.t0,
            eta0, delta_theta_deg, grid.length, grid.cells)
     if key not in _RELAXED:
-        n = grid.cells
-        theta = math.radians(delta_theta_deg) * 0.5 * (
-            1.0 + np.tanh((grid.x - 0.5 * grid.length) / (2.0 * grid.dx)))
-        y0 = np.concatenate([np.full(n, eta0), theta, np.zeros(n), np.ones(n)])
-        t_relax = 2.0e4 * p.t0
-        relax = evolve(replace(p, tau_eta=1.0e2, tau_hat=1.0e1), grid, y0, t_relax, [t_relax])
-        _RELAXED[key] = relax.y[:, -1]
-        _RELAXED[key][3 * n:] = 1.0     # the relaxation is a preparation step [N3]:
-                                        # eta rises from eta0 to ~1 everywhere, which
-                                        # would "sweep" the whole domain [U12]
+        path = _relaxed_path(key)
+        if os.path.exists(path):
+            _RELAXED[key] = np.load(path)
+        else:
+            _RELAXED[key] = _relax(p, grid, delta_theta_deg, eta0)
+            os.makedirs(RELAXED_CACHE, exist_ok=True)
+            np.save(path, _RELAXED[key])
     return _RELAXED[key].copy()
+
+
+def _relax(p, grid, delta_theta_deg, eta0):
+    """One relaxation run of [N3]: sharp theta step, uniform eta0, rho = 0."""
+    n = grid.cells
+    theta = math.radians(delta_theta_deg) * 0.5 * (
+        1.0 + np.tanh((grid.x - 0.5 * grid.length) / (2.0 * grid.dx)))
+    y0 = np.concatenate([np.full(n, eta0), theta, np.zeros(n), np.ones(n)])
+    t_relax = 2.0e4 * p.t0
+    relax = evolve(replace(p, tau_eta=1.0e2, tau_hat=1.0e1), grid, y0, t_relax, [t_relax])
+    y = relax.y[:, -1]
+    y[3 * n:] = 1.0                 # the relaxation is a preparation step [N3]: eta rises
+    return y                        # from eta0 to ~1, which would "sweep" the domain [U12]
 
 
 # ---------------------------------------------------------------------------
@@ -1035,6 +1087,41 @@ def plot_gb_energy(p, path, angles=(1.0, 2.5, 5.0, 7.5, 10.0, 15.0, 20.0, 25.0, 
     _save(fig, path)
 
 
+def plot_ring_profiles(p, ring, cases, times, path, title, dx=None):
+    """eta, theta, rho at `times` [t0] on the FULL period, for (label, rho_by_grain)
+    cases (Fig. 6).  Fig. 6 needs the full period: see E8."""
+    plt = _pyplot()
+    grid = ring.grid(dx)
+    n, x = grid.cells, grid.x * 1e6
+    styles = ["-", "--", "-.", ":", (0, (1, 3)), (0, (5, 1)), (0, (3, 1, 1, 1))]
+    colours = plt.cm.tab10(np.arange(len(cases)))
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    for (label, rho_by_grain), colour in zip(cases, colours):
+        sites, sol = run_ring_case(p, ring, rho_by_grain, t_end=times[-1],
+                                   samples=times, dx=dx)
+        print("  %s: %s" % (label, ", ".join(
+            "GB%d %s%s" % (j, ev, "" if mis != mis else " dth=%.2f" % mis)
+            for j, (ev, _, mis) in enumerate(sites))), flush=True)
+        for t, style in zip(times, styles):
+            k = int(np.argmin(np.abs(sol.t - t * p.t0)))
+            eta, theta, rho, _ = split(sol.y[:, k], n)
+            axes[0].plot(x, eta, ls=style, color=colour,
+                         label=label if t == times[0] else None)
+            axes[1].plot(x, np.degrees(theta), ls=style, color=colour)
+            axes[2].plot(x, rho, ls=style, color=colour)
+    for gb in ring.gb_positions():
+        for ax in axes:
+            ax.axvline(gb * 1e6, color="0.8", lw=0.6, ls=":")
+    for ax, label in zip(axes, (r"$\eta$", r"$\theta$ [deg]", r"$\rho$ [m$^{-2}$]")):
+        ax.set_ylabel(label)
+        ax.set_xlabel(r"$x$ [µm]")
+    axes[0].legend(fontsize=7)
+    fig.suptitle(title + "   lines: " + ", ".join(
+        f"{s if isinstance(s, str) else '·'} t={t:g} s" for t, s in zip(times, styles)),
+        fontsize=9)
+    _save(fig, path)
+
+
 def plot_profiles(p, cases, times, path, title, grid=CU_GRID):
     """eta, theta, rho at `times` [t0] for (label, delta_theta, rho0) cases (Figs. 4-6)."""
     plt = _pyplot()
@@ -1080,6 +1167,34 @@ def dislocation_density(burnup, temperature=TEMPERATURE, which=RHO_KIND):
     return getattr(hbs_state(burnup, temperature), RHO_KEYS[which])
 
 
+SOURCE_STEP = 0.05                      # GWd/tU  resolution of the source table [N9]
+
+
+def dislocation_source(bu_start, bu_end, bu_rate, temperature=TEMPERATURE, which=RHO_KIND):
+    """(bu_table, rho_table, S(t)) of the irradiation source [U3].
+
+    S = d rho/d bu * bu_rate, tabulated every SOURCE_STEP and interpolated.
+
+    [N9] [HBS] rho_tot(bu) has a KINK at the critical density: it is identically 0
+    below the threshold and rises with a finite slope above it.  A centred difference
+    straddles that kink and returns a non-zero rate at the last node where rho is
+    still exactly 0, i.e. it produces dislocations below the threshold the Landau
+    model sets.  The rate is therefore forced to 0 wherever the density is 0, which
+    is the statement that nothing is produced where [HBS] says nothing is available.
+    Away from the kink the centred difference is untouched and second-order accurate.
+    """
+    bu_table = np.linspace(bu_start, bu_end,
+                           int((bu_end - bu_start) / SOURCE_STEP) + 2)
+    rho_table = np.array([dislocation_density(b, temperature, which) for b in bu_table])
+    rate_table = np.gradient(rho_table, bu_table) * bu_rate
+    rate_table[rho_table <= 0.0] = 0.0
+
+    def source(t):
+        return float(np.interp(bu_start + bu_rate * t, bu_table, rate_table))
+
+    return bu_table, rho_table, source
+
+
 def uo2_parameters(temperature=TEMPERATURE, **changes):
     """Cu parameters with the UO2 values of the RUN CONFIGURATION.
 
@@ -1101,7 +1216,8 @@ def uo2_gamma_targets(angles=FIT_ANGLES, which=UO2_GAMMA_LABELS):
 def fit_uo2_interface(angles=FIT_ANGLES, which=UO2_GAMMA_LABELS, grid=None,
                       c_grid=(3.0, 5.0, 7.0, 9.0, 12.0, 16.0, 20.0, 26.0, 30.0, 34.0,
                               38.0, 45.0)):
-    """(f0, c) reproducing each [Z21] curve at nu = UO2_NU [U5].  Not run by main().
+    """(f0, c) reproducing each [Z21] curve at nu = UO2_NU [U5].  Run by main() when
+    FIT_GB_ENERGY is on.
 
     Eq. (15) is linear in f0 at fixed (nu, alpha, mu, c), so for each c the
     best f0 is closed-form, f0 = f0_base (gamma . target) / (gamma . gamma);
@@ -1159,14 +1275,8 @@ def run_irradiation(p, delta_theta_deg, bu_start, bu_end, bu_rate,
     """
     grid = grid or Grid()
     n, centre = grid.cells, grid.cells // 2
-
-    # S(bu), tabulated once every 0.05 GWd/tU
-    bu_table = np.linspace(bu_start, bu_end, int(20 * (bu_end - bu_start)) + 2)
-    rho_table = np.array([dislocation_density(b, temperature, which) for b in bu_table])
-    rate_table = np.gradient(rho_table, bu_table) * bu_rate
-
-    def source(t):
-        return float(np.interp(bu_start + bu_rate * t, bu_table, rate_table))
+    bu_table, rho_table, source = dislocation_source(bu_start, bu_end, bu_rate,
+                                                     temperature, which)
 
     y = initial_state(p, grid, delta_theta_deg)
     t_end = (bu_end - bu_start) / bu_rate
@@ -1383,19 +1493,13 @@ def plot_diagnostics(p, outcomes, path, grid=None):
 # ###########################################################################
 #   PART 3b - UO2 POLYCRYSTAL ON A RING (1D analogue of [T26] Sec. 3.3.2)
 #
-#   Step A: N parent grains with different orientations on a periodic 1D
-#           domain [R6].  A new grain now meets GBs to OTHER grains instead of
-#           its own mirror image, so the domain cannot end as one flat crystal
-#           (E13) and migration is no longer forbidden by symmetry (E5).
-#   Step B: optional lattice rotation prescribed by [HBS], the analogue of
-#           [T26]'s loading phase (Sec. 3.3.1) running during irradiation
-#           [U13]-[U15].  LANDAU_ROTATION switches it on.
+#   N parent grains with different orientations on a periodic 1D domain [R6].
+#   A new grain meets GBs to OTHER grains instead of its own mirror image, so
+#   the domain cannot end as one flat crystal (E13) and migration is no longer
+#   forbidden by symmetry (E5).
 # ###########################################################################
 
 RING_DX = 10.0e-9                       # m      same resolution as Grid() [N4]
-TANGLE_FLOOR = 1.0e12                   # m^-2   floor of the [HBS] tangle in Step B [N7]:
-                                        #        below rho_crit it is 0, and rho/tangle
-                                        #        would turn solver noise into rotation
 
 
 @dataclass(frozen=True)
@@ -1422,8 +1526,10 @@ class Ring:
         w = np.asarray(self.widths)
         return np.concatenate([[0.0], 0.5 * w[0] + np.cumsum(w[1:]) - 0.5 * w[1:]])
 
-    def grid(self):
-        return Grid(length=self.length, cells=int(round(self.length / RING_DX)), periodic=True)
+    def grid(self, dx=None):
+        """Periodic grid over the whole period; `dx` defaults to RING_DX [N4]."""
+        step = RING_DX if dx is None else dx
+        return Grid(length=self.length, cells=int(round(self.length / step)), periodic=True)
 
 
 def make_ring(n_grains, width, seed=0, spread=0.2, max_angle=30.0):
@@ -1450,50 +1556,77 @@ def ring_sites(ring, grid):
     return sites
 
 
-def ring_initial_state(p, ring, eta0=0.99):
+def grain_of_cell(ring, grid):
+    """Index of the parent grain each cell belongs to [R6].
+
+    Grain j runs from its left GB for `widths[j]`; grain 0 straddles x = 0, so the
+    left edge of grain 0 is the last GB minus the period.
+    """
+    index = np.zeros(grid.cells, dtype=int)
+    edges = np.concatenate([[ring.gb_positions()[-1] - ring.length], ring.gb_positions()])
+    for j, width in enumerate(ring.widths):
+        offset = (grid.x - edges[j]) % ring.length
+        index[offset < width] = j
+    return index
+
+
+def run_ring_case(p, ring, rho_by_grain, t_end=1.0e4, samples=(), every=50.0, dx=None):
+    """Step protocol of Sec. 3.2 [P6] on the FULL period [R6]: relax, switch on rho, evolve.
+
+    rho_by_grain: one rho0 [m^-2] per parent grain.
+
+    Fig. 6 of [T26] puts a DIFFERENT rho in the two grains.  That breaks the mirror
+    symmetry about the grain centres which the half period of [R1] assumes when it
+    replaces the periodic bicrystal by [0, L/2] with zero-flux walls, so the asymmetric
+    branch of Eq. (43) cannot be represented there at all: on the half period each wall
+    is a mirror plane, and the nucleus has nowhere to move to.  The full period has both
+    GBs and no imposed symmetry, so this is the geometry Fig. 6 needs.
+
+    Returns (sites, solution) with one classify_site entry per GB.
+    """
+    grid = ring.grid(dx)
+    n = grid.cells
+    y = ring_initial_state(p, ring, dx=dx)
+    y[2 * n:3 * n] = np.asarray(rho_by_grain, dtype=float)[grain_of_cell(ring, grid)]
+    rho_max = float(max(rho_by_grain))
+
+    t_end, every = t_end * p.t0, every * p.t0
+    times = np.union1d(np.arange(every, t_end + 0.5 * every, every),
+                       np.asarray(samples, dtype=float) * p.t0)
+    sol = evolve(p, grid, y, t_end, times)
+    sites = [classify_site(p, grid, sol, rho_max, gb, left, right, th_l, th_r)
+             for gb, left, right, th_l, th_r in ring_sites(ring, grid)]
+    return sites, sol
+
+
+def ring_initial_state(p, ring, eta0=0.99, dx=None):
     """Relaxed ring without dislocations: a staircase of tanh steps, one per GB
     (smoothed over 2 dx), relaxed like initial_state() [N3].  Cached."""
-    grid = ring.grid()
+    grid = ring.grid(dx)
     key = ("ring", p.f0, p.nu, p.alpha, p.mu, p.c, p.t0, eta0,
            ring.orientations_deg, ring.widths, grid.cells)
     if key not in _RELAXED:
-        n, angles = grid.cells, np.radians(ring.orientations_deg)
-        theta = np.full(n, angles[0])
-        for j, x in enumerate(ring.gb_positions()):
-            jump = angles[(j + 1) % angles.size] - angles[j]
-            theta += jump * 0.5 * (1.0 + np.tanh((grid.x - x) / (2.0 * grid.dx)))
-        y0 = np.concatenate([np.full(n, eta0), theta, np.zeros(n), np.ones(n)])
-        t_relax = 2.0e4 * p.t0
-        relax = evolve(replace(p, tau_eta=1.0e2, tau_hat=1.0e1), grid, y0, t_relax, [t_relax])
-        _RELAXED[key] = relax.y[:, -1]
-        _RELAXED[key][3 * n:] = 1.0     # the relaxation is a preparation step [N3]:
+        path = _relaxed_path(key)
+        if os.path.exists(path):
+            _RELAXED[key] = np.load(path)
+        else:
+            n, angles = grid.cells, np.radians(ring.orientations_deg)
+            theta = np.full(n, angles[0])
+            for j, x in enumerate(ring.gb_positions()):
+                jump = angles[(j + 1) % angles.size] - angles[j]
+                theta += jump * 0.5 * (1.0 + np.tanh((grid.x - x) / (2.0 * grid.dx)))
+            y0 = np.concatenate([np.full(n, eta0), theta, np.zeros(n), np.ones(n)])
+            t_relax = 2.0e4 * p.t0
+            relax = evolve(replace(p, tau_eta=1.0e2, tau_hat=1.0e1), grid, y0, t_relax,
+                           [t_relax])
+            y = relax.y[:, -1]
+            y[3 * n:] = 1.0             # the relaxation is a preparation step [N3]:
                                         # eta rises from eta0 to ~1 everywhere, which
                                         # would "sweep" the whole domain [U12]
+            _RELAXED[key] = y
+            os.makedirs(RELAXED_CACHE, exist_ok=True)
+            np.save(path, y)
     return _RELAXED[key].copy()
-
-
-def subgrain_signs(ring, grid, size):
-    """s(x) = +-1 [U14]: each parent grain tiled from its left GB with an EVEN
-    number of subgrains of width ~size, signs alternating, so neighbouring
-    subgrains turn opposite ways and every interior wall gains dTheta_L/dt."""
-    sign = np.ones(grid.cells)
-    edges = np.concatenate([[ring.gb_positions()[-1] - ring.length], ring.gb_positions()])
-    for j, width in enumerate(ring.widths):
-        m = max(2, 2 * int(round(width / (2.0 * size))))
-        start = edges[j]                             # left GB of grain j
-        offset = (grid.x - start) % ring.length
-        inside = offset < width
-        sign[inside] = np.where((offset[inside] // (width / m)) % 2 == 0, 1.0, -1.0)
-    return sign
-
-
-def _tabulated(function, bu_start, bu_end, bu_rate, step=0.05):
-    """(value(bu), d value/dt(t)) of a burnup function, tabulated every `step`."""
-    bu_table = np.linspace(bu_start, bu_end, int((bu_end - bu_start) / step) + 2)
-    values = np.array([function(b) for b in bu_table])
-    rates = np.gradient(values, bu_table) * bu_rate
-    return (lambda bu: np.interp(bu, bu_table, values),
-            lambda t: float(np.interp(bu_start + bu_rate * t, bu_table, rates)))
 
 
 @dataclass
@@ -1504,84 +1637,36 @@ class RingOutcome:
     sites: list                     # [(event, bu, nucleus misorientation, theta_l, theta_r)]
     grains: np.ndarray              # number of grains (eta > c2 runs) vs burnup
     theta_spread_deg: np.ndarray    # max - min of theta vs burnup: 0 = one flat crystal
-    lattice_step_deg: np.ndarray    # median theta step between subgrain centres (Step B)
-    theta_landau_deg: np.ndarray    # [HBS] Theta(bu)
-    eta_wall_min: np.ndarray        # min eta over the subgrain walls (Step B)
-    rotation: bool
     solution: object
 
 
 def run_ring(p, ring, bu_start, bu_end, bu_rate, temperature=TEMPERATURE, which=RHO_KIND,
-             rotation=False, subgrain_size=None, samples_per_gwd=4):
+             samples_per_gwd=4):
     """Irradiate a ring of parent grains, rho = 0 at bu_start [U4].
 
-    rotation = False (Step A): source d rho_which/d bu, as run_irradiation.
-    rotation = True (Step B): production d rho_tot/d bu, transfer of the tangle
-    into walls at the relative rate [HBS] asks (sink, [U15]) and the lattice
-    rotation W = 1/2 s(x) dTheta_L/dt that those walls make [U13], [U14].
+    Same source d rho_which/d bu as run_irradiation, on the periodic domain [R6].
     """
     grid = ring.grid()
     n = grid.cells
-    state = lambda b: hbs_state(b, temperature)                    # noqa: E731
-    sink = rot = None
-    if rotation:
-        _, source = _tabulated(lambda b: state(b).rho_tot, bu_start, bu_end, bu_rate)
-        _, ordered_rate = _tabulated(lambda b: state(b).rho_ordered, bu_start, bu_end, bu_rate)
-        tangle_bu, _ = _tabulated(lambda b: max(state(b).rho_tot - state(b).rho_ordered,
-                                                1.0e-3 * state(b).rho_tot, TANGLE_FLOOR),
-                                  bu_start, bu_end, bu_rate)
-        _, theta_rate = _tabulated(lambda b: math.radians(state(b).theta_deg),
-                                   bu_start, bu_end, bu_rate)
-
-        def tangle(t):          # Landau tangle rho_tot - rho_ord [m^-2], floored [N7]
-            return float(tangle_bu(bu_start + bu_rate * t))
-
-        def sink(t):            # relative transfer rate into walls [1/s]
-            return ordered_rate(t) / tangle(t)
-
-        if subgrain_size is None:
-            subgrain_size = 2.0 * state(HBS_ONSET_BURNUP).subgrain_radius_m
-        rot = (subgrain_signs(ring, grid, subgrain_size), theta_rate, tangle)
-    else:
-        _, source = _tabulated(lambda b: dislocation_density(b, temperature, which),
-                               bu_start, bu_end, bu_rate)
+    bu_table, rho_table, source = dislocation_source(bu_start, bu_end, bu_rate,
+                                                     temperature, which)
 
     y = ring_initial_state(p, ring)
     t_end = (bu_end - bu_start) / bu_rate
     times = np.linspace(0.0, t_end, int(samples_per_gwd * (bu_end - bu_start)) + 1)
-    sol = evolve(p, grid, y, t_end, times, source=source, max_step=0.25 / bu_rate,
-                 sink=sink, rotation=rot)
+    sol = evolve(p, grid, y, t_end, times, source=source, max_step=0.25 / bu_rate)
     bu = bu_start + bu_rate * sol.t
 
-    # reference for the recovery tests: the density a grain without recovery
-    # would hold (the tangle), from the same tables
-    if rotation:
-        ref = np.array([tangle(t) for t in sol.t])
-    else:
-        ref = np.array([dislocation_density(b, temperature, which) for b in bu]) \
-            - dislocation_density(bu_start, temperature, which)
+    # reference for the recovery tests: the density a grain without recovery would hold
+    ref = np.interp(bu, bu_table, rho_table - rho_table[0])
     sites = []
     for gb, left, right, th_l, th_r in ring_sites(ring, grid):
         event, k, mis = classify_site(p, grid, sol, ref, gb, left, right, th_l, th_r)
         sites.append((event, float(bu[k]) if k >= 0 else math.nan, mis, th_l, th_r))
     grains = np.array([grain_statistics(p, grid, sol.y[:, k], ref[k])[1] for k in range(bu.size)])
     theta = np.degrees(sol.y[n:2 * n])
-
-    step = np.full(bu.size, math.nan)
-    wall_eta = np.full(bu.size, math.nan)
-    if rotation:
-        sign = rot[0]
-        walls = np.flatnonzero(sign != np.roll(sign, 1))           # cells right of a wall
-        gbs = {site[0] for site in ring_sites(ring, grid)}
-        walls = np.array([w for w in walls if min(abs(w - g) for g in gbs | {-10 ** 9}) > 5])
-        if walls.size > 1:
-            middles = ((walls + np.roll(walls, -1) + n * (np.roll(walls, -1) < walls)) // 2) % n
-            steps = np.abs(theta[middles] - theta[np.roll(middles, 1)])
-            step = np.median(steps, axis=0)
-            wall_eta = sol.y[walls].min(axis=0)
-    return RingOutcome(ring, grid, bu, sites, grains, theta.max(axis=0) - theta.min(axis=0),
-                       step, np.array([state(b).theta_deg for b in bu]), wall_eta,
-                       rotation, sol)
+    return RingOutcome(ring, grid, bu, sites, grains,
+                       theta.max(axis=0) - theta.min(axis=0), sol)
 
 
 def print_ring(out, tag):
@@ -1596,10 +1681,6 @@ def print_ring(out, tag):
           f"{out.theta_spread_deg[-1]:.2f} deg (0 = one flat crystal), "
           f"rho {out.solution.y[2 * n:3 * n, -1].mean():.2e} m^-2, "
           f"unswept fraction {out.solution.y[3 * n:, -1].mean():.3f} [U12]")
-    if out.rotation:
-        print(f"  lattice step between subgrains at bu = {out.burnup[-1]:g}: "
-              f"{out.lattice_step_deg[-1]:.3f} deg vs [HBS] Theta {out.theta_landau_deg[-1]:.2f} deg,"
-              f" min eta at the walls {out.eta_wall_min[-1]:.4f}")
 
 
 def plot_ring(p, out, path):
@@ -1608,7 +1689,7 @@ def plot_ring(p, out, path):
     n, x = out.grid.cells, out.grid.x * 1e6
     y, bu = out.solution.y, out.burnup
     extent = (x[0], x[-1], bu[0], bu[-1])
-    fig, axes = plt.subplots(1, 3 + out.rotation, figsize=(5.2 * (3 + out.rotation), 4.6))
+    fig, axes = plt.subplots(1, 3, figsize=(15.6, 4.6))
     for ax, data, label, cmap in (
             (axes[0], y[:n].T, r"$\eta$", "viridis"),
             (axes[1], np.degrees(y[n:2 * n]).T, r"$\theta$ [deg]", "twilight"),
@@ -1619,14 +1700,8 @@ def plot_ring(p, out, path):
             ax.axvline(gb * 1e6, color="w", lw=0.5, ls=":")
         ax.set_xlabel(r"$x$ [µm]")
         ax.set_ylabel("burnup [GWd/tU]")
-    if out.rotation:
-        axes[3].plot(bu, out.lattice_step_deg, label="lattice step between subgrains")
-        axes[3].plot(bu, out.theta_landau_deg, "k", label=r"[HBS] $\Theta$ (imposed)")
-        axes[3].set_xlabel("burnup [GWd/tU]")
-        axes[3].set_ylabel("misorientation [deg]")
-        axes[3].legend(fontsize=7)
     events = ", ".join(f"{e}" + ("" if math.isnan(b) else f"@{b:.1f}") for e, b, *_ in out.sites)
-    fig.suptitle(f"UO$_2$ ring, {len(out.ring.widths)} grains, rotation = {out.rotation}, "
+    fig.suptitle(f"UO$_2$ ring, {len(out.ring.widths)} grains, "
                  f"c3 = {p.c3:.3f}, tau_hat = {p.tau_hat:g}: {events}", fontsize=9)
     _save(fig, path)
 
@@ -1635,8 +1710,15 @@ def plot_ring(p, out, path):
 #   PART 4 - CHECKS AND MAIN
 # ###########################################################################
 
-def selftest():
-    """Fast checks against [T26] (Cu) and the [Z21] fit (UO2).  True if all pass."""
+def selftest(full=False):
+    """Checks against [T26] (Cu) and the [Z21] fit (UO2).  True if all pass.
+
+    full = False (default): the checks that need no time integration of a history --
+    the state functions, Eq. (42), Eq. (36) and the UO2 GB energies.  Seconds.
+    full = True: adds the Cu nucleation set of Sec. 3.2.2 and Fig. 5 (four
+    misorientations plus the C_D = 0 widening case), each a full 1e4 s history at
+    400 cells.  Tens of minutes; this is the release check.
+    """
     ok = True
 
     def check(name, cond, detail):
@@ -1650,22 +1732,39 @@ def selftest():
     g, _ = coupling_g(np.linspace(0, ETA_CUTOFF, 1001), CU.c, g_offset(CU.c))
     check("Eq. (36): min g = 0.01 [E2]", abs(g.min() - 0.01) < 1e-4, f"min g = {g.min():.4f}")
 
-    # Sec. 3.2.1: without recovery the GB only widens, to eta_eq
-    no_rec = run_case(replace(CU, c_d=0.0), CU_DELTA_THETA, CU_RHO0, grid=CU_GRID)
-    eta_c = no_rec.solution.y[CU_GRID.cells // 2, -1]
-    check("Cu 15 deg, C_D = 0: GB widens to eta_eq (Sec. 3.2.1)",
-          abs(eta_c - eq) < 0.03 and not no_rec.nucleated,
-          f"eta(centre) = {eta_c:.3f}, event = {no_rec.event}")
+    # [N9] the irradiation source must not produce dislocations below the [HBS]
+    # threshold, and must integrate back to rho_tot(bu)
+    bu_table, rho_table, source = dislocation_source(*BU_RANGE, BU_RATE)
+    rates = np.array([source((b - BU_RANGE[0]) / BU_RATE) for b in bu_table]) / BU_RATE
+    integrated = np.trapezoid(rates, bu_table)
+    check("[N9] source is 0 below the [HBS] threshold and integrates to rho_tot",
+          np.all(rates[rho_table <= 0.0] == 0.0)
+          and abs(integrated / (rho_table[-1] - rho_table[0]) - 1.0) < 1e-3,
+          f"max S where rho = 0: {rates[rho_table <= 0.0].max():.3e}; "
+          f"integral / rho_tot(end) = {integrated / (rho_table[-1] - rho_table[0]):.6f}")
 
-    gamma = gb_energy(CU, CU_GRID, no_rec.initial)
+    if not full:
+        gamma_grid, gamma_case = CU_GRID, None
+    else:
+        # Sec. 3.2.1: without recovery the GB only widens, to eta_eq
+        no_rec = run_case(replace(CU, c_d=0.0), CU_DELTA_THETA, CU_RHO0, grid=CU_GRID)
+        eta_c = no_rec.solution.y[CU_GRID.cells // 2, -1]
+        check("Cu 15 deg, C_D = 0: GB widens to eta_eq (Sec. 3.2.1)",
+              abs(eta_c - eq) < 0.03 and not no_rec.nucleated,
+              f"eta(centre) = {eta_c:.3f}, event = {no_rec.event}")
+        gamma_grid, gamma_case = CU_GRID, no_rec.initial
+
+    initial = (gamma_case if gamma_case is not None
+               else initial_state(CU, gamma_grid, CU_DELTA_THETA))
+    gamma = gb_energy(CU, gamma_grid, initial)
     check("Cu 15 deg GB energy vs Fig. 2", 0.6 < gamma < 0.9,
           f"gamma = {gamma:.3f} J/m^2 (Fig. 2: ~0.75)")
 
     # Sec. 3.2.2 and Fig. 5.  2.5 deg: paper "never recovered", here "collapse" [E3]
-    for angle, expected, paper in [(15.0, True, "nucleus at the mean orientation"),
-                                   (10.0, True, "immediate"),
-                                   (5.0, True, "delayed, ~4e3 s"),
-                                   (2.5, False, "never")]:
+    for angle, expected, paper in ([(15.0, True, "nucleus at the mean orientation"),
+                                    (10.0, True, "immediate"),
+                                    (5.0, True, "delayed, ~4e3 s"),
+                                    (2.5, False, "never")] if full else []):
         out = run_case(CU, angle, CU_RHO0, grid=CU_GRID)
         check(f"Cu {angle:g} deg: nucleus = {expected} (paper: {paper})",
               out.nucleated == expected,
@@ -1686,7 +1785,7 @@ def main():
     os.makedirs(FIGURES_DIR, exist_ok=True)
 
     print("\n=== Cu: checks against [T26] ===")
-    ok = selftest()
+    ok = selftest(full=True)
 
     print("\n=== Cu: figures of [T26] ===")
     plot_state_functions(f"{FIGURES_DIR}/tandogan_cu_fig1_state_functions.png")
@@ -1700,14 +1799,24 @@ def main():
                        for a in (2.5, 5.0, 10.0, 15.0, 20.0)],
                   [0.0, 2.0e3, 4.0e3, 1.0e4], f"{FIGURES_DIR}/tandogan_cu_fig5.png",
                   r"Fig. 5, Cu, $\rho_0 = 2.5\times10^{15}$ m$^{-2}$.")
-    print("Fig. 6: rho left/right of the GB")
+    print("Fig. 6: rho different in the two grains -- on the FULL period (E8)")
     pairs = [(0.0, 2.5), (1.0, 2.5), (1.5, 2.5), (2.0, 2.5), (2.3, 2.5), (2.5, 2.5), (2.5, 2.0)]
-    plot_profiles(CU, [(rf"$\rho_1, \rho_2$ = {a:g}, {b:g}", CU_DELTA_THETA, (a * 1e15, b * 1e15))
-                       for a, b in pairs],
-                  [0.0, 3.0e3, 1.0e4], f"{FIGURES_DIR}/tandogan_cu_fig6.png",
-                  r"Fig. 6, Cu, $\Delta\theta = 15^\circ$, $\rho$ in $10^{15}$ m$^{-2}$.")
+    fig6_ring = Ring((0.0, CU_DELTA_THETA), (10.0e-6, 10.0e-6))
+    plot_ring_profiles(CU, fig6_ring,
+                       [(rf"$\rho_1, \rho_2$ = {a:g}, {b:g}", (a * 1e15, b * 1e15))
+                        for a, b in pairs],
+                       [0.0, 3.0e3, 1.0e4], f"{FIGURES_DIR}/tandogan_cu_fig6.png",
+                       r"Fig. 6, Cu, $\Delta\theta = 15^\circ$, full period, "
+                       r"$\rho$ in $10^{15}$ m$^{-2}$.", dx=25e-9)
 
     p = uo2_parameters(TEMPERATURE)
+    if FIT_GB_ENERGY:
+        print("\n=== UO2: (f0, c) against each [Z21] reduction [U5] ===")
+        fits = fit_uo2_interface()
+        f0, c, _, _ = fits[UO2_GAMMA_LABELS["random"]]
+        print(f"  -> copy into UO2_F0, UO2_C: {f0:.1f}, {c:g}")
+        p = replace(p, f0=f0, c=c)
+
     print(f"\n=== UO2: GB energy, f0 = {p.f0 / 1e3:.0f} kPa, c = {p.c:g}, "
           f"nu = {p.nu * 1e6:g} um ===")
     plot_gb_energy(p, f"{FIGURES_DIR}/tandogan_uo2_gb_energy.png",
@@ -1740,11 +1849,10 @@ def main():
     plot_diagnostics(p, outcomes, f"{FIGURES_DIR}/tandogan_uo2_diagnostics.png")
 
     print(f"\n=== UO2: polycrystal ring (Part 3b), source in swept material = "
-          f"{SOURCE_IN_SWEPT:g} [U12], Landau rotation = {LANDAU_ROTATION} [U13] ===")
+          f"{SOURCE_IN_SWEPT:g} [U12] ===")
     for width in RING_GRAIN_WIDTHS:
         ring = make_ring(N_GRAINS, width, RING_SEED)
-        out = run_ring(p, ring, *BU_RANGE, BU_RATE, TEMPERATURE, RHO_KIND,
-                       rotation=LANDAU_ROTATION)
+        out = run_ring(p, ring, *BU_RANGE, BU_RATE, TEMPERATURE, RHO_KIND)
         print_ring(out, f"{width * 1e6:g} um grains")
         plot_ring(p, out, f"{FIGURES_DIR}/tandogan_uo2_ring_{width * 1e6:g}um.png")
     return 0 if ok else 1

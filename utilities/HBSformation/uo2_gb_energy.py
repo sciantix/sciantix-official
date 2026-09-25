@@ -41,6 +41,7 @@ symmetric-tilt point below 12.7 deg, so the low-angle Read-Shockley branch of
 all three curves comes from the [BRK] interpolation, not from MD.
 """
 
+import argparse
 import contextlib
 import csv
 import io
@@ -178,12 +179,15 @@ def target(angles_deg=FIT_ANGLES_DEG, which="random", path=TABLE):
                      table["angle_deg"], table[key])
 
 
-def main(argv):
-    refresh = "--refresh" in argv
-    samples = 2000
-    if "--samples" in argv:
-        samples = int(argv[argv.index("--samples") + 1])
-    table = load_table(refresh=refresh or not os.path.exists(TABLE), samples=samples)
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--refresh", action="store_true",
+                        help="recompute the table even if the cache exists (takes minutes)")
+    parser.add_argument("--samples", type=int, default=2000, metavar="N",
+                        help="random (axis, plane) draws per angle (default %(default)s)")
+    arguments = parser.parse_args(argv)
+
+    table = load_table(refresh=arguments.refresh, samples=arguments.samples)
     print()
     print(f"{'deg':>6} {'random':>8} {'sd':>7} {'ST<100>':>8} {'ST<110>':>8}")
     for row in zip(*(table[key] for key in COLUMNS)):
@@ -192,4 +196,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main())
