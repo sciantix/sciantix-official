@@ -22,6 +22,8 @@ See `VERIFICATION_TAXONOMY.md` for what *type* of thing each case verifies
 (standalone solver, convergence/cost, interface, outer coupling-scheme,
 two-way feedback, ...) and why that type matters specifically for the
 SCIANTIX-OFFBEAT coupling, rather than for SCIANTIX run standalone.
+See `METHODOLOGY.md` for the actual recipe used to build each case, so the
+suite can be extended or rebuilt the same way.
 
 This mirrors how OFFBEAT's own separate-effect tests are organised under a
 top-level `Cases` folder (per the report, Section 4.1) — each subfolder here
