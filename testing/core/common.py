@@ -51,14 +51,16 @@ def run_sciantix(case_dir: str):
     Returns:
         path to output.txt
     """
-    # sciantix.x built inside build/
+    # SCIANTIX_BUILD_DIR (set by CTest) points to the active build tree.
+    # Otherwise, fall back to sciantix.x built inside build/
     # __file__ = testing/core/common.py
     # .. = testing
     # .. = root
     # root/build/sciantix.x
-    exe = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "..", "build", "sciantix.x")
+    build_dir = os.environ.get("SCIANTIX_BUILD_DIR") or os.path.join(
+        os.path.dirname(__file__), "..", "..", "build"
     )
+    exe = os.path.abspath(os.path.join(build_dir, "sciantix.x"))
 
     if not os.path.isfile(exe):
         raise FileNotFoundError(f"sciantix.x not found: {exe}")

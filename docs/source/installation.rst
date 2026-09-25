@@ -185,7 +185,13 @@ To verify that SCIANTIX is correctly installed and functioning:
 
 **Method 1: Run Tests**
 
-The repository includes a comprehensive testing suite:
+The repository includes a comprehensive testing suite, registered with CTest together with the unit tests. From the ``build/`` directory:
+
+.. code-block:: bash
+
+    ctest --output-on-failure -j $(nproc)
+
+or, equivalently, ``make check``. The testing runner can also be called directly from the repository root:
 
 .. code-block:: bash
 

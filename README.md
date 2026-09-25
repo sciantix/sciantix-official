@@ -2,6 +2,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17748425.svg)](https://doi.org/10.5281/zenodo.17748425)
 ![CI](https://github.com/sciantix/sciantix-official/actions/workflows/pages.yml/badge.svg)
 ![paper](https://github.com/sciantix/sciantix-official/actions/workflows/paper.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 SCIANTIX is an open-source 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. 
 
@@ -32,24 +33,20 @@ Recommended requirements:
    ```
 2. **Build the code:**
    ```bash
-   ./Allmake.sh
+   mkdir -p build && cd build
+   cmake ..
+   make -j
    ```
    The compiled executable `sciantix.x` will be located in the `build/` directory.
 
    For the optional OpenCalphad thermochemistry coupling (checked out as
-   `../opencalphad-for-sciantix`, next to this repository), build with:
+   `../opencalphad-for-sciantix`, next to this repository), build instead,
+   from the repository root, with:
    ```bash
    ./Allmake.sh --oc
    ```
 
-## Manual installation
-
-If you prefer to build manually or need custom CMake flags:
-```bash
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
-```
+> **Shortcut:** `./Allmake.sh` runs exactly these CMake steps from the repository root, and `./Allclean.sh` removes `build/`, `obj/`, compiled binaries and Python caches.
 
 ## Windows installation
 The recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL2)](https://learn.microsoft.com/en-us/windows/wsl/install). Follow the Quick installation steps within your WSL terminal.
@@ -57,7 +54,7 @@ The recommended approach for Windows users is to use the [Windows Subsystem for 
 # Coupling with fuel performance codes
 To compile SCIANTIX as a static library for coupling with codes like TRANSURANUS:
 ```bash
-cd build
+mkdir -p build && cd build
 cmake -DCOUPLING_TU=ON ..
 make -j$(nproc)
 ```
@@ -84,20 +81,25 @@ Test cases live in two top-level directories:
 -  `verification/` (to test specific models) 
 -  `validation/` (to test comparison with experimental data)
 
-To verify the installation and physics:
+Unit, verification and validation tests are registered with CTest. From the `build/` directory:
 ```bash
-./runTesting.sh
+ctest --output-on-failure -j $(nproc)
 ```
-Alternatively, run the runner directly (no flags = run everything):
+or, equivalently, `make check`. Use `ctest -L unit`, `ctest -L verification` or `ctest -L validation` to run a single category, and `ctest -R validation_baker` to run a single test group.
+
+The testing runner can also be called directly from the repository root (no flags = run everything), e.g. to select individual cases or regenerate gold files:
 ```bash
 python3 -m testing.runner -j $(nproc)
 ```
+> **Shortcut:** `./runTesting.sh` performs a clean rebuild (`Allclean.sh` + `Allmake.sh`) and then runs the testing runner.
 
 Some groups use the OpenCalphad coupling; they're attempted on every run and degrade gracefully if it isn't built. 
-`--oc` builds with OpenCalphad and asserts it's expected to be available, so any of these groups that still can't use it fails loudly instead of degrading:
+To require OpenCalphad instead, build with it and pass `--oc` to the runner, so any of these groups that still can't use it fails loudly instead of degrading:
 ```bash
-./runTesting.sh --oc
+./Allmake.sh --oc
+python3 -m testing.runner --oc
 ```
+> **Shortcut:** `./runTesting.sh --oc` performs both steps after a clean rebuild.
 
 # Documentation
 
@@ -172,3 +174,7 @@ SCIANTIX is developed and maintained by:
 - Lelio Luzzi
 
 Politecnico di Milano, Nuclear Engineering Division.
+
+# License
+
+SCIANTIX is released under the [MIT License](LICENSE).

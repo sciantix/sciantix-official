@@ -9,6 +9,19 @@ SCIANTIX includes a comprehensive testing suite to ensure code stability, physic
 Running Tests
 -------------
 
+All tests are registered with CTest, so after building they can be run from the ``build/`` directory with:
+
+.. code-block:: bash
+
+    ctest --output-on-failure -j $(nproc)
+
+or, equivalently, ``make check``. Each test group is a separate CTest test, labelled ``unit``, ``verification`` or ``validation``:
+
+.. code-block:: bash
+
+    ctest -L verification          # a whole suite
+    ctest -R validation_baker      # a single group
+
 The testing suite is controlled by the Python script ``runner.py`` located in ``testing/``.
 
 To run **all** tests:

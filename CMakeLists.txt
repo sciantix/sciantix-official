@@ -115,6 +115,37 @@ if(BUILD_TESTING AND NOT COUPLING_TU)
         ${PROJECT_SOURCE_DIR}/src/MainVariables.C
     )
     add_test(NAME unit_tests COMMAND unit_tests)
+    set_tests_properties(unit_tests PROPERTIES LABELS "unit")
+
+    # Verification and validation tests: one CTest test per group of testing/runner.py
+    # (run with: ctest --test-dir build -L verification, or -L validation)
+    # Keep these lists in sync with REGISTRY in testing/runner.py
+    find_program(PYTHON3_EXECUTABLE NAMES python3 python)
+    if(PYTHON3_EXECUTABLE)
+        set(TESTING_GROUPS_verification
+            mox-po2 openPorosity powerPulse oxidation vercors gpr)
+        set(TESTING_GROUPS_validation
+            baker cornell white kashibe talip chromium contact hbs jog
+            oxygenpotential-freshfuel oxygenpotential-burnup)
+        foreach(suite verification validation)
+            foreach(group ${TESTING_GROUPS_${suite}})
+                add_test(NAME ${suite}_${group}
+                    COMMAND ${PYTHON3_EXECUTABLE} -m testing.runner --${group}
+                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+                set_tests_properties(${suite}_${group} PROPERTIES
+                    LABELS "${suite}"
+                    ENVIRONMENT "SCIANTIX_BUILD_DIR=${CMAKE_BINARY_DIR}")
+            endforeach()
+        endforeach()
+    else()
+        message(WARNING "python3 not found: verification and validation tests will not be registered with CTest")
+    endif()
+
+    # GNU-style "make check": build everything, then run the full test suite
+    add_custom_target(check
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        DEPENDS sciantix unit_tests
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
 
 # Copy all object files in obj directory by using a custom command

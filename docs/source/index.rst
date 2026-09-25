@@ -38,7 +38,10 @@ To get started with SCIANTIX, follow these steps:
 
       git clone https://github.com/sciantix/sciantix-official.git
       cd sciantix-official
-      ./Allmake.sh
+      mkdir -p build && cd build
+      cmake ..
+      make -j
+      cd ..
 
 3. **Run a Test Case**:
 

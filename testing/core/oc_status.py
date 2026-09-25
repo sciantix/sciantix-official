@@ -20,7 +20,9 @@ from typing import FrozenSet, Iterable
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OC_ROOT = os.path.abspath(os.path.join(REPO_ROOT, "..", "opencalphad-for-sciantix"))
 OC_DATA_DIR = os.path.join(OC_ROOT, "data")
-CMAKE_CACHE = os.path.join(REPO_ROOT, "build", "CMakeCache.txt")
+# SCIANTIX_BUILD_DIR (set by CTest) points to the active build tree; default is build/
+BUILD_DIR = os.path.abspath(os.environ.get("SCIANTIX_BUILD_DIR") or os.path.join(REPO_ROOT, "build"))
+CMAKE_CACHE = os.path.join(BUILD_DIR, "CMakeCache.txt")
 OC_LIBS = (
     os.path.join(OC_ROOT, "build", "liboctq-isoc.a"),
     os.path.join(OC_ROOT, "build", "liboctq-isoc-gb.a"),
