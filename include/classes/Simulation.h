@@ -23,6 +23,7 @@
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
 #include "Solver.h"
+#include "Source.h"
 #include "System.h"
 #include <cmath>
 #include <vector>
@@ -53,9 +54,11 @@ class Simulation
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
+    std::vector<Source>          sourcesinput;
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
+    std::vector<double> modes_initial_conditions_NUS;
 
     Solver solver;
 
@@ -66,6 +69,7 @@ class Simulation
     {
         n_modes = N_DIFFUSION_MODES;
         modes_initial_conditions.resize(SCIANTIX_DIFFUSION_MODES_SIZE);
+        modes_initial_conditions_NUS.resize(SCIANTIX_DIFFUSION_MODES_SIZE);
     }
 
   public:
@@ -82,7 +86,8 @@ class Simulation
                       double Sciantix_history[],
                       double Sciantix_variables[],
                       double Sciantix_scaling_factors[],
-                      double Sciantix_diffusion_modes[]);
+                      double Sciantix_diffusion_modes[],
+                      double Sciantix_diffusion_modes_NUS[]);
 
     void setGas();
     void setMatrix();
@@ -94,11 +99,12 @@ class Simulation
                     double Sciantix_history[],
                     double Sciantix_variables[],
                     double Sciantix_scaling_factors[],
-                    double Sciantix_diffusion_modes[]);
+                    double Sciantix_diffusion_modes[],
+                    double Sciantix_diffusion_modes_NUS[]);
 
     void execute();
 
-    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_diffusion_modes_NUS[]);
 
     void output();
 
@@ -157,6 +163,14 @@ class Simulation
      *
      */
     void GasRelease();
+
+    /**
+     * @brief Fixes the mass balance at the grain boundary for the re-solution problem.
+     *
+     * @author A. Zayat
+     *
+     */
+    void GrainBoundarySource();
 
     /**
      * @brief Handles the intragranular gas diffusion problem.
@@ -477,6 +491,83 @@ class Simulation
         else
             ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModesBubbles");
     }
+
+    double* getDiffusionModes_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[0];
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[3 * 40];
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[6 * 40];
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[9 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[12 * 40];
+
+        else if (gas_name == "Xe in HBS")
+            return &modes_initial_conditions_NUS[15 * 40];
+
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes."
+                      << std::endl;
+            return nullptr;
+        }
+    }
+
+    double* getDiffusionModesSolution_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[1 * 40];
+
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[4 * 40];
+
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[7 * 40];
+
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[10 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[13 * 40];
+
+        else if (gas_name == "Xe in HBS")
+            return &modes_initial_conditions_NUS[16 * 40];
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution."
+                      << std::endl;
+            return nullptr;
+        }
+    }
+
+    double* getDiffusionModesBubbles_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[2 * 40];
+
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[5 * 40];
+
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[8 * 40];
+
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[11 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[14 * 40];
+
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles."
+                      << std::endl;
+            return nullptr;
+        }
+    }
 };
 
-#endif
+#endif  // SIMULATION_H

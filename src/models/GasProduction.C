@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "SourceHandler.h"
 
 void Simulation::GasProduction()
 {
@@ -26,10 +27,18 @@ void Simulation::GasProduction()
         model_.setRef(" ");
 
         double productionRate = system.getProductionRate();
-        double timeStep       = physics_variable["Time step"].getFinalValue();
+        // Volume average of the radial production profile, used by the NUS solver (option 4).
+        Source productionRateNUS = system.getProductionRateNUS();
+        double SVA = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), productionRateNUS);
+
+        double timeStep = physics_variable["Time step"].getFinalValue();
 
         std::vector<double> parameter;
-        parameter.push_back(productionRate);
+
+        if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
+            parameter.push_back(SVA);
+        else
+            parameter.push_back(productionRate);
         parameter.push_back(timeStep);
         model_.setParameter(parameter);
 
