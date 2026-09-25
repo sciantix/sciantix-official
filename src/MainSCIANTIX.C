@@ -35,6 +35,37 @@ using namespace std;
  */
 void logExecutionTime(double timer, int time_step_number, std::ofstream& Execution_file);
 
+#ifndef SCIANTIX_VERSION
+#define SCIANTIX_VERSION "unknown"
+#endif
+
+/**
+ * @brief Prints the command-line usage and the expected input files (sciantix.x --help).
+ */
+void printHelp()
+{
+    std::cout << "SCIANTIX " << SCIANTIX_VERSION << "\n"
+              << "\n"
+              << "Usage: sciantix.x [INPUT_DIRECTORY]\n"
+              << "\n"
+              << "Runs a SCIANTIX simulation with the input files in INPUT_DIRECTORY\n"
+              << "(default: the current directory). Results are written to output.txt\n"
+              << "in the same directory.\n"
+              << "\n"
+              << "Required input files:\n"
+              << "  input_settings.txt                  model and solver options\n"
+              << "  input_initial_conditions.txt        initial conditions\n"
+              << "  input_history.txt                   time history of the operating conditions\n"
+              << "\n"
+              << "Optional input files:\n"
+              << "  input_scaling_factors.txt           parameter scaling factors (default: 1)\n"
+              << "  input_thermochemistry_settings.txt  read only when thermochemistry is enabled\n"
+              << "\n"
+              << "Options:\n"
+              << "  -h, --help                          show this help and exit\n"
+              << "  -v, --version                       show the version and exit\n";
+}
+
 /**
  * @brief Main entry point for the SCIANTIX program.
  *
@@ -64,6 +95,21 @@ void logExecutionTime(double timer, int time_step_number, std::ofstream& Executi
 int main(int argc, char** argv)
 {
     clock_t timer;
+
+    if (argc >= 2)
+    {
+        const std::string arg = argv[1];
+        if (arg == "-h" || arg == "--help")
+        {
+            printHelp();
+            return 0;
+        }
+        if (arg == "-v" || arg == "--version")
+        {
+            std::cout << "SCIANTIX " << SCIANTIX_VERSION << std::endl;
+            return 0;
+        }
+    }
 
     if (argc < 2)
     {

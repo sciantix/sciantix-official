@@ -20,7 +20,7 @@ else()
 endif()
 
 # Name of the project created / existent in visual studio
-project(sciantix)
+project(sciantix VERSION 2.5)
 
 # Function to add all subdirectories of a given path to include directories
 function(add_subdirectory_includes root_dir)
@@ -105,6 +105,9 @@ else()
         set(CMAKE_EXECUTABLE_SUFFIX ".x")
     endif()
 endif()
+
+# Version printed by sciantix.x --version (set in project() above)
+target_compile_definitions(sciantix PRIVATE SCIANTIX_VERSION="${PROJECT_VERSION}")
 
 # Unit tests (run with: ctest --test-dir build)
 if(BUILD_TESTING AND NOT COUPLING_TU)

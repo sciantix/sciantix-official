@@ -19,10 +19,16 @@ The validation database and testing suite are available in the `verification/` a
 
 # Installation
 
-Recommended requirements:
+Requirements to build SCIANTIX:
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
 - CMake ≥ 3.6
-- Python 3.8+ (for the testing suite)
+
+Additional requirements to run the testing suite (not needed to build the code):
+- Python ≥ 3.8
+- NumPy, pandas and Matplotlib, installed with:
+  ```bash
+  python3 -m pip install -r testing/requirements.txt
+  ```
 
 ## Quick installation (Linux/WSL2)
 
@@ -38,6 +44,7 @@ Recommended requirements:
    make -j
    ```
    The compiled executable `sciantix.x` will be located in the `build/` directory.
+   To check that the build succeeded, run `./sciantix.x --version` (from `build/`).
 
    For the optional OpenCalphad thermochemistry coupling (checked out as
    `../opencalphad-for-sciantix`, next to this repository), build instead,
@@ -65,6 +72,7 @@ Execute `sciantix.x` within the directory containing your input files, or provid
 ```bash
 ./build/sciantix.x [path_to_input_folder]
 ```
+Run `./build/sciantix.x --help` to list the expected input files.
 
 ### Input preparation
 Refer to the [Input File Explanation](utilities/InputExplanation.md) for detailed syntax.
@@ -104,10 +112,15 @@ python3 -m testing.runner --oc
 # Documentation
 
 Online documentation is available at [sciantix.github.io/sciantix-official](https://sciantix.github.io/sciantix-official/).
-To generate local Doxygen documentation:
+
+The online documentation is built with Sphinx, which runs Doxygen automatically to include the source-code API reference. To build it locally, install Doxygen and the Python packages in `docs/requirements.txt`, then run `make html` in `docs/`:
 ```bash
-doxygen Doxyfile
+sudo apt install doxygen
+python3 -m pip install -r docs/requirements.txt
+cd docs
+make html
 ```
+The HTML documentation is written to `docs/build/html/` (open `index.html`).
 
 # How to cite
 

@@ -13,6 +13,15 @@ SCIANTIX requires the following minimum specifications:
 
 - **Build System**: CMake ≥ 3.6
 
+- **Testing suite only** (not needed to build SCIANTIX):
+
+  - Python ≥ 3.8
+  - NumPy, pandas and Matplotlib, listed in ``testing/requirements.txt``:
+
+    .. code-block:: bash
+
+        python3 -m pip install -r testing/requirements.txt
+
 - **Operating System**:
   
   - Ubuntu ≥ 20.04 (native)
@@ -201,31 +210,36 @@ This executes all verification and validation tests and compares results against
 
 **Method 2: Run a Single Example**
 
-Navigate to one of the provided example directories and run a single simulation:
+Run a single simulation by passing the directory of one test case to the executable. From the repository root:
 
 .. code-block:: bash
 
-    cd validation/baker
-    ../../build/sciantix.x
+    ./build/sciantix.x validation/baker/test_Baker1977__1273K/
 
-Check the output files to verify correct execution.
+The results are written to ``output.txt`` in the same directory. This check does not require Python.
 
 Generating Documentation
 ------------------------
 
-To generate the Doxygen source code documentation:
+The documentation (this website) is built with Sphinx. Building it also runs Doxygen automatically: Doxygen extracts the source-code documentation as XML, which the Breathe and Exhale Sphinx extensions turn into the API reference pages.
 
-.. code-block:: bash
-
-    doxygen
-
-This requires Doxygen to be installed:
+Building the documentation requires Doxygen and the Python packages listed in ``docs/requirements.txt``:
 
 .. code-block:: bash
 
     sudo apt install doxygen
+    python3 -m pip install -r docs/requirements.txt
 
-The generated documentation will be available in the `doxygen/` directory.
+Then, from the repository root:
+
+.. code-block:: bash
+
+    cd docs
+    make html
+
+The HTML documentation is written to ``docs/build/html/`` (open ``index.html``).
+
+Running ``doxygen Doxyfile`` from the repository root on its own produces only the standalone Doxygen output, in ``docs/doxygen/html/``. It is not needed before ``make html``.
 
 Troubleshooting
 ---------------
@@ -255,13 +269,14 @@ Verify your compiler supports C++17. Update your compiler if necessary:
     sudo apt update
     sudo apt install g++-9  # or later version
 
-**Python tests fail**
+**Testing suite cannot start** (e.g. ``ModuleNotFoundError: No module named 'numpy'``)
 
-Ensure Python 3 is installed:
+The testing suite needs Python ≥ 3.8 and the packages in ``testing/requirements.txt``:
 
 .. code-block:: bash
 
-    sudo apt install python3
+    sudo apt install python3 python3-pip
+    python3 -m pip install -r testing/requirements.txt
 
 For additional support, contact the SCIANTIX development team or open an issue on the GitHub repository.
 
