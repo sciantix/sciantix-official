@@ -54,6 +54,7 @@ compile_commands.json
 
 docs/build/
 docs/doxygen/
+docs/source/api/
 latex/
 
 
