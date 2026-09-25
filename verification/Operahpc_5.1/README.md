@@ -23,7 +23,11 @@ See `VERIFICATION_TAXONOMY.md` for what *type* of thing each case verifies
 two-way feedback, ...) and why that type matters specifically for the
 SCIANTIX-OFFBEAT coupling, rather than for SCIANTIX run standalone.
 See `METHODOLOGY.md` for the actual recipe used to build each case, so the
-suite can be extended or rebuilt the same way.
+suite can be extended or rebuilt the same way. See
+`ARCHIVE_verification_MMS.md` for what existed on the earlier,
+now-deleted `verification_MMS` branch and why its approach (hardcoding the
+manufactured solution into the production solvers) was retired rather than
+carried forward — a historical record, not a second recipe.
 
 This mirrors how OFFBEAT's own separate-effect tests are organised under a
 top-level `Cases` folder (per the report, Section 4.1) — each subfolder here
