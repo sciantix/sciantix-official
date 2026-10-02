@@ -1,0 +1,9 @@
+15NgfOnly_plots
+Requested screenshots for Ngf-only sensitivity
+NGF base areal density = 2.000000e+13 m^-2
+Ngf factors = 0.01, 0.1, 1.0, 10.0, 100.0
+DvGB fixed mode = rizk_legacy_1e6_Dv1
+DvGB multiplier = 1.000000e+06
+Burnups = 1.1, 1.3, 3.2
+T full grid = 900..2600 K step 25 K
+T short window max = 1800 K
