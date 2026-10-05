@@ -1,0 +1,48 @@
+{
+  "total_trials": 60,
+  "complete": 59,
+  "rejected_gross_nonphysical": 1,
+  "solver_failures": 0,
+  "screening_points": 4560,
+  "full_points": 444,
+  "standard_plus_supplemental_plots": {
+    "A": 32,
+    "B": 32,
+    "C": 32
+  },
+  "offline_objective_max_absolute_error": {
+    "J_swelling": 2.220446049250313e-16,
+    "J_micro": 2.220446049250313e-16,
+    "J_FGR": 1.7763568394002505e-15
+  },
+  "offline_pareto_matches_sqlite": true,
+  "source_notebook_unchanged": true,
+  "existing_source_grid_unchanged": true,
+  "full_candidates": {
+    "A": {
+      "trial": 0,
+      "points": 148,
+      "Rgf_max_um": 1.76170448328243,
+      "gas_balance_max_abs_pp": 4.263256414560601e-14
+    },
+    "B": {
+      "trial": 41,
+      "points": 148,
+      "Rgf_max_um": 3.0627140496121728,
+      "gas_balance_max_abs_pp": 5.684341886080803e-14
+    },
+    "C": {
+      "trial": 2,
+      "points": 148,
+      "Rgf_max_um": 5.820917903114798,
+      "gas_balance_max_abs_pp": 4.263256414560601e-14
+    }
+  },
+  "python_sha256": {
+    "Optuna_rho_constant_Rizk_plots.py": "db75a46540bfcc865f2c8b177425e135e98c56c2cb556e37db8d52f8fa185521",
+    "Optuna_rho_constant_Rizk_model.py": "24757bccbac58507cd2f56608146e6b88ae470abd5ecc6ea48ef1ec55540425c",
+    "Optuna_rho_constant_Rizk_metrics.py": "be5701ea034738716a03d7528477574c1b9c2afe3fb4cca27efc14e577cecf21",
+    "Optuna_rho_constant_Rizk.py": "fc45451c96a2201b6ecb6e84e70fe54d769c6d1c363a8b2aae1ff00270e57b65",
+    "Optuna_rho_constant_Rizk_validate.py": "b46c762ef1db1472269334cd3c4b47de4a5e0e591b0cfec9e48f9e9f1acb8858"
+  }
+}

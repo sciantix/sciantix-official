@@ -1,0 +1,40 @@
+figure,burnup,series,T,swelling
+Fig3a,1.1,100 kW/m,1127.0,0.68
+Fig3a,1.1,100 kW/m,1228.0,0.59
+Fig3a,1.1,100 kW/m,1312.0,0.43
+Fig3a,1.1,100 kW/m,1402.0,0.58
+Fig3a,1.1,100 kW/m,1485.0,1.22
+Fig3a,1.1,100 kW/m,1549.0,1.84
+Fig3a,1.1,100 kW/m,1598.0,1.66
+Fig3a,1.1,100 kW/m,1632.0,2.13
+Fig3a,1.1,100 kW/m,1669.0,3.6
+Fig3a,1.1,100 kW/m,1685.0,2.72
+Fig3a,1.1,119 kW/m,899.0,0.63
+Fig3a,1.1,119 kW/m,1154.0,1.17
+Fig3a,1.1,119 kW/m,1228.0,1.08
+Fig3a,1.1,119 kW/m,1325.0,1.28
+Fig3a,1.1,119 kW/m,1435.0,1.32
+Fig3a,1.1,119 kW/m,1514.0,2.1
+Fig3a,1.1,119 kW/m,1570.0,2.72
+Fig3a,1.1,119 kW/m,1608.0,2.91
+Fig3a,1.1,119 kW/m,1635.0,3.28
+Fig3a,1.1,119 kW/m,1656.0,3.75
+Fig3b,1.3,measurement,1044.0,1.11
+Fig3b,1.3,measurement,1220.0,1.22
+Fig3b,1.3,measurement,1377.0,1.33
+Fig3b,1.3,measurement,1534.0,2.83
+Fig3b,1.3,measurement,1595.0,3.53
+Fig3b,1.3,measurement,1639.0,3.86
+Fig3b,1.3,measurement,1661.0,2.45
+Fig3b,1.3,measurement,1709.0,2.93
+Fig3b,1.3,measurement,1724.0,3.15
+Fig3c,3.2,measurement,984.0,0.72
+Fig3c,3.2,measurement,1056.0,1.06
+Fig3c,3.2,measurement,1126.0,1.26
+Fig3c,3.2,measurement,1247.0,1.58
+Fig3c,3.2,measurement,1343.0,1.79
+Fig3c,3.2,measurement,1420.0,2.08
+Fig3c,3.2,measurement,1459.0,2.4
+Fig3c,3.2,measurement,1511.0,2.83
+Fig3c,3.2,measurement,1557.0,3.31
+Fig3c,3.2,measurement,1590.0,3.75

@@ -1,0 +1,41 @@
+{
+  "standard_notebook_plots": [
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p2_swelling_T_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p8_swelling_T_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p4_swelling_T_1.3FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_ANP6_swelling_T_3.2FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_swelling_case_specific_1600K.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p4_RbRd_NbNd_T_1.3FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p2_pressure_T_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p2_pressure_ratio_T_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p2_gas_partition_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p2_capture_diagnostic_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p8_pressure_T_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p8_pressure_ratio_T_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p8_gas_partition_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p8_capture_diagnostic_1.1FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p4_pressure_T_1.3FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p4_pressure_ratio_T_1.3FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p4_gas_partition_1.3FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p4_capture_diagnostic_1.3FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_ANP6_pressure_T_3.2FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_ANP6_pressure_ratio_T_3.2FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_ANP6_gas_partition_3.2FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_ANP6_capture_diagnostic_3.2FIMA.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p2_diffusivities_T.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p8_diffusivities_T.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_AP3p4_diffusivities_T.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_ANP6_diffusivities_T.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_rho_d_surface.png"
+  ],
+  "supplemental_plots": [
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_radii_all_cases.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_densities_all_cases.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_grainface_all_cases.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_FGR_all_cases.png",
+    "/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk_results/final_candidates/CANDIDATE_C/plots/CANDIDATE_C_grainface_areal_density_all_cases.png"
+  ],
+  "standard_count": 27,
+  "supplemental_count": 5,
+  "GF_benchmark": "No experimental/digitized Rgf/Ngf curves embedded in current source; diagnostics only."
+}

@@ -1,0 +1,41 @@
+{
+  "selection_policy": "separate swelling/micro/FGR competitive gates; no partition filter; A best swelling in lower-half micro pool, B farthest from A, C max-min separation",
+  "swelling_limit": 0.2826923440691732,
+  "micro_limit": 0.4933069597703729,
+  "FGR_limit_pp": 4.05573909119897,
+  "competitive_trial_numbers": [
+    0,
+    2,
+    14,
+    30,
+    32,
+    34,
+    41,
+    46,
+    50,
+    53,
+    59
+  ],
+  "selected_trial_numbers": [
+    0,
+    41,
+    2
+  ],
+  "normalized_log_parameter_distances": [
+    [
+      0.0,
+      0.9298192583598508,
+      0.7908757427387916
+    ],
+    [
+      0.9298192583598508,
+      0.0,
+      0.7389857979301769
+    ],
+    [
+      0.7908757427387916,
+      0.7389857979301769,
+      0.0
+    ]
+  ]
+}

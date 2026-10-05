@@ -1,0 +1,11 @@
+{
+  "total_trials": 60,
+  "complete": 59,
+  "failed": 1,
+  "screening_points": 4560,
+  "full_rerun_candidates": 3,
+  "full_rerun_points": 444,
+  "source_unchanged": true,
+  "source_sha256": "014d602c96a2e9db5bf0fb2dae558f4187b5b870cc2da6391d09ca542ec8c7c5",
+  "stopped": true
+}

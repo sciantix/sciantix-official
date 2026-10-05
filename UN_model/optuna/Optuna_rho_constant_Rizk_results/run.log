@@ -1,0 +1,247 @@
+Start 1/60 CURRENT_BASELINE: {"f_n": 0.00055, "K_d": 300000.0, "rho_d": 35000000000000.0, "Dv_dislocation_scale": 10.0, "Dg_dislocation_scale": 15.0, "NGF_AREAL_0": 10000000000000.0}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 1/60: {"J_swelling": 0.1797936794760544, "J_micro": 0.2750500940768982, "J_FGR": 1.690705775591733}; core=6.604989928970667; 30.1s
+Start 2/60 TRIAL_001: {"f_n": 0.0016653583966787073, "K_d": 217456.3281244873, "rho_d": 24719638779888.89, "Dv_dislocation_scale": 23.167552875062167, "Dg_dislocation_scale": 1.0832247945767954, "NGF_AREAL_0": 16725856902094.736}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 2/60: {"J_swelling": 0.6047788194007664, "J_micro": 0.697130688446983, "J_FGR": 1.3433292162452057}; core=12.573128121364288; 29.8s
+Start 3/60 TRIAL_002: {"f_n": 6.268984891824852e-05, "K_d": 1882692.3051767242, "rho_d": 18907552525302.812, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 3/60: {"J_swelling": 0.2777244829579586, "J_micro": 0.4205046280460074, "J_FGR": 2.7744478151304044}; core=7.8811428569269735; 29.8s
+Start 4/60 TRIAL_003: {"f_n": 3.5927489247135713e-07, "K_d": 1542404.2384612, "rho_d": 32723390619060.82, "Dv_dislocation_scale": 10.592458009844828, "Dg_dislocation_scale": 1.6346240959882636, "NGF_AREAL_0": 31411148515566.723}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 4/60: {"J_swelling": 0.4680062662858576, "J_micro": 0.5679018338632428, "J_FGR": 13.128390462604328}; core=11.981161698469919; 29.9s
+Start 5/60 TRIAL_004: {"f_n": 2.6836149751987366e-06, "K_d": 1404174.7174763796, "rho_d": 55069825854316.21, "Dv_dislocation_scale": 21.953996761325556, "Dg_dislocation_scale": 1.9432586139910866, "NGF_AREAL_0": 20149875222692.156}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 5/60: {"J_swelling": 0.4394588806852837, "J_micro": 0.6471727964612735, "J_FGR": 8.116887499096121}; core=8.587604330717241; 30.9s
+Start 6/60 TRIAL_005: {"f_n": 1.0662905433473115e-07, "K_d": 1621686.5304660017, "rho_d": 36132561484161.34, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 11.958890338876662, "NGF_AREAL_0": 18178028235672.35}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 6/60: {"J_swelling": 0.645367085706308, "J_micro": 0.41521001280799547, "J_FGR": 7.828176050344663}; core=50.79635320054166; 30.1s
+Start 7/60 TRIAL_006: {"f_n": 1.438417942717217e-05, "K_d": 500041.6842609065, "rho_d": 29889516251803.895, "Dv_dislocation_scale": 12.498661532510999, "Dg_dislocation_scale": 1.187291925583458, "NGF_AREAL_0": 17303642255128.371}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 7/60: {"J_swelling": 0.5747860100922844, "J_micro": 0.52083260940968, "J_FGR": 6.002039225426142}; core=8.536389098086307; 29.9s
+Start 8/60 TRIAL_007: {"f_n": 0.00035988477833597926, "K_d": 643550.2336527312, "rho_d": 22448337845806.17, "Dv_dislocation_scale": 19.989549388105466, "Dg_dislocation_scale": 2.6316245995956224, "NGF_AREAL_0": 32685671817147.043}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 8/60: {"J_swelling": 0.5889469986622488, "J_micro": 0.551290960129457, "J_FGR": 2.3842786083294176}; core=10.651296912255223; 35.6s
+Start 9/60 TRIAL_008: {"f_n": 7.337077436840844e-05, "K_d": 1967128.8648423715, "rho_d": 29502519603758.062, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 12.979680577605182, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 9/60: {"J_swelling": 0.33627867986007165, "J_micro": 0.5481481579658543, "J_FGR": 3.2974362822108527}; core=7.379223212816363; 31.7s
+Start 10/60 TRIAL_009: {"f_n": 0.0007856762156645188, "K_d": 1354568.3352753788, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 23.266565222719763, "Dg_dislocation_scale": 2.144753692894523, "NGF_AREAL_0": 3007784480572.9326}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 10/60: {"J_swelling": 0.5912330965885231, "J_micro": 0.6985513071443462, "J_FGR": 1.5753031915219242}; core=10.437853152874688; 31.7s
+Start 11/60 TRIAL_010: {"f_n": 1.9722002640473183e-05, "K_d": 758842.2102745409, "rho_d": 28893186727575.418, "Dv_dislocation_scale": 10.755588130453074, "Dg_dislocation_scale": 5.680392608669719, "NGF_AREAL_0": 5468462624961.565}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 11/60: {"J_swelling": 0.3815785853142114, "J_micro": 0.3849708774278098, "J_FGR": 4.489930525142367}; core=4.677439173148517; 32.5s
+Start 12/60 TRIAL_011: {"f_n": 0.00040027618581248267, "K_d": 298123.164968058, "rho_d": 18323040434931.484, "Dv_dislocation_scale": 1.0502799814841652, "Dg_dislocation_scale": 2.263750466667708, "NGF_AREAL_0": 172626194755274.16}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 12/60: {"J_swelling": 0.5918258357384586, "J_micro": 0.6318056899158948, "J_FGR": 2.4919271637523397}; core=11.268586353721991; 33.3s
+Start 13/60 TRIAL_012: {"f_n": 0.0029360767987273374, "K_d": 1559651.3790066342, "rho_d": 43737414212248.2, "Dv_dislocation_scale": 6.656591360789036, "Dg_dislocation_scale": 23.775760767576156, "NGF_AREAL_0": 29187782565172.79}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 13/60: {"J_swelling": 0.28099517602551843, "J_micro": 0.5681098078095477, "J_FGR": 1.052898989431479}; core=8.774894936862323; 32.5s
+Start 14/60 TRIAL_013: {"f_n": 1.9722002640473183e-05, "K_d": 129673.38547300897, "rho_d": 29502519603758.062, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 5.680392608669719, "NGF_AREAL_0": 24204508733585.082}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 14/60: {"J_swelling": 0.20810278685965436, "J_micro": 0.4098436793006248, "J_FGR": 5.078740563469558}; core=5.381905653803227; 31.2s
+Start 15/60 TRIAL_014: {"f_n": 6.268984891824852e-05, "K_d": 1882692.3051767242, "rho_d": 30695690697717.395, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 15/60: {"J_swelling": 0.17668271504323324, "J_micro": 0.472704176922115, "J_FGR": 2.488190330913864}; core=19.13501803798702; 32.3s
+Start 16/60 TRIAL_015: {"f_n": 3.5927489247135713e-07, "K_d": 1542404.2384612, "rho_d": 24719638779888.89, "Dv_dislocation_scale": 10.592458009844828, "Dg_dislocation_scale": 1.0832247945767954, "NGF_AREAL_0": 16725856902094.736}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 16/60: {"J_swelling": 0.5495032559708319, "J_micro": 0.5691359538271263, "J_FGR": 13.043387527827871}; core=10.870752706880848; 23.2s
+Start 17/60 TRIAL_016: {"f_n": 1.9722002640473183e-05, "K_d": 500041.6842609065, "rho_d": 17806534199822.57, "Dv_dislocation_scale": 12.498661532510999, "Dg_dislocation_scale": 1.187291925583458, "NGF_AREAL_0": 5468462624961.565}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 17/60: {"J_swelling": 0.5939759915808654, "J_micro": 0.5962645605738266, "J_FGR": 5.045618186797881}; core=9.847951851076415; 32.1s
+Start 18/60 TRIAL_017: {"f_n": 1.9722002640473183e-05, "K_d": 500041.6842609065, "rho_d": 29889516251803.895, "Dv_dislocation_scale": 12.498661532510999, "Dg_dislocation_scale": 1.187291925583458, "NGF_AREAL_0": 132595984448141.98}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 18/60: {"J_swelling": 0.5787575617911122, "J_micro": 0.5281562740320362, "J_FGR": 6.372922258849103}; core=8.807444616988297; 31.9s
+Start 19/60 TRIAL_018: {"f_n": 0.00040027618581248267, "K_d": 360000.1679803875, "rho_d": 15236964159103.967, "Dv_dislocation_scale": 23.266565222719763, "Dg_dislocation_scale": 2.263750466667708, "NGF_AREAL_0": 172626194755274.16}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 19/60: {"J_swelling": 0.5970945462434685, "J_micro": 0.6514302682122876, "J_FGR": 2.497899072919642}; core=11.540846271084208; 32.7s
+Start 20/60 TRIAL_019: {"f_n": 1.0662905433473115e-07, "K_d": 886951.5008688451, "rho_d": 36132561484161.34, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 20/60: {"J_swelling": 0.8986342814139434, "J_micro": 0.2513664157613339, "J_FGR": 3.9698189822434418}; core=60.087627000342756; 31.9s
+Start 21/60 TRIAL_020: {"f_n": 4.412424129573094e-07, "K_d": 298123.164968058, "rho_d": 18323040434931.484, "Dv_dislocation_scale": 1.0502799814841652, "Dg_dislocation_scale": 2.263750466667708, "NGF_AREAL_0": 3007784480572.9326}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 21/60: {"J_swelling": 0.4049148261326681, "J_micro": 0.42377598238928293, "J_FGR": 10.363091717305926}; core=10.570616374569877; 31.8s
+Start 22/60 TRIAL_021: {"f_n": 7.337077436840844e-05, "K_d": 1967128.8648423715, "rho_d": 22448337845806.17, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 12.979680577605182, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 22/60: {"J_swelling": 0.4087139580217954, "J_micro": 0.5147585328892175, "J_FGR": 3.45287166620122}; core=3.908519583729125; 32.4s
+Start 23/60 TRIAL_022: {"f_n": 1.438417942717217e-05, "K_d": 500041.6842609065, "rho_d": 29889516251803.895, "Dv_dislocation_scale": 12.498661532510999, "Dg_dislocation_scale": 1.187291925583458, "NGF_AREAL_0": 17303642255128.371}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 23/60: {"J_swelling": 0.5747860100922844, "J_micro": 0.52083260940968, "J_FGR": 6.002039225426142}; core=8.536389098086307; 30.7s
+Start 24/60 TRIAL_023: {"f_n": 1.438417942717217e-05, "K_d": 643550.2336527312, "rho_d": 29889516251803.895, "Dv_dislocation_scale": 12.498661532510999, "Dg_dislocation_scale": 1.187291925583458, "NGF_AREAL_0": 7064959112508.678}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 24/60: {"J_swelling": 0.5786217360674055, "J_micro": 0.5281106905892793, "J_FGR": 5.558004704778891}; core=8.573279116755039; 32.0s
+Start 25/60 TRIAL_024: {"f_n": 0.0007856762156645188, "K_d": 407015.3563820539, "rho_d": 29889516251803.895, "Dv_dislocation_scale": 12.498661532510999, "Dg_dislocation_scale": 1.187291925583458, "NGF_AREAL_0": 3007784480572.9326}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 25/60: {"J_swelling": 0.6020068895651737, "J_micro": 0.6035797696898794, "J_FGR": 1.5953833162810822}; core=11.9338859748854; 32.9s
+Start 26/60 TRIAL_025: {"f_n": 0.0029360767987273374, "K_d": 139519.63740018944, "rho_d": 43737414212248.2, "Dv_dislocation_scale": 6.656591360789036, "Dg_dislocation_scale": 23.775760767576156, "NGF_AREAL_0": 29187782565172.79}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 26/60: {"J_swelling": 0.6259344143120122, "J_micro": 0.3681794465095659, "J_FGR": 1.029013431936644}; core=13.03799145177273; 32.1s
+Start 27/60 TRIAL_026: {"f_n": 1.0662905433473115e-07, "K_d": 758842.2102745409, "rho_d": 28893186727575.418, "Dv_dislocation_scale": 5.866429212363499, "Dg_dislocation_scale": 5.680392608669719, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 27/60: {"J_swelling": NaN, "J_micro": NaN, "J_FGR": NaN}; core=None; 31.4s
+Start 28/60 TRIAL_027: {"f_n": 1.062311996090433e-06, "K_d": 758842.2102745409, "rho_d": 10336485574633.084, "Dv_dislocation_scale": 10.755588130453074, "Dg_dislocation_scale": 16.147139562523993, "NGF_AREAL_0": 18178028235672.35}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 28/60: {"J_swelling": 0.2596323134695954, "J_micro": 0.29398614482573004, "J_FGR": 9.06520552381978}; core=15.544461293975305; 32.6s
+Start 29/60 TRIAL_028: {"f_n": 0.0010741943487744818, "K_d": 886951.5008688451, "rho_d": 18907552525302.812, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 6.8159611732268655, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 29/60: {"J_swelling": 0.5696163786940123, "J_micro": 0.5125504259810052, "J_FGR": 1.3997204106359888}; core=9.875677125293132; 33.5s
+Start 30/60 TRIAL_029: {"f_n": 0.00035988477833597926, "K_d": 643550.2336527312, "rho_d": 22448337845806.17, "Dv_dislocation_scale": 19.989549388105466, "Dg_dislocation_scale": 2.6316245995956224, "NGF_AREAL_0": 32685671817147.043}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 30/60: {"J_swelling": 0.5889469986622488, "J_micro": 0.551290960129457, "J_FGR": 2.3842786083294176}; core=10.651296912255223; 32.4s
+Start 31/60 TRIAL_030: {"f_n": 0.0007856762156645188, "K_d": 519754.0997222178, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 31/60: {"J_swelling": 0.27571800377941413, "J_micro": 0.25809233524604325, "J_FGR": 1.3354883612532222}; core=15.899858384686393; 31.5s
+Start 32/60 TRIAL_031: {"f_n": 0.00035988477833597926, "K_d": 143930.29271504984, "rho_d": 22448337845806.17, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 32/60: {"J_swelling": 0.2924411646827035, "J_micro": 0.4347859977242805, "J_FGR": 1.7392577983412123}; core=6.465113286152552; 30.8s
+Start 33/60 TRIAL_032: {"f_n": 1.9722002640473183e-05, "K_d": 1882692.3051767242, "rho_d": 18907552525302.812, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 33/60: {"J_swelling": 0.18716031434186003, "J_micro": 0.38713800596810666, "J_FGR": 3.536727034904764}; core=13.901590588983998; 31.7s
+Start 34/60 TRIAL_033: {"f_n": 6.268984891824852e-05, "K_d": 1354568.3352753788, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 23.266565222719763, "Dg_dislocation_scale": 2.144753692894523, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 34/60: {"J_swelling": 0.5622263871522436, "J_micro": 0.6623285342160045, "J_FGR": 3.2636876086885773}; core=7.0946076501390625; 30.3s
+Start 35/60 TRIAL_034: {"f_n": 0.0003173854241681604, "K_d": 1621686.5304660017, "rho_d": 29502519603758.062, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 22.003935127620945, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 35/60: {"J_swelling": 0.24755395344272224, "J_micro": 0.48930418774655526, "J_FGR": 2.035687527086499}; core=9.615028773443756; 32.2s
+Start 36/60 TRIAL_035: {"f_n": 4.789127601527561e-05, "K_d": 217456.3281244873, "rho_d": 24719638779888.89, "Dv_dislocation_scale": 23.167552875062167, "Dg_dislocation_scale": 1.0832247945767954, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 36/60: {"J_swelling": 0.5873930135577226, "J_micro": 0.6166935224313967, "J_FGR": 4.414331518199713}; core=10.07492629595385; 31.3s
+Start 37/60 TRIAL_036: {"f_n": 1.9722002640473183e-05, "K_d": 129673.38547300897, "rho_d": 31702979539878.656, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 5.100291528069869, "NGF_AREAL_0": 24204508733585.082}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 37/60: {"J_swelling": 0.20440892497819457, "J_micro": 0.38582410401248707, "J_FGR": 5.097162637986278}; core=5.189422283102562; 31.0s
+Start 38/60 TRIAL_037: {"f_n": 4.412424129573094e-07, "K_d": 298123.164968058, "rho_d": 28893186727575.418, "Dv_dislocation_scale": 10.755588130453074, "Dg_dislocation_scale": 2.263750466667708, "NGF_AREAL_0": 3007784480572.9326}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 38/60: {"J_swelling": 0.2581527647248022, "J_micro": 0.3252557358765269, "J_FGR": 9.906876556943873}; core=12.347978295580305; 30.8s
+Start 39/60 TRIAL_038: {"f_n": 1.9722002640473183e-05, "K_d": 1882692.3051767242, "rho_d": 30695690697717.395, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 39/60: {"J_swelling": 0.30798818785618914, "J_micro": 0.4336577115664968, "J_FGR": 3.0428851733493807}; core=27.326250659143273; 31.9s
+Start 40/60 TRIAL_039: {"f_n": 1.9722002640473183e-05, "K_d": 758842.2102745409, "rho_d": 49333927570507.91, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 5.680392608669719, "NGF_AREAL_0": 24204508733585.082}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 40/60: {"J_swelling": 0.2174035681001248, "J_micro": 0.41441573403292264, "J_FGR": 4.667197287794568}; core=11.855265265537225; 31.2s
+Start 41/60 TRIAL_040: {"f_n": 1.062311996090433e-06, "K_d": 758842.2102745409, "rho_d": 10336485574633.084, "Dv_dislocation_scale": 10.755588130453074, "Dg_dislocation_scale": 23.775760767576156, "NGF_AREAL_0": 18178028235672.35}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 41/60: {"J_swelling": 0.7416013309962981, "J_micro": 0.3351343556627846, "J_FGR": 8.25646564431378}; core=22.72695765859424; 31.5s
+Start 42/60 TRIAL_041: {"f_n": 9.511111106381815e-05, "K_d": 1621686.5304660017, "rho_d": 21499201789483.26, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 42/60: {"J_swelling": 0.2534805527819169, "J_micro": 0.42521399667391013, "J_FGR": 3.012711481369174}; core=8.5571537484336; 30.9s
+Start 43/60 TRIAL_042: {"f_n": 8.471449958278477e-06, "K_d": 519754.0997222178, "rho_d": 18907552525302.812, "Dv_dislocation_scale": 11.148584666509155, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 43/60: {"J_swelling": 0.8588927803434317, "J_micro": 0.27583210657165885, "J_FGR": 3.9532865964227213}; core=22.957656255763016; 32.0s
+Start 44/60 TRIAL_043: {"f_n": 0.0003173854241681604, "K_d": 1621686.5304660017, "rho_d": 30249135122017.15, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 44/60: {"J_swelling": 0.25249749874281524, "J_micro": 0.49610084026184925, "J_FGR": 2.037261743080335}; core=9.500982067894089; 31.6s
+Start 45/60 TRIAL_044: {"f_n": 1.9722002640473183e-05, "K_d": 758842.2102745409, "rho_d": 28893186727575.418, "Dv_dislocation_scale": 10.755588130453074, "Dg_dislocation_scale": 5.680392608669719, "NGF_AREAL_0": 75229121716107.17}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 45/60: {"J_swelling": 0.3815785853142114, "J_micro": 0.3849708774278098, "J_FGR": 5.61630464656007}; core=4.677439173148517; 30.9s
+Start 46/60 TRIAL_045: {"f_n": 4.412424129573094e-07, "K_d": 519754.0997222178, "rho_d": 13121742640489.854, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 2.263750466667708, "NGF_AREAL_0": 52495584956059.21}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 46/60: {"J_swelling": 0.4980848531205836, "J_micro": 0.4590977533015083, "J_FGR": 13.614804347751122}; core=10.476981212080998; 28.5s
+Start 47/60 TRIAL_046: {"f_n": 0.0007856762156645188, "K_d": 519754.0997222178, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 47/60: {"J_swelling": 0.27571800377941413, "J_micro": 0.25809233524604325, "J_FGR": 1.3354883612532222}; core=15.899858384686393; 31.2s
+Start 48/60 TRIAL_047: {"f_n": 1.0619978953629636e-06, "K_d": 1339554.5927391893, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 16.147139562523993, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 48/60: {"J_swelling": 1.0215788311641418, "J_micro": 0.3499252458372203, "J_FGR": 3.8690625621244146}; core=50.48603729657243; 29.9s
+Start 49/60 TRIAL_048: {"f_n": 0.0007856762156645188, "K_d": 519754.0997222178, "rho_d": 10336485574633.084, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 49/60: {"J_swelling": 0.46039844396748575, "J_micro": 0.4434087811330264, "J_FGR": 1.5088499134432898}; core=7.175355982902392; 31.1s
+Start 50/60 TRIAL_049: {"f_n": 0.0003532752029425975, "K_d": 519754.0997222178, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 50/60: {"J_swelling": 0.49676370907363804, "J_micro": 0.22590612860780784, "J_FGR": 1.611328369764677}; core=21.3030762898265; 30.8s
+Start 51/60 TRIAL_050: {"f_n": 1.9722002640473183e-05, "K_d": 129673.38547300897, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 5.100291528069869, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 51/60: {"J_swelling": 0.2764321098713633, "J_micro": 0.3578692749140341, "J_FGR": 3.750281689859359}; core=9.253895713952835; 31.9s
+Start 52/60 TRIAL_051: {"f_n": 4.412424129573094e-07, "K_d": 1882692.3051767242, "rho_d": 28893186727575.418, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 2.263750466667708, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 52/60: {"J_swelling": 0.4515487664631031, "J_micro": 0.5762876376776651, "J_FGR": 9.782364600246106}; core=11.87940480561633; 30.2s
+Start 53/60 TRIAL_052: {"f_n": 1.9722002640473183e-05, "K_d": 1559651.3790066342, "rho_d": 18907552525302.812, "Dv_dislocation_scale": 4.200577335608843, "Dg_dislocation_scale": 23.775760767576156, "NGF_AREAL_0": 29187782565172.79}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 53/60: {"J_swelling": 0.1815656070336085, "J_micro": 0.32436635639791356, "J_FGR": 4.515754693246113}; core=16.816996696413923; 30.8s
+Start 54/60 TRIAL_053: {"f_n": 0.0007856762156645188, "K_d": 559479.6985538569, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 6.656591360789036, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 22602861398417.113}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 54/60: {"J_swelling": 0.24486236147960283, "J_micro": 0.2734830273993539, "J_FGR": 1.4812737978148722}; core=15.734065960212734; 31.4s
+Start 55/60 TRIAL_054: {"f_n": 4.275669270649659e-05, "K_d": 519754.0997222178, "rho_d": 43235270510889.76, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 55/60: {"J_swelling": 1.1310183448332258, "J_micro": 0.1537419059200112, "J_FGR": 2.32646869874137}; core=36.91552343161533; 31.1s
+Start 56/60 TRIAL_055: {"f_n": 0.0003173854241681604, "K_d": 1621686.5304660017, "rho_d": 30706981882742.895, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 22.003935127620945, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 56/60: {"J_swelling": 0.23438387960632162, "J_micro": 0.4943076527763274, "J_FGR": 2.022485636545439}; core=10.495997514850567; 31.1s
+Start 57/60 TRIAL_056: {"f_n": 1.9722002640473183e-05, "K_d": 519754.0997222178, "rho_d": 31702979539878.656, "Dv_dislocation_scale": 2.23296281266002, "Dg_dislocation_scale": 5.100291528069869, "NGF_AREAL_0": 2365717640302.848}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 57/60: {"J_swelling": 0.3493623630279178, "J_micro": 0.3646141097592951, "J_FGR": 4.077219118437853}; core=4.759255473034873; 30.9s
+Start 58/60 TRIAL_057: {"f_n": 9.511111106381815e-05, "K_d": 804309.4369490048, "rho_d": 21499201789483.26, "Dv_dislocation_scale": 1.0631316906422317, "Dg_dislocation_scale": 9.097935631215154, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 58/60: {"J_swelling": 0.43776147664886805, "J_micro": 0.40936972955402534, "J_FGR": 3.3273393924401393}; core=3.9362255120816916; 30.8s
+Start 59/60 TRIAL_058: {"f_n": 1.062311996090433e-06, "K_d": 758842.2102745409, "rho_d": 28893186727575.418, "Dv_dislocation_scale": 10.755588130453074, "Dg_dislocation_scale": 2.263750466667708, "NGF_AREAL_0": 18178028235672.35}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 59/60: {"J_swelling": 0.433027041764258, "J_micro": 0.4084718274062702, "J_FGR": 10.193732027121232}; core=9.025734235113552; 31.2s
+Start 60/60 TRIAL_059: {"f_n": 6.268984891824852e-05, "K_d": 1621686.5304660017, "rho_d": 30695690697717.395, "Dv_dislocation_scale": 7.789406175697652, "Dg_dislocation_scale": 21.253198700985447, "NGF_AREAL_0": 18085986025396.715}
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Finished 60/60: {"J_swelling": 0.18671769362571686, "J_micro": 0.4282669959024803, "J_FGR": 3.0796604969342933}; core=19.681615486156307; 31.3s
+/home/destro/sciantix-official/UN_model/optuna/Optuna_rho_constant_Rizk.py:136: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  sub=pd.read_csv(curve); sub['trial_state']=trial.state.name; curves.append(sub)
+Full-resolution rerun CANDIDATE_A, trial=0, 148 points, 25 K
+Full-resolution rerun CANDIDATE_B, trial=41, 148 points, 25 K
+Full-resolution rerun CANDIDATE_C, trial=2, 148 points, 25 K
+COMPLETE: exactly 60 trials + 3 full-resolution candidates. Stopped.
+Total invocation elapsed: 2163.2s

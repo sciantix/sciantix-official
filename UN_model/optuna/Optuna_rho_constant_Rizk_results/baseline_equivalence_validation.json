@@ -1,0 +1,526 @@
+{
+  "reference_existing_csv": "/home/destro/sciantix-official/UN_model/notebooks/RizkUN/RizkUN_grid.csv",
+  "reference_sha256": "4b0e298d05362f75b106299f55a65ff723c15b2de75bf618906fbaeb38acf239",
+  "overlap_points": 76,
+  "numeric_columns_compared": 129,
+  "all_identical": true,
+  "comparison": {
+    "burnup": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "rho_d_eff": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "c": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "mb": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "md": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Nb": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Nd": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Rb_nm": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Rd_nm": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "swelling_b_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "swelling_d_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "swelling_ig_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "swelling_gf_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "swelling_total_gas_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Ngf_areal": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Ngf_vol": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Rgf_nm": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Fc_gf": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_gf": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_gf_eq": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_gf_over_eq": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_b": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_b_eq": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_d_eq": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_b_over_eq": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "p_d_over_eq": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "matrix_gas_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "bulk_gas_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dislocation_gas_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "qgb_gas_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "grainface_gas_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "release_gas_percent": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "q_gb": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "q_gf": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "q_rel": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "generated": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "retained": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "lambda_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "nu_b": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "phi_b": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "phi_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "f_cap_step": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "cap_raw_step": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "capture_fraction_sum": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "capture_raw_sum": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "capture_bubbles_cumulative": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "max_f_cap_step": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dg": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv_dislocation": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv_gb": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "beta": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "rho_d_old": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "rho_d_next": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "delta_Nd_rho": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "g_b": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "g_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "b_b": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "b_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "b_b_gas": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "b_d_gas": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dVd_growth_dt": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dnvb_dt": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dnvd_dt": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dnv_gf_dt": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dA_gf_dt": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dNgf_dt": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dq_gf_in_step": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dq_rel_step": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "nvb_seed_added": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "nvd_seed_added": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "bulk_first_gas_seed_applied": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "dislocation_first_gas_seed_applied": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "first_gas_pressure_factor": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "seed_pressure_factor": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "seed_gas_atoms_per_bubble": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D1_Xe": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D2_Xe": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D2_Xe_scaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D3_Xe": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dg_lookup_base": {
+      "equal": true,
+      "max_absolute_difference": null
+    },
+    "D1_Xe_i_2023": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D2_Xe_i0_2023": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D2_Xe_i1_2023": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D1_XeVU_2023": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D2_XeVU_2023": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dg_D1_scaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dg_D3_scaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "D2_Xe_over_Dg_unscaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dg_dislocation_scale": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dg_dislocation": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv1": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv2": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv_lookup_base": {
+      "equal": true,
+      "max_absolute_difference": null
+    },
+    "Dv_nonthermal_effective": {
+      "equal": true,
+      "max_absolute_difference": null
+    },
+    "Dv1_scaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv2_scaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "Dv_dislocation_scale": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "A20_vU_active": {
+      "equal": true,
+      "max_absolute_difference": null
+    },
+    "Gamma_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "den": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "free_dislocation": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "term_bubbles": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "term_dislocation": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "term_bubbles_scaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "term_dislocation_scaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "g_b_unscaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "g_d_unscaled": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "USE_WS_GAS_TRAPPING_BULK": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "USE_WS_GAS_TRAPPING_DISLOCATION": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_bulk_factor": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_bulk_factor_raw": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_bulk_delta": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_bulk_x": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_bulk_zeta": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_dislocation_factor": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_dislocation_factor_raw": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_dislocation_delta": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_dislocation_x": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "ws_dislocation_zeta": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "psi_b": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "psi_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "porosity_b": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "porosity_d": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "valid_single_size": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "linear_power_kW_m": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "fuel_diameter_mm": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    },
+    "fission_rate_case": {
+      "equal": true,
+      "max_absolute_difference": 0.0
+    }
+  },
+  "extra_simulations": 0
+}

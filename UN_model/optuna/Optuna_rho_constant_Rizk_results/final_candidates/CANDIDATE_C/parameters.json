@@ -1,0 +1,88 @@
+{
+  "label": "CANDIDATE_C",
+  "source_trial": 2,
+  "parameters": {
+    "f_n": 6.268984891824852e-05,
+    "K_d": 1882692.3051767242,
+    "rho_d": 18907552525302.812,
+    "Dv_dislocation_scale": 7.789406175697652,
+    "Dg_dislocation_scale": 21.253198700985447,
+    "NGF_AREAL_0": 2365717640302.848
+  },
+  "full_candidate": {
+    "label": "CANDIDATE_C",
+    "f_n": 6.268984891824852e-05,
+    "K_d": 1882692.3051767242,
+    "rho_d": 18907552525302.812,
+    "fission_rate": 5.767844763153473e+19,
+    "ngf_areal_0": 2365717640302.848,
+    "Dv_scale": 1.0,
+    "Dv_D1_scale": 1.0,
+    "Dv_D2_scale": 1.0,
+    "Dv_dislocation_scale": 7.789406175697652,
+    "Dg_scale": 1.0,
+    "b_scale": 1.0,
+    "gb_scale": 1.0,
+    "gd_scale": 1.0,
+    "coalescence_d_scale": 1.0,
+    "capture_scale": 1.0,
+    "D2_xe_scale": 0.0,
+    "Dg_D1_scale": 1.0,
+    "Dg_D3_scale": 1.0,
+    "Dg_dislocation_scale": 21.253198700985447,
+    "b_bulk_scale": 1.0,
+    "b_dislocation_scale": 1.0,
+    "gd_bubble_scale": 1.0,
+    "gd_line_scale": 1.0,
+    "gd_line_alpha": 1.0
+  },
+  "selection": {
+    "selection_policy": "separate swelling/micro/FGR competitive gates; no partition filter; A best swelling in lower-half micro pool, B farthest from A, C max-min separation",
+    "swelling_limit": 0.2826923440691732,
+    "micro_limit": 0.4933069597703729,
+    "FGR_limit_pp": 4.05573909119897,
+    "competitive_trial_numbers": [
+      0,
+      2,
+      14,
+      30,
+      32,
+      34,
+      41,
+      46,
+      50,
+      53,
+      59
+    ],
+    "selected_trial_numbers": [
+      0,
+      41,
+      2
+    ],
+    "normalized_log_parameter_distances": [
+      [
+        0.0,
+        0.9298192583598508,
+        0.7908757427387916
+      ],
+      [
+        0.9298192583598508,
+        0.0,
+        0.7389857979301769
+      ],
+      [
+        0.7908757427387916,
+        0.7389857979301769,
+        0.0
+      ]
+    ]
+  },
+  "screening_metrics": {
+    "J_swelling": 0.2777244829579586,
+    "J_micro": 0.4205046280460074,
+    "J_FGR": 2.7744478151304044,
+    "E_R": 0.47710941276944746,
+    "E_N": 0.33559745096084737,
+    "gas_partition_core_RMS": 7.8811428569269735
+  }
+}
