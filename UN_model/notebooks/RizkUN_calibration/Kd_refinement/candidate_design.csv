@@ -1,0 +1,4 @@
+label,f_n,K_d,rho_d,fission_rate,Dv_scale,Dv_D1_scale,Dv_D2_scale,Dv_dislocation_scale,Dg_scale,b_scale,gb_scale,gd_scale,coalescence_d_scale,capture_scale,D2_xe_scale,Dg_D1_scale,Dg_D3_scale,Dg_dislocation_scale,b_bulk_scale,b_dislocation_scale,gd_bubble_scale,gd_line_scale,gd_line_alpha,ngf0_factor
+K_d_150000,0.00055,150000.0,30000000000000.0,5.767844763153473e+19,1.0,1.0,1.0,10.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,13.0,1.0,1.0,1.0,1.0,1.0,1.0
+K_d_200000,0.00055,200000.0,30000000000000.0,5.767844763153473e+19,1.0,1.0,1.0,10.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,13.0,1.0,1.0,1.0,1.0,1.0,1.0
+K_d_250000,0.00055,250000.0,30000000000000.0,5.767844763153473e+19,1.0,1.0,1.0,10.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,1.0,13.0,1.0,1.0,1.0,1.0,1.0,1.0

@@ -1,0 +1,67 @@
+--- finalRizkUN:cell1
++++ RizkUN_calibration:cell1
+@@ -3,8 +3,8 @@
+ # ============================================================
+ 
+ # Output
+-OUTPUT_DIR = "RizkUN"
+-CASE_LABEL = "RizkUN"
++OUTPUT_DIR = "RizkUN_calibration"
++CASE_LABEL = "RizkUN_calibration"
+ SHOW_PLOTS = False          # False = save PNG and close figures; True = show inline too
+ 
+ # Numerics
+@@ -16,7 +16,7 @@
+ T_MIN = 900.0
+ T_MAX_SWELLING = 1800.0     # swelling plots usually compare to experimental range
+ T_MAX_DIAGNOSTIC = 1800.0   # extended high-T diagnostic range for "Monte Resegone"
+-T_STEP = 25.0               # refined T-grid for high-T FGR diagnostics
++T_STEP = 50.0               # refined T-grid for high-T FGR diagnostics
+ BURNUPS = [1.1, 1.3, 3.2]  # unique burnups; benchmark execution is case-specific below
+ 
+ # ------------------------------------------------------------
+--- finalRizkUN:cell8
++++ RizkUN_calibration:cell5
+@@ -41,6 +41,7 @@
+     gd_bubble_scale: float = 1.0
+     gd_line_scale: float = 1.0
+     gd_line_alpha: float = 1.0
++    ngf0_factor: float = 1.0
+ 
+ 
+ @dataclass
+@@ -48,6 +49,7 @@
+     temperature: float = 1600.0
+     fission_rate: float = FISSION_RATE_NOMINAL
+     grain_radius: float = GRAIN_RADIUS
++    ngf_areal_0: float = NGF_AREAL_0
+     target_burnup_percent_fima: Optional[float] = None
+     final_time: float = 24.0 * 3600.0
+     dt: float = 3600.0
+@@ -877,7 +879,7 @@
+     qv_gf is volumetric vacancy inventory in grain-face bubbles [vac/m3 fuel].
+     Ngf_areal is the grain-face bubble number density [bub/m2 GB].
+     """
+-    NgfA = float(NGF_AREAL_0)
++    NgfA = float(p.ngf_areal_0)
+     NgfV = 3.0 * NgfA / (2.0 * p.grain_radius)
+     R0 = float(R_GF0)
+     V0 = gf_volume_from_radius(R0)
+--- finalRizkUN:cell10
++++ RizkUN_calibration:cell6
+@@ -331,6 +331,7 @@
+         temperature=float(T),
+         fission_rate=cand.fission_rate,
+         grain_radius=GRAIN_RADIUS,
++        ngf_areal_0=NGF_AREAL_0 * cand.ngf0_factor,
+         target_burnup_percent_fima=float(burnup),
+         dt=float(dt_h) * 3600.0,
+         n_modes=int(n_modes),
+@@ -434,6 +435,7 @@
+         "capture_bubbles_cumulative": hist["capture_bubbles_cumulative"][-1],
+         "max_f_cap_step": hist["max_f_cap_step"][-1],
+ 
++        **{f"final_{k}": v[-1] for k, v in hist.items() if v and isinstance(v[-1], (int, float))},
+         "hist": hist if keep_history else None,
+         "rates": rates,
+     }

@@ -1,0 +1,14 @@
+K_d only: [150000.0, 200000.0, 250000.0]. 228 points; reused 0; pending tasks 12; workers=8
+ 19/228 K_d_200000 AP3.8: 29.1s; failed=0
+ 38/228 K_d_150000 AP3.8: 29.3s; failed=0
+ 57/228 K_d_150000 AP3.4: 31.4s; failed=0
+ 76/228 K_d_200000 AP3.4: 31.7s; failed=0
+ 95/228 K_d_200000 AP3.2: 34.3s; failed=0
+114/228 K_d_150000 AP3.2: 34.5s; failed=0
+133/228 K_d_250000 AP3.8: 26.4s; failed=0
+152/228 K_d_250000 AP3.4: 28.3s; failed=0
+171/228 K_d_250000 AP3.2: 31.2s; failed=0
+190/228 K_d_150000 ANP6: 68.1s; failed=0
+209/228 K_d_200000 ANP6: 69.1s; failed=0
+228/228 K_d_250000 ANP6: 55.9s; failed=0
+Completed: 228/228 successful; old artifacts unchanged; 0 combined configurations.

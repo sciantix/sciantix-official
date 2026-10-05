@@ -1,0 +1,19 @@
+Saved OAT design: 13 candidates, 4 cases, 19 temperatures. New simulations disabled.
+28 existing figures; no new plots or simulations required.
+                Candidato  Swelling NRMSE  R_d ≤1600 K RMSE nm  Gas matrice/bulk/disl RMS pp  Gas core / baseline  R_d >1600 K diagnostica nm  N_d ≤1600 K diagnostica dex  N_d >1600 K diagnostica dex  Pareto esperimenti  Pareto con gas
+                 baseline        0.383604            24.664474                      3.076659             1.000000                   59.305336                     0.470981                     0.559763               False            True
+                  f_n_low        2.808553            27.914661                     53.237337            17.303621                   59.361152                     0.509240                     0.439363               False           False
+                 f_n_high        0.747747            39.990997                      7.831827             2.545562                   87.270915                     0.463133                     0.580811               False           False
+                  K_d_low        0.368546            21.890156                      3.491695             1.134898                   21.841169                     0.912343                     0.517280                True            True
+                 K_d_high        0.651059            50.854098                      2.821989             0.917225                  102.678547                     0.300098                     0.968553               False            True
+                rho_d_low        0.820282            28.654490                      9.970362             3.240646                   68.647941                     0.894583                     0.503825               False           False
+               rho_d_high        0.610870            21.173637                     18.004577             5.851990                   48.478213                     0.278454                     0.702082                True            True
+ Dv_dislocation_scale_low        0.415862            27.013357                      2.991441             0.972302                   59.491906                     0.466628                     0.559897               False            True
+Dv_dislocation_scale_high        0.380474            24.513304                      3.104722             1.009121                   59.292519                     0.472288                     0.559754               False            True
+ Dg_dislocation_scale_low        0.983505            66.974692                     13.256848             4.308846                  125.488931                     0.457752                     0.591383               False           False
+Dg_dislocation_scale_high        1.233707             9.359524                     19.430553             6.315472                   13.404728                     0.488215                     0.473921                True            True
+         N_gf0_factor_low        0.383604            24.664474                      3.076659             1.000000                   59.305336                     0.470981                     0.559763               False            True
+        N_gf0_factor_high        0.383604            24.664474                      3.076659             1.000000                   59.305336                     0.470981                     0.559763               False            True
+
+Reassessment complete: 0 solver runs; 101 frozen artifacts unchanged; 3 proposals not executed.
+Notebook executed in postprocessing-only mode. Solver calls forbidden; reference cells unchanged.

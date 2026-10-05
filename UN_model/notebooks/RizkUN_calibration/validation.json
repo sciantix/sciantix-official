@@ -1,0 +1,19 @@
+{
+  "source_unchanged": true,
+  "source_sha256": "13fc1b9de563db10cf5b84be983b72871c24f85165c8e2f0912cf0cdce1c9e5a",
+  "original_solver_formulation_restored_exactly_by_reversing_3_data_flow_changes": true,
+  "original_runner_restored_exactly_by_reversing_data_flow_and_final_state_diagnostics": true,
+  "original_other_parameters_settings_unchanged": true,
+  "experimental_data_unchanged": true,
+  "runs": 988,
+  "successful_runs": 988,
+  "baseline_points_compared": 76,
+  "baseline_original_numeric_columns_compared": 126,
+  "baseline_matches_original_rtol": 1e-12,
+  "baseline_matches_original_atol": 1e-12,
+  "direction_rows": 720,
+  "summary_candidates": 13,
+  "plots": 28,
+  "candidate_csvs": 13,
+  "combined_candidates_executed": 0
+}

@@ -1,0 +1,41 @@
+candidate,K_d,case,ordering,n_temperatures,n_violations,persistent,persistent_ranges,gf_vs_d_violations,d_vs_b_violations
+K_d_low,100000.0,AP3.2,Rgf>Rd>Rb,19,9,True,900-1250 K,9,0
+K_d_low,100000.0,AP3.2,Ngf_vol<Nd<Nb,19,8,True,900-1250 K,8,0
+K_d_low,100000.0,AP3.8,Rgf>Rd>Rb,19,9,True,900-1250 K,9,0
+K_d_low,100000.0,AP3.8,Ngf_vol<Nd<Nb,19,8,True,900-1250 K,8,0
+K_d_low,100000.0,AP3.4,Rgf>Rd>Rb,19,8,True,900-1250 K,8,0
+K_d_low,100000.0,AP3.4,Ngf_vol<Nd<Nb,19,8,True,900-1250 K,8,0
+K_d_low,100000.0,ANP6,Rgf>Rd>Rb,19,4,True,1000-1150 K,4,0
+K_d_low,100000.0,ANP6,Ngf_vol<Nd<Nb,19,6,True,900-1150 K,6,0
+K_d_150000,150000.0,AP3.2,Rgf>Rd>Rb,19,7,True,900-1200 K,7,0
+K_d_150000,150000.0,AP3.2,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_150000,150000.0,AP3.8,Rgf>Rd>Rb,19,7,True,900-1200 K,7,0
+K_d_150000,150000.0,AP3.8,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_150000,150000.0,AP3.4,Rgf>Rd>Rb,19,7,True,900-1200 K,7,0
+K_d_150000,150000.0,AP3.4,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_150000,150000.0,ANP6,Rgf>Rd>Rb,19,1,False,,1,0
+K_d_150000,150000.0,ANP6,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_200000,200000.0,AP3.2,Rgf>Rd>Rb,19,7,True,900-1200 K,7,0
+K_d_200000,200000.0,AP3.2,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_200000,200000.0,AP3.8,Rgf>Rd>Rb,19,7,True,900-1200 K,7,0
+K_d_200000,200000.0,AP3.8,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_200000,200000.0,AP3.4,Rgf>Rd>Rb,19,6,True,950-1200 K,6,0
+K_d_200000,200000.0,AP3.4,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_200000,200000.0,ANP6,Rgf>Rd>Rb,19,0,False,,0,0
+K_d_200000,200000.0,ANP6,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_250000,250000.0,AP3.2,Rgf>Rd>Rb,19,6,True,950-1200 K,6,0
+K_d_250000,250000.0,AP3.2,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_250000,250000.0,AP3.8,Rgf>Rd>Rb,19,6,True,950-1200 K,6,0
+K_d_250000,250000.0,AP3.8,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_250000,250000.0,AP3.4,Rgf>Rd>Rb,19,4,True,1000-1150 K,4,0
+K_d_250000,250000.0,AP3.4,Ngf_vol<Nd<Nb,19,0,False,,0,0
+K_d_250000,250000.0,ANP6,Rgf>Rd>Rb,19,0,False,,0,0
+K_d_250000,250000.0,ANP6,Ngf_vol<Nd<Nb,19,0,False,,0,0
+baseline,300000.0,AP3.2,Rgf>Rd>Rb,19,4,True,1000-1150 K,4,0
+baseline,300000.0,AP3.2,Ngf_vol<Nd<Nb,19,0,False,,0,0
+baseline,300000.0,AP3.8,Rgf>Rd>Rb,19,4,True,1000-1150 K,4,0
+baseline,300000.0,AP3.8,Ngf_vol<Nd<Nb,19,0,False,,0,0
+baseline,300000.0,AP3.4,Rgf>Rd>Rb,19,3,True,1050-1150 K,3,0
+baseline,300000.0,AP3.4,Ngf_vol<Nd<Nb,19,0,False,,0,0
+baseline,300000.0,ANP6,Rgf>Rd>Rb,19,0,False,,0,0
+baseline,300000.0,ANP6,Ngf_vol<Nd<Nb,19,0,False,,0,0

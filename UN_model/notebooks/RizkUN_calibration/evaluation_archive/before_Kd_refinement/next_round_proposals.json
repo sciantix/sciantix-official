@@ -1,0 +1,44 @@
+[
+  {
+    "proposal": "C1",
+    "f_n": 0.00055,
+    "K_d": 200000.0,
+    "rho_d": 30000000000000.0,
+    "Dv_dislocation_scale": 30,
+    "Dg_dislocation_scale": 13,
+    "N_gf0_factor": 1,
+    "executed": false,
+    "approved": false,
+    "tradeoff": "Ridurre K_d moderatamente per migliorare R_d fino a 1600 K e aumentare lo swelling nei pin sottostimati; Dv=30 ha un contributo piccolo e mantiene la gas partition vicina alla baseline.",
+    "risk": "AP3.2 è già vicino alla baseline; l’aumento di swelling può peggiorarlo. Nessun tentativo di eliminare il bias high-T del raggio.",
+    "basis": "swelling unchanged score + experimental Rd<=1600 + gas benchmark coherence; highT Rd/Nd no selection penalty"
+  },
+  {
+    "proposal": "C2",
+    "f_n": 0.0007,
+    "K_d": 150000.0,
+    "rho_d": 30000000000000.0,
+    "Dv_dislocation_scale": 10,
+    "Dg_dislocation_scale": 13,
+    "N_gf0_factor": 1,
+    "executed": false,
+    "approved": false,
+    "tradeoff": "Ridurre K_d per il raggio low-T e alzare f_n di poco per limitare swelling eccessivo e compensare parzialmente lo spostamento di gas dal bulk alle dislocazioni.",
+    "risk": "L’aumento di f_n può ridurre anche R_d utile e swelling AP3.8/ANP6. L’OAT a f_n=1e-2 è lontano: non prova la risposta locale a 7e-4.",
+    "basis": "swelling unchanged score + experimental Rd<=1600 + gas benchmark coherence; highT Rd/Nd no selection penalty"
+  },
+  {
+    "proposal": "C3",
+    "f_n": 0.00055,
+    "K_d": 250000.0,
+    "rho_d": 30000000000000.0,
+    "Dv_dislocation_scale": 30,
+    "Dg_dislocation_scale": 13,
+    "N_gf0_factor": 1,
+    "executed": false,
+    "approved": false,
+    "tradeoff": "Versione più conservativa di C1: cercare un piccolo beneficio di R_d low-T preservando swelling AP3.2 e gas partition più vicini alla baseline.",
+    "risk": "Il miglioramento può essere troppo piccolo per AP3.8/AP3.4/ANP6. Serve a misurare il compromesso, non a inseguire il raggio high-T.",
+    "basis": "swelling unchanged score + experimental Rd<=1600 + gas benchmark coherence; highT Rd/Nd no selection penalty"
+  }
+]

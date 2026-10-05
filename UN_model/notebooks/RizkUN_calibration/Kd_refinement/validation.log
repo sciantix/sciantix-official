@@ -1,0 +1,18 @@
+{
+  "new_model_points": 228,
+  "successful_new_points": 228,
+  "only_Kd_changed": true,
+  "reused_OAT_control_points": 152,
+  "comparison_candidates": 5,
+  "experimental_Rd_selection_points_per_candidate": 5,
+  "highT_Rd_and_Nd_no_selection_weight": true,
+  "frozen_physics_reference_cells_unchanged": true,
+  "original_scientific_artifacts_unchanged": true,
+  "protected_scientific_artifact_count": 105,
+  "new_combinations_proposed": 0,
+  "new_combinations_executed": 0,
+  "previous_unapproved_pairs_suspended": true,
+  "notebook_default_loading_no_model_calls": true,
+  "new_figures_from_saved_data": 8,
+  "max_abs_gas_balance_error_pp": 5.684341886080803e-14
+}

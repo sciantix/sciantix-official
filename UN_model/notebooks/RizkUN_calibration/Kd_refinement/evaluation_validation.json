@@ -1,0 +1,24 @@
+{
+  "new_candidates": 3,
+  "new_points": 228,
+  "reused_control_points": 152,
+  "comparison_points_in_runs": 380,
+  "only_Kd_varied": true,
+  "control_metrics_reproduce_previous_evaluation": true,
+  "Rd_lowT_points_per_candidate": 5,
+  "Rd_highT_points_per_candidate": 4,
+  "N_d_excluded_from_selection": true,
+  "highT_Rd_excluded_from_selection": true,
+  "pareto_experimental_columns": [
+    "swelling_balanced_nrmse",
+    "Rd_rmse_le1600_nm_AP3.4"
+  ],
+  "pareto_with_gas_columns": [
+    "swelling_balanced_nrmse",
+    "Rd_rmse_le1600_nm_AP3.4",
+    "gas_core3_RMSE_pp"
+  ],
+  "combined_score": false,
+  "combined_proposals": 0,
+  "combined_runs": 0
+}

@@ -1,0 +1,18 @@
+/home/destro/sciantix-official/UN_model/notebooks/RizkUN_calibration/Kd_refinement/evaluate_refinement.py:56: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  controls['run_origin']='reused_OAT';new['run_origin']='new_Kd_refinement'
+ Candidato      K_d  Swelling NRMSE  R_d ≤1600 RMSE nm  Gas core RMS pp  Gas / baseline  R_d high-T diagnostica nm  N_d low-T diagnostica dex  N_d high-T diagnostica dex  pareto_experiments  pareto_with_gas
+   K_d_low 100000.0        0.368546          21.890156         3.491695        1.134898                  21.841169                   0.912343                    0.517280               False            False
+K_d_150000 150000.0        0.305667          11.830800         3.341387        1.086044                  18.871670                   0.743585                    0.471478                True             True
+K_d_200000 200000.0        0.313174          14.650997         3.231567        1.050349                  37.050749                   0.626837                    0.484885               False             True
+K_d_250000 250000.0        0.345078          19.962900         3.145756        1.022458                  49.881241                   0.539322                    0.519254               False             True
+  baseline 300000.0        0.383604          24.664474         3.076659        1.000000                  59.305336                   0.470981                    0.559763               False             True
+
+Swelling per pin:
+     K_d  swelling_rmse_pp_AP3.2  swelling_rmse_pp_AP3.8  swelling_rmse_pp_AP3.4  swelling_rmse_pp_ANP6  swelling_bias_pp_AP3.2  swelling_bias_pp_AP3.8  swelling_bias_pp_AP3.4  swelling_bias_pp_ANP6
+100000.0                1.066899                0.269069                1.593242               0.423376                0.830612               -0.117460                0.521748              -0.409760
+150000.0                0.612255                0.456247                1.098822               0.655673                0.461366               -0.409996               -0.021530              -0.591320
+200000.0                0.425615                0.687849                0.981513               0.833724                0.225132               -0.604844               -0.348668              -0.727646
+250000.0                0.402217                0.858791                1.007867               0.967590                0.056943               -0.746590               -0.572959              -0.833817
+300000.0                0.452986                0.988574                1.078214               1.071829               -0.071351               -0.856170               -0.739477              -0.919148
+
+Saved separated evaluation and guardrails. Combined proposals/runs: 0.

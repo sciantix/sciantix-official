@@ -1,0 +1,105 @@
+candidate,case,ordering,n_defined,n_violations,fraction_violations,persistent,persistent_ranges
+baseline,AP3.2,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+baseline,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+baseline,AP3.8,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+baseline,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+baseline,AP3.4,Rgf>Rd>Rb,19,3,0.15789473684210525,True,1050-1150 K
+baseline,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+baseline,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+baseline,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_low,AP3.2,Rgf>Rd>Rb,19,7,0.3684210526315789,True,900-1200 K
+f_n_low,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_low,AP3.8,Rgf>Rd>Rb,19,7,0.3684210526315789,True,900-1200 K
+f_n_low,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_low,AP3.4,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+f_n_low,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_low,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+f_n_low,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_high,AP3.2,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+f_n_high,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_high,AP3.8,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+f_n_high,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_high,AP3.4,Rgf>Rd>Rb,19,2,0.10526315789473684,False,
+f_n_high,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+f_n_high,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+f_n_high,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+K_d_low,AP3.2,Rgf>Rd>Rb,19,9,0.47368421052631576,True,900-1250 K
+K_d_low,AP3.2,Ngf_vol<Nd<Nb,19,8,0.42105263157894735,True,900-1250 K
+K_d_low,AP3.8,Rgf>Rd>Rb,19,9,0.47368421052631576,True,900-1250 K
+K_d_low,AP3.8,Ngf_vol<Nd<Nb,19,8,0.42105263157894735,True,900-1250 K
+K_d_low,AP3.4,Rgf>Rd>Rb,19,8,0.42105263157894735,True,900-1250 K
+K_d_low,AP3.4,Ngf_vol<Nd<Nb,19,8,0.42105263157894735,True,900-1250 K
+K_d_low,ANP6,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+K_d_low,ANP6,Ngf_vol<Nd<Nb,19,6,0.3157894736842105,True,900-1150 K
+K_d_high,AP3.2,Rgf>Rd>Rb,19,0,0.0,False,
+K_d_high,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+K_d_high,AP3.8,Rgf>Rd>Rb,19,0,0.0,False,
+K_d_high,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+K_d_high,AP3.4,Rgf>Rd>Rb,19,0,0.0,False,
+K_d_high,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+K_d_high,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+K_d_high,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+rho_d_low,AP3.2,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+rho_d_low,AP3.2,Ngf_vol<Nd<Nb,19,8,0.42105263157894735,True,900-1250 K
+rho_d_low,AP3.8,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+rho_d_low,AP3.8,Ngf_vol<Nd<Nb,19,8,0.42105263157894735,True,900-1250 K
+rho_d_low,AP3.4,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+rho_d_low,AP3.4,Ngf_vol<Nd<Nb,19,8,0.42105263157894735,True,900-1250 K
+rho_d_low,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+rho_d_low,ANP6,Ngf_vol<Nd<Nb,19,6,0.3157894736842105,True,900-1150 K
+rho_d_high,AP3.2,Rgf>Rd>Rb,19,5,0.2631578947368421,True,950-1150 K
+rho_d_high,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+rho_d_high,AP3.8,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+rho_d_high,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+rho_d_high,AP3.4,Rgf>Rd>Rb,19,4,0.21052631578947367,True,1000-1150 K
+rho_d_high,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+rho_d_high,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+rho_d_high,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_low,AP3.2,Rgf>Rd>Rb,19,0,0.0,False,
+Dv_dislocation_scale_low,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_low,AP3.8,Rgf>Rd>Rb,19,0,0.0,False,
+Dv_dislocation_scale_low,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_low,AP3.4,Rgf>Rd>Rb,19,0,0.0,False,
+Dv_dislocation_scale_low,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_low,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+Dv_dislocation_scale_low,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_high,AP3.2,Rgf>Rd>Rb,19,6,0.3157894736842105,True,950-1200 K
+Dv_dislocation_scale_high,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_high,AP3.8,Rgf>Rd>Rb,19,6,0.3157894736842105,True,950-1200 K
+Dv_dislocation_scale_high,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_high,AP3.4,Rgf>Rd>Rb,19,5,0.2631578947368421,True,950-1150 K
+Dv_dislocation_scale_high,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dv_dislocation_scale_high,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+Dv_dislocation_scale_high,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_low,AP3.2,Rgf>Rd>Rb,19,0,0.0,False,
+Dg_dislocation_scale_low,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_low,AP3.8,Rgf>Rd>Rb,19,0,0.0,False,
+Dg_dislocation_scale_low,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_low,AP3.4,Rgf>Rd>Rb,19,0,0.0,False,
+Dg_dislocation_scale_low,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_low,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+Dg_dislocation_scale_low,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_high,AP3.2,Rgf>Rd>Rb,19,9,0.47368421052631576,True,900-1200 K
+Dg_dislocation_scale_high,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_high,AP3.8,Rgf>Rd>Rb,19,10,0.5263157894736842,True,900-1250 K
+Dg_dislocation_scale_high,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_high,AP3.4,Rgf>Rd>Rb,19,8,0.42105263157894735,True,900-1200 K
+Dg_dislocation_scale_high,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+Dg_dislocation_scale_high,ANP6,Rgf>Rd>Rb,19,1,0.05263157894736842,False,
+Dg_dislocation_scale_high,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+N_gf0_factor_low,AP3.2,Rgf>Rd>Rb,19,0,0.0,False,
+N_gf0_factor_low,AP3.2,Ngf_vol<Nd<Nb,19,0,0.0,False,
+N_gf0_factor_low,AP3.8,Rgf>Rd>Rb,19,0,0.0,False,
+N_gf0_factor_low,AP3.8,Ngf_vol<Nd<Nb,19,0,0.0,False,
+N_gf0_factor_low,AP3.4,Rgf>Rd>Rb,19,0,0.0,False,
+N_gf0_factor_low,AP3.4,Ngf_vol<Nd<Nb,19,0,0.0,False,
+N_gf0_factor_low,ANP6,Rgf>Rd>Rb,19,0,0.0,False,
+N_gf0_factor_low,ANP6,Ngf_vol<Nd<Nb,19,0,0.0,False,
+N_gf0_factor_high,AP3.2,Rgf>Rd>Rb,19,19,1.0,True,900-1800 K
+N_gf0_factor_high,AP3.2,Ngf_vol<Nd<Nb,19,19,1.0,True,900-1800 K
+N_gf0_factor_high,AP3.8,Rgf>Rd>Rb,19,19,1.0,True,900-1800 K
+N_gf0_factor_high,AP3.8,Ngf_vol<Nd<Nb,19,19,1.0,True,900-1800 K
+N_gf0_factor_high,AP3.4,Rgf>Rd>Rb,19,19,1.0,True,900-1800 K
+N_gf0_factor_high,AP3.4,Ngf_vol<Nd<Nb,19,18,0.9473684210526315,True,900-1750 K
+N_gf0_factor_high,ANP6,Rgf>Rd>Rb,19,6,0.3157894736842105,True,900-1150 K
+N_gf0_factor_high,ANP6,Ngf_vol<Nd<Nb,19,6,0.3157894736842105,True,900-1150 K
