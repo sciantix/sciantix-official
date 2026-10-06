@@ -1,3 +1,10 @@
+# ARCHIVED: this script used to live in verification/test_powerPulse/sciantix_plot.py.
+# It was moved here because it does not work for that case and is not part of the
+# testing suite: main() calls plot_temperature_and_fission_rate(), which is commented
+# out (NameError), and the remaining plots refer to HBS columns that are not in the
+# output of the powerPulse case (HBS is off), so they are drawn as zeros.
+# Kept for reference only.
+
 """
 sciantix_plot.py - Plot SCIANTIX (standalone) quantities
 
