@@ -1,0 +1,9 @@
+{
+  "label": "V3_A_Kd4e5_Dv30",
+  "f_n": 0.00055,
+  "K_d": 400000.0,
+  "rho_d": 35000000000000.0,
+  "Dv_dislocation_scale": 30.0,
+  "Dg_dislocation_scale": 15.0,
+  "NGF_AREAL_0": 10000000000000.0
+}

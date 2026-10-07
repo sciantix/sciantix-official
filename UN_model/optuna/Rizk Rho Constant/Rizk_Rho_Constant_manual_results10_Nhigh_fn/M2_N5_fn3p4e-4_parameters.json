@@ -1,0 +1,9 @@
+{
+  "label": "M2_N5_fn3p4e-4",
+  "f_n": 0.00034,
+  "K_d": 600000.0,
+  "rho_d": 40000000000000.0,
+  "Dv_dislocation_scale": 10.0,
+  "Dg_dislocation_scale": 17.0,
+  "NGF_AREAL_0": 10000000000000.0
+}

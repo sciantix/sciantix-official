@@ -1,0 +1,50 @@
+{
+  "L3": {
+    "label": "L3_best_candidate",
+    "f_n": 0.00042,
+    "K_d": 410000.0,
+    "rho_d": 35000000000000.0,
+    "Dv_dislocation_scale": 10.0,
+    "Dg_dislocation_scale": 17.0,
+    "NGF_AREAL_0": 10000000000000.0
+  },
+  "burnup_test_percent_FIMA": 1.1,
+  "fuel_diameter_mm": 8.3,
+  "energy_per_fission_J": 3.20435313e-11,
+  "power_sweep_kW_m": [
+    100.0,
+    110.0,
+    119.0,
+    125.0,
+    130.0
+  ],
+  "fission_rate_sweep": [
+    {
+      "linear_power_kW_m": 100.0,
+      "fission_rate": 5.767844763153473e+19
+    },
+    {
+      "linear_power_kW_m": 110.0,
+      "fission_rate": 6.34462923946882e+19
+    },
+    {
+      "linear_power_kW_m": 119.0,
+      "fission_rate": 6.863735268152632e+19
+    },
+    {
+      "linear_power_kW_m": 125.0,
+      "fission_rate": 7.209805953941841e+19
+    },
+    {
+      "linear_power_kW_m": 130.0,
+      "fission_rate": 7.498198192099515e+19
+    }
+  ],
+  "DT_H": 1.0,
+  "N_MODES": 40,
+  "temperature_range_K": [
+    900.0,
+    1800.0,
+    25.0
+  ]
+}
