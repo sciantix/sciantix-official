@@ -3,7 +3,7 @@ Gap Partial Pressure
 
 This model computes the *partial pressure in the fuel–cladding gap*
 based on thermodynamic equilibrium relations. The intent is to represent
-oxidizing conditions in the gap atmosphere when stoichiometry deviation
+oxidising conditions in the gap atmosphere when stoichiometry deviation
 effects are activated.
 
 Reference

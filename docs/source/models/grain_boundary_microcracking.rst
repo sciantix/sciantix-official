@@ -63,7 +63,7 @@ Case 1: temperature-transient micro-cracking
 - Driving increment: :math:`\Delta x = \Delta T`
 - Microcracking parameter: :math:`m_x = \mathrm{d}m/\mathrm{d}T`
 
-The model uses a sigmoid-like function centered at an inflection temperature that
+The model uses a sigmoid-like function centred at an inflection temperature that
 depends on burnup:
 
 .. math::

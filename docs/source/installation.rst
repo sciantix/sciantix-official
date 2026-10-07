@@ -145,7 +145,7 @@ To build SCIANTIX as a static library for coupling with external fuel performanc
 
     make
 
-or with parallelization:
+or with parallelisation:
 
 .. code-block:: bash
 

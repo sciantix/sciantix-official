@@ -63,7 +63,7 @@ SCIANTIX is implemented in modern C++ (C++17 standard) with a fully object-orien
 
 **Core Components**
 
-The SCIANTIX codebase is organized into several primary modules:
+The SCIANTIX codebase is organised into several primary modules:
 
 1. **Classes** (`classes/`): Fundamental simulation objects
    
@@ -105,7 +105,7 @@ Workflow
 
 A typical SCIANTIX simulation follows these stages:
 
-1. **Initialization**
+1. **Initialisation**
    
    - Read input files containing:
      - Simulation settings (time stepping, convergence criteria)
@@ -224,7 +224,7 @@ The code is validated against experimental data through a comprehensive testing 
 - Intragranular and intergranular swelling experiments
 - Helium behaviour under annealing
 - Fission gas release measurements
-- High-burnup structure characterization
+- High-burnup structure characterisation
 
 Further Reading
 ---------------

@@ -26,7 +26,7 @@ SCIANTIX is tested at four levels, using the terminology of :ref:`Oberkampf and 
      - ``verification/`` (registered groups ``test_*`` and the standalone MMS suite ``Operahpc_5.1``)
    * - **Validation**
      - The models agree with experiments.
-     - Experimental data (``data/`` folders, digitized from the cited papers)
+     - Experimental data (``data/`` folders, digitised from the cited papers)
      - ``validation/`` (cases, data and plotting scripts; ``parity_by_topic.py`` gives one parity plot per phenomenon)
 
 Please note that:
@@ -398,4 +398,4 @@ oxygenpotential-freshfuel / -burnup (``--oxygenpotential-freshfuel``, ``--oxygen
 
 **Test purpose.** The oxygen potential of the code against the measurements (``plot.py`` in each group, ``combined_parity_plot.py`` for the fresh/irradiated and Kato/OC parity figure, 323 cases in total). In contrast to ``mox-po2``, the reference is experimental, not the correlation itself.
 
-**Reference.** Experimental data digitized from the original sources compiled in the NEA/NSC/R(2024)1 review (:ref:`NEA 2025 <ref-nea2025>`). Details in ``validation/oxygenpotential/README.md``.
+**Reference.** Experimental data digitised from the original sources compiled in the NEA/NSC/R(2024)1 review (:ref:`NEA 2025 <ref-nea2025>`). Details in ``validation/oxygenpotential/README.md``.
