@@ -109,10 +109,13 @@ A typical SCIANTIX simulation follows these stages:
 
 1. **Initialisation**
    
-   - Read input files containing:
-     - Simulation settings (time stepping, convergence criteria)
-     - Scaling factors for model parameters
-     - Initial conditions (temperature history, burnup rate, fuel properties)
+   - Read the input files (see :doc:`input_files`):
+   
+     - model flags and optional time-step settings (``input_settings.txt``)
+     - the history of temperature, fission rate and hydrostatic stress (``input_history.txt``)
+     - the initial state of the grain and of the fuel (``input_initial_conditions.txt``)
+     - optional scaling factors for model parameters (``input_scaling_factors.txt``)
+   
    - Create and initialise simulation objects (matrix, gas species, systems)
    - Set up numerical solvers and time integrators
 
@@ -147,68 +150,16 @@ A typical SCIANTIX simulation follows these stages:
    - Generate output files with fuel properties and gas behaviour predictions
    - Store history information for subsequent time steps
 
-**Input Files Structure**
+**Input Files**
 
-SCIANTIX requires three main input files that define the simulation setup, history, and initial conditions:
-
-1. **input_settings.txt**: Model selection and solver configuration
-   
-   A single-column text file with integer flags selecting which physics models and numerical methods to use. Example structure:
-   
-   .. code-block:: plaintext
-   
-       1    #    iGrainGrowth (0= no, 1= Ainscough, 2= Van Uffelen)
-       1    #    iFissionProductDiffusivity (0= constant, 1= Turnbull et al.)
-       1    #    iDiffusionSolver (1= SDA with quasi-stationarity, 2= without)
-       1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al.)
-       ...
-   
-   Each line contains an integer flag followed by ``#``, the setting's key and a description of the
-   available options. Settings are looked up by key, so the order of the lines does not matter.
-
-2. **input_history.txt**: Time-dependent conditions
-   
-   A four-column text file defining the simulation history with linear interpolation between specified points:
-   
-   .. code-block:: plaintext
-   
-       Time(h)    Temperature(K)    FissionRate(fiss/m³-s)    HydrostaticStress(MPa)
-       0          1273              1e19                      0
-       5500       1273              1e19                      0
-   
-   The code automatically interpolates between these rows using a fixed number of time steps.
-
-3. **input_initial_conditions.txt**: Physical parameters and initial state
-   
-   One entry per line, in the same keyed format as ``input_settings.txt``:
-   
-   .. code-block:: plaintext
-   
-       5.0e-06                    # Grain_radius[0] (initial grain radius (m))
-       0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_Xe (initial Xe (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
-       0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_Kr (initial Kr (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
-       0.0 0.0 0.0 0.0 0.0 0.0    # Initial_composition_He (initial He (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released)
-       ...
-   
-   Entries are looked up by key; an entry left out defaults to 0.
-
-4. **input_scaling_factors.txt** (Optional): Parameter adjustment
-   
-   Scaling factors applied to model parameters, in the same keyed format; a factor left out defaults to 1.0:
-   
-   .. code-block:: plaintext
-   
-       1.0    # sf_resolution_rate (scaling factor - resolution rate)
-       1.0    # sf_trapping_rate (scaling factor - trapping rate)
-       1.0    # sf_nucleation_rate (scaling factor - nucleation rate)
-       ...
+SCIANTIX reads up to four plain-text files from the case folder: ``input_settings.txt`` (model selection), ``input_history.txt`` (temperature, fission rate and hydrostatic stress versus time), ``input_initial_conditions.txt`` (initial state) and the optional ``input_scaling_factors.txt``. Their format, all keys and options, and the model each flag refers to are described in :doc:`input_files`; a step-by-step case is given in :doc:`examples`.
 
 **Input and Output**
 
 - **Inputs**: Temperature history, irradiation conditions, fuel properties, initial conditions, simulation settings, and optional parameter scaling factors
 - **Outputs**: Fission gas release fractions, swelling estimates, temperature-dependent accelerations, bubble densities, burnup-dependent phenomena
 
-For detailed input-file templates and examples, see the :doc:`examples` page and the utilities documentation at ``utilities/InputExplanation.md``.
+For the input-file format see :doc:`input_files`; for a worked example see :doc:`examples`.
 
 **Numerical Stability and Efficiency**
 
@@ -235,6 +186,7 @@ For detailed information on specific models, solvers, and usage, refer to:
 
 - :doc:`models`: Physics-based models implemented in SCIANTIX
 - :doc:`solvers`: Numerical solution methods and verification
-- :doc:`examples`: Practical examples and use cases
+- :doc:`input_files`: Structure of the input files and meaning of the model flags
+- :doc:`examples`: Step-by-step tutorial and use cases
 - :doc:`testing`: Verification and validation against experimental data
 - :doc:`api/index_api`: Application Programming Interface documentation

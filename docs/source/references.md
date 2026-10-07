@@ -171,6 +171,7 @@
 (ref-luzzi2018)=
 <a href="https://www.sciencedirect.com/science/article/pii/S0029549318300578" target="_blank">Luzzi L. et al (2018). Helium diffusivity in oxide nuclear fuel: Critical data analysis and new correlations. Nuclear Engineering and Design, 330, 265-271.</a>
 
+(ref-reynolds1979)=
 <a href="https://www.sciencedirect.com/science/article/abs/pii/0022311579900357" target="_blank">Reynolds G.L. and Burton B. (1979). Grain-boundary diffusion in uranium dioxide: The correlation between sintering and creep and a reinterpretation of creep mechanism. Journal of Nuclear Materials, 82, 22-25.</a>
 
 (ref-bittel1969)=
@@ -209,10 +210,13 @@
 
 <a href="https://www.sciencedirect.com/science/article/abs/pii/0022311594902186" target="_blank">Evans J.H. (1994). Bubble diffusion to grain boundaries in UO2 and metals during annealing: a new approach. Journal of Nuclear Materials, 210, 21-29.</a>
 
+(ref-ham1958)=
 <a href="https://www.sciencedirect.com/science/article/abs/pii/0022369758900532" target="_blank">Ham F.S. (1958). Theory of diffusion-limited precipitation. Journal of Physics and Chemistry of Solids, 6, 335-351.</a>
 
+(ref-olander2006)=
 <a href="https://www.sciencedirect.com/science/article/pii/S002231150600198X" target="_blank">Olander D.R. and Wongsawaeng D. (2006). Re-solution of fission gas – A review: Part I. Intragranular bubbles. Journal of Nuclear Materials, 354, 94-109.</a>
 
 <a href="https://link.springer.com/article/10.1134/S0018151X07040177" target="_blank">Ronchi C. (2007). Thermophysical properties affecting safety and performance of nuclear fuel. High Temperatures, 45, 552-571.</a>
 
+(ref-turnbull1971)=
 <a href="https://www.sciencedirect.com/science/article/abs/pii/0022311571900754" target="_blank">Turnbull J.A. (1971). The re-solution of fission-gas atoms from bubbles during the irradiation of UO2 at an elevated temperature. Journal of Nuclear Materials, 38, 203.</a>

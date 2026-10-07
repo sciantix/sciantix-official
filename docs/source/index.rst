@@ -65,6 +65,7 @@ Next Steps
 
    overview
    installation
+   input_files
    examples
    testing
    references
