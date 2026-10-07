@@ -1,0 +1,9 @@
+{
+  "label": "FN_1e-6_Rizk",
+  "f_n": 1e-06,
+  "K_d": 410000.0,
+  "rho_d": 35000000000000.0,
+  "Dv_dislocation_scale": 10.0,
+  "Dg_dislocation_scale": 17.0,
+  "NGF_AREAL_0": 10000000000000.0
+}

@@ -1,0 +1,9 @@
+{
+  "label": "FN_4p2e-4_L3",
+  "f_n": 0.00042,
+  "K_d": 410000.0,
+  "rho_d": 35000000000000.0,
+  "Dv_dislocation_scale": 10.0,
+  "Dg_dislocation_scale": 17.0,
+  "NGF_AREAL_0": 10000000000000.0
+}
