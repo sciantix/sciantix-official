@@ -150,13 +150,9 @@ A typical SCIANTIX simulation follows these stages:
    - Generate output files with fuel properties and gas behaviour predictions
    - Store history information for subsequent time steps
 
-**Input Files**
-
-SCIANTIX reads up to four plain-text files from the case folder: ``input_settings.txt`` (model selection), ``input_history.txt`` (temperature, fission rate and hydrostatic stress versus time), ``input_initial_conditions.txt`` (initial state) and the optional ``input_scaling_factors.txt``. Their format, all keys and options, and the model each flag refers to are described in :doc:`input_files`; a step-by-step case is given in :doc:`examples`.
-
 **Input and Output**
 
-- **Inputs**: Temperature history, irradiation conditions, fuel properties, initial conditions, simulation settings, and optional parameter scaling factors
+- **Inputs**: SCIANTIX reads up to four plain-text files from the case folder, ``input_settings.txt`` (model selection), ``input_history.txt`` (temperature, fission rate and hydrostatic stress versus time), ``input_initial_conditions.txt`` (initial state, fuel properties) and the optional ``input_scaling_factors.txt``.
 - **Outputs**: Fission gas release fractions, swelling estimates, temperature-dependent accelerations, bubble densities, burnup-dependent phenomena
 
 For the input-file format see :doc:`input_files`; for a worked example see :doc:`examples`.
