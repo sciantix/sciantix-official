@@ -3,6 +3,8 @@ SCIANTIX documentation
 
 **SCIANTIX** is a physics-based meso-scale simulation code for modelling the behaviour of nuclear fuel grains. It bridges the gap between atomistic simulations and engineering-scale fuel performance codes.
 
+SCIANTIX is intended for nuclear fuel performance researchers, code developers, and advanced students working on mechanistic modelling of fission gas behaviour.
+
 .. grid:: 1 1 2 2
     :gutter: 3
 

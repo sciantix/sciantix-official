@@ -13,6 +13,8 @@ Currently, SCIANTIX is validated against experimental data for the following phe
 - **Helium behaviour**: Diffusion, solubility, and thermal re-solution of helium under annealing conditions
 - **High-burnup structure (HBS) formation**: Evolution of porosity at high burnups
 
+SCIANTIX is intended for nuclear fuel performance researchers, code developers, and advanced students working on mechanistic modelling of fission gas behaviour.
+
 SCIANTIX employs **physics-based rate-theory models** rather than empirical correlations, enabling better integration with lower-length scale calculations and improved predictive capability. The engineering-compatible design allows SCIANTIX to operate both as an independent tool for separate-effect calculations and as an embedded module within industrial fuel performance codes (FPCs) such as TRANSURANUS, FRAPCON/FRAPTRAN, and OFFBEAT.
 
 Conceptual Introduction
