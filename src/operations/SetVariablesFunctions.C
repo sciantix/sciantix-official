@@ -390,22 +390,14 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          toOutputHighBurnupStructure),
 		// author: E.Cappellari, POLIMI-CEA 2026
         // Fragmentation of the HBS, iHighBurnupStructureFragmentation > 0.
-        SciantixVariable("HBS fragmented fraction",
-                         "(/)",
-                         Sciantix_variables[204],
-                         Sciantix_variables[204],
-                         toOutputFragmentation),
-        SciantixVariable("HBS burst release fraction",
-                         "(/)",
-                         Sciantix_variables[205],
-                         Sciantix_variables[205],
-                         toOutputFragmentation),
-        SciantixVariable("HBS gas retention fraction",
-                         "(/)",
-                         Sciantix_variables[206],
-                         Sciantix_variables[206],
-                         toOutputFragmentation),
-        SciantixVariable("HBS fragment size", "(m)", Sciantix_variables[207], Sciantix_variables[207], toOutputFragmentation),
+        SciantixVariable(
+            "HBS fragmented fraction", "(/)", Sciantix_variables[204], Sciantix_variables[204], toOutputFragmentation),
+        SciantixVariable(
+            "HBS burst release fraction", "(/)", Sciantix_variables[205], Sciantix_variables[205], toOutputFragmentation),
+        SciantixVariable(
+            "HBS gas retention fraction", "(/)", Sciantix_variables[206], Sciantix_variables[206], toOutputFragmentation),
+        SciantixVariable(
+            "HBS fragment size", "(m)", Sciantix_variables[207], Sciantix_variables[207], toOutputFragmentation),
         SciantixVariable(
             "HBS pore pressure", "(Pa)", Sciantix_variables[208], Sciantix_variables[208], toOutputFragmentation),
         SciantixVariable("HBFF reference temperature", "(K)", Sciantix_variables[209], Sciantix_variables[209], 0),
