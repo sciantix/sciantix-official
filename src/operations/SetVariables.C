@@ -41,11 +41,11 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputGrainBoundary       = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() != 0,
          // author: E.Cappellari, POLIMI-CEA 2026
-         toOutputLandauSubstructure      = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
-         toOutputFragmentation          = input_variable["iHighBurnupStructureFragmentation"].getValue() != 0,
+        toOutputLandauSubstructure = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
+         toOutputFragmentation     = input_variable["iHighBurnupStructureFragmentation"].getValue() != 0,
          // end of author: E.Cappellari, POLIMI-CEA 2026
-         toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
-         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
+        toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
+         toOutputChromiumContent       = input_variable["iChromiumSolubility"].getValue() > 0;
 
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));

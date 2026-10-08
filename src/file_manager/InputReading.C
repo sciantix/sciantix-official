@@ -229,9 +229,9 @@ void InputReading(int                  Sciantix_options[],
 
             std::istringstream line_stream(line);
             // author: E.Cappellari, POLIMI-CEA 2026
-            double             value(0.0);
+            double value(0.0);
             if (line_stream >> value && value > 0.0)
-                Number_of_time_steps_per_interval = value; // end of author: E.Cappellari, POLIMI-CEA 2026
+                Number_of_time_steps_per_interval = value;  // end of author: E.Cappellari, POLIMI-CEA 2026
             else
                 // Not a warning: silently falling back to the default would run the case at
                 // the wrong time resolution and still produce a plausible output file.

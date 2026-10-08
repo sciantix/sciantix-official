@@ -54,7 +54,7 @@ std::vector<std::string> getInputVariableNames()
                                       "iChromiumSolubility",
                                       "iDensification",
                                       "iReleaseMode",
-                                      "iHighBurnupStructureFragmentation"}; // author: E.Cappellari, POLIMI-CEA 2026
+                                      "iHighBurnupStructureFragmentation"};  // author: E.Cappellari, POLIMI-CEA 2026
 
     return names;
 }
@@ -115,11 +115,11 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          // author: E.Cappellari, POLIMI-CEA 2026
-                                                         bool   toOutputLandauSubstructure,
-                                                         bool   toOutputFragmentation,
+                                                         bool toOutputLandauSubstructure,
+                                                         bool toOutputFragmentation,
                                                          // end of author: E.Cappellari, POLIMI-CEA 2026
-                                                         bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent)
+                                                         bool toOutputStoichiometryDeviation,
+                                                         bool toOutputChromiumContent)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -388,7 +388,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[200],
                          Sciantix_variables[200],
                          toOutputHighBurnupStructure),
-		// author: E.Cappellari, POLIMI-CEA 2026
+        // author: E.Cappellari, POLIMI-CEA 2026
         // Fragmentation of the HBS, iHighBurnupStructureFragmentation > 0.
         SciantixVariable(
             "HBS fragmented fraction", "(/)", Sciantix_variables[204], Sciantix_variables[204], toOutputFragmentation),
