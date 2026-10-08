@@ -77,7 +77,7 @@ void Simulation::execute()
 
     HighBurnupStructurePorosity();
 
-    HighBurnupStructureFragmentation(); // author: E.Cappellari, POLIMI-CEA 2026
+    HighBurnupStructureFragmentation();  // author: E.Cappellari, POLIMI-CEA 2026
 
     GrainBoundaryMicroCracking();
 

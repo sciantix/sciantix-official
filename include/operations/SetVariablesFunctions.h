@@ -30,10 +30,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          // author: E.Cappellari, POLIMI-CEA 2026
-                                                         bool   toOutputLandauSubstructure,
-                                                         bool   toOutputFragmentation,
+                                                         bool toOutputLandauSubstructure,
+                                                         bool toOutputFragmentation,
                                                          // end of author: E.Cappellari, POLIMI-CEA 2026
-                                                         bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent);
+                                                         bool toOutputStoichiometryDeviation,
+                                                         bool toOutputChromiumContent);
 
 std::vector<std::string> getScalingFactorsNames();

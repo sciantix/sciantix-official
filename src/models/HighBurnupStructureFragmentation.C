@@ -11,7 +11,7 @@
 //  Version: 2.2.1                                                                  //
 //  Year: 2026                                                                      //
 //  Authors: E. Cappellari                                                          //
-//  author: E.Cappellari, POLIMI-CEA 2026                                           //                                  //
+//  author: E.Cappellari, POLIMI-CEA 2026                                           // //
 //////////////////////////////////////////////////////////////////////////////////////
 
 // Fine fragmentation of the high-burnup structure (HBS), iHighBurnupStructureFragmentation = 1, 2, 3, 4
@@ -422,10 +422,10 @@ void Simulation::HighBurnupStructureFragmentation()
             //  bisection each step so that the gas of the classes, n_i = EoS^-1(p_i; V_i, T), gives the SCIANTIX mean,
             //  sum_i w_i n_i = n [R] (mass-consistent). Rupture of a class, J19 Eq. 22 on the class radius: p_i >=
             //  P_cr,i = 2 gamma / R_i + [sigma_hbs^cr (1 - xi) + P_h] / xi. Interconnected pores, xi >= 0.29 (J19): the
-            //  whole population is open. D* = sum_i w_i [broken],   G* = sum_i w_i n_i [broken] / sum_i w_i n_i. Progressive
-            //  rupture [?]: the instantaneous (D*, G*) are approached with a relaxation time tau (J19 Table 3 gives tau
-            //  = 2 s to the interconnection and microcracking modes; its rupture mode is instantaneous). D <- D + (D* -
-            //  D)(1 - exp(-dt / tau)).
+            //  whole population is open. D* = sum_i w_i [broken],   G* = sum_i w_i n_i [broken] / sum_i w_i n_i.
+            //  Progressive rupture [?]: the instantaneous (D*, G*) are approached with a relaxation time tau (J19 Table
+            //  3 gives tau = 2 s to the interconnection and microcracking modes; its rupture mode is instantaneous). D
+            //  <- D + (D* - D)(1 - exp(-dt / tau)).
             reference = ": Jernkvist (2019), EPJ Nucl. Sci. Technol. 5, 11, Eq. 21-22; progressive rupture as "
                         "GrainBoundaryMicroCracking";
 
