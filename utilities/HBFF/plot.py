@@ -374,6 +374,67 @@ def kulacsy_release_population(T, xi, Ph, T_ss, Ph_ss):
     return float((gas * broken).sum() / gas.sum())
 
 
+def plot_pore_eos():
+    """p_g against the Xe atoms per pore: hard-sphere EoS of HighBurnupStructurePorosity.C, ideal gas, cap eta = 0.65."""
+    R = 0.35e-6  # (m) mean pore radius at the end of the NFIR base irradiation (L11)
+    V = 4.0 / 3.0 * np.pi * R**3
+    kB = 1.380649e-23
+    fig, ax = plt.subplots(figsize=(6.4, 4.2))
+    style(ax)
+    for T, color in ((600.0, SEQ_BLUE[1]), (1000.0, SEQ_BLUE[3]), (1500.0, SEQ_BLUE[4])):
+        d = 4.45e-10 * (0.8542 - 0.03996 * np.log(T / 231.2))
+        v = np.pi / 6.0 * d**3
+        n = np.linspace(1.0e6, 1.6 * 0.65 * V / v, 400)
+        eta = np.minimum(n * v / V, 0.65)
+        Z = (1 + eta + eta**2 - eta**3) / (1 - eta) ** 3
+        p = n * kB * T * Z / V
+        ax.plot(n, p / 1e6, color=color, lw=1.8, label=f"hard sphere, {T:.0f} K")
+        ax.plot(n, n * kB * T / V / 1e6, color=color, lw=1.0, ls="--")
+        n_cap = 0.65 * V / v
+        p_cap = n_cap * kB * T * (1 + 0.65 + 0.65**2 - 0.65**3) / (1 - 0.65) ** 3 / V
+        ax.plot([n_cap], [p_cap / 1e6], "o", color=color, ms=6, mec=INK, zorder=5)
+    ax.plot([], [], color=MUTED, lw=1.0, ls="--", label="ideal gas")
+    ax.plot([], [], "o", color=MUTED, mec=INK, label=r"cap $\eta=0.65$ (linear beyond)")
+    ax.set_yscale("log")
+    ax.set_ylim(1.0, 1.0e5)
+    ax.set_xlabel("Xe atoms per pore  n")
+    ax.set_ylabel(r"pore pressure  $p_g$  (MPa)")
+    ax.set_title(r"Pore pressure, $R=0.35\ \mu$m", fontsize=10, color=INK)
+    ax.legend(frameon=False, fontsize=8)
+    savefig(fig, "pore_eos.png")
+
+
+def plot_pore_eos_volume():
+    """p_g against the pore volume at fixed n and T: hard-sphere EoS, ideal gas, cap eta = 0.65."""
+    T, kB = 1000.0, 1.380649e-23
+    d = 4.45e-10 * (0.8542 - 0.03996 * np.log(T / 231.2))
+    v = np.pi / 6.0 * d**3
+    V_ref = 4.0 / 3.0 * np.pi * (0.35e-6) ** 3  # (m3) mean pore at the end of the NFIR base irradiation (L11)
+    fig, ax = plt.subplots(figsize=(6.4, 4.2))
+    style(ax)
+    for n, color in ((1.0e9, SEQ_BLUE[1]), (2.0e9, SEQ_BLUE[3]), (4.0e9, SEQ_BLUE[4])):
+        V_cap = n * v / 0.65
+        V = np.logspace(np.log10(0.6 * V_cap), np.log10(1.0e-18), 400)
+        eta = np.minimum(n * v / V, 0.65)
+        Z = (1 + eta + eta**2 - eta**3) / (1 - eta) ** 3
+        ax.plot(V * 1e18, n * kB * T * Z / V / 1e6, color=color, lw=1.8, label=f"hard sphere, n = {n:.0e}")
+        ax.plot(V * 1e18, n * kB * T / V / 1e6, color=color, lw=1.0, ls="--")
+        Zc = (1 + 0.65 + 0.65**2 - 0.65**3) / (1 - 0.65) ** 3
+        ax.plot([V_cap * 1e18], [n * kB * T * Zc / V_cap / 1e6], "o", color=color, ms=6, mec=INK, zorder=5)
+    ax.axvline(V_ref * 1e18, color=MUTED, lw=1.0, ls=":")
+    ax.text(V_ref * 1e18 * 1.03, 2.0, r"$R=0.35\ \mu$m", color=INK2, fontsize=8)
+    ax.plot([], [], color=MUTED, lw=1.0, ls="--", label="ideal gas")
+    ax.plot([], [], "o", color=MUTED, mec=INK, label=r"cap $\eta=0.65$ (smaller volume: linear in $1/V$)")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_ylim(1.0, 1.0e5)
+    ax.set_xlabel(r"pore volume  $V_p$  ($\mu$m$^3$)")
+    ax.set_ylabel(r"pore pressure  $p_g$  (MPa)")
+    ax.set_title("Pore pressure at fixed gas, T = 1000 K", fontsize=10, color=INK)
+    ax.legend(frameon=False, fontsize=8)
+    savefig(fig, "pore_eos_volume.png")
+
+
 def plot_kulacsy_classes():
     # only option 2 resolves pressure per pore-size class (limitation L1: the others assume a
     # uniform pressure); this is the one place a genuine pressure/gas *distribution* over the pore
@@ -546,6 +607,8 @@ FIGURES = {
     "release_budget": plot_release_budget,
     "pressure_time": plot_pressure_time,
     "kulacsy_class_breakdown": plot_kulacsy_classes,
+    "pore_eos": plot_pore_eos,
+    "pore_eos_volume": plot_pore_eos_volume,
 }
 
 
