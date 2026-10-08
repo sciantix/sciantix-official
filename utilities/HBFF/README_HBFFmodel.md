@@ -71,24 +71,55 @@ The mean pressure $\bar p=p_{\rm EoS}(\bar n,\bar V,T)$ is the pressure of the v
 
 #### 4. Rupture criterion per class
 
-J19 Eq. 22 (the grain-face criterion of Lemoine et al. 2000 / Olander, applied to the HBS pores, J19 section 2.3.3 (2)), on the class radius, with $\sigma_1\to-P_h$ as J19 does:
+Class $i$ breaks when the maximum first principal stress at the pore wall exceeds the rupture stress $\sigma_R$ (OHP D5.2 section 2.2.2). The linear elastic stress is $\hat s_i\,(p_i-P_h)$ above the confining stress, with $\hat s_i$ the **stress concentration factor** of the pore, so
 
 $$
-P_{cr,i}=\frac{2\gamma}{R_i}+\frac{\sigma^{cr}_{hbs}\,(1-\xi)+P_h}{\xi},\qquad \gamma=1.1\ \text{N/m}\ (\ \text{UO2HBS}),\quad \sigma^{cr}_{hbs}=21\ \text{MPa (J19 Table 4)}
+\hat s_i\,(p_i-P_h)\ \ge\ \sigma_R+P_h\quad\Longleftrightarrow\quad
+P_{cr,i}=P_h+\frac{2\gamma}{R_i}+\frac{\sigma_R+P_h}{\hat s_i},\qquad \gamma=1.1\ \text{N/m}\ (\text{UO2HBS})
 $$
 
-A class breaks when $p_i\ge P_{cr,i}$. Interconnected pores, $\xi\ge\xi_{perc}=0.29$ (J19, end of section 2.3.2): the whole population is open, $D^*=G^*=1$.
+The capillary term $2\gamma/R_i$ is not in OHP **[?]**; it is kept as in J19.
+
+**Stress concentration factor.** $\hat s_i=\sigma_I^{max}|_i/p_{in}$ is computed by MMM on a periodic RVE of random spherical pores, linear elasticity, zero macroscopic strain, unit pressure in the pores. It collects the effects of the neighbours, the radius distribution and the porosity. The heterogeneity of the pore arrangement is the main source of the spread of the critical pressures. $\hat s_i$ is the only entry of the micromechanics in the model and acts on the rupture only, not on $p_i$ or on the venting.
+
+**Reduction in the SCIANTIX state.** Regression of $\ln\hat s_i$ on what SCIANTIX knows, the neighbours giving the scatter ($c_0$, $c_1$ are named so as not to clash with the closure exponent $a$ of 2):
 
 $$
-D^*=\sum_i w_i\,[p_i\ge P_{cr,i}],\qquad
-G^*=\frac{\sum_i w_i\,n_i\,[p_i\ge P_{cr,i}]}{\sum_i w_i\,n_i}
+\ln\hat s_i=c_0+c_1\ln\frac{R_i}{R_V}+\varepsilon,\qquad \varepsilon\sim\mathcal N(0,\sigma_\varepsilon^2)
+$$
+$$
+ (c_0,c_1,\sigma_\varepsilon)=f(\xi,\mathrm{CV}_n,\bar\eta)\ \text{tabulated offline from MMM}
+$$
+
+The stress on pore $i$ is $\sigma_i=\sum_jS_{ij}(p_j-P_h)$ with the influence coefficients $S_{ij}$ of the RVE, hence $\hat s_i=S_{ii}+\sum_{j\ne i}S_{ij}\,(p_j-P_h)/(p_i-P_h)$. It depends on the pressure ratios $p_j/p_i$ of the classes, and these are fixed by $(\bar\eta,\mathrm{CV}_n,a)$ (9). For $a=3$ (uniform pressure) it is the OHP case.
+
+**Mean-field limit.** With $\hat s=\xi/(1-\xi)$ and $\sigma_R\to\sigma^{cr}_{hbs}=21$ MPa the criterion is J19 Eq. 22 (Lemoine et al. 2000 / Olander, J19 section 2.3.3 (2)), with $\sigma_1\to-P_h$ as J19 does:
+
+$$
+P_{cr,i}=\frac{2\gamma}{R_i}+\frac{\sigma^{cr}_{hbs}\,(1-\xi)+P_h}{\xi}
+$$
+
+$\hat s_i$ replaces $\xi/(1-\xi)$. 
+
+Interconnected pores, $\xi\ge\xi_{perc}=0.29$ (J19, end of section 2.3.2): the whole population is open, $D^*=G^*=1$.
+
+$$
+D^*=\sum_i w_i\,b^*_i,\qquad
+G^*=\frac{\sum_i w_i\,n_i\,b^*_i}{\sum_i w_i\,n_i},\qquad b^*_i=\text{broken probability of class }i\ (5)
 $$
 
 $D^*$ is a number fraction while $G^*$ a gas fraction.
 
 #### 5. Progressive rupture per class
 
-Each class carries its own broken fraction $\beta_i\in[0,1]$. The instantaneous state is $b^*_i=[p_i\ge P_{cr,i}]$ ($b^*_i=1$ for all classes if $\xi\ge\xi_{perc}$). J19 breaks the HBS instantaneously (Table 3 gives $\tau=0$ for the grain-boundary rupture) and relaxes the interconnection and microcracking modes with $\tau=2$ s. Option 4 applies the same first-order relaxation to each class, as the intactness ODE of `GrainBoundaryMicroCracking.C`:
+Each class carries its own broken fraction $\beta_i\in[0,1]$. The instantaneous state $b^*_i$ is the probability that a pore of class $i$ has $\hat s\,(p_i-P_h)\ge\sigma_R+P_h$, with $\ln\hat s\sim\mathcal N(\mu_i,\sigma_\varepsilon^2)$, $\mu_i=c_0+c_1\ln(R_i/R_V)$ (4):
+
+$$
+b^*_i=\tfrac12\,\mathrm{erfc}\!\left(\frac{\ln\hat s_{c,i}-\mu_i}{\sqrt2\,\sigma_\varepsilon}\right),\qquad
+\hat s_{c,i}=\frac{\sigma_R+P_h}{p_i-P_h-2\gamma/R_i}\quad(b^*_i=0\ \text{if the denominator}\le0)
+$$
+
+For $\sigma_\varepsilon\to0$ it is the step $b^*_i=[p_i\ge P_{cr,i}]$; $b^*_i=1$ for all classes if $\xi\ge\xi_{perc}$. The spread of $\hat s$ makes the rupture progressive in pressure inside each class (OHP: the slow onset of the FGR curve is the fracture of the most interacting pores). J19 breaks the HBS instantaneously (Table 3 gives $\tau=0$ for the grain-boundary rupture) and relaxes the interconnection and microcracking modes with $\tau=2$ s. Option 4 applies the same first-order relaxation to each class, as the intactness ODE of `GrainBoundaryMicroCracking.C`:
 
 $$
 \beta_i\leftarrow\beta_i+\max(b^*_i-\beta_i,0)\,\bigl(1-e^{-\Delta t/\tau}\bigr),\qquad \tau=2\ \text{s}
@@ -150,20 +181,22 @@ In the variable $x_i=R_i/R_V$, $p_i/\bar p$ and $w_i$ depend on three numbers on
 The reduction stops at the gas pressure, the rupture criterion has absolute terms,
 
 $$
-P^*_{cr,i}=\frac{v_{Xe}}{k_BT}\Bigl[\frac{2\gamma}{R_i}+\frac{\sigma^{cr}_{hbs}(1-\xi)+P_h}{\xi}\Bigr],
+P^*_{cr,i}=\frac{v_{Xe}}{k_BT}\Bigl[P_h+\frac{2\gamma}{R_i}+\frac{\sigma_R+P_h}{\hat s_i}\Bigr],
 $$
 
-so $D^*$ and $G^*$ depend also on $R_V$, $T$, $\xi$ and $P_h$ separately. The universal curve describes the gas pressure of the classes, not the rupture fraction.
+so $D^*$ and $G^*$ depend also on $R_V$, $T$, $\sigma_R$ and $P_h$ separately. The universal curve describes the gas pressure of the classes, not the rupture fraction. The factor $\hat s_i$ depends on the pressure ratios of the classes, so its table is indexed by the same normalised variables, $(\xi,\mathrm{CV}_n,\bar\eta,x_i)$ at the given $a$, and not by $R_V$, $\bar n$, $T$ separately.
 
 ### Parameters
 
 | symbol | value | tag | source | code line |
 |---|---|---|---|---|
-| $\sigma^{cr}_{hbs}$ | 21 MPa | [P] | J19 Table 4 (calibrated by Jernkvist on IFA-650 and annealing data, not here) | 406 |
+| $\sigma_R$ | 275 MPa | [P] | OHP D5.2 section 2.2.2 (calibrated on the NFIR-V FGR curve, so the option is not fit-free) | — |
+| $\sigma^{cr}_{hbs}$ | 21 MPa | [P] | J19 Table 4, mean-field baseline of 4 (calibrated by Jernkvist on IFA-650 and annealing data, not here) | 406 |
 | $\xi_{perc}$ | 0.29 | [P] | J19 section 2.3.2 | 408 |
 | $\tau$ | 2 s | [?] | J19 Table 3, interconnection and microcracking modes | 409 |
 | $\gamma$ | 1.1 N/m | [R] | `SetMatrix.C`, UO2HBS | 410 |
 | hard-sphere EoS, $\eta_{max}$ | $d_{Xe}(T)$, 0.65 | [R] | `HighBurnupStructurePorosity.C` | 114–116 |
+| $c_0,c_1,\sigma_\varepsilon$ | $f(\xi,\mathrm{CV}_n,\bar\eta)$ | [?] | MMM tables, to be computed | — |
 | closure exponent $a$ | 2.5 | [?] | none; $a=3$ is a uniform pressure | — |
 | classes | 81, $\pm4s$ | [N] | K15 Eq. 6 | — |
 | $A_f$, $d_{max}$ | $2\pi R_{WS}^2$, 500 µm | [?] | none; $d_{max}$ from NEA §3 | 593–594 |
@@ -174,7 +207,9 @@ so $D^*$ and $G^*$ depend also on $R_V$, $T$, $\xi$ and $P_h$ separately. The un
 
 - **L1/L16 [?]** the closure $n_i\propto R_i^a$ is a modelling choice, not a measured distribution; $a$ is not determined by the SCIANTIX moments (NEA reports Hiernaut's estimate that large and small pores have similar pressure, which is $a=3$).
 - **L16 [?]** $\tau=2$ s is borrowed; J19 rupture is instantaneous.
-- **L16 [?]** pores do not interact after a break; vented pores stay voids, so $\xi$ in the ligament balance does not change.
+- **L16 [?]** the interaction of the pores is in $\hat s_i$ of the intact population; after a break the pressure $p_k\to P_h$ of the broken pore is not removed from $\hat s_i$ of its neighbours (cascade not modelled), and vented pores stay voids.
+- **[?]** $\hat s_i$ comes from an RVE with monodisperse pores and uniform pressure (OHP); the dependence on $R_i/R_V$, $\mathrm{CV}_n$ and on the pressure ratios of the classes needs new MMM runs, and is tabulated, not measured.
+- **[?]** $\sigma_R=275$ MPa has no direct physical meaning (OHP): it absorbs the toughness and the spherical idealisation of the pores.
 - **L2 [?]** venting acts on the broken classes only (2.7); the evolution of the moments by the porosity model for a partly open population is not defined, and $\beta_i$ is a new state of 81 values.
 - **L11 [R]** the criteria act on the modelled pore state (formation 4, porosity 3: about 10.5 % porosity, 0.35 µm at the end of NFIR base irradiation), not on the measured one (11 %, 0.88 µm).
 - **L13 [?]** the confining stress of the base irradiation is an input and changes the pore state through the equilibrium pressure of the porosity model.
@@ -191,7 +226,7 @@ so $D^*$ and $G^*$ depend also on $R_V$, $T$, $\xi$ and $P_h$ separately. The un
 | Lem00 | F. Lemoine, J. Papin, J.M. Frizonnet, B. Cazalis, H. Rigat, in *Fission Gas Behaviour in Water Reactor Fuels*, OECD/NEA Seminar, Cadarache 2000, pp. 175–187 | rupture criterion of J19 [22] |
 | KH20 | G. Khvostov, *Analytical criteria for fuel fragmentation and burst FGR during a LOCA*, Nucl. Eng. Technol. 52 (2020) 2402 | fragment size from the specific surface of the cracks |
 | NEA16 | NEA/CSNI/R(2016)16, *Report on Fuel Fragmentation, Relocation and Dispersal (FFRD)* | fragment morphology and size, $d_{max}$, heating-rate dependence |
-| OHP | OperaHPC Deliverable D5.2 (2026), section 2.2 | NFIR annealing test, Kr-85 release used as reference |
+| OHP | OperaHPC Deliverable D5.2 (2026), section 2.2 | NFIR annealing test, Kr-85 release used as reference; MMM RVE, $\sigma_R$, stress concentration factor $\hat s$ |
 | CS69 | N.F. Carnahan, K.E. Starling, J. Chem. Phys. 51 (1969) 635 | hard-sphere equation of state |
 
 PDFs are in `letteratura/fragm/`. J19 Eq. 22 and Tables 3–4 were checked against the PDF.
