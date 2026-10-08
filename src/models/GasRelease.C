@@ -56,8 +56,10 @@ void Simulation::GasRelease()
         sciantix_variable["Intergranular gas swelling"].setFinalValue(0.0);
 
     // Fission gas release
-    const double xe_produced_total = sciantix_variable["Xe produced"].getFinalValue() + hbsInventory("Xe produced in HBS");
-    const double kr_produced_total = sciantix_variable["Kr produced"].getFinalValue() + hbsInventory("Kr produced in HBS");
+    const double xe_produced_total =
+        sciantix_variable["Xe produced"].getFinalValue() + hbsInventory("Xe produced in HBS");
+    const double kr_produced_total =
+        sciantix_variable["Kr produced"].getFinalValue() + hbsInventory("Kr produced in HBS");
     if (xe_produced_total + kr_produced_total > 0.0)
         sciantix_variable["Fission gas release"].setFinalValue(
             (sciantix_variable["Xe released"].getFinalValue() + sciantix_variable["Kr released"].getFinalValue()) /
