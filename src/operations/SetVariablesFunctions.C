@@ -54,7 +54,7 @@ std::vector<std::string> getInputVariableNames()
                                       "iChromiumSolubility",
                                       "iDensification",
                                       "iReleaseMode",
-                                      "iHighBurnupStructureFragmentation"};
+                                      "iHighBurnupStructureFragmentation"}; // author: E.Cappellari, POLIMI-CEA 2026
 
     return names;
 }
@@ -98,10 +98,12 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  * @param toOutputCracking Flag for outputting cracking information.
  * @param toOutputGrainBoundary Flag for outputting grain boundary information.
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
+ * author: E.Cappellari, POLIMI-CEA 2026
  * @param toOutputLandauSubstructure Flag for the substructure outputs of the Landau formation model
  *        (iHighBurnupStructureFormation = 4): mean misorientation and subgrain radius.
  * @param toOutputFragmentation Flag for the outputs of the HBS fragmentation model
  *        (iHighBurnupStructureFragmentation > 0).
+ * end of author: E.Cappellari, POLIMI-CEA 2026
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
@@ -112,8 +114,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputCracking,
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
+                                                         // author: E.Cappellari, POLIMI-CEA 2026
                                                          bool   toOutputLandauSubstructure,
                                                          bool   toOutputFragmentation,
+                                                         // end of author: E.Cappellari, POLIMI-CEA 2026
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent)
 {
@@ -330,13 +334,12 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[201],
                          Sciantix_variables[201],
                          toOutputHighBurnupStructure),
-        // Produced by iHighBurnupStructureFormation = 4 only (Landau functional): the
-        // order parameter of the transition and the subgrain size that follows from
-        // the same wall geometry. The other formation options leave them at zero.
+        // author: E.Cappellari, POLIMI-CEA 2026
         SciantixVariable(
             "Mean misorientation", "(deg)", Sciantix_variables[202], Sciantix_variables[202], toOutputLandauSubstructure),
         SciantixVariable(
             "Subgrain radius", "(m)", Sciantix_variables[203], Sciantix_variables[203], toOutputLandauSubstructure),
+        // end of author: E.Cappellari, POLIMI-CEA 2026
         SciantixVariable("Intragranular similarity ratio", "(/)", Sciantix_variables[64], Sciantix_variables[64], 0),
         SciantixVariable("Gap oxygen partial pressure", "(MPa)", 0.0, 0.0, toOutputStoichiometryDeviation),
         SciantixVariable("Stoichiometry deviation",
@@ -385,7 +388,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[200],
                          Sciantix_variables[200],
                          toOutputHighBurnupStructure),
-
+		// author: E.Cappellari, POLIMI-CEA 2026
         // Fragmentation of the HBS, iHighBurnupStructureFragmentation > 0.
         SciantixVariable("HBS fragmented fraction",
                          "(/)",
@@ -409,6 +412,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "HBFF reference hydrostatic pressure", "(Pa)", Sciantix_variables[210], Sciantix_variables[210], 0),
         SciantixVariable("HBFF transient flag", "(/)", Sciantix_variables[211], Sciantix_variables[211], 0),
+        // end of author: E.Cappellari, POLIMI-CEA 2026
 
         SciantixVariable(
             "trapping rate hbs", "(1/s)", Sciantix_variables[120], Sciantix_variables[120], toOutputHighBurnupStructure),

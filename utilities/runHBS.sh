@@ -1,3 +1,4 @@
+# author: E.Cappellari, POLIMI-CEA 2026
 #!/bin/bash
 set -e  # stop on error
 

@@ -1,4 +1,5 @@
 # HBFF — fine fragmentation of the high-burnup structure
+# author of this folder: E.Cappellari, POLIMI-CEA 2026
 
 `iHighBurnupStructureFragmentation` computes the fraction of broken pores, the burst release of their gas and the mean fragment size.
 

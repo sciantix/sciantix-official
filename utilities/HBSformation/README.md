@@ -1,4 +1,5 @@
 # HBS formation as a continuous transition (Landau functional)
+# author of this folder: E.Cappellari, POLIMI-CEA 2026
 
 Reference implementation of `iHighBurnupStructureFormation = 4`.
 

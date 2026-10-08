@@ -322,6 +322,7 @@ class Simulation
      */
     void HighBurnupStructurePorosity();
 
+// author: E.Cappellari, POLIMI-CEA 2026
     /**
      * @brief Fine fragmentation of the high-burnup structure by overpressurised pores: fraction of broken
      * pores, burst release of their gas and mean fragment size. Reference implementation:
@@ -331,6 +332,7 @@ class Simulation
      *
      */
     void HighBurnupStructureFragmentation();
+// end of author: E.Cappellari, POLIMI-CEA 2026
 
     /**
      * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.

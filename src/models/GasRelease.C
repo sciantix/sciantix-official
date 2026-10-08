@@ -56,12 +56,14 @@ void Simulation::GasRelease()
         sciantix_variable["Intergranular gas swelling"].setFinalValue(0.0);
 
     // Fission gas release
+    // author: E.Cappellari, POLIMI-CEA 2026
     const double xe_produced_total = sciantix_variable["Xe produced"].getFinalValue() + hbsInventory("Xe produced in HBS");
     const double kr_produced_total = sciantix_variable["Kr produced"].getFinalValue() + hbsInventory("Kr produced in HBS");
-    if (xe_produced_total + kr_produced_total > 0.0)
+    // end of author: E.Cappellari, POLIMI-CEA 2026
+    if (xe_produced_total + kr_produced_total > 0.0) // author: E.Cappellari, POLIMI-CEA 2026
         sciantix_variable["Fission gas release"].setFinalValue(
             (sciantix_variable["Xe released"].getFinalValue() + sciantix_variable["Kr released"].getFinalValue()) /
-            (xe_produced_total + kr_produced_total));
+            (xe_produced_total + kr_produced_total)); // author: E.Cappellari, POLIMI-CEA 2026
     else
         sciantix_variable["Fission gas release"].setFinalValue(0.0);
 

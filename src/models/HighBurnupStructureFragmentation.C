@@ -11,7 +11,7 @@
 //  Version: 2.2.1                                                                  //
 //  Year: 2026                                                                      //
 //  Authors: E. Cappellari                                                          //
-//                                                                                  //
+//  author: E.Cappellari, POLIMI-CEA 2026                                           //                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 // Fine fragmentation of the high-burnup structure (HBS), iHighBurnupStructureFragmentation = 1, 2, 3, 4

@@ -40,12 +40,10 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputCracking            = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
          toOutputGrainBoundary       = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() != 0,
-         // The mean misorientation and the subgrain radius exist only in the Landau
-         // formation model; the other options would write two columns of zeros. Their
-         // own flag, so that adding them does not move the column layout of every
-         // other HBS case.
-        toOutputLandauSubstructure      = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
+         // author: E.Cappellari, POLIMI-CEA 2026
+         toOutputLandauSubstructure      = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
          toOutputFragmentation          = input_variable["iHighBurnupStructureFragmentation"].getValue() != 0,
+         // end of author: E.Cappellari, POLIMI-CEA 2026
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
 
@@ -69,8 +67,10 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputCracking,
                                         toOutputGrainBoundary,
                                         toOutputHighBurnupStructure,
+                                        // author: E.Cappellari, POLIMI-CEA 2026
                                         toOutputLandauSubstructure,
                                         toOutputFragmentation,
+                                        // end of author: E.Cappellari, POLIMI-CEA 2026
                                         toOutputStoichiometryDeviation,
                                         toOutputChromiumContent);
 

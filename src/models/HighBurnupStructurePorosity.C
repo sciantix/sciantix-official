@@ -110,6 +110,7 @@ void Simulation::HighBurnupStructurePorosity()
             // threshold is applied to nu_P alone: grain sub-division produces
             // c_gb^HBS with no pore sink, then the first pores explode when
             // nu_P reactivates.
+            // author: E.Cappellari, POLIMI-CEA 2026
             // This case reads the formation model's parameter vector POSITIONALLY,
             // in the KJMA layout of formation options 1 and 2. Option 4 (Landau)
             // pushes n, beta, k, rho_c, theta_max, ... instead, so the pairing would
@@ -123,6 +124,7 @@ void Simulation::HighBurnupStructurePorosity()
                                      "(Landau functional) does not use. Use iHighBurnupStructurePorosity = 3, "
                                      "which is formation-agnostic (it uses only alpha_r, its increment and the "
                                      "time step), or 0.");
+            // end of author: E.Cappellari, POLIMI-CEA 2026
 
             double avrami_constant      = model["High-burnup structure formation"].getParameter().at(0);
             double transformation_rate  = model["High-burnup structure formation"].getParameter().at(1);

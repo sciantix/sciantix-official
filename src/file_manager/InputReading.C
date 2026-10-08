@@ -183,6 +183,7 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
 
+    // author: E.Cappellari, POLIMI-CEA 2026
     // Optional entry: "<value> # iHighBurnupStructureFragmentation". This is a Sciantix option
     // (Sciantix_options[25], same family as the 25 positional entries above: SetVariablesFunctions.C's
     // getInputVariableNames() lists it right after iReleaseMode and SetVariables.C maps it
@@ -217,6 +218,7 @@ void InputReading(int                  Sciantix_options[],
     // options above; it is a different category of input and is kept in its own pass. Looked up
     // by name for the same reason as above: a case that does not declare it keeps the default set
     // in MainVariables.C.
+    // end of author: E.Cappellari, POLIMI-CEA 2026
     {
         std::ifstream settings_lookup(TestPath + "input_settings.txt", std::ios::in);
         std::string   line;
@@ -226,9 +228,10 @@ void InputReading(int                  Sciantix_options[],
                 continue;
 
             std::istringstream line_stream(line);
+            // author: E.Cappellari, POLIMI-CEA 2026
             double             value(0.0);
             if (line_stream >> value && value > 0.0)
-                Number_of_time_steps_per_interval = value;
+                Number_of_time_steps_per_interval = value; // end of author: E.Cappellari, POLIMI-CEA 2026
             else
                 // Not a warning: silently falling back to the default would run the case at
                 // the wrong time resolution and still produce a plausible output file.

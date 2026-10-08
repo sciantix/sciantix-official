@@ -119,6 +119,7 @@ std::map<int, std::string> update_sciantix_variable = {
     // 70 is taken by "Porosity" on the main line of development, so the HBS dislocation
     // density, which used to live there on the porosity branch, is stored at 201.
     {201, "Dislocation density"},
+    // author: E.Cappellari, POLIMI-CEA 2026
     // Outputs of the Landau formation model, iHighBurnupStructureFormation = 4.
     {202, "Mean misorientation"},
     {203, "Subgrain radius"},
@@ -131,6 +132,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {209, "HBFF reference temperature"},
     {210, "HBFF reference hydrostatic pressure"},
     {211, "HBFF transient flag"},
+    // end of author: E.Cappellari, POLIMI-CEA 2026
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])

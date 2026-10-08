@@ -121,7 +121,7 @@ void Simulation::HighBurnupStructureFormation()
             break;
         }
 
-        case 4:
+        case 4: // author: E.Cappellari, POLIMI-CEA 2026
         {
             // HBS formation as a continuous transition, order parameter the mean
             // misorientation, equilibrium of the dislocation energy.
@@ -253,7 +253,7 @@ void Simulation::HighBurnupStructureFormation()
         sciantix_variable["Restructured volume fraction"].setFinalValue(alpha_r_new);
         sciantix_variable["Dislocation density"].setFinalValue(rho_d);
     }
-    else if (option == 4)
+    else if (option == 4) // author: E.Cappellari, POLIMI-CEA 2026
     {
         // This block mirrors hbs_state() of utilities/HBSformation/hbs_formation_landau.py
         // statement by statement, with the same arithmetic, so that
