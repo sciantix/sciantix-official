@@ -23,7 +23,7 @@ References
        rho_tot(bu), G(T), b, Theta(bu), r_n(bu), X(bu).
 [Z21]  J. Zhang et al., J. Am. Ceram. Soc. (2021): 5-DOF GB energy of UO2,
        reduced to gamma(Delta theta) by uo2_gb_energy.py.
-[ON25] M.-L. Onofri et al.: in irradiated UO2 the dislocation density is higher
+[ON25] C. Onofri et al.: in irradiated UO2 the dislocation density is higher
        over the 500-600 nm next to the original GBs.
 [PFRP] Ofori-Opoku, Warren, Simon, "Phase Field Method Recommended Practices".
 
@@ -466,7 +466,7 @@ from hbs_formation_landau import (
 #   RUN CONFIGURATION  (edit here)
 # ###########################################################################
 
-FIGURES_DIR = "phasefield"
+FIGURES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures", "phasefield")
 TEMPERATURE = REFERENCE_TEMPERATURE     # K        [U11] enters only through G(T)
 RHO_KIND = "tot"                        # -        rho fed to f_eta4: "tot" (Nogita-Une)
                                         #          or "free" (Landau tangle) [U1]
@@ -491,7 +491,8 @@ UO2_C3 = 2.6591479484724942             # -        [U8]  output of calibrate_c3 
                                         #          configuration; re-run after changing nu,
                                         #          f0, c, C_D, geometry or protocol
 HBS_ONSET_BURNUP = 60.0                 # GWd/tU   [U8]  lower end of 60-75 GWd/tU
-                                        #          (Rondinella & Wiss, Mater. Today 13 (2010) 24)
+                                        #          (Rondinella & Wiss, Mater. Today 13 (2010) 24;
+                                        #          Matzke & Kinoshita 1997: ~70 local; Sontheimer 2011: 75)
 CALIBRATE_C3 = False                    # True: re-run the bisection (~1 h) and print c3.
                                         #       Always on the production grid [N4].
 FIT_GB_ENERGY = False                   # True: re-run fit_uo2_interface and print the

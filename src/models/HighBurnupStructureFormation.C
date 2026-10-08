@@ -129,11 +129,12 @@ void Simulation::HighBurnupStructureFormation()
             //   utilities/HBSformation/hbs_formation_landau.py  (the model)
             //   utilities/HBSformation/calibrate.py             (beta, k, rho_crit)
             //   utilities/HBSformation/README.md                (the derivation)
-            reference += ": Landau functional, HBS as a continuous transition, Cappellari (2026); "
-                         "dislocation source Nogita & Une Nucl. Instrum. Methods B 91 (1994) 301-306, above a critical density "
-                         "(cf. Veshchunov & Shestak J. Nucl. Mater. 384 (2009) 12-18); "
-                         "Read-Shockley line-energy cut-offs, Humphreys, Rohrer & Rollett (2017) Eqs. 2.6, 4.4-4.5; "
-                         "dislocation balance after Gourdet & Montheillet Acta Mater. 51 (2003) 2685-2699";
+            reference +=
+                ": Landau functional, HBS as a continuous transition, Cappellari (2026); "
+                "dislocation source Nogita & Une Nucl. Instrum. Methods B 91 (1994) 301-306, above a critical density "
+                "(cf. Veshchunov & Shestak J. Nucl. Mater. 384 (2009) 12-18); "
+                "Read-Shockley line-energy cut-offs, Humphreys, Rohrer & Rollett (2017) Eqs. 2.6, 4.4-4.5; "
+                "dislocation balance after Gourdet & Montheillet Acta Mater. 51 (2003) 2685-2699";
 
             // --- fixed, offsets 4-7 -------------------------------------------
             double theta_hagb = 10.0;                         // (deg)   LAGB/HAGB boundary
@@ -282,7 +283,7 @@ void Simulation::HighBurnupStructureFormation()
         //     continuous threshold; F itself has none (every length in it scales as rho^-1/2).
         double rho_tot = std::max(std::pow(10.0, 2.2e-2 * bu_local_HM + 13.8) - rho_crit, 0.0);
 
-        double eta = 0.0;
+        double eta          = 0.0;
         double rho_lagb_max = 0.0, s_over_v_max = 0.0, swept_max = 0.0;
         if (rho_tot > 0.0)
         {
@@ -304,7 +305,8 @@ void Simulation::HighBurnupStructureFormation()
             //     array, b/theta in a Read-Shockley wall (capped at rho_tot^-1/2).
             //     rho_free = (rho_tot - rho_ord) exp(-x): Gourdet & Montheillet's
             //     d rho_i = -rho_i dV integrated over the swept volume.
-            auto reduced_energy = [&](double e) {
+            auto reduced_energy = [&](double e)
+            {
                 double spacing  = std::pow(rho_tot, -0.5);
                 double log_free = std::log(spacing / burgers);
                 double theta_e  = e * theta_max;

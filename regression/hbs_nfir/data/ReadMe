@@ -1,0 +1,44 @@
+Fragmentation model - test
+
+**NFIR open literature dataset**
+*Source*: 
+    -   OperaHPC D5.2, §2.2 
+    -   http://dx.doi.org/10.1016/j.jnucmat.2013.12.002 
+
+Base irradiation of the cases (test_UO2HBS_frag_<option>)
+-   [?] Confining stress: not reported for the disc. It rises linearly from 0 to 70 MPa (compression) over the base irradiation, as in regression/hbs; temperature 903 K, 2e19 fiss/m3/s, 38000 h; the anneal then starts with the stress released.
+
+Fuel properties
+-   IFA 649 Rods with std UO2 disks sandwiched between Mo discs
+-   disk geometry: the combination of sample shape, irradiation device fuel enrichment minimises the radial gradients of both temperature and burnup across the sample --> spatially uniform microstructure.
+-   grain size: 18 um
+-   enrichment: 19.77 % U235
+
+Base irradiation
+-   irradiation in the Halden research reactor (HBWR)
+-   calculated local temperature within the disc in the range 560°C - 700°C (Fig.2 paper)
+-   EOL bu: 103.5 GWd/tHM
+-   average FGR by puncturing: 2.9%.
+-   HBS formed all over the disc.
+-   Nd measurements show that the local burnup is 20% higher at the disc periphery rather than its center, with average 1.18 wt% corresponding to the EOL bu 103 GWd/tHM
+-   Xe measurements show that 88% of the Xe remaining in the disk is in HBS bubbles. 0.2 wt% was measured in the grain themselves, outside the bubbles.
+-   SEM images show a 11% porosity, slightly larger at the periphery with larger amount of Xe created and in bubbles there. 
+
+Transient release experiment
+-   rod 07/J
+-   Annealing test up to 1200°C via a temperature ramp.
+-   Ramp temperature up to 300°C at 0.5°C/s, hold for 15 min, ramp to 1200°C at 0.2°C/s, hold for 15 min, rapid natural cool down (Fig. 9 paper)
+-   integral cumulative release of Kr85 measured online (Fig. 5 deliverable, 9 paper), up to 30%. Two peaks: 1) between 880°C and 1110°C with a maximum at 136°C, of about 7.4% of the produced 2) between 1110°C and 1200° with a maximum at 1180°C of about 22.4% of the produced. 
+-   No release during the holding period at 1200°C, the only change is the formation of small bubbbles along the grain boundaries of the HBS small grains and the HBS bubble size increase, but none of these points induced FGR.
+
+-   Ideal gas EOS used to extract pore size distribution, volume, gas inventory and initial conditions to compute pore pressure.
+-   Xe/Kr = 8.8 --> estimated molar volume 9e-5 m3/mol, around 149 A^3/at, or 3.6 times the volume of the UO2 trivacancy. 
+-   At 700°C the EoS leads to 133MPa bubble pressure, approx 11MPa at room temperature
+
+PIE
+-   During the annealing test the sample broke into small pieces with sizes below 100 um. 
+-   Pore size distribution reported in the deliverable (Fig.4 deliverable, Fig.12 paper), before and after the test.
+-   Atomic density of gas within pores derived from the measured
+    Xe content (1.518 * 10e-28 m3/atom)
+-   Decrease of the amount of gas in the HBS bubbles, 88% of the total measurement in the ‘‘as-irradiated’’ state, 84% of the total measurement after the test
+-   The release measured during the OOP annealing test is therefore not only due to the direct release of the gas initially stored in the HBS bubbles opened at the fragments surface, but also to some release from inside the fragments

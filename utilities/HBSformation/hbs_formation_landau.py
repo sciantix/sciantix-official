@@ -211,8 +211,9 @@ ASSUMPTIONS, IN THE TAGS USED THROUGHOUT THIS FOLDER
     measurement.  The same paper reports sub-boundaries appearing between 30 and
     44 GWd/t, i.e. the observed onset of polygonization is BELOW the model's
     threshold, not above it.  rho_crit is calibrated on the EBSD misorientations,
-    not on Nogita & Une; its agreement to within 15 % with the independent
-    6e14 m^-2 of Veshchunov & Shestak (2009) is what supports the value.
+    not on Nogita & Une; it lies inside the 6e14-1e15 m^-2 range of Veshchunov &
+    Shestak (2009), but that range is not independent of Eq. (1) (its low end is
+    the 5.8e14 measured by Nogita & Une at 44 GWd/t).
 [E] Gourdet & Montheillet Eq. (8) is applied to the radius but not to the energy.
     Eq. (9) removes the wall area inside the swept volume (S/V -> S/V exp(-x)),
     while F still counts ALL of rho_ord.  The same walls are present for the
@@ -289,6 +290,9 @@ from hbs_dataset import dataset_dir, load_rows
 # ---------------------------------------------------------------------------
 # CONSTANTS
 # ---------------------------------------------------------------------------
+
+# --- unit conversion --------------------------------------------------------
+UO2_TO_U = 0.8814                # kgU/kgUO2; SCIANTIX prints MWd/kgUO2, the model works in GWd/tU
 
 # --- elastic constants -----------------------------------------------------
 BURGERS = 3.889087296526011e-10  # m      Burgers vector, Djonovic thesis

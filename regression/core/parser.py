@@ -7,37 +7,25 @@ import numpy as np
 
 class SciantixOutput:
     def __init__(self, path):
-        raw = np.genfromtxt(
+        # The header is read on its own and the body straight into floats: going through a
+        # string array first needs several GB for a long output (rows x columns cells).
+        with open(path, encoding="utf-8") as f:
+            self.header = np.array([c.strip() for c in f.readline().rstrip("\r\n").split("\t")], dtype=str)
+
+        data = np.genfromtxt(
             path,
             delimiter='\t',
-            dtype=str,
-            filling_values="nan",
+            dtype=float,
+            skip_header=1,
+            filling_values=np.nan,
             autostrip=True
         )
 
-        if raw.ndim == 1:
-            raw = np.array([raw])
+        if data.ndim == 1:
+            data = data.reshape(1, -1)
 
-        cleaned = []
-        for row in raw:
-            if any(cell.strip() != "" for cell in row):
-                cleaned.append(row)
-
-        cleaned = np.array(cleaned, dtype=str)
-
-        self.header = cleaned[0]
-
-        data = []
-        for row in cleaned[1:]:
-            vals = []
-            for cell in row:
-                try:
-                    vals.append(float(cell))
-                except:
-                    vals.append(np.nan)
-            data.append(vals)
-
-        self.data = np.array(data, dtype=float)
+        # blank rows carry no information
+        self.data = data[~np.all(np.isnan(data), axis=1)]
         self.colmap = {name: i for i, name in enumerate(self.header)}
 
     def get_last(self, var: str) -> float:

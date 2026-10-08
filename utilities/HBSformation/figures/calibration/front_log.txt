@@ -1,4 +1,4 @@
-calibration front: 75 fits (ABC x w_r (0.0, 0.01, 0.05, 0.2, 1.0) x w_X (0.0, 0.1, 0.3, 1.0, 3.0)), 14 workers, dataset /home/ecappellari/Work/sciantix-official/utilities/HBSformation/data
+calibration front: 75 fits (ABC x w_r (0.0, 0.01, 0.05, 0.2, 1.0) x w_X (0.0, 0.1, 0.3, 1.0, 3.0)), 14 workers, dataset data
 
   set   w_r    w_X     k       beta    rho_crit    RMSE on all data: Θ(°)  X(–)   r_n(µm)   Σ/σ   Pareto
   A   0.00   0.00       50    67.73  1.128e+15         1.753   0.182  16.871  141.806   
@@ -79,4 +79,4 @@ calibration front: 75 fits (ABC x w_r (0.0, 0.01, 0.05, 0.2, 1.0) x w_X (0.0, 0.
 
   smallest normalised error sum on all data: data set B, w_r = 1, w_X = 3 (Σ RMSE/σ = 2.055)
 
-written: /home/ecappellari/Work/sciantix-official/utilities/HBSformation/figures/calibration/front.csv, front.png
+written: figures/calibration/front.csv, front.png

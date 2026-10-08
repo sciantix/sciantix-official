@@ -516,6 +516,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.sparse import coo_matrix, diags, kron
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from hbs_formation_landau import (
     BURGERS,
     REFERENCE_TEMPERATURE,

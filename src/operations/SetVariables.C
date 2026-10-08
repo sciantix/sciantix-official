@@ -45,6 +45,7 @@ void Simulation::setVariables(int    Sciantix_options[],
          // own flag, so that adding them does not move the column layout of every
          // other HBS case.
         toOutputLandauSubstructure      = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
+         toOutputFragmentation          = input_variable["iHighBurnupStructureFragmentation"].getValue() != 0,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
 
@@ -69,6 +70,7 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputGrainBoundary,
                                         toOutputHighBurnupStructure,
                                         toOutputLandauSubstructure,
+                                        toOutputFragmentation,
                                         toOutputStoichiometryDeviation,
                                         toOutputChromiumContent);
 

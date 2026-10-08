@@ -39,16 +39,17 @@ import subprocess
 import sys
 import tempfile
 
+from hbs_formation_landau import UO2_TO_U
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 DEFAULT_CASE = os.path.join(ROOT, "regression", "hbs", "test_UO2HBS")
 SCIANTIX = os.path.join(ROOT, "build", "sciantix.x")
 
-# positions of the two options in input_settings.txt, which InputReading.C reads
-# positionally (0-based line indices)
-LINE_FORMATION = 17
-LINE_POROSITY = 18
+# the two options are located in input_settings.txt by the name in their comment
+KEY_FORMATION = "iHighBurnupStructureFormation"
+KEY_POROSITY = "iHighBurnupStructurePorosity"
 
 OPTIONS = (
     (1, "1  KJMA, Barani (2020)", "tab:blue"),
@@ -56,8 +57,6 @@ OPTIONS = (
     (3, "3  rho_d, Veshchunov (2009)", "tab:green"),
     (4, "4  Landau functional", "k"),
 )
-
-UO2_TO_U = 0.8814          # kgU/kgUO2, as in the models themselves
 
 
 def build_case(base, target, formation, porosity, steps):
@@ -72,16 +71,15 @@ def build_case(base, target, formation, porosity, steps):
     with open(os.path.join(base, "input_settings.txt"), encoding="utf-8") as handle:
         lines = handle.read().split("\n")
 
-    def override(index, value):
+    def override(key, value):
+        index = next(i for i, line in enumerate(lines) if line.partition("#")[2].strip().startswith(key))
         head, sep, tail = lines[index].partition("#")
         lines[index] = "%d\t%s%s" % (value, sep, tail)
 
-    override(LINE_FORMATION, formation)
-    override(LINE_POROSITY, porosity)
+    override(KEY_FORMATION, formation)
+    override(KEY_POROSITY, porosity)
     if steps is not None:
-        for i, line in enumerate(lines):
-            if "Number_of_time_steps_per_interval" in line:
-                override(i, steps)
+        override("Number_of_time_steps_per_interval", steps)
 
     with open(os.path.join(target, "input_settings.txt"), "w", encoding="utf-8") as handle:
         handle.write("\n".join(lines))

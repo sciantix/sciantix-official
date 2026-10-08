@@ -1,33 +1,33 @@
-dataset: /home/ecappellari/Work/sciantix-official/utilities/HBSformation/data   w_r = 0.2   w_X = 1
+dataset: data   w_r = 0.2   w_X = 1
 
 Fit A · Zacharie-Aubrun + Onofri (standard UO₂), equal weights: theta N=41, radius N=14, fraction N=27
-  k = 0.6611  beta = 26.28  rho_c = 1.185e+16 (cut-off 0.00919 um)   J = 0.5443
-    theta    N=41  RMSE 1.726  R2 +0.781
-    radius   N=14  RMSE 0.1016 um  R2 +0.492
-    fraction N=27  RMSE 0.186  R2 +0.777
+  k = 0.9929  beta = 20.01  rho_crit = 6.18e+14   J = 0.5435
+    theta    N=41  RMSE 1.686  R2 +0.791
+    radius   N=14  RMSE 0.1084 um  R2 +0.422
+    fraction N=27  RMSE 0.1841  R2 +0.781
 
-Fit B · all four papers, equal weights: theta N=52, radius N=25, fraction N=49
-  k = 0.4558  beta = 26.61  rho_c = 4.541e+15 (cut-off 0.0148 um)   J = 0.6947
-    theta    N=52  RMSE 1.866  R2 +0.749
-    radius   N=25  RMSE 0.1178 um  R2 +0.062
-    fraction N=49  RMSE 0.1841  R2 +0.744
+Fit B · all four papers, equal weights: theta N=52, radius N=26, fraction N=49
+  k = 0.6822  beta = 21.42  rho_crit = 6.082e+14   J = 0.7135
+    theta    N=52  RMSE 1.796  R2 +0.767
+    radius   N=26  RMSE 0.1313 um  R2 -0.201
+    fraction N=49  RMSE 0.1785  R2 +0.759
 
-Fit C · all four papers, weighted by quality rank × relevance: theta N=52, radius N=25, fraction N=49
-  k = 0.5018  beta = 26.1  rho_c = 5.547e+15 (cut-off 0.0134 um)   J = 0.7703
-    theta    N=52  RMSE 1.864  R2 +0.749
-    radius   N=25  RMSE 0.1193 um  R2 +0.038
-    fraction N=49  RMSE 0.1847  R2 +0.743
+Fit C · all four papers, weighted by quality rank × relevance: theta N=52, radius N=26, fraction N=49
+  k = 0.6788  beta = 21.37  rho_crit = 6.854e+14   J = 0.7579
+    theta    N=52  RMSE 1.778  R2 +0.772
+    radius   N=26  RMSE 0.1342 um  R2 -0.256
+    fraction N=49  RMSE 0.1772  R2 +0.763
 
 leave one paper out (all data, equal weights):
-  without ZAC  k=0.202 beta=27.6 rho_c=1.95e+15   held-out RMSE  Θ 2.398   X 0.2414   r_n 0.1381 um
-  without Cr   k=0.74 beta=27.3 rho_c=1.1e+16   held-out RMSE  Θ 2.301   X 0.2191   r_n 0.1872 um
-  without ONO  k=0.487 beta=26.6 rho_c=4.41e+15   held-out RMSE  Θ 0.8578   X    r_n  um
-  without GER  k=0.407 beta=26.1 rho_c=4.51e+15   held-out RMSE  Θ    X 0.1004   r_n 0.1619 um
-  without NOI  k=0.451 beta=26.4 rho_c=4.77e+15   held-out RMSE  Θ    X 0.1397   r_n  um
+  without ZAC  k=0.0498 beta=28.8 rho_crit=8.29e+14   held-out RMSE  Θ 2.441   X 0.2515   r_n 0.149 um
+  without Cr   k=1 beta=21.1 rho_crit=5.16e+14   held-out RMSE  Θ 2.295   X 0.2188   r_n 0.1897 um
+  without ONO  k=0.682 beta=21.4 rho_crit=6.09e+14   held-out RMSE  Θ 0.6017   X    r_n  um
+  without GER  k=0.655 beta=21.1 rho_crit=6.54e+14   held-out RMSE  Θ    X 0.08907   r_n 0.1861 um
+  without NOI  k=0.679 beta=21.3 rho_crit=6.26e+14   held-out RMSE  Θ    X 0.1278   r_n  um
 
   set  in sample Θ | X | r_n       all data Θ | X | r_n       leave one paper out (fit B)
-  A     1.726 |  0.186 | 0.1016   1.891 | 0.1916 | 0.1338         |        |       
-  B     1.866 | 0.1841 | 0.1178   1.866 | 0.1841 | 0.1178   2.074 | 0.2152 | 0.1583
-  C     1.864 | 0.1847 | 0.1193   1.864 | 0.1847 | 0.1193         |        |       
+  A     1.686 | 0.1841 | 0.1084   1.871 | 0.1917 | 0.1438         |        |       
+  B     1.796 | 0.1785 | 0.1313   1.796 | 0.1785 | 0.1313   2.075 |   0.22 | 0.1684
+  C     1.778 | 0.1772 | 0.1342   1.778 | 0.1772 | 0.1342         |        |       
 
-written: /home/ecappellari/Work/sciantix-official/utilities/HBSformation/figures/calibration/{decision.csv, paste_blocks.txt, metrics.csv, points.csv, weights_landau.png, influence_landau.png, curves.png}
+written: figures/calibration/{decision.csv, paste_blocks.txt, metrics.csv, points.csv, weights_landau.png, influence_landau.png, curves.png}

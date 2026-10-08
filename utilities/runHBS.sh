@@ -5,7 +5,8 @@ set -e  # stop on error
 # The whole HBS-formation loop in one command.
 #
 #   1. build SCIANTIX
-#   2. run ONLY the four regression/hbs cases, one per iHighBurnupStructureFormation
+#   2. run ONLY the regression/hbs cases (one per iHighBurnupStructureFormation) and the
+#      regression/hbs_nfir, hbs_hiernaut and hbs_ifa650 cases (one per iHighBurnupStructureFragmentation)
 #   3. draw the comparative figures into regression/hbs/figures
 #   4. check the C++ of option 4 against its reference Python implementation
 #
@@ -58,13 +59,23 @@ echo "===== RUNNING THE HBS CASES (using $JOBS threads) ====="
 # is usually how you find out whether the disagreement is a regression or a gold
 # that predates a deliberate change. The status is carried to the end instead.
 REGRESSION_STATUS=0
-python3 -m regression.runner --hbs -j "$JOBS" --mode-gold "$MODE_GOLD" "${RUNNER_ARGS[@]}" \
+python3 -m regression.runner --hbs --hbs_nfir --hbs_hiernaut --hbs_ifa650 -j "$JOBS" --mode-gold "$MODE_GOLD" "${RUNNER_ARGS[@]}" \
     || REGRESSION_STATUS=$?
 
 if [ "$FIGURES" -eq 0 ]; then
     echo ""
     echo "===== FIGURES SKIPPED (--no-figures) ====="
     exit "$REGRESSION_STATUS"
+fi
+
+# Analysis script for the HBS fragmentation cases (utilities/HBFF/plot.py, figures into regression/hbs_nfir/figures/HBFF).
+if [ -f utilities/HBFF/plot.py ]; then
+    echo ""
+    echo "===== FIGURES: HBS FRAGMENTATION CASES (utilities/HBFF/plot.py) ====="
+    python3 utilities/HBFF/plot.py
+    python3 regression/hbs_nfir/plot.py
+    python3 regression/hbs_hiernaut/plot.py
+    python3 regression/hbs_ifa650/plot.py
 fi
 
 # The four cases as they stand: each formation option with the porosity model it

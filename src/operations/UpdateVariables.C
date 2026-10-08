@@ -122,6 +122,15 @@ std::map<int, std::string> update_sciantix_variable = {
     // Outputs of the Landau formation model, iHighBurnupStructureFormation = 4.
     {202, "Mean misorientation"},
     {203, "Subgrain radius"},
+    // Outputs and state of the HBS fragmentation model, iHighBurnupStructureFragmentation > 0.
+    {204, "HBS fragmented fraction"},
+    {205, "HBS burst release fraction"},
+    {206, "HBS gas retention fraction"},
+    {207, "HBS fragment size"},
+    {208, "HBS pore pressure"},
+    {209, "HBFF reference temperature"},
+    {210, "HBFF reference hydrostatic pressure"},
+    {211, "HBFF transient flag"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])

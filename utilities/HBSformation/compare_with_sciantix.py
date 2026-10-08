@@ -39,19 +39,15 @@ Exit status is 0 when every column agrees, 1 otherwise.
 from __future__ import annotations
 
 import argparse
+import itertools
 import math
 import sys
 
-import itertools
-
-# Burnup unit conversion used by SCIANTIX: MWd/kgUO2 -> MWd/kgU = GWd/tU.
 # `Output.C` prints the burnup in MWd/kgUO2, while the model works in GWd/tU, so this
-# script applies the same conversion the C++ applies to sciantix_variable["Burnup"]
-# before calling the model.
-UO2_TO_U = 0.8814               # kgU/kgUO2
-
+# script applies the same UO2_TO_U conversion the C++ applies to
+# sciantix_variable["Burnup"] before calling the model.
 from hbs_formation_landau import (ALPHA_MAX, FABRICATION_POROSITY, THETA_HAGB, THETA_MAX,
-                                  THETA_U, hbs_state, wall_geometry)
+                                  THETA_U, UO2_TO_U, hbs_state, wall_geometry)
 
 # Column headers written by src/file_manager/Output.C.
 COL_BURNUP = "Burnup (MWd/kgUO2)"
@@ -75,7 +71,7 @@ INPUTS = (COL_BURNUP, COL_TEMPERATURE, COL_POROSITY, COL_STOICHIOMETRY, COL_GRAI
 # iStoichiometryDeviation, which the HBS cases leave at 0, so they are usually
 # absent.  When they ARE present the script uses them rather than the defaults, so
 # that this check keeps working if the functional ever regains a term that breaks
-# the cancellation -- and `--selftest` is what asserts the cancellation still holds.
+# the cancellation -- and `hbs_formation_landau.py --selftest` is what asserts the cancellation still holds.
 REQUIRED_INPUTS = (COL_BURNUP, COL_TEMPERATURE, COL_GRAIN_RADIUS)
 OPTIONAL_INPUT_DEFAULTS = {COL_POROSITY: FABRICATION_POROSITY, COL_STOICHIOMETRY: 0.0}
 

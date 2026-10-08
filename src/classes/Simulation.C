@@ -77,6 +77,8 @@ void Simulation::execute()
 
     HighBurnupStructurePorosity();
 
+    HighBurnupStructureFragmentation();
+
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();

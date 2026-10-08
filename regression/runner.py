@@ -29,6 +29,9 @@ def main():
     parser.add_argument("--chromium", action="store_true")
     parser.add_argument("--contact", action="store_true")
     parser.add_argument("--hbs", action="store_true")
+    parser.add_argument("--hbs_nfir", action="store_true")
+#    parser.add_argument("--hbs_hiernaut", action="store_true")
+    parser.add_argument("--hbs_ifa650", action="store_true")
     parser.add_argument("--vercors", action="store_true")
     parser.add_argument("--pulse", action="store_true")
     parser.add_argument("--analytics", action="store_true")
@@ -96,6 +99,9 @@ def main():
         ("chromium", "test_Chromium"),
         ("contact", "test_CONTACT"),
         ("hbs", "test_UO2HBS"),
+        ("hbs_nfir", "test_UO2HBS_frag"),
+#        ("hbs_hiernaut", "test_UO2HBS_frag"),
+        ("hbs_ifa650", "test_UO2HBS_frag"),
         ("vercors", "test_Vercors"),
         ("analytics", "test_"), # 'pulse'/'analytics' arg; broad prefix covers all analytics cases
         ("gpr", "test_GPR"),

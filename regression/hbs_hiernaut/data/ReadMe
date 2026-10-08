@@ -1,0 +1,28 @@
+Fragmentation model - validation on the Hiernaut (2008) HBS anneal, as used by Kulacsy (2015)
+
+*Source:* K. Kulacsy, JNM 466 (2015) 409, Sec. 4.2 and Figs 7-9; J.-P. Hiernaut et al., JNM 377 (2008) 313.
+
+Experiment
+-   HBS samples from the outer 800 um (0.91-1 r/ro) of a 102 MWd/kgU pellet; 
+-   The outer third of the sample shows larger pores of 4 um, and inner two thirds show 2 um.
+-   HBS radius from 0.2 to 0.5 um.
+-   Heated from 600 K at 0.5 K/s at ambient pressure until it evaporated; Xe release measured online (MeasuredRelease.txt, digitised from Kulacsy Fig. 9, "Measured").
+-   Final release corresponds to the Xe held in the HBS porosity.
+
+Sample parameters used by Kulacsy [P]
+                              outer     inner
+    local burnup (MWd/kgU)    160       105
+    HBS porosity              17 %      10 %
+    Xe in matrix (wt%)        0.3       0.25
+    total Xe (wt%)            2.7       1.5
+    EOL temperature (K)       800       900
+    EOL hydrostatic stress    60 MPa    40 MPa   (assumed by Kulacsy, no data)
+
+-   Base irradiation at 2e19 fiss/m3/s for the time that gives the local burnup, at the EOL temperature and confining stress; 
+-   The first sample of 6 mg was heated at a rate of 30 K/min from room temperature to 2750 K. At this temperature vaporization was complete. All the masses between 83 and 300 were measured. 85Kr was also detected by a b-counter. --> add a comparison with what i have in the hisotyr plot.
+-   The second sample (4 mg) was heated stepwise at a rate of 10 K/ min to 900, 1500, and 1850 K. Only He and the volatile fission products were measured during this annealing.
+-   The whole-sample curve is the sum of the two parts weighted by their Xe inventory (1/3 x 2.7 : 2/3 x 1.5, # TBC: outer weight 0.47).
+
+Unknowns and deviations
+-  Grain radius (9 um as hbs_nfir) and fission rate (2e19): not given for this sample.
+-   [E] Kulacsy plots the measured release of the whole sample against the outer and the inner calculation separately; the sum is added here. -> TBC: lets do them separately

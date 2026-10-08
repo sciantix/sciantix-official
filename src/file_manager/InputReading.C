@@ -183,12 +183,40 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
 
-    // Optional entry: "<value> # Number_of_time_steps_per_interval".
-    // It is looked up by name in a separate pass, not read positionally, so that its
-    // position in the file is irrelevant and the entries added to input_settings.txt
-    // over time cannot shift it. A case that does not declare it keeps the default set
-    // in MainVariables.C. The entry must be placed after every positional entry, since
-    // the positional pass above would otherwise consume it as the setting it precedes.
+    // Optional entry: "<value> # iHighBurnupStructureFragmentation". This is a Sciantix option
+    // (Sciantix_options[25], same family as the 25 positional entries above: SetVariablesFunctions.C's
+    // getInputVariableNames() lists it right after iReleaseMode and SetVariables.C maps it
+    // positionally into input_variable like every other option), just not read positionally by
+    // ReadOneSetting above: it is looked up by name in a separate pass so that older
+    // input_settings.txt files that do not declare it at all keep it at its default (off), and so
+    // that its exact position among the entries added to input_settings.txt over time does not
+    // matter. The entry must be placed after every positional entry, since the positional pass
+    // above would otherwise consume it as the setting it precedes.
+    {
+        std::ifstream settings_lookup(TestPath + "input_settings.txt", std::ios::in);
+        std::string   line;
+        while (std::getline(settings_lookup, line))
+        {
+            if (line.find("iHighBurnupStructureFragmentation") == std::string::npos)
+                continue;
+
+            std::istringstream line_stream(line);
+            double             value(0.0);
+            if (line_stream >> value && value >= 0.0 && value <= 5.0)
+                Sciantix_options[25] = int(value);
+            else
+                ErrorMessages::Fatal(
+                    "InputReading.C",
+                    "malformed value for the optional input entry \"iHighBurnupStructureFragmentation\"");
+        }
+    }
+    input_check << "iHighBurnupStructureFragmentation = " << Sciantix_options[25] << std::endl;
+
+    // Optional entry: "<value> # Number_of_time_steps_per_interval". This is a numerics setting
+    // (the time-stepping resolution used by TimeStepCalculation.C), unrelated to the Sciantix
+    // options above; it is a different category of input and is kept in its own pass. Looked up
+    // by name for the same reason as above: a case that does not declare it keeps the default set
+    // in MainVariables.C.
     {
         std::ifstream settings_lookup(TestPath + "input_settings.txt", std::ios::in);
         std::string   line;
@@ -198,9 +226,9 @@ void InputReading(int                  Sciantix_options[],
                 continue;
 
             std::istringstream line_stream(line);
-            double             steps_per_interval(0.0);
-            if (line_stream >> steps_per_interval && steps_per_interval > 0.0)
-                Number_of_time_steps_per_interval = steps_per_interval;
+            double             value(0.0);
+            if (line_stream >> value && value > 0.0)
+                Number_of_time_steps_per_interval = value;
             else
                 // Not a warning: silently falling back to the default would run the case at
                 // the wrong time resolution and still produce a plausible output file.

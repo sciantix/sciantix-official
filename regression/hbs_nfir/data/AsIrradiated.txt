@@ -1,0 +1,24 @@
+# Fig. 12. SEM image analyses bubble size distribution before and after the 1200 °C OOP annealing test.
+# Before the annealing test. 
+# Bar bin: 0.2 size um. from 0 to 4 um
+# Value % surface
+Bar0; 0.13
+Bar1; 0.12
+Bar2; 0.18
+Bar3; 0.37
+Bar4; 0.60
+Bar5; 0.91
+Bar6; 1.19
+Bar7; 1.33
+Bar8; 1.55
+Bar9; 1.26
+Bar10; 1.21
+Bar11; 1.13
+Bar12; 0.62
+Bar13; 0.38
+Bar14; 0.21
+Bar15; 0.15
+Bar16; 0.06
+Bar17; 0.03
+Bar18; 0.03
+Bar19; 0.04

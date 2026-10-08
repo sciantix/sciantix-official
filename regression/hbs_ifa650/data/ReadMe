@@ -1,0 +1,55 @@
+Fragmentation model - validation
+
+**Halden LOCA tests IFA-650.9 and IFA-650.10**
+*Source*: 
+    -   L.O. Jernkvist, EPJ Nucl. Sci. Technol. 5 (2019) 11, Sec. 3.2.2, Table 5, Figs 8-11; 
+    -   NEA/CSNI/R(2016)16, Table 5.3-1 and Fig. 6.1-4.
+
+
+UO2 fuel rods irradiated to high burnup in two different commercial PWRs.
+                               IFA-650.9      IFA-650.10
+rod average burnup (MWd/kgU)   90             61
+peak cladding temperature (K)  1475           1114
+roadlet LHGR (kW/m)            2.60           1.30
+blowdown duration (s)          35             71
+cladding burst time (s)        133            249
+rod pressure at burst (MPa)    5.9 -> 0.3     6.4 -> 0.4
+outcome                        significant fine fragmentation   limited fine fragmentation
+I-131 / Cs-137 retained (FFRD) 98, 86 / 93 %  96 / 95 %
+
+Cases test_UO2HBS_frag_{ifa6509,ifa65010}_<option>: one rim point per rod.
+
+-   Base irradiation: 
+        -   the segment LHGR history of Jernkvist Fig. 8, 
+        -   fission rate proportional to LHGR
+        -   scaled so that the integral gives the rim burnup; 
+        -   rim temperature 600 K at power [P, FFRD Fig. 3.3-1: base-irradiation rim 300-330 C in the last cycle of Studsvik 192, a different rod, applied to all cycles [?]], 300 K at the outages [?];
+        -   confining stress 20 MPa (compression) while at power [?]: an assumption, not a measurement; regression/hbs uses a 0 to 70 MPa ramp instead.
+        -   Calculations in J2019 suggest that rod 9 has a wide rim zone with large pores in the outer part (0.8-1Ro, HBS pore radius from 500 to 800 nm, calculated gas pressure between 40 and 60 MPa at room temperature), while rod 10 show a narrow rim zone of 50 um where the average pore radius is below 600 nm (calculated gas pressure at room temperature between 50 and 60 MPa).
+-   Preconditioning [P, FFRD 2.1.1; Jernkvist Sec. 3.2.2]: 8 h at 8.5 kW/m (reactor at 15 MW, about 85 W/cm; Jernkvist: 7-8 h), rim at the cladding temperature of the test before the blowdown (255 C) [?] and at the rod pressure of Fig. 2.1-2 (3.5 MPa).
+-   LOCA: the same transient for both rods, taken from FFRD Fig. 2.1-2 ("a typical IFA-650 transient", an unspecified rod, digitised), t = 0 at the start of the blowdown, -300 s to 1000 s:
+        -   rim temperature = cladding temperature TCC1-3 [?]: 255 C before the blowdown, minimum 179 C at 79 s, heat-up to 785 C at the ballooning (250 s), 812 C at the failure (298 s), 860 C at the scram (432 s), then cooling to 347 C at 1000 s;
+        -   confining stress = rod pressure: 3.5 MPa before the blowdown, 3.1 MPa minimum at 81 s, 4.2 MPa at 250-270 s, then the failure at 298 s: 3.6 -> 0.4 MPa in about 3 s, 0.3 MPa afterwards;
+        -   rod power during the test = rodlet LHGR of Jernkvist Table 5 (2.60 / 1.37 kW/m), 0 after the scram.
+        -   The rod-specific values of Jernkvist Table 5 (PCT 1475 / 1114 K, blowdown 35 / 71 s, burst 133 / 249 s, rod pressure 5.9 -> 0.3 / 6.4 -> 0.4 MPa) are not imposed: only the base state differs between the two cases.
+
+Unknowns and deviations
+-   [?] Rim local burnup: 1.5 x the rod average (135 and 92 MWd/kgHM); not given.
+-   [?] Rim temperature during the LOCA: no temperature trace of 650.9 or 650.10 is available; the typical transient of Fig. 2.1-2 is used, with the rim at the cladding temperature. Its peak (860 C = 1133 K) is close to the PCT of 650.10 and 340 K below that of 650.9; its rod pressure (3.5 MPa) is below the 5.9 / 6.4 MPa of Jernkvist.
+-   [?] Rim temperature during the base irradiation: 600 K for all cycles, from one cycle of a different rod (FFRD Fig. 3.3-1). Confining stress 20 MPa at power.
+-   [E] Table above: the rodlet LHGR of 650.10 is 1.37 kW/m in Jernkvist Table 5 (1.37 is used).
+-   [?] Rim area fraction used to turn the rim fragmented fraction D into a rodlet average: 0.44 for 650.9 (HBS from r/Rp = 0.75, Jernkvist Fig. 9), 0.024 for 650.10 (50 um rim).
+-   [E] PCT of 650.9 is 1475 K in Jernkvist Table 5 and 1100 C (1373 K) in the FFRD Table 5.3-1; 1475 K is used.
+-   [E] The 41 % (650.9) and 10 % (650.10) pulverised fractions and the transient FGR of Jernkvist are his model results, not measurements. The measured outcomes are qualitative (fine fragmentation yes / limited) and the I-131 / Cs-137 retention. The 10 % of 650.10 comes from non-restructured material, outside the HBS model, so for 650.10 the target is a small rim D.
+-   [E] The depressurisation at the failure is the fast one of Fig. 2.1-2 (about 3 s). The rod pressure of 650.9 decays slowly (FFRD Fig. 2.1-6: about 62 bar at burst, 18 bar at 25 s, 12 bar at 60 s, 9 bar at 90 s; three pellets stayed in contact with the cladding, hydraulic diameter about 25 um); it is not used.
+
+Conditions reported in the FFRD report (NEA/CSNI/R(2016)16), not imposed in the cases
+-   Fragmentation onset temperature: 550-850 C (Studsvik, about 70 MWd/kgU, cladding with slit), about 640 C (NFIR, above 60 MWd/kgU), about 750 C (EPRI), about 900 C visible in Halden with little cladding strain; FGR onset from the rod pressure at about 500 C cladding / 650 C fuel (Secs 3.3.1, 6.1.2.2).
+-   Fuel at the burst: about 670 C, about 350 C above the base-irradiation rim temperature (Studsvik 192, IFA-650.4; Fig. 3.3-1).
+-   Hydrostatic pressure: FGR and fragmentation of 71 MWd/kgU samples at 1500 C are inhibited above about 40-60 MPa (NFIR, Sec. 3.3.4); the HBS at the periphery of EPRI samples with intact cladding did not fragment (compressive stress of the cladding, Sec. 2.2.2); a Halden sibling pair with and without burst shows no qualitative difference in fragmentation (Sec. 3.3.3).
+-   Cladding strain above 5-10 % (a fuel-cladding gap) is needed for visible fragmentation; fine fragmentation is expected from 60 MWd/kgU pellet average, larger from 70, extensive from 80 (Sec. 6.1.2.3).
+-   Heating rate: more FGR and disintegration at 9350 C/s than at 6050 C/s (EPRI, 71 MWd/kgU); 83 MWd/kgU: fuel stays in the cladding at 0.2 C/s, leaves it at 20 C/s (CEA).
+-   HBS: formation from about 60 MWd/kgU local (30-40 average); porosity 10-15 %; pore pressure 65-80 MPa at 377 C (62-78 MWd/kgU average); Xe outside the pores 0.1-0.2 wt%; width 70-300 um at 60 MWd/kgU average, larger with burnup (Fig. 9.1-1) (Appendix 9.1).
+-   Last-cycle power: a higher last-cycle LHGR enhances fragmentation (Studsvik 189, 192; Sec. 3.2.2); rod 9 Jernkvist Fig. 8: 15.5 kW/m.
+-   IFA-650.9: segment average burnup 90 MWd/kgU, PCT 1100 C (Table 5.3-1), considerable fuel dispersal, fragment spectrum in Fig. 6.1-4 similar to Studsvik 191; I-131 and Cs-137 retained 98 / 86 % and 93 %. IFA-650.10: 60 MWd/kgU, PCT 850 C, coarser fragmentation; 96 % and 95 % retained.
+-   Out-of-pile HBS anneals (hbs_nfir, hbs_hiernaut): Knudsen cell, local burnup about 200 MWd/kgHM: 1 % released at 330-530 C, 20 % at 630-730 C, 70 % at 1130-1230 C; outer ring (0.96-1 r/r0) at about 630 C, inner (0.91-0.96) at about 1230 C; estimated pore pressure 30 MPa at room temperature, 90 MPa at 650 C, 150 MPa at 1230 C; NFIR IFA-649 disc (103.5 MWd/kgU) main release at 1110-1200 C.

@@ -310,6 +310,7 @@ rho_crit         from the mean-field model                 [E] probably redundan
 
 import math
 import os
+import sys
 import time
 from collections import namedtuple
 
@@ -317,6 +318,7 @@ import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from hbs_formation_landau import (
     BURGERS,
     FABRICATION_POROSITY,

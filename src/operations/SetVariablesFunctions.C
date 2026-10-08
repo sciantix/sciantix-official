@@ -53,7 +53,8 @@ std::vector<std::string> getInputVariableNames()
                                       "iBubbleDiffusivity",
                                       "iChromiumSolubility",
                                       "iDensification",
-                                      "iReleaseMode"};
+                                      "iReleaseMode",
+                                      "iHighBurnupStructureFragmentation"};
 
     return names;
 }
@@ -99,6 +100,8 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
  * @param toOutputLandauSubstructure Flag for the substructure outputs of the Landau formation model
  *        (iHighBurnupStructureFormation = 4): mean misorientation and subgrain radius.
+ * @param toOutputFragmentation Flag for the outputs of the HBS fragmentation model
+ *        (iHighBurnupStructureFragmentation > 0).
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
@@ -110,6 +113,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputLandauSubstructure,
+                                                         bool   toOutputFragmentation,
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent)
 {
@@ -381,6 +385,30 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[200],
                          Sciantix_variables[200],
                          toOutputHighBurnupStructure),
+
+        // Fragmentation of the HBS, iHighBurnupStructureFragmentation > 0.
+        SciantixVariable("HBS fragmented fraction",
+                         "(/)",
+                         Sciantix_variables[204],
+                         Sciantix_variables[204],
+                         toOutputFragmentation),
+        SciantixVariable("HBS burst release fraction",
+                         "(/)",
+                         Sciantix_variables[205],
+                         Sciantix_variables[205],
+                         toOutputFragmentation),
+        SciantixVariable("HBS gas retention fraction",
+                         "(/)",
+                         Sciantix_variables[206],
+                         Sciantix_variables[206],
+                         toOutputFragmentation),
+        SciantixVariable("HBS fragment size", "(m)", Sciantix_variables[207], Sciantix_variables[207], toOutputFragmentation),
+        SciantixVariable(
+            "HBS pore pressure", "(Pa)", Sciantix_variables[208], Sciantix_variables[208], toOutputFragmentation),
+        SciantixVariable("HBFF reference temperature", "(K)", Sciantix_variables[209], Sciantix_variables[209], 0),
+        SciantixVariable(
+            "HBFF reference hydrostatic pressure", "(Pa)", Sciantix_variables[210], Sciantix_variables[210], 0),
+        SciantixVariable("HBFF transient flag", "(/)", Sciantix_variables[211], Sciantix_variables[211], 0),
 
         SciantixVariable(
             "trapping rate hbs", "(1/s)", Sciantix_variables[120], Sciantix_variables[120], toOutputHighBurnupStructure),

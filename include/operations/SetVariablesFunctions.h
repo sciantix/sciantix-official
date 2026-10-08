@@ -30,6 +30,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputLandauSubstructure,
+                                                         bool   toOutputFragmentation,
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent);
 

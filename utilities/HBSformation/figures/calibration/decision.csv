@@ -1,4 +1,4 @@
-data_set,w_r,w_X,k,beta,rho_c,cutoff_um,in_sample_rmse_theta,all_data_rmse_theta,leave_one_paper_out_rmse_theta,in_sample_rmse_radius,all_data_rmse_radius,leave_one_paper_out_rmse_radius,in_sample_rmse_fraction,all_data_rmse_fraction,leave_one_paper_out_rmse_fraction
-A,0.2,1.0,0.661134,26.2827,1.18455e+16,0.009188,1.726,1.891,,0.1016,0.1357,,0.186,0.1916,
-B,0.2,1.0,0.453641,26.7618,4572170000000000.0,0.01479,1.866,1.866,2.082,0.1205,0.1205,0.158,0.1841,0.1841,0.2164
-C,0.2,1.0,0.510248,26.6816,5741120000000000.0,0.0132,1.864,1.864,,0.1222,0.1222,,0.1842,0.1842,
+data_set,w_r,w_X,k,beta,rho_crit,in_sample_rmse_theta,all_data_rmse_theta,leave_one_paper_out_rmse_theta,in_sample_rmse_radius,all_data_rmse_radius,leave_one_paper_out_rmse_radius,in_sample_rmse_fraction,all_data_rmse_fraction,leave_one_paper_out_rmse_fraction
+A,0.2,1.0,0.992931,20.0146,618027000000000.0,1.686,1.871,,0.1084,0.1438,,0.1841,0.1917,
+B,0.2,1.0,0.682232,21.421,608159000000000.0,1.796,1.796,2.075,0.1313,0.1313,0.1684,0.1785,0.1785,0.22
+C,0.2,1.0,0.678802,21.3684,685411000000000.0,1.778,1.778,,0.1342,0.1342,,0.1772,0.1772,
