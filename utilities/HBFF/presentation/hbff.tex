@@ -1,0 +1,377 @@
+% HBS fine fragmentation, iHighBurnupStructureFragmentation 1-4
+% E. Cappellari -- SCIANTIX
+% Build: latexmk -pdf hbff.tex      Figures from ../figures/ (python3 ../plot.py)
+
+\documentclass[10pt,aspectratio=169]{beamer}
+\usetheme[progressbar=frametitle,numbering=fraction,block=fill]{metropolis}
+\usepackage{amsmath,amssymb,booktabs,graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\graphicspath{{../figures/}}
+\definecolor{paper}{RGB}{0,80,180}
+\definecolor{own}{RGB}{190,50,40}
+\newcommand{\pp}[1]{{\color{paper}#1}}   % equation or value from a paper
+\newcommand{\oo}[1]{{\color{own}#1}}     % our own assumption or equation
+\newcommand{\cmt}[3]{\par\vspace{3pt}{\footnotesize\begin{tabular}{@{}p{0.17\linewidth}p{0.78\linewidth}@{}}
+\textbf{Source} & #1\\ \textbf{Pressure} & #2\\ \textbf{J20 review} & #3\end{tabular}}}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\title{HBS fine fragmentation}
+\subtitle{iHighBurnupStructureFragmentation = 1--4}
+\author{E.\ Cappellari}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% \begin{frame}{Colour code}
+% \[\pp{\text{equation or value taken from a paper}}\qquad\qquad \oo{\text{equation or choice made here}}\]
+% \vspace{4pt}
+% \begin{tabular}{ll}
+% J19 & Jernkvist, EPJ N 5 (2019) 11\\
+% J20 & Jernkvist, Prog.\ Nucl.\ Energy 119 (2020) 103188 (review of criteria)\\
+% K15 & Kulacsy, JNM 466 (2015) 409\\
+% OHP & OperaHPC D5.2 (2026)\\
+% NEA & NEA/CSNI/R(2016)16
+% \end{tabular}
+% \end{frame}
+
+\begin{frame}{Introduction: what fragmentation means (NEA)}
+* few $\mu$m -- 100 $\mu$m 
+
+* high burnup, HBS pores 
+
+* HBS fragments are acicular, central precipitation rings fragment too
+
+
+\begin{tabular}{ll}
+\toprule
+burnup threshold & 60 -- 70 MWd/kgU (segment), significant dispersal above $\sim$80\\
+temperature threshold & $\sim$750\,$^\circ$C (EPRI), 640\,$^\circ$C (NFIR), visible at $\sim$900\,$^\circ$C (Halden)\\
+hydrostatic pressure & $P_h\gtrsim 40$--$60$ MPa suppresses release at 1500\,$^\circ$C (NFIR)\\
+cladding strain & 5 -- 10\,\% needed for visible fine fragmentation\\
+heating rate & more pulverisation at 20 than at 0.2\,$^\circ$C/s\\
+pore pressure & 65 -- 80 MPa at 377\,$^\circ$C (HBS pores)\\
+lower size limit & a 40\,$\mu$m HBS fragment is stable at 1300\,$^\circ$C\\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+% \begin{frame}{State of the art: models}
+% \scriptsize
+% \begin{tabular}{lll}
+% \toprule
+% source & object & type\\
+% \midrule
+% J19 & grain-face bubbles and HBS pores, FRAPCON/FRAPTRAN & integrated model\\
+% J20 & grain-face bubbles, 7 criteria + 1 & analytical review\\
+% K15 & HBS pores, LOCA & pore classes, punching pressure\\
+% Khvostov 2018, 2020 & grain boundary and HBS, RIA / LOCA & $R_F=\sigma_d/\sigma_B$, MATPRO strength\\
+% OHP D5.2 & RVE with HBS pores, NFIR-V & FE, $\sigma_R=275$ MPa, stress factor 1.2--3\\
+% Aagesen 2021 & single HBS bubble & phase field, no fracture\\
+% Gamble 2021, Gencturk 2025 & thermal radial cracks & XFEM / phase field, distributed strength\\
+% \bottomrule
+% \end{tabular}
+% \end{frame}
+
+\begin{frame}{State of the art: J20 verdict on the criteria}
+\scriptsize
+\begin{tabular}{lll}
+\toprule
+criterion & $P_g^{cr}$ & verdict\\
+\midrule
+Gruber 1973 & $P_s+(\sigma_{gb}+P_hF_2)/F_1$ & discarded, wrong $F_1,F_2$\\
+\textbf{Olander 1997} & $P_s+[\sigma^{cr}(1-\varphi_2)-\sigma_\infty]/\varphi_2$ & \textbf{suitable}, valid for HBS ($\varphi_2\to\varphi_3$)\\
+DiMelfi--Deitrich 1979 & $P_h+G\sin\theta/[2r(1-\cos\theta)]$ & discarded\\
+Harwell & $P_h+P_s+\frac1{F_3}\sqrt{\pi EG/[(1-\nu^2)r]}$ & unsuitable, no $\varphi_2$ dependence\\
+Chakraborty--Tonks--Pastore & same with $F_4(\varphi_2)$ & suitable, $\theta=50^\circ$ only\\
+Likhanskii--Matveev & Boyle / VdW & discarded\\
+Worledge improved & energy balance & suitable, unphysical for $\varphi_2<0.25$\\
+\textbf{Irwin 1957} & $P_h+\frac12\sqrt{\pi EG/[(1-\nu^2)r]}$ & comparable with Harwell / CTP\\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+
+stress criteria: small pores break first, LEFM: large pores first; 
+
+Open gaps
+\begin{enumerate}\small
+\item pre-transient pressure not computed by a growth model (K15: punching, OHP: from data, J19: empirical)
+\item pore distribution used only by K15
+\item small pores first (stress) vs large pores first (LEFM): no data
+\item no criterion for the lower size limit of fragmentation
+\item no direct heating-rate dependence, no pore interaction after a break
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{What SCIANTIX provides}
+\[
+\xi,\quad \bar R,\quad V_p,\quad N_p,\quad \bar n=\text{Xe atoms per pore},\quad \mathrm{Var}(n),\quad \alpha,\quad T,\quad P_h
+\]
+\begin{itemize}\small
+\item not available: joint distribution of $(n,V)$, so the pressure of each pore is not known
+\item end of NFIR base irradiation: $\xi=10.5\,\%$, $\bar R=0.35\ \mu$m, $N_p=5.8\times10^{17}\ \mathrm{m^{-3}}$
+\item measured: $\xi=11\,\%$, $\bar R=0.88\ \mu$m, $N_p=4\times10^{16}\ \mathrm{m^{-3}}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Pore state and pressure}
+Hard-sphere EoS of the porosity model, evaluated on SCIANTIX $n$ and $V_p$
+\[
+\oo{p_g=\frac{n k_BT}{V_p}Z(\eta)},\quad Z=\frac{1+\eta+\eta^2-\eta^3}{(1-\eta)^3},\quad
+\eta=\min\!\Big(\frac{n v_{Xe}(T)}{V_p},0.65\Big)
+\]
+Overpressure
+\[
+\pp{\Delta p=p_g-P_s-P_h},\qquad P_s=\frac{2\gamma}{R},\quad \gamma=1.1\ \mathrm{N/m},\quad P_h=-\sigma_h
+\]
+Pore classes (options 3, 4): log-normal in $R$ with the width from $\mathrm{Var}(n)$
+\[
+\oo{\mathrm{CV}_R=\frac{\sqrt{\mathrm{Var}(n)}}{3\bar n},\qquad \sigma_{\ln R}=\sqrt{\ln(1+\mathrm{CV}_R^2)}}
+\]
+\end{frame}
+
+\begin{frame}{Output: $D^*$ and $G^*$}
+Each criterion returns, at every step
+\begin{align*}
+D^*&=\sum_i w_i\,[\text{class } i \text{ broken}] && \text{fraction of broken pores}\\
+G^*&=\frac{\sum_i w_i n_i\,[\text{class } i\text{ broken}]}{\sum_i w_in_i} && \text{fraction of the pore gas in broken pores}
+\end{align*}
+$w_i$ number weight, $n_i$ Xe atoms of class $i$. 
+
+If one class, $D^*=G^*=1$ or 0.
+\vspace{4pt}
+\[
+\oo{D\leftarrow\max(D,D^*),\qquad G\leftarrow\max(G,G^*)}
+\]
+$D$: drives the fragment size \qquad $G$: drives the release
+\end{frame}
+
+\begin{frame}{New HBS material and venting}
+$\alpha$: restructured volume fraction. New material is intact
+\[
+\oo{\alpha>\alpha_{old}:\quad D\leftarrow D\frac{\alpha_{old}}{\alpha},\quad G\leftarrow G\frac{\alpha_{old}}{\alpha}}
+\]
+A broken pore loses its gas and stays as a void. When $G$ grows to $G_{new}$, $f=\dfrac{1-G_{new}}{1-G}$
+\[
+\oo{A\to fA,\quad B\to f^2B,\quad \bar n\to f\bar n,\quad \mathrm{Var}(n)\to f^2\mathrm{Var}(n),\quad S\to fS}
+\]
+$A$ = \texttt{Xe in HBS pores}, $B$ its variance, $S$ = \texttt{HBS gas retention fraction}.
+The criteria use the state before venting, $\bar n/S$.
+
+Fragment size (Wigner--Seitz cell of the pores)
+\[
+\oo{R_{WS}=\Big(\frac{3}{4\pi N_p}\Big)^{1/3},\qquad d=\min\!\Big(\frac{2R_{WS}}{D},\,500\ \mu\mathrm m\Big)}
+\]
+\end{frame}
+
+\begin{frame}{Option 1 --- Jernkvist (2019)}
+\[
+\pp{P_{cr}=P_s+\frac{\sigma^{cr}_{hbs}(1-\xi)+P_h}{\xi},\qquad \sigma^{cr}_{hbs}=21\ \mathrm{MPa}}
+\]
+\[
+\oo{p_g\ge P_{cr}\ \Rightarrow\ D^*=G^*=1}
+\]
+\cmt{J19 Eq.~22 (= J20 Eq.~7, Olander 1997)}
+{uniform: one mean pore; $p_g$ from the SCIANTIX hard-sphere EoS with $\bar n$, $V_p$ (no $\mathrm{Var}(n)$)}
+{\textbf{suitable} (Olander), valid for HBS pores with $\varphi_2\to\varphi_3$; used in SCANAIR, FALCON, RANNS}
+\end{frame}
+
+\begin{frame}{Option 2 --- Kulacsy (2015)}
+Classes at the punching pressure before the transient, $T_{ss}$, $P_{h,ss}$ last cycle
+\[
+\pp{p_0(r)=P_{h,ss}+\frac{2\gamma_{ss}}{r}+\frac{Gb}{r}},\qquad G=\frac{E_{ss}}{2(1+\nu)},\ b=0.39\ \mathrm{nm}
+\]
+\[
+\pp{\sigma_t=p_i-\Big(\tfrac32P_h+\frac{2\gamma(T,\xi)}{r}\Big),\qquad
+\sigma_f=170\,e^{-191.34/\min(T,1000)}\sqrt{1-2.62\,\xi}\ \mathrm{MPa}}
+\]
+\[
+\pp{\ln r\sim\mathcal N(-0.5,\,0.356^2)\ (r\ \mu\mathrm m)},\qquad \oo{D^*=\sum_i w_i[\sigma_{t,i}>\sigma_f]}
+\]
+\cmt{K15 Eq.~3, 7, 11, 15; own: transient start at the first fall of the fission rate, van der Waals in place of Ronchi's EoS}
+{not uniform, $\Delta p\sim Gb/r$ (small pores more loaded); gas per class from van der Waals at $T_{ss}$, \textbf{not} from SCIANTIX $n$, $\mathrm{Var}(n)$ (only $\xi,T,P_h$ enter)}
+{used by Kulacsy with $F_1=1$ instead of the correct $\tfrac12$ for a spherical pore}
+\end{frame}
+
+\begin{frame}{Option 3 --- LEFM (Irwin)}
+Penny-shaped crack of radius $R$
+\[
+P_{cr}(R)=P_h+\oo{\frac{2\gamma}{R}}+\pp{\frac1{2Y}\sqrt{\frac{\pi E\,G_{hbs}}{(1-\nu^2)R}}},\qquad \oo{G_{hbs}=0.055\ \mathrm{J/m^2}\ (\text{fitted}),\ Y=1}
+\]
+Pores with $R\ge R_c$, $P_{cr}(R_c)=p_g$, break; $z=\ln(R_c/\bar R)/\sigma_{\ln R}$
+\[
+\oo{D^*=\tfrac12\mathrm{erfc}\!\Big(\frac{z}{\sqrt2}\Big),\qquad
+G^*=\tfrac12\mathrm{erfc}\!\Big(\frac{z-3\sigma_{\ln R}}{\sqrt2}\Big)}
+\]
+\cmt{Irwin (1957), J20 Eq.~8; own: capillary term, $G_{hbs}$ fitted on NFIR, log-normal classes}
+{uniform over the classes, $p_g$ from the SCIANTIX EoS with $\bar n$; $\mathrm{Var}(n)$ only gives the class width}
+{comparable with Harwell and CTP; bulk $G$ (2 J/m$^2$) is $\sim$2 orders too strong, local $G$ is missing}
+\end{frame}
+
+\begin{frame}{Option 4 --- J19 force balance per class, progressive rupture}
+Pressure per class, level from SCIANTIX gas
+\[
+\oo{p_i=P_h+\frac{2\gamma}{R_i}+\kappa\frac{\pp{c_{dp}}}{R_i},\qquad \sum_i w_i\,\mathrm{EoS}^{-1}(p_i;V_i,T)=\bar n},\qquad \pp{c_{dp}=55\ \mathrm{N/m}}
+\]
+Rupture per class and percolation
+\[
+\pp{p_i\ge P_{cr,i}=\frac{2\gamma}{R_i}+\frac{\sigma^{cr}_{hbs}(1-\xi)+P_h}{\xi}},\qquad \pp{\xi\ge0.29\Rightarrow D^*=G^*=1}
+\]
+Progressive rupture
+\[
+\oo{D\leftarrow D+(D^*-D)\big(1-e^{-\Delta t/\tau}\big),\qquad \tau=2\ \mathrm s}
+\]
+\cmt{J19 Eq.~21--22, Table 4; own: $\kappa$ mass balance, class sum, relaxation (as \texttt{GrainBoundaryMicroCracking.C}); $\tau$ from the J19 microcracking mode}
+{per class, $\Delta p\sim1/R$; level from the SCIANTIX EoS and $\bar n$, class width from $\mathrm{Var}(n)$; no fitted parameter}
+{same criterion as option 1 (Olander); J19 rupture is instantaneous}
+\end{frame}
+
+% \begin{frame}{Critical pressure and pressure shape}
+% \centering\includegraphics[width=\linewidth]{criteria_comparison.png}
+% \end{frame}
+
+% \begin{frame}{Parameters}
+% \small
+% \begin{tabular}{llll}
+% \toprule
+% symbol & value & option & source\\
+% \midrule
+% $\pp{\sigma^{cr}_{hbs}}$ & \pp{21 MPa} & 1, 4 & J19 Table 4\\
+% $\pp{c_{dp}},\ \pp{\xi_{perc}}$ & \pp{55 N/m, 0.29} & 4 & J19 Table 4\\
+% $\oo{\tau}$ & \oo{2 s} & 4 & J19 Table 3 (borrowed)\\
+% $\pp{b},\ \pp{\nu}$ & \pp{0.39 nm, 0.32} & 2 & K15\\
+% median, $\sigma_{\ln r}$ & \pp{$e^{-0.5}\,\mu$m, 0.356} & 2 & K15 Table 2\\
+% $\oo{G_{hbs}},\ \oo{Y}$ & \oo{0.055 J/m$^2$, 1} & 3 & fitted on NFIR\\
+% $\gamma$ & 1.1 N/m & 1, 3, 4 & \texttt{SetMatrix.C}\\
+% \bottomrule
+% \end{tabular}
+% \end{frame}
+
+\begin{frame}{Micromechanics / OPERAHPC D5.2 - mmm}
+Periodic RVE, 1200 spherical pores, linear elasticity, zero macroscopic strain; pore $i$ breaks at
+\[
+\pp{\sigma_I^{max}\big|_i>\sigma_R=275\ \mathrm{MPa}},\qquad
+\pp{\hat s_i=\frac{\sigma_I^{max}|_i}{p_{in}}\in[0.6,\,1.5]}\quad(\text{isolated pore: }0.5)
+\]
+Same structure as J19, with the stress factor $\hat s$ in place of $\xi/(1-\xi)$
+\[
+\pp{\Delta p_{c,i}=\frac{\sigma_R+P_h}{\hat s_i}}\qquad\text{vs}\qquad
+\pp{\Delta p_c=\frac{\sigma^{cr}_{hbs}+P_h}{\xi/(1-\xi)}}
+\]
+\centering\small
+
+\end{frame}
+
+\begin{frame}{Pore interaction + SCIANTIX pressure}
+\small
+Linear elasticity: stress on pore $i$ from the pressure of all pores, influence coefficients $S_{ij}$ of the RVE
+\[
+\pp{\sigma_i=\sum_j S_{ij}\,(p_j-P_h)}\ \ \Rightarrow\ \ \oo{\sigma_i=\hat s_i\,(p_i-P_h)},\qquad \oo{\hat s_i=S_{ii}+\sum_{j\ne i}S_{ij}\frac{p_j-P_h}{p_i-P_h}}
+\]
+Regression of $\hat s_i$ on what SCIANTIX knows ($\xi$, $N_p$, $R_i$), the neighbours giving the scatter
+\[
+\oo{\ln\hat s_i=a+b\ln\frac{R_i}{\bar R}+\varepsilon,\quad \varepsilon\sim\mathcal N(0,\sigma_\varepsilon^2),\qquad (a,b,\sigma_\varepsilon)=f(\xi,\sigma_{\ln R})\ \text{from the RVE}}
+\]
+Pressure per class from the SCIANTIX gas.
+\end{frame}
+
+\begin{frame}{Propagation 1 and 2: cascade and percolation}
+\small
+\textbf{1. Sequential breaking} (RVE, no new FE run: $S_{ik}$ from one load case per pore). Break pore $k=\arg\max_i\sigma_i/\sigma_R$, then $p_k\to P_h$
+\[
+\oo{\sigma_i^{(m+1)}=\sigma_i^{(m)}-S_{ik}\,(p_k-P_h)+\Delta\sigma_i^{void}},\qquad \text{repeat while }\max_i\sigma_i/\sigma_R\ge1
+\]
+Output: size of the cascade at fixed $p_{in}$; reduced form $\oo{\hat s_{eff}=\hat s\,(1+\chi(\xi)\,D)}$, $\chi$ from the RVE, sign of $\Delta\sigma^{void}$ to be computed.
+
+\vspace{4pt}
+\textbf{2. Release by connectivity} (bond percolation). Pores = nodes, ligaments = bonds; $\oo{\text{bond }ij\text{ failed if }\sigma_{lig,ij}\ge\sigma_c}$
+\[
+\oo{G=\frac{\sum_{i\in\mathcal C_\partial}V_i\,n_i}{\sum_iV_in_i}},\qquad \mathcal C_\partial=\text{pores connected to the free surface through failed bonds}
+\]
+\[
+\oo{G=\Phi_G(D,\xi)},\qquad \oo{d=\Phi_d(D,\xi)}=\text{size of the intact clusters enclosed by the failed bonds}
+\]
+Replaces $G^*=$ gas of the broken pores and $A_f=2\pi R_{WS}^2$ [?]
+\end{frame}
+
+\begin{frame}{Propagation 3: crack from a pore with gas expansion}
+\small
+Penny crack of radius $a$ opened by the pressure $p$ (Sneddon); the gas of the pore ($n$ fixed) fills the new volume
+\[
+\pp{K_I=2p\sqrt{a/\pi}},\qquad \pp{V_c=\frac{16(1-\nu^2)}{3E}\,p\,a^3},\qquad \pp{\mathcal G=\frac{K_I^2(1-\nu^2)}{E}=\frac{4(1-\nu^2)}{\pi E}\,p^2a}
+\]
+\[
+\oo{p=\mathrm{EoS}\big(n,\ V_p+V_c(p,a),\ T\big)},\qquad \oo{\text{growth if }\mathcal G(a)\ge\mathcal G_c}
+\]
+For $V_c\gg V_p$ (ideal gas): $p\propto a^{-3/2}$, hence $\mathcal G\propto a^{-2}$: the crack arrests
+\[
+\oo{a_{arr}:\ \mathcal G\big(p(a_{arr}),a_{arr}\big)=\mathcal G_c}
+\]
+Link between pores $i$, $j$ at distance $\ell_{ij}$, to be checked on the RVE with a crack path (cohesive zone / XFEM)
+\[
+\oo{a_{arr,i}+a_{arr,j}\ge\ell_{ij}-R_i-R_j\ \Rightarrow\ \text{bond }ij\text{ failed}}
+\]
+Explains pores that do not burst and the stable 40\,$\mu$m fragments (NEA); one parameter, $\mathcal G_c$.
+\end{frame}
+
+\begin{frame}{What returns to SCIANTIX, and how}
+\footnotesize
+Offline: MMM on a grid $\xi\in[0.05,0.25]$, $\sigma_{\ln R}\in[0,0.5]$, 10 seeds each; fits; tables read by SCIANTIX at start (as the other tabulated data); no FE at run time.
+\vspace{4pt}
+
+\begin{tabular}{@{}p{0.22\linewidth}p{0.30\linewidth}p{0.18\linewidth}p{0.22\linewidth}@{}}
+\toprule
+from the RVE / MMM & in SCIANTIX & interpolation & replaces\\
+\midrule
+$a,b,\sigma_\varepsilon\ (\xi,\sigma_{\ln R})$ & $\hat s_i$ of each class & 2D table & ligament factor $\xi/(1-\xi)$, strength spread\\
+$\chi(\xi)$ & $\hat s_{eff}(D)$ & 1D table & nothing (no interaction)\\
+$\Phi_G(D,\xi)$ & release $G$ from $D$ & 2D table & $G^*$ gas-weighted, venting at $\xi=0.29$\\
+$\Phi_d(D,\xi)$ & fragment size $d$ & 2D table & $A_f=2\pi R_{WS}^2$\\
+$\mathcal G_c$, $a_{arr}$ rule & bond criterion & closed form & uniform-pressure LEFM, $G_{hbs}$\\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+
+Input from SCIANTIX each step: $\xi$, $N_p$, $\bar R$, $\sigma_{\ln R}$ (from $\mathrm{Var}(n)$), $p_i=\mathrm{EoS}(n_i,V_i,T)$, $T$, $P_h$.
+
+Checks: reduced model against the RVE FGR--pressure curve (OHP Fig.~7), then NFIR, $P_h$ scaling, IFA-650.10 control.
+\end{frame}
+
+\begin{frame}{NFIR anneal}
+\centering\includegraphics[width=0.95\linewidth]{frag_cases.png}
+
+\vspace{2pt}\small
+release at 1200\,$^\circ$C (data 29.8\,\%): \quad 1: 0 \quad 2: 56.5\,\% \quad 3: 30.7\,\% \quad 4: 0.02\,\%
+\end{frame}
+
+\begin{frame}{NFIR: Kr-85 release, prescribed state}
+\centering\includegraphics[width=0.6\linewidth]{nfirv.png}
+\end{frame}
+
+\begin{frame}{IFA-650.9 and .10}
+\centering\includegraphics[width=0.78\linewidth]{frag_ifa650.png}
+\end{frame}
+
+% \begin{frame}{Pore state during the NFIR base irradiation}
+% \centering\includegraphics[height=0.82\textheight]{pore_state_burnup.png}
+% \end{frame}
+
+% \begin{frame}{Option 2: gas per class}
+% \centering\includegraphics[width=\linewidth]{kulacsy_class_breakdown.png}
+% \end{frame}
+
+\begin{frame}{Results}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+ & 1 & 2 & 3 & 4\\
+\midrule
+NFIR, release at 1200\,$^\circ$C & 0 & 56.5\,\% & 30.7\,\% & 0.02\,\%\\
+IFA-650.9 & $D=1$ & $D=0.98$ & $D=1$ & $D=1$\\
+IFA-650.10 (control) & 0 & $D=0.94$ & 0 & 0\\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\end{document}
