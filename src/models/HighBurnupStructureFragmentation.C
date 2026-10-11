@@ -431,9 +431,9 @@ void Simulation::HighBurnupStructureFragmentation()
             //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),
             //  so that sum_i w_i V_i = V for any width s. The gas is shared among the classes as
             //     n_i = n R_i^a / sum_j w_j R_j^a,   a = 2 [?]
-            //  i.e. a gas density n_i / V_i ~ R_i^(a - 3): ~ 1/R for a = 2 (for an ideal gas a pressure ~ 1/R, the shape
-            //  of the punching overpressure of K15 and J19; the hard-sphere pressure is steeper), uniform for a = 3. s is the
-            //  root of sum_i w_i (n_i - n)^2 = Var(n) on the nodes. V, n and Var(n) hold on the classes.
+            //  i.e. a gas density n_i / V_i ~ R_i^(a - 3): ~ 1/R for a = 2 (for an ideal gas a pressure ~ 1/R, the
+            //  shape of the punching overpressure of K15 and J19; the hard-sphere pressure is steeper), uniform for a
+            //  = 3. s is the root of sum_i w_i (n_i - n)^2 = Var(n) on the nodes. V, n and Var(n) hold on the classes.
             //  Pressure per class: hard-sphere EoS on (n_i, V_i).
             //  Rupture of class i: first principal stress at the pore wall above the rupture stress (OHP 2.2.2),
             //     s_hat (p_i - 2 gamma / R_i - P_h) >= sigma_R + P_h,

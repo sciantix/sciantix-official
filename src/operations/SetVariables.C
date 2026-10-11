@@ -41,7 +41,7 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputGrainBoundary       = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() != 0,
          // author: E.Cappellari, POLIMI-CEA 2026
-        toOutputLandauSubstructure   = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
+        toOutputLandauSubstructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 4,
          toOutputFragmentation        = input_variable["iHighBurnupStructureFragmentation"].getValue() != 0,
          toOutputFragmentationClasses = input_variable["iHighBurnupStructureFragmentation"].getValue() == 4,
          // end of author: E.Cappellari, POLIMI-CEA 2026
