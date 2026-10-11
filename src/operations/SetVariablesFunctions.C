@@ -14,8 +14,10 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "MainVariables.h"
 #include "SciantixVariable.h"
 #include "SetVariablesFunctions.h"
+#include <string>
 #include <vector>
 
 /**
@@ -103,6 +105,9 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  *        (iHighBurnupStructureFormation = 4): mean misorientation and subgrain radius.
  * @param toOutputFragmentation Flag for the outputs of the HBS fragmentation model
  *        (iHighBurnupStructureFragmentation > 0).
+ * @param toOutputFragmentationClasses Flag for the state of the pore classes of the HBS fragmentation model
+ *        (iHighBurnupStructureFragmentation = 4): broken fraction of each class and retained fraction of the
+ *        second moment of the gas per pore.
  * end of author: E.Cappellari, POLIMI-CEA 2026
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
@@ -117,6 +122,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          // author: E.Cappellari, POLIMI-CEA 2026
                                                          bool toOutputLandauSubstructure,
                                                          bool toOutputFragmentation,
+                                                         bool toOutputFragmentationClasses,
                                                          // end of author: E.Cappellari, POLIMI-CEA 2026
                                                          bool toOutputStoichiometryDeviation,
                                                          bool toOutputChromiumContent)
@@ -404,6 +410,11 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "HBFF reference hydrostatic pressure", "(Pa)", Sciantix_variables[210], Sciantix_variables[210], 0),
         SciantixVariable("HBFF transient flag", "(/)", Sciantix_variables[211], Sciantix_variables[211], 0),
+        SciantixVariable("HBS gas retention fraction - second moment",
+                         "(/)",
+                         Sciantix_variables[212],
+                         Sciantix_variables[212],
+                         toOutputFragmentationClasses),
         // end of author: E.Cappellari, POLIMI-CEA 2026
 
         SciantixVariable(
@@ -444,6 +455,16 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
     };
+
+    // author: E.Cappellari, POLIMI-CEA 2026
+    // Broken fraction of each pore class, iHighBurnupStructureFragmentation = 4.
+    for (int i = 0; i < HBFF_N_CLASSES; ++i)
+        init_sciantix_variable.push_back(SciantixVariable("HBS broken fraction - class " + std::to_string(i),
+                                                          "(/)",
+                                                          Sciantix_variables[HBFF_CLASS_OFFSET + i],
+                                                          Sciantix_variables[HBFF_CLASS_OFFSET + i],
+                                                          toOutputFragmentationClasses));
+    // end of author: E.Cappellari, POLIMI-CEA 2026
 
     return init_sciantix_variable;
 }

@@ -41,6 +41,14 @@ constexpr int N_DIFFUSION_MODES             = 40;
 constexpr int N_MODE_BLOCKS                 = 18;
 constexpr int SCIANTIX_DIFFUSION_MODES_SIZE = N_MODE_BLOCKS * N_DIFFUSION_MODES;
 
+// author: E.Cappellari, POLIMI-CEA 2026
+// Pore classes of iHighBurnupStructureFragmentation = 4. The broken fraction of each class is a state of the
+// model, kept in Sciantix_variables[HBFF_CLASS_OFFSET ... HBFF_CLASS_OFFSET + HBFF_N_CLASSES - 1] and written to
+// output.txt when that option is active.
+constexpr int HBFF_N_CLASSES    = 81;
+constexpr int HBFF_CLASS_OFFSET = 213;
+// end of author: E.Cappellari, POLIMI-CEA 2026
+
 extern int    Sciantix_options[SCIANTIX_OPTIONS_SIZE];
 extern double Sciantix_history[SCIANTIX_HISTORY_SIZE];
 extern double Sciantix_variables[SCIANTIX_VARIABLES_SIZE];

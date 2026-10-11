@@ -132,6 +132,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {209, "HBFF reference temperature"},
     {210, "HBFF reference hydrostatic pressure"},
     {211, "HBFF transient flag"},
+    {212, "HBS gas retention fraction - second moment"},
     // end of author: E.Cappellari, POLIMI-CEA 2026
 };
 
@@ -151,4 +152,10 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }
+
+    // author: E.Cappellari, POLIMI-CEA 2026
+    for (int i = 0; i < HBFF_N_CLASSES; ++i)
+        Sciantix_variables[HBFF_CLASS_OFFSET + i] =
+            sciantix_variable["HBS broken fraction - class " + std::to_string(i)].getFinalValue();
+    // end of author: E.Cappellari, POLIMI-CEA 2026
 }

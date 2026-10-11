@@ -15,13 +15,16 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 // Fine fragmentation of the high-burnup structure (HBS), iHighBurnupStructureFragmentation = 1, 2, 3, 4
-// (1 Jernkvist, 2 Kulacsy, 3 LEFM, 4 proposed model: see utilities/HBFF/README.md).
+// (1 Jernkvist, 2 Kulacsy, 3 LEFM: utilities/HBFF/README.md; 4 rupture per pore class:
+// utilities/HBFF/README_HBFFmodel.md).
 //
 // The model reads the HBS pore state of HighBurnupStructurePorosity (option 2 or 3), T and the hydrostatic pressure
 // of input_history.txt (P_h = -Hydrostatic stress), and returns per step
 //   D  fraction of the HBS phase whose pores are broken (pore-number weighted, drives the fragment size),
 //   G  fraction of the pore gas released by the broken pores (gas weighted, drives the release),
 //   d  mean fragment size.
+// Option 4 also writes the state of its pore classes: the broken fraction of each class and the retained fraction of
+// the second moment of the gas per pore.
 //
 // Tags: [P] paper, [R] reduction into the SCIANTIX state, [U] application to the HBS material,
 //       [N] numerics, [?] unknown parameter, [E] deviation from or error in a source.
@@ -30,8 +33,7 @@
 //   J19  L.O. Jernkvist, Modelling of fine fragmentation and fission gas release of UO2 fuel in accident conditions,
 //        EPJ Nucl. Sci. Technol. 5 (2019) 11, doi:10.1051/epjn/2019030
 //   J20  L.O. Jernkvist, A review of analytical criteria for fission gas induced fragmentation of oxide fuel in
-//   accident
-//        conditions, Prog. Nucl. Energy 119 (2020) 103188, doi:10.1016/j.pnucene.2019.103188
+//        accident conditions, Prog. Nucl. Energy 119 (2020) 103188, doi:10.1016/j.pnucene.2019.103188
 //   K15  K. Kulacsy, Mechanistic model for the fragmentation of the high-burnup structure during LOCA,
 //        J. Nucl. Mater. 466 (2015) 409, doi:10.1016/j.jnucmat.2015.08.015
 //   OHP  OperaHPC Deliverable D5.2 (2026), section 2.2 (NFIR annealing test, RVE with HBS pores)
@@ -41,46 +43,49 @@
 //
 // --------------------------------------------------------------------------------------------------
 // Limitations
-//   L1 [R]  the pressure is uniform over the pore classes (option 3); K15, J19 and option 4 use dP ~ 1/R.
-//   L2 [R]  the venting scales the gas by (1 - dG) and its variance by the square, as if every pore lost the same
-//           fraction of its gas.
-//   L3 [E]  options 1, 3 use the hard-sphere EoS of the porosity model; option 2 uses van der Waals in place of Ronchi.
-//           Ronchi (1981) gives the EoS as a table (T, V) -> P to be interpolated (Kulacsy 3.1.2), not a closed
-//           form: pending digitisation of that table, van der Waals stays as the documented deviation.
+//   L1 [R]  the pressure is uniform over the pore classes in option 3; in option 4 it follows the closure
+//           n_i ~ R_i^a, a gas density ~ R^(a - 3): a = 2 is a density ~ 1/R (for an ideal gas a pressure ~ 1/R,
+//           the shape of the punching overpressure of K15 and J19), a = 3 a uniform pressure.
+//   L2 [R]  options 1, 2, 3: the venting scales the gas by (1 - dG) and its variance by the square, as if every pore
+//           lost the same fraction of its gas. Option 4 vents the broken classes only.
+//   L3 [E]  options 1, 3, 4 use the hard-sphere EoS of the porosity model; option 2 uses van der Waals in place of
+//           Ronchi. Ronchi (1981) gives the EoS as a table (T, V) -> P to be interpolated (Kulacsy 3.1.2), not a
+//           closed form: pending digitisation of that table, van der Waals stays as the documented deviation.
 //   L4 [?]  the fragments are equiaxed; HBS fragments are acicular (NEA/CSNI/R(2016)16, 3.1.3).
 //   L5 [?]  no lower bound on the fragment size (a 40 um HBS fragment does not fragment further at 1300 C).
 //   L6 [N]  D and G are cumulative maxima.
-//   L7 [?]  option 2 starts the transient at the first step in which the fission rate falls, and keeps the state of the
-//           step before as the reference (T_ss, P_h,ss); if the fission rate falls below 1 % of that value and later
-//           returns above 50 % of it, the power-off was an outage and the reference state is tracked again. A power
-//           step-down that never reaches 1 % is read as the transient start for the rest of the history.
-//   L8 [?]  the porosity model relaxes the vented pores (capillary shrinkage; with partial venting the survivors lose
-//   gas). L9 [?]  the criteria act only for a mean pore radius of at least 0.1 um and a porosity below 0.35. L10 [?]
-//   the free parameter of option 3 (G_hbs) is fitted on one dataset (NFIR Kr-85 release, OHP Fig. 9, a slow
-//           anneal), so the threshold at which it ruptures under a P_h transient is unvalidated. Options 1, 2 and 4 are
-//           not fitted.
-//   L11 [R] the pore state that SCIANTIX builds (iHighBurnupStructureFormation = 4, porosity 3: about 10.5 % porosity,
-//   0.35 um
-//           radius at the end of the NFIR base irradiation) differs from the measurement (11 %, 0.88 um): the criteria
-//           act on the modelled state, not on the measured one.
+//   L7 [?]  option 2 starts the transient at the first step in which the fission rate falls, and keeps the state of
+//           the step before as the reference (T_ss, P_h,ss); if the fission rate falls below 1 % of that value and
+//           later returns above 50 % of it, the power-off was an outage and the reference state is tracked again. A
+//           power step-down that never reaches 1 % is read as the transient start for the rest of the history.
+//   L8 [?]  the porosity model relaxes the vented pores (capillary shrinkage; with partial venting the survivors
+//           lose gas).
+//   L9 [?]  the criteria act only for a mean pore radius of at least 0.1 um and a porosity below 0.35; the window
+//           is on the mean pore, the classes of option 4 extend below 0.1 um.
+//   L10 [?] the free parameter of option 3 (G_hbs) is fitted on one dataset (NFIR Kr-85 release, OHP Fig. 9, a
+//           slow anneal), so the threshold at which it ruptures under a P_h transient is unvalidated. Options 1, 2
+//           and 4 are not fitted.
+//   L11 [R] the pore state that SCIANTIX builds (iHighBurnupStructureFormation = 4, porosity 3: about 10.5 %
+//           porosity, 0.35 um radius, 73 MPa at the end of the NFIR base irradiation) differs from the measurement
+//           (11 %, 0.88 um, gas density 1.7 times higher): the criteria act on the modelled state.
 //   L12 [?] option 2 uses only xi, T, P_h of the SCIANTIX state: its classes are the fixed log-normal of K15.
 //   L13 [?] the confining stress of the base irradiation is an input of the history (no PCMI model) and changes the
-//   pore state
-//           through the equilibrium pressure of the porosity model.
-//   L14 [?] the IFA-650 cases are one rim point with a transient taken from another test: no radial or axial structure,
-//   no
-//           cladding strain, no real T and P_h traces.
+//           pore state through the equilibrium pressure of the porosity model.
+//   L14 [?] the IFA-650 cases are one rim point with a transient taken from another test: no radial or axial
+//           structure, no cladding strain, no real T and P_h traces.
 //   L15 [?] no heating-rate dependence except the relaxation time of option 4; only the HBS is fragmented.
-//   L16 [?] option 4: the pressure shape c_dp / R is the steady-state limit of J19, not a measured distribution; kappa
-//   is
-//           recomputed each step, so in a heat-up at fixed gas the gas is slightly redistributed among the classes; the
-//           relaxation time tau = 2 s is borrowed from the J19 interconnection and microcracking modes (J19 rupture is
-//           instantaneous); the pores do not interact after a break.
+//   L16 [?] option 4: the closure exponent a is not determined by the SCIANTIX moments and sets which classes break;
+//           the stress concentration factor is the mean-field one of J19 (porosity only, no dependence on the
+//           class and no scatter) until the MMM tables exist; the relaxation time tau = 2 s is borrowed from the
+//           J19 interconnection and microcracking modes (J19 rupture is instantaneous); the pores do not interact
+//           after a break; the classes keep their rank in the size distribution while the moments evolve, and the
+//           unvented moments follow the retained ones in proportion between two steps.
 
 #include "Simulation.h"
 
 #include <algorithm>
 #include <cmath>
+#include <string>
 #include <vector>
 
 void Simulation::HighBurnupStructureFragmentation()
@@ -104,6 +109,13 @@ void Simulation::HighBurnupStructureFragmentation()
     const double retention_old = sciantix_variable["HBS gas retention fraction"].getInitialValue() > 0.0
                                      ? sciantix_variable["HBS gas retention fraction"].getInitialValue()
                                      : 1.0;
+    // option 4: retained fraction of the second moment of n, and the factors by which the venting of this step
+    // reduces the two retained moments
+    const double retention2_old =
+        sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue() > 0.0
+            ? sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue()
+            : 1.0;
+    double vent_first_moment = 1.0, vent_second_moment = 1.0;
 
     const double T  = history_variable["Temperature"].getFinalValue();
     const double Ph = -history_variable["Hydrostatic stress"].getFinalValue() * 1.0e6;  // (Pa)
@@ -123,14 +135,14 @@ void Simulation::HighBurnupStructureFragmentation()
     const double eta_cap       = 0.65;  // cap of the hard-sphere packing fraction
     auto         hard_sphere_Z = [](double eta)
     { return (1.0 + eta + eta * eta - eta * eta * eta) / std::pow(1.0 - eta, 3.0); };
-    auto pore_pressure = [&](double atoms)
+    auto pore_pressure = [&](double atoms, double volume)
     {
-        if (V <= 0.0 || atoms <= 0.0)
+        if (volume <= 0.0 || atoms <= 0.0)
             return 0.0;
-        const double eta = std::min(atoms * xe_volume / V, eta_cap);
-        return atoms * boltzmann_constant * T * hard_sphere_Z(eta) / V;
+        const double eta = std::min(atoms * xe_volume / volume, eta_cap);
+        return atoms * boltzmann_constant * T * hard_sphere_Z(eta) / volume;
     };
-    const double pg = pore_pressure(n);
+    const double pg = pore_pressure(n, V);
 
     // last-cycle reference state of K15: it stops updating at the transient start [?] L7
     double T_ss  = sciantix_variable["HBFF reference temperature"].getInitialValue();
@@ -413,143 +425,143 @@ void Simulation::HighBurnupStructureFragmentation()
 
         case 4:
         {
-            // Option 4: Jernkvist (2019) force balance per pore class, pressure from the SCIANTIX gas state [P] [R],
-            // progressive rupture [?]
-            //  Classes: R_i log-normal around the mean pore, sigma_lnR from CV_n (as option 3), weights w_i, volumes
-            //  V_i. Pressure per class: p_i = P_h + 2 gamma / R_i + kappa c_dp / R_i, with c_dp = 55 N/m (J19 Eq. 21,
-            //  Table 4: the steady-state overpressure of a punching-limited pore is c_dp / R, the inverse dependence on
-            //  the radius is that of J19 and K15). kappa is the loading relative to that limit: it is found by
-            //  bisection each step so that the gas of the classes, n_i = EoS^-1(p_i; V_i, T), gives the SCIANTIX mean,
-            //  sum_i w_i n_i = n [R] (mass-consistent). Rupture of a class, J19 Eq. 22 on the class radius: p_i >=
-            //  P_cr,i = 2 gamma / R_i + [sigma_hbs^cr (1 - xi) + P_h] / xi. Interconnected pores, xi >= 0.29 (J19): the
-            //  whole population is open. D* = sum_i w_i [broken],   G* = sum_i w_i n_i [broken] / sum_i w_i n_i.
-            //  Progressive rupture [?]: the instantaneous (D*, G*) are approached with a relaxation time tau (J19 Table
-            //  3 gives tau = 2 s to the interconnection and microcracking modes; its rupture mode is instantaneous). D
-            //  <- D + (D* - D)(1 - exp(-dt / tau)).
-            reference = ": Jernkvist (2019), EPJ Nucl. Sci. Technol. 5, 11, Eq. 21-22; progressive rupture as "
-                        "GrainBoundaryMicroCracking";
+            // Option 4: rupture per pore class, progressive [R] [P] [?] (utilities/HBFF/README_HBFFmodel.md)
+            //  Classes [R] [N]. SCIANTIX carries the mean pore volume V, the mean Xe atoms per pore n and Var(n).
+            //  The radius is log-normal on 81 nodes x_i in [-4, 4] with number weights w_i ~ exp(-x_i^2 / 2):
+            //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),
+            //  so that sum_i w_i V_i = V for any width s. The gas is shared among the classes as
+            //     n_i = n R_i^a / sum_j w_j R_j^a,   a = 2 [?]
+            //  i.e. a gas density n_i / V_i ~ R_i^(a - 3): ~ 1/R for a = 2 (for an ideal gas a pressure ~ 1/R, the shape
+            //  of the punching overpressure of K15 and J19; the hard-sphere pressure is steeper), uniform for a = 3. s is the
+            //  root of sum_i w_i (n_i - n)^2 = Var(n) on the nodes. V, n and Var(n) hold on the classes.
+            //  Pressure per class: hard-sphere EoS on (n_i, V_i).
+            //  Rupture of class i: first principal stress at the pore wall above the rupture stress (OHP 2.2.2),
+            //     s_hat (p_i - 2 gamma / R_i - P_h) >= sigma_R + P_h,
+            //  s_hat the stress concentration factor per unit net pressure. s_hat and sigma_R come as a pair: here
+            //  the mean-field pair of J19 Eq. 22 [P], s_hat = xi / (1 - xi) and sigma_R = sigma_hbs^cr = 21 MPa, the
+            //  same for all classes. For xi >= 0.29 every class is open [E] (J19 vents only the excess over c_dp / R).
+            //  Progressive rupture [?]: each class carries its broken fraction beta_i,
+            //     beta_i <- beta_i + max(b*_i - beta_i, 0) (1 - exp(-dt / tau)),   tau = 2 s,
+            //  b*_i = 1 if the class meets the criterion (J19 Table 3 gives tau = 2 s to the interconnection and
+            //  microcracking modes; its rupture mode is instantaneous).
+            //     D = sum_i w_i beta_i,   G = sum_i w_i n_i beta_i / sum_i w_i n_i.
+            //  Venting [R]: the gas leaves the broken classes only. The retained first and second moment of n are
+            //  sum_i w_i n_i (1 - beta_i) and sum_i w_i n_i^2 (1 - beta_i); S and S_2 are their ratios to the unvented
+            //  ones, so that the criterion sees the unvented moments n / S and (Var(n) + n^2) / S_2.
+            reference = ": pore classes from the SCIANTIX moments; rupture per class with the mean-field stress "
+                        "concentration factor of Jernkvist (2019), EPJ Nucl. Sci. Technol. 5, 11, Eq. 22; progressive "
+                        "rupture as GrainBoundaryMicroCracking";
+
+            // new restructured material is intact: dilution of the broken fraction of every class
+            const double alpha_old_ = sciantix_variable["Restructured volume fraction"].getInitialValue();
+            const double alpha_new_ = sciantix_variable["Restructured volume fraction"].getFinalValue();
+            const double dilution   = (alpha_new_ > alpha_old_ && alpha_old_ > 0.0) ? alpha_old_ / alpha_new_ : 1.0;
+
+            std::vector<double> beta(HBFF_N_CLASSES);
+            for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                beta[i] =
+                    sciantix_variable["HBS broken fraction - class " + std::to_string(i)].getInitialValue() * dilution;
 
             if (state_valid && pg > 0.0)
             {
-                const double sigma_hbs_cr = 21.0e6;  // (Pa) [P] J19 Table 4
-                const double c_dp         = 55.0;    // (N/m) [P] J19 Table 4
-                const double xi_perc      = 0.29;    // (/) [P] J19, percolation of the HBS pores
-                const double tau_rupture  = 2.0;     // (s) [?]
-                const double gamma        = fuel_.getSurfaceTension();
+                const double sigma_r     = 21.0e6;  // (Pa) [P] J19 Table 4, pairs with the mean-field s_hat
+                const double xi_perc     = 0.29;    // (/) [P] J19, percolation of the HBS pores
+                const double tau_rupture = 2.0;     // (s) [?]
+                const double a_closure   = 2.0;     // (/) [?] gas per class n_i ~ R_i^a
+                const double class_span  = 4.0;     // [N] nodes at ln R = ln R_median +/- 4 s
+                const double gamma       = fuel_.getSurfaceTension();
 
-                if (xi >= xi_perc)
+                // [P] mean-field stress concentration factor of J19 Eq. 22; the MMM table of s_hat enters here
+                const double s_hat = xi / (1.0 - xi);
+
+                std::vector<double> x(HBFF_N_CLASSES), w(HBFF_N_CLASSES);
+                double              w_norm = 0.0;
+                for (int i = 0; i < HBFF_N_CLASSES; ++i)
                 {
-                    d_star = 1.0;
-                    g_star = 1.0;
+                    x[i] = -class_span + (2.0 * class_span) * i / (HBFF_N_CLASSES - 1);
+                    w[i] = std::exp(-0.5 * x[i] * x[i]);
+                    w_norm += w[i];
                 }
-                else
+                for (double& weight : w)
+                    weight /= w_norm;
+
+                // unvented second moment of n, from the retained one [R]
+                const double n_retained   = sciantix_variable["Xe atoms per HBS pore"].getFinalValue();
+                const double var_retained = sciantix_variable["Xe atoms per HBS pore - variance"].getFinalValue();
+                const double var_unvented =
+                    std::max((var_retained + n_retained * n_retained) / retention2_old - n * n, 0.0);
+
+                // [N] width s: CV^2 of n on the nodes, sum w e^(2 a s x) / (sum w e^(a s x))^2 - 1, grows with s.
+                // Bisection between 0 and an upper bound doubled from the value of the continuous log-normal.
+                auto cv2_on_nodes = [&](double s)
                 {
-                    // [R] [N] log-normal classes, 81 nodes at ln R = ln R_mean +/- 4 sigma_lnR; one class if the
-                    // variance is null
-                    double sigma_lnR = 0.0;
-                    if (n > 0.0 && varn > 0.0)
+                    double m1 = 0.0, m2 = 0.0;
+                    for (int i = 0; i < HBFF_N_CLASSES; ++i)
                     {
-                        const double cv_r = std::sqrt(varn) / n / 3.0;
-                        sigma_lnR         = std::sqrt(std::log(1.0 + cv_r * cv_r));
+                        const double e = std::exp(a_closure * s * x[i]);
+                        m1 += w[i] * e;
+                        m2 += w[i] * e * e;
                     }
-                    const int    n_classes  = (sigma_lnR > 0.0) ? 81 : 1;
-                    const double class_span = 4.0;
-
-                    std::vector<double> radii, volumes, w;
-                    double              w_norm = 0.0;
-                    for (int i = 0; i < n_classes; ++i)
-                    {
-                        const double x = (n_classes > 1) ? -class_span + (2.0 * class_span) * i / (n_classes - 1) : 0.0;
-                        radii.push_back(R * std::exp(sigma_lnR * x));
-                        volumes.push_back(4.0 / 3.0 * M_PI * std::pow(radii.back(), 3.0));
-                        w.push_back(std::exp(-0.5 * x * x));
-                        w_norm += w.back();
-                    }
-                    for (double& weight : w)
-                        weight /= w_norm;
-
-                    // [N] inverse of the hard-sphere EoS at fixed volume and T: eta Z(eta) = p v_Xe / (k_B T), Newton
-                    // from the right (eta Z(eta) is convex and increasing; d(eta Z)/d eta = (1 + 4 eta + 4 eta^2 - 4
-                    // eta^3 + eta^4) / (1 - eta)^4). Above the cap the pressure is linear in the gas, Z = Z(0.65).
-                    auto atoms_at_pressure = [&](double p, double volume)
-                    {
-                        if (p <= 0.0)
-                            return 0.0;
-                        const double y     = p * xe_volume / (boltzmann_constant * T);
-                        const double z_cap = hard_sphere_Z(eta_cap);
-                        double       eta   = y;
-                        if (y >= eta_cap * z_cap)
-                            eta = y / z_cap;
-                        else
-                            for (int it = 0; it < 50; ++it)
-                            {
-                                const double f  = eta * hard_sphere_Z(eta) - y;
-                                const double df = (1.0 + 4.0 * eta + 4.0 * eta * eta - 4.0 * std::pow(eta, 3.0) +
-                                                   std::pow(eta, 4.0)) /
-                                                  std::pow(1.0 - eta, 4.0);
-                                const double step = f / df;
-                                eta -= step;
-                                if (std::fabs(step) < 1.0e-14 * eta)
-                                    break;
-                            }
-                        return eta * volume / xe_volume;
-                    };
-                    auto class_pressure = [&](size_t i, double kappa)
-                    { return Ph + 2.0 * gamma / radii[i] + kappa * c_dp / radii[i]; };
-                    auto mean_atoms = [&](double kappa)
-                    {
-                        double sum = 0.0;
-                        for (size_t i = 0; i < radii.size(); ++i)
-                            sum += w[i] * atoms_at_pressure(class_pressure(i, kappa), volumes[i]);
-                        return sum;
-                    };
-
-                    // [N] kappa by bisection: lower bound where every class is above zero pressure, upper bound by doubling
-                    double kappa_lo = -(Ph + 2.0 * gamma / radii[0]) * radii[0] / c_dp;
-                    for (size_t i = 1; i < radii.size(); ++i)
-                        kappa_lo = std::max(kappa_lo, -(Ph + 2.0 * gamma / radii[i]) * radii[i] / c_dp);
-                    kappa_lo *= 0.999;
-                    double kappa_hi = 1.0;
-                    for (int it = 0; it < 80 && mean_atoms(kappa_hi) < n; ++it)
-                        kappa_hi *= 2.0;
+                    return m2 / (m1 * m1) - 1.0;
+                };
+                const double cv2   = var_unvented / (n * n);
+                double       sigma = 0.0;
+                if (cv2 > 0.0)
+                {
+                    double s_lo = 0.0, s_hi = std::sqrt(std::log(1.0 + cv2)) / a_closure;
+                    for (int it = 0; it < 20 && cv2_on_nodes(s_hi) < cv2; ++it)
+                        s_hi *= 2.0;
                     for (int it = 0; it < 60; ++it)
                     {
-                        const double mid = 0.5 * (kappa_lo + kappa_hi);
-                        if (mean_atoms(mid) < n)
-                            kappa_lo = mid;
+                        const double mid = 0.5 * (s_lo + s_hi);
+                        if (cv2_on_nodes(mid) < cv2)
+                            s_lo = mid;
                         else
-                            kappa_hi = mid;
+                            s_hi = mid;
                     }
-                    const double kappa = 0.5 * (kappa_lo + kappa_hi);
-
-                    double gas_sum = 0.0, gas_broken = 0.0, w_broken = 0.0;
-                    for (size_t i = 0; i < radii.size(); ++i)
-                    {
-                        const double p_i = class_pressure(i, kappa);
-                        const double n_i = atoms_at_pressure(p_i, volumes[i]);
-                        const double p_cr =
-                            2.0 * gamma / radii[i] + (sigma_hbs_cr * (1.0 - xi) + Ph) / xi;  // [P] J19 Eq. 22
-                        gas_sum += w[i] * n_i;
-                        if (p_i >= p_cr)
-                        {
-                            w_broken += w[i];
-                            gas_broken += w[i] * n_i;
-                        }
-                    }
-                    d_star = w_broken;
-                    g_star = (gas_sum > 0.0) ? gas_broken / gas_sum : 0.0;
+                    sigma = 0.5 * (s_lo + s_hi);
                 }
 
-                // Progressive rupture [?]: relaxation towards (D*, G*) from the previous (diluted) values
-                const double alpha_old_ = sciantix_variable["Restructured volume fraction"].getInitialValue();
-                const double alpha_new_ = sciantix_variable["Restructured volume fraction"].getFinalValue();
-                const double dilution   = (alpha_new_ > alpha_old_ && alpha_old_ > 0.0) ? alpha_old_ / alpha_new_ : 1.0;
-                const double relax      = 1.0 - std::exp(-physics_variable["Time step"].getFinalValue() / tau_rupture);
-                const double d_old      = sciantix_variable["HBS fragmented fraction"].getInitialValue() * dilution;
-                const double g_old      = sciantix_variable["HBS burst release fraction"].getInitialValue() * dilution;
-                d_star                  = d_old + std::max(d_star - d_old, 0.0) * relax;
-                g_star                  = g_old + std::max(g_star - g_old, 0.0) * relax;
+                double volume_norm = 0.0, gas_norm = 0.0;
+                for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                {
+                    volume_norm += w[i] * std::exp(3.0 * sigma * x[i]);
+                    gas_norm += w[i] * std::exp(a_closure * sigma * x[i]);
+                }
+                const double r_median = std::cbrt(3.0 * V / (4.0 * M_PI) / volume_norm);
+
+                const double relax = 1.0 - std::exp(-physics_variable["Time step"].getFinalValue() / tau_rupture);
+
+                double gas_broken = 0.0, kept_old = 0.0, kept_new = 0.0, kept2_old = 0.0, kept2_new = 0.0;
+                for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                {
+                    const double r_i = r_median * std::exp(sigma * x[i]);
+                    const double v_i = 4.0 / 3.0 * M_PI * std::pow(r_i, 3.0);
+                    const double n_i = n * std::exp(a_closure * sigma * x[i]) / gas_norm;
+                    const double p_i = pore_pressure(n_i, v_i);
+
+                    const bool broken = xi >= xi_perc || s_hat * (p_i - 2.0 * gamma / r_i - Ph) >= sigma_r + Ph;
+
+                    kept_old += w[i] * n_i * (1.0 - beta[i]);
+                    kept2_old += w[i] * n_i * n_i * (1.0 - beta[i]);
+                    if (broken)
+                        beta[i] += (1.0 - beta[i]) * relax;
+                    kept_new += w[i] * n_i * (1.0 - beta[i]);
+                    kept2_new += w[i] * n_i * n_i * (1.0 - beta[i]);
+
+                    d_star += w[i] * beta[i];
+                    gas_broken += w[i] * n_i * beta[i];
+                }
+                g_star = gas_broken / n;
+
+                if (kept_old > 0.0)
+                    vent_first_moment = kept_new / kept_old;
+                if (kept2_old > 0.0)
+                    vent_second_moment = kept2_new / kept2_old;
             }
+
+            for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                sciantix_variable["HBS broken fraction - class " + std::to_string(i)].setFinalValue(beta[i]);
             break;
         }
 
@@ -586,16 +598,40 @@ void Simulation::HighBurnupStructureFragmentation()
     D                  = std::max(D, model["High-burnup structure fragmentation"].getParameter().at(0));
     const double G_new = std::max(G, model["High-burnup structure fragmentation"].getParameter().at(1));
 
-    //   Venting [R]. A broken pore vents its gas and stays as a void. When G grows from G_old to G_new, with
-    //     f = max[(1 - G_new) / (1 - G_old), 1e-12 / S]:
+    //   Venting [R]. A broken pore vents its gas and stays as a void. A = "Xe in HBS pores", B its variance,
+    //   S = "HBS gas retention fraction". The gas leaves through "Xe released" by the mass balance of GasRelease.C.
+    //   Options 1, 2, 3: when G grows from G_old to G_new, with f = max[(1 - G_new) / (1 - G_old), 1e-12 / S],
     //     A -> f A,  B -> f^2 B,  n -> f n,  Var(n) -> f^2 Var(n),  S -> f S,
-    //   A = "Xe in HBS pores", B its variance, S = "HBS gas retention fraction". The gas leaves through "Xe released"
-    //   by the mass balance of GasRelease.C. The criteria are evaluated on the state before the venting: n / S and
-    //   Var(n) / S^2.
-    // the gas of the population and its variance scale with the survivors [R] L2
-    double retention = retention_old;
-    if (G_new > G)
+    //   and the criteria are evaluated on the state before the venting, n / S and Var(n) / S^2.
+    //   Option 4: the broken classes vent, with f_1 and f_2 the factors of the retained first and second moment of n,
+    //     A -> f_1 A,  n -> f_1 n,  S -> f_1 S,  S_2 -> f_2 S_2,
+    //     Var(n) -> f_2 (Var(n) + n^2) - (f_1 n)^2,  B -> N_p Var(n).
+    double retention  = retention_old;
+    double retention2 = retention2_old;
+    if (int(input_variable["iHighBurnupStructureFragmentation"].getValue()) == 4)
     {
+        if (vent_first_moment < 1.0)
+        {
+            // [N] the gas retention of the population never falls below this value
+            const double retention_floor = 1.0e-12;
+            const double f1              = std::max(vent_first_moment, retention_floor / retention_old);
+            const double f2              = std::max(vent_second_moment, retention_floor / retention2_old);
+            const double n_retained      = sciantix_variable["Xe atoms per HBS pore"].getFinalValue();
+            const double second_moment =
+                (sciantix_variable["Xe atoms per HBS pore - variance"].getFinalValue() + n_retained * n_retained) * f2;
+            const double variance = std::max(second_moment - (f1 * n_retained) * (f1 * n_retained), 0.0);
+            retention *= f1;
+            retention2 *= f2;
+            sciantix_variable["Xe in HBS pores"].rescaleFinalValue(f1);
+            sciantix_variable["Xe atoms per HBS pore"].rescaleFinalValue(f1);
+            sciantix_variable["Xe atoms per HBS pore - variance"].setFinalValue(variance);
+            sciantix_variable["Xe in HBS pores - variance"].setFinalValue(
+                variance * sciantix_variable["HBS pore density"].getFinalValue());
+        }
+    }
+    else if (G_new > G)
+    {
+        // the gas of the population and its variance scale with the survivors [R] L2
         double factor = (G < 1.0) ? (1.0 - G_new) / (1.0 - G) : 1.0;
         // [N] the gas retention of the population never falls below this value
         const double retention_floor = 1.0e-12;
@@ -611,9 +647,10 @@ void Simulation::HighBurnupStructureFragmentation()
     sciantix_variable["HBS fragmented fraction"].setFinalValue(D);
     sciantix_variable["HBS burst release fraction"].setFinalValue(G);
     sciantix_variable["HBS gas retention fraction"].setFinalValue(retention);
+    sciantix_variable["HBS gas retention fraction - second moment"].setFinalValue(retention2);
     // the output is the pressure of the gas the pores hold after the venting; the criteria above used pg, before it
     sciantix_variable["HBS pore pressure"].setFinalValue(
-        pore_pressure(sciantix_variable["Xe atoms per HBS pore"].getFinalValue()));
+        pore_pressure(sciantix_variable["Xe atoms per HBS pore"].getFinalValue(), V));
 
     // Fragment size [R] [U]
     // Cubic fragments bounded by the cracked faces of the Wigner-Seitz cells of the pores (specific surface of the

@@ -325,8 +325,9 @@ class Simulation
     // author: E.Cappellari, POLIMI-CEA 2026
     /**
      * @brief Fine fragmentation of the high-burnup structure by overpressurised pores: fraction of broken
-     * pores, burst release of their gas and mean fragment size. Reference implementation:
-     * utilities/HBFF/hbff_reference.py.
+     * pores, burst release of their gas and mean fragment size. Model description: utilities/HBFF/README.md
+     * (options 1, 2, 3) and utilities/HBFF/README_HBFFmodel.md (option 4, with its Python transcription
+     * utilities/HBFF/pore_distribution.py).
      *
      * @author E. Cappellari
      *

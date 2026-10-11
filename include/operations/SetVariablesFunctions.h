@@ -32,6 +32,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          // author: E.Cappellari, POLIMI-CEA 2026
                                                          bool toOutputLandauSubstructure,
                                                          bool toOutputFragmentation,
+                                                         bool toOutputFragmentationClasses,
                                                          // end of author: E.Cappellari, POLIMI-CEA 2026
                                                          bool toOutputStoichiometryDeviation,
                                                          bool toOutputChromiumContent);

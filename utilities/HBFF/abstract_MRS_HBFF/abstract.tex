@@ -1,0 +1,54 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}
+
+% Symposium: EN11 - Emerging Fuel and Cladding Technologies for Advanced Nuclear Systems
+% MRS: title in Title Case, title + body <= 4000 characters including spaces,
+% no images/graphics/charts, up to three keywords. Keep the body as plain text.
+% Character count of title + body: python3 count_characters.py (same folder).
+
+\title{\textbf{How Fission Gas Pressurised Pores Drive High Burnup Fuel Fragmentation: A Micromechanics-Informed Pore Population Model in SCIANTIX}}
+\author{E.~Cappellari$^{1}$, T.~Barani$^{2}$, G.~Zullo$^{1}$, L.~Luzzi$^{1}$, D.~Pizzocri$^{1}$\\[2pt]
+\small $^{1}$Politecnico di Milano, Department of Energy, Nuclear Engineering Division, Milan, Italy\\
+\small $^{2}$CEA, DES, IRESNE, DEC, SESC, 13108 Saint-Paul-Lez-Durance, France}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Abstract}
+
+% 1) Introduction (2 sentences):
+% --> Sentence 1: Basic introduction to the field; accessible to scientists of any  discipline.
+Fine fragmentation of high burnup nuclear fuel is a licensing issue in the United States, where the economics of 24-month cycles would push peak rod burnups towards 75 GWd/tU, past the fragmentation threshold and beyond the 62 GWd/tU to which pressurised water reactors are currently licensed. European regulators judge that such fragmentation does not arise at present burnups and core loadings, yet the phenomenon itself was discovered and characterised in European facilities, such as Halden and Studsvik, whose programmes are the experimental basis for any future burnup extension.
+
+% --> Sentence 2: Background of the specific research question; comprehensible to scientists in the same or closely related fields of research.
+Fine fragmentation is attributed to the fission gas stored in overpressurised micrometric pores of the high burnup structure at the pellet rim. When the fuel heats up and loses its confinement, the pore pressure fractures the surrounding matrix into fragments of tens of micrometres and the gas is released in a burst.
+Safety analyses still predict the onset with empirical burnup-temperature thresholds, which resolve neither the fission-gas-driven mechanism nor the microstructural evolution before the transient. Mechanistic rupture criteria based on pore overpressure are available in fuel performance codes, but simplify the pore-pressure state. Microstructure-resolved simulations describe single pores accurately, but are too computationally expensive for engineering use.
+
+% 2) Problem/objective (1 sentence): --> Explanation what is missing/unknown/problematic, i.e. why the current study happened. Typically, this sentence starts with “However”.
+However, the mechanistic criteria either prescribe the pore population, assuming that every pore reached the dislocation-punching pressure during base irradiation, or consider a single mean pore, and they neglect the interaction between pores. The distribution of pore size, gas content and local stress, which determines where and when rupture starts, is therefore not calculated and not informed by the irradiation conditions.
+
+% 3) “Here we show” (1 sentence): --> The main result/key finding summarised in one sentence, which starts with “Here we show”.
+Here we show that mesoscale micromechanics calculations coupled with fission gas behaviour models supply this description within engineering fuel performance codes.
+
+% 4) Main results and conclusions (~ 3 – 5 sentences)
+
+% --> Summary of the most important findings of the study that are the foundation of the main conclusions. A few key bits of data are welcome but adding too many numbers is off-putting to the reader. Keep it focussed.
+% --> Unless the method is new and/or a main part of the paper, there’s no need to include any details in the abstract. If you mentioned, it should be included in a sentence along the lines of “Using xyz, we show that (…)”.
+The model is implemented in SCIANTIX, a fission gas behaviour code developed at Politecnico di Milano. SCIANTIX describes the formation of the high burnup structure together with the mean volume of its pores, their mean gas content, and the variance of that content. From these quantities the model builds a population of pore size classes, each with its own pressure. The local stress varies from pore to pore with the size and pressure distributions and with the random arrangement of the neighbours. This spread is computed with MMM, a mesoscale finite element code that solves the elastic problem on a periodic representative volume element of randomly placed pressurised spherical pores. The resulting stress concentration factors depend on a few dimensionless numbers only, so a surrogate model fitted to the MMM simulations provides them to SCIANTIX.
+The model is assessed against the annealing test of a high burnup fuel disc, a single-effect test that isolates the pore-pressure mechanism. The pores break progressively as the temperature rises, the smallest classes first, and within a class the pores with the highest local stress first. This progressive rupture is consistent with the measured release and with earlier pore-distribution models.
+Integral loss-of-coolant tests of the Halden IFA-650 series are also used to verify the fine fragmentation threshold, although cladding strain, ballooning, pellet-cladding contact and fuel relocation complicate their description.
+
+
+% 5) Implications (1 – 2 sentences) --> Some explanation on how your findings advance the field. Where does your work lead and what are the immediate implications? The word “immediate” is key here because being too creative or hyping the work are pitfalls that should be avoided. Rather, keep it realistic and explain which opportunities your work offer and/or what it leads to
+Since SCIANTIX is already coupled to several fuel performance codes, the model is directly available to engineering-scale safety analyses.
+
+\medskip
+
+\textbf{Keywords:} fragmentation, high burnup structure, fission gas release.
+
+\end{document}
