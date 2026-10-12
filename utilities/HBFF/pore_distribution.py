@@ -677,7 +677,9 @@ def section_normalised_vs_direct():
 #
 # MMM solves a linear elastic problem on a periodic RVE of spherical pores under internal pressure (OHP 2.2.2) and
 # returns the maximum first principal stress at every pore. An input is, for every size class of the pores, its
-# radius, its porosity and its gas pressure, and the confining pressure. No SCIANTIX run is needed.
+# radius, its porosity and its gas pressure, and the confining pressure. No SCIANTIX run is needed. The run files
+# written here are read by Merope/distributedpore.py, which throws the spheres of the RVE (4 columns, lines of comment
+# starting with #; the side of the cube is fixed there, and the number of pores follows from the porosities).
 # An RVE is scale-free in length and linear in the load, so the radius of the mean pore volume R_V and the mean
 # pressure p_bar are not factors. With the closure exponent fixed, radius, porosity and pressure of the classes, each
 # relative to its mean, depend on four factors only:
@@ -744,7 +746,8 @@ def mmm_design():
 
 def mmm_run_files(cases, n_classes=MMM_CLASSES):
     """One text file per run in MMM_RUN_DIR, with one row per pore class: radius (um), porosity of the class,
-    gas pressure (MPa), confining pressure (MPa); and index.txt with the factors of every run."""
+    gas pressure (MPa), confining pressure (MPa), the input of Merope/distributedpore.py; and index.txt with the
+    factors of every run."""
     folder = os.path.join(HERE, MMM_RUN_DIR)
     os.makedirs(folder, exist_ok=True)
     for old in os.listdir(folder):  # the runs of a previous design
@@ -752,6 +755,7 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
             os.remove(os.path.join(folder, old))
     index = [f"# Inputs for MMM: {len(cases)} runs, {n_classes} pore classes each (python3 utilities/HBFF/pore_distribution.py --mmm)",
              f"# closure exponent a = {A_CLOSURE:g}; R_V and T set the scale of the radii and of the pressures",
+             "# geometry of the runs: python3 utilities/HBFF/Merope/distributedpore.py (it reads every run_*.txt of this folder)",
              f"# {'run':6s}{'xi':>8s}{'s':>8s}{'CV_n':>8s}{'eta_bar':>9s}{'Ph/p_bar':>10s}{'R_V_um':>9s}{'T_K':>9s}{'p_bar_MPa':>11s}{'Ph_MPa':>9s}  file"]
     for c in cases:
         d, xi, p_bar, Ph = c["classes"], c["xi"], c["p_bar"], c["Ph"]
