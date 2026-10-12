@@ -69,15 +69,12 @@ if [ "$FIGURES" -eq 0 ]; then
     exit "$REGRESSION_STATUS"
 fi
 
-# Analysis script for the HBS fragmentation cases (utilities/HBFF/plot.py, figures into regression/hbs_nfir/figures/HBFF).
-if [ -f utilities/HBFF/plot.py ]; then
-    echo ""
-    echo "===== FIGURES: HBS FRAGMENTATION CASES (utilities/HBFF/plot.py) ====="
-    python3 utilities/HBFF/plot.py
-    python3 regression/hbs_nfir/plot.py
-    python3 regression/hbs_hiernaut/plot.py
-    python3 regression/hbs_ifa650/plot.py
-fi
+# Figures of the HBS fragmentation cases against their data.
+echo ""
+echo "===== FIGURES: HBS FRAGMENTATION CASES ====="
+python3 regression/hbs_nfir/plot.py
+python3 regression/hbs_hiernaut/plot.py
+python3 regression/hbs_ifa650/plot.py
 
 # The four cases as they stand: each formation option with the porosity model it
 # was built around (1, 2, 3, 3). This is what a user of each case actually gets.

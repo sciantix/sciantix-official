@@ -1,30 +1,37 @@
 """
 sciantix regression suite -- HBS fragmentation figures
 
-Compares test_UO2HBS_frag_NFIR with the NFIR annealing data in ``data_frag``
-(see data_frag/ReadMe), into ``figures/<option>/``:
+Compares the cases test_UO2HBS_frag_<option> with the NFIR annealing data in ``data``
+(see data/ReadMe), into ``figures/<option>/``:
 
     plot_frag_NFIR_temperature.png   annealing temperature history, input vs Fig. 9
     plot_frag_NFIR_release.png       cumulative and instantaneous release vs Fig. 9
     plot_frag_NFIR_pores.png         HBS pore size before/after vs Fig. 12
     plot_frag_NFIR_readme.png        porosity, Xe in grain, FGR, pore pressure vs ReadMe data
     plot_frag_NFIR_xe.png            Xe repartition among the reservoirs vs burnup
-    figures/summary.png              (all three options) cumulative release vs Fig. 9, and pore state at the
+    figures/summary.png              (all four options) cumulative release vs Fig. 9, and pore state at the
                                      end of the base irradiation vs the ReadMe data
 
-Run the case first (build/sciantix.x in the case folder), then this script.
+Run the case first (build/sciantix.x in the case folder), then this script. With option names as arguments
+(e.g. ``python3 regression/hbs_nfir/plot.py j19damage``) only the figures of those cases are drawn.
 The release is the fraction of the gas produced released during the anneal only
 (the release of the base irradiation is subtracted). The model tracks the mean
-and variance of the Xe atoms per pore, from which a Gaussian diameter distribution is drawn in Fig. 12.
+and variance of the Xe atoms per pore. In Fig. 12 the pore sizes of option 4 (j19damage) are its own log-normal
+classes, rebuilt from the unvented moments (utilities/HBFF/pore_distribution.py); for options 1, 2, 3 a Gaussian
+diameter distribution is drawn from the two moments.
 """
 
 import os
+import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
+
+sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", "..", "utilities", "HBFF"))
+from pore_distribution import build, radius_of, read_output, state_of_row  # pore classes of option 4
 
 
 CASES = ["test_UO2HBS_frag_jernkvist", "test_UO2HBS_frag_kulacsy", "test_UO2HBS_frag_lefm", "test_UO2HBS_frag_j19damage"]
@@ -81,9 +88,13 @@ def main(FIG_DIR, CASE):
     a2.set_xlabel("Time (min)"); a2.set_ylabel("Instantaneous release (%/min)"); a2.legend(frameon=False)
     fig.tight_layout(); fig.savefig(os.path.join(FIG_DIR, "plot_frag_NFIR_release.png"), dpi=200); plt.close(fig)
 
-    # --- pore size distribution. The model gives mean and variance of the Xe atoms per pore;
-    # the diameter distribution is taken Gaussian with sigma_R = R * CV / 3 (as in plot.py),
-    # and scaled so that its bin sum is the model HBS porosity, as the bars sum to the porosity.
+    # --- pore size distribution, scaled so that its bin sum is the model HBS porosity, as the bars sum to the
+    # porosity. Option 4 has its pore classes: they are rebuilt from the unvented moments of the row (the retained
+    # ones mix intact and vented pores, whose size does not change) and their porosity N_p w_i V_i is summed per
+    # diameter bin. Options 1, 2, 3 give mean and variance of the Xe atoms per pore: the diameter distribution is
+    # taken Gaussian with sigma_R = R * CV / 3.
+    with open(os.path.join(CASE, "output.txt"), encoding="utf-8") as f:
+        classes = read_output(os.path.join(CASE, "output.txt")) if "HBS broken fraction - class 0" in f.readline() else None
     before, after = read_bars("AsIrradiated.txt"), read_bars("PostAnnealing.txt")
     edges = np.arange(len(before) + 1) * BIN_UM
     centers = 0.5 * (edges[:-1] + edges[1:])
@@ -94,10 +105,17 @@ def main(FIG_DIR, CASE):
     ax.bar(centers + w / 2, after, width=w, label="After anneal (Fig. 12)", color="C1", alpha=0.6)
     xf = np.linspace(0, edges[-1], 400)
     for i, c, lab in ((i0, "C0", "SCIANTIX, start of anneal"), (i1, "C1", "SCIANTIX, end of anneal")):
+        phi = 100.0 * col("HBS_porosity")[i]
+        if classes is not None:
+            st = state_of_row(classes, i)
+            cl = build(radius_of(st["V"]), st["n"], st["var"], st["T"])
+            share, _ = np.histogram(2e6 * cl["R"], bins=edges, weights=100.0 * st["Np"] * cl["w"] * cl["V"])
+            ax.step(centers, share, where="mid", ls="--", color=c, label=lab + " (classes)")
+            print("%s: classes with sigma_lnR %.3f, median diameter %.3f um, porosity %.1f %%" % (lab, cl["sigma"], 2e6 * cl["R_median"], phi))
+            continue
         R = col("HBS_pore_radius")[i]
         CV = np.sqrt(max(col("Xe_atoms_per_HBS_pore__variance")[i], 0.0)) / col("Xe_atoms_per_HBS_pore_a")[i]
         mu, sig = 2e6 * R, 2e6 * R * CV / 3.0
-        phi = 100.0 * col("HBS_porosity")[i]
         ax.plot(xf, phi * BIN_UM * np.exp(-0.5 * ((xf - mu) / sig) ** 2) / (sig * np.sqrt(2 * np.pi)), "--", color=c, label=lab)
         print("%s: mean diameter %.3f um, sigma %.3f um, porosity %.1f %%" % (lab, mu, sig, phi))
     ax.set_xlabel("Pore diameter (µm)"); ax.set_ylabel("Surface per 0.2 µm bin (%)")
@@ -152,7 +170,7 @@ def main(FIG_DIR, CASE):
 
 
 def history(case, name, t_start_h, unit, unit_label, window_h=None):
-    """Input history of a case (identical for the three options): the whole history, and the transient from t_start_h (in unit_label)."""
+    """Input history of a case: the whole history, and the transient from t_start_h (in unit_label)."""
     h = np.loadtxt(os.path.join(SCRIPT_DIR, case, "input_history.txt"))
     t, T, F, P = h[:, 0], h[:, 1], h[:, 2], -h[:, 3]
     fig, axs = plt.subplots(2, 3, figsize=(13, 6.5))
@@ -166,7 +184,7 @@ def history(case, name, t_start_h, unit, unit_label, window_h=None):
 
 
 def summary(FIG_DIR):
-    """The three options against the annealing data and the ReadMe data, on one page."""
+    """The four options against the annealing data and the ReadMe data, on one page."""
     os.makedirs(FIG_DIR, exist_ok=True)
     cum = read_xy("CumulativeRelease.txt")
     fig, (a1, a2, a3) = plt.subplots(1, 3, figsize=(15, 4.2))
@@ -194,10 +212,13 @@ def summary(FIG_DIR):
 
 
 if __name__ == "__main__":
-
-    for case in CASES:
+    # options named on the command line (e.g. "j19damage"): the figures of those cases only;
+    # no argument: every case, the summary of the four options and the input history
+    selected = ["test_UO2HBS_frag_" + name for name in sys.argv[1:]] or CASES
+    for case in selected:
         FIG_DIR = os.path.join(SCRIPT_DIR, "figures", case.replace("test_UO2HBS_frag_", ""))
         CASE = os.path.join(SCRIPT_DIR, case)
         main(FIG_DIR, CASE)
-    summary(os.path.join(SCRIPT_DIR, "figures"))
-    history("test_UO2HBS_frag_kulacsy", "NFIR", T_ANNEAL_START_H, 60.0, "min")
+    if not sys.argv[1:]:
+        summary(os.path.join(SCRIPT_DIR, "figures"))
+        history("test_UO2HBS_frag_kulacsy", "NFIR", T_ANNEAL_START_H, 60.0, "min")

@@ -47,6 +47,8 @@ constexpr int SCIANTIX_DIFFUSION_MODES_SIZE = N_MODE_BLOCKS * N_DIFFUSION_MODES;
 // output.txt when that option is active.
 constexpr int HBFF_N_CLASSES    = 81;
 constexpr int HBFF_CLASS_OFFSET = 213;
+static_assert(HBFF_CLASS_OFFSET + HBFF_N_CLASSES <= SCIANTIX_VARIABLES_SIZE,
+              "the pore classes of the HBS fragmentation model do not fit in Sciantix_variables");
 // end of author: E.Cappellari, POLIMI-CEA 2026
 
 extern int    Sciantix_options[SCIANTIX_OPTIONS_SIZE];

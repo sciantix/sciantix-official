@@ -1,11 +1,12 @@
 """
-Local analysis/plotting script for the HBS fragmentation options 1-4 (regression/hbs_nfir and regression/hbs_ifa650, test_UO2HBS_frag_*).
+Figures that compare the HBS fragmentation options 1-4 (regression/hbs_nfir and regression/hbs_ifa650, test_UO2HBS_frag_*),
+described in README_options123.md of this folder. The figures of option 4 alone are drawn by ../pore_distribution.py.
 
-NOT a reference implementation of the model: it only reads output.txt columns and re-evaluates the closed-form
+NOT a reference implementation of the models: it only reads output.txt columns and re-evaluates the closed-form
 equations already documented in the header comment of src/models/HighBurnupStructureFragmentation.C, purely to
-draw the figures below. This file is intentionally left untracked (see .gitignore or just do not `git add` it).
+draw the figures below.
 
-Regenerates, into utilities/HBFF/figures/:
+Regenerates, into utilities/HBFF/archive/figures/:
     criteria_comparison.png              critical pressure of the four options against the pore radius, and the pressure shapes
     frag_ifa650.png                      D, G of the four options in the IFA-650.9 and .10 transients
     frag_cases.png                       D, G, retention, fragment size of the three options, against T (transient)
@@ -18,7 +19,7 @@ Regenerates, into utilities/HBFF/figures/:
     pressure_time.png                    p_g, P_cr, P_h against real time: full transient + zoom on the depressurization
     kulacsy_class_breakdown.png          option 2's pore-class gas content and broken/intact state, a few snapshot T
 
-usage: python3 utilities/HBFF/plot.py [--case NAME] [--figure NAME]
+usage: python3 utilities/HBFF/archive/plot_options123.py [--figure NAME] [--no-ifa]
     (no arguments: regenerate everything, for every case where relevant)
 """
 
@@ -32,8 +33,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
-FIG_DIR = os.path.join(ROOT, "utilities", "HBFF", "figures")
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, ".."))
+from pore_distribution import STATES, build, radius_of  # classes of option 4 (utilities/HBFF)
+
+ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+FIG_DIR = os.path.join(HERE, "figures")
 CASES = ["jernkvist", "kulacsy", "lefm", "j19damage"]
 T_ANNEAL_START_H = 38000.005  # (h) end of the base irradiation in the NFIR history: the anneal starts at 38000.01
 
@@ -43,12 +48,12 @@ SEQ_BLUE = ["#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281"]
 INK, INK2, MUTED, GRID = "#0b0b0b", "#52514e", "#898781", "#e1e0d9"
 SURFACE = "#fcfcfb"
 COLORS = {"jernkvist": BLUE, "kulacsy": ORANGE, "lefm": YELLOW, "j19damage": "#2f9e6e"}
-LABELS = {"jernkvist": "1 Jernkvist (2019)", "kulacsy": "2 Kulacsy (2015)", "lefm": "3 LEFM", "j19damage": "4 J19 + damage"}
+LABELS = {"jernkvist": "1 Jernkvist (2019)", "kulacsy": "2 Kulacsy (2015)", "lefm": "3 LEFM", "j19damage": "4 rupture per class"}
 
 GAMMA_HBS, POISSON = 1.1, 0.32  # UO2HBS matrix, SetMatrix.C (fuel_.getSurfaceTension/getPoissonRatio)
 SIGMA_HBS_CR = 21.0e6  # (Pa) option 1, J19 Table 4
 G_HBS, Y_FACTOR = 0.055, 1.0  # option 3, G_hbs fitted on the NFIR Kr-85 release
-C_DP = 55.0  # (N/m) option 4, J19 Table 4
+C_DP = 55.0  # (N/m) J19 Table 4: punching limit of the overpressure, c_dp / R
 
 
 def case_path(case, name=None):
@@ -374,72 +379,11 @@ def kulacsy_release_population(T, xi, Ph, T_ss, Ph_ss):
     return float((gas * broken).sum() / gas.sum())
 
 
-def plot_pore_eos():
-    """p_g against the Xe atoms per pore: hard-sphere EoS of HighBurnupStructurePorosity.C, ideal gas, cap eta = 0.65."""
-    R = 0.35e-6  # (m) mean pore radius at the end of the NFIR base irradiation (L11)
-    V = 4.0 / 3.0 * np.pi * R**3
-    kB = 1.380649e-23
-    fig, ax = plt.subplots(figsize=(6.4, 4.2))
-    style(ax)
-    for T, color in ((600.0, SEQ_BLUE[1]), (1000.0, SEQ_BLUE[3]), (1500.0, SEQ_BLUE[4])):
-        d = 4.45e-10 * (0.8542 - 0.03996 * np.log(T / 231.2))
-        v = np.pi / 6.0 * d**3
-        n = np.linspace(1.0e6, 1.6 * 0.65 * V / v, 400)
-        eta = np.minimum(n * v / V, 0.65)
-        Z = (1 + eta + eta**2 - eta**3) / (1 - eta) ** 3
-        p = n * kB * T * Z / V
-        ax.plot(n, p / 1e6, color=color, lw=1.8, label=f"hard sphere, {T:.0f} K")
-        ax.plot(n, n * kB * T / V / 1e6, color=color, lw=1.0, ls="--")
-        n_cap = 0.65 * V / v
-        p_cap = n_cap * kB * T * (1 + 0.65 + 0.65**2 - 0.65**3) / (1 - 0.65) ** 3 / V
-        ax.plot([n_cap], [p_cap / 1e6], "o", color=color, ms=6, mec=INK, zorder=5)
-    ax.plot([], [], color=MUTED, lw=1.0, ls="--", label="ideal gas")
-    ax.plot([], [], "o", color=MUTED, mec=INK, label=r"cap $\eta=0.65$ (linear beyond)")
-    ax.set_yscale("log")
-    ax.set_ylim(1.0, 1.0e5)
-    ax.set_xlabel("Xe atoms per pore  n")
-    ax.set_ylabel(r"pore pressure  $p_g$  (MPa)")
-    ax.set_title(r"Pore pressure, $R=0.35\ \mu$m", fontsize=10, color=INK)
-    ax.legend(frameon=False, fontsize=8)
-    savefig(fig, "pore_eos.png")
-
-
-def plot_pore_eos_volume():
-    """p_g against the pore volume at fixed n and T: hard-sphere EoS, ideal gas, cap eta = 0.65."""
-    T, kB = 1000.0, 1.380649e-23
-    d = 4.45e-10 * (0.8542 - 0.03996 * np.log(T / 231.2))
-    v = np.pi / 6.0 * d**3
-    V_ref = 4.0 / 3.0 * np.pi * (0.35e-6) ** 3  # (m3) mean pore at the end of the NFIR base irradiation (L11)
-    fig, ax = plt.subplots(figsize=(6.4, 4.2))
-    style(ax)
-    for n, color in ((1.0e9, SEQ_BLUE[1]), (2.0e9, SEQ_BLUE[3]), (4.0e9, SEQ_BLUE[4])):
-        V_cap = n * v / 0.65
-        V = np.logspace(np.log10(0.6 * V_cap), np.log10(1.0e-18), 400)
-        eta = np.minimum(n * v / V, 0.65)
-        Z = (1 + eta + eta**2 - eta**3) / (1 - eta) ** 3
-        ax.plot(V * 1e18, n * kB * T * Z / V / 1e6, color=color, lw=1.8, label=f"hard sphere, n = {n:.0e}")
-        ax.plot(V * 1e18, n * kB * T / V / 1e6, color=color, lw=1.0, ls="--")
-        Zc = (1 + 0.65 + 0.65**2 - 0.65**3) / (1 - 0.65) ** 3
-        ax.plot([V_cap * 1e18], [n * kB * T * Zc / V_cap / 1e6], "o", color=color, ms=6, mec=INK, zorder=5)
-    ax.axvline(V_ref * 1e18, color=MUTED, lw=1.0, ls=":")
-    ax.text(V_ref * 1e18 * 1.03, 2.0, r"$R=0.35\ \mu$m", color=INK2, fontsize=8)
-    ax.plot([], [], color=MUTED, lw=1.0, ls="--", label="ideal gas")
-    ax.plot([], [], "o", color=MUTED, mec=INK, label=r"cap $\eta=0.65$ (smaller volume: linear in $1/V$)")
-    ax.set_xscale("log")
-    ax.set_yscale("log")
-    ax.set_ylim(1.0, 1.0e5)
-    ax.set_xlabel(r"pore volume  $V_p$  ($\mu$m$^3$)")
-    ax.set_ylabel(r"pore pressure  $p_g$  (MPa)")
-    ax.set_title("Pore pressure at fixed gas, T = 1000 K", fontsize=10, color=INK)
-    ax.legend(frameon=False, fontsize=8)
-    savefig(fig, "pore_eos_volume.png")
-
-
 def plot_kulacsy_classes():
     # only option 2 resolves pressure per pore-size class (limitation L1: the others assume a
     # uniform pressure); this is the one place a genuine pressure/gas *distribution* over the pore
-    # population exists in the model, at the state of the kulacsy regression case's own transient:
-    # T_ss = 723 K, Ph_ss = 0 (the transient starts right after the P_h relief, at constant T).
+    # population exists in the model, at the reference state of the kulacsy regression case:
+    # T_ss = 903.15 K, P_h,ss = 70 MPa, the end of the NFIR base irradiation.
     T_SS, PH_SS, PH = 903.15, 70.0e6, 0.0
     snapshots = [800.0, 1000.0, 1200.0, 1500.0, 1800.0]
 
@@ -555,9 +499,15 @@ def plot_criteria_comparison():
     ax = axes[2]
     style(ax)
     G_SHEAR, B = 70.0e9, 0.39e-9
-    ax.plot(R * 1e6, G_SHEAR * B / R / 1e6, color=COLORS["kulacsy"], label="K15: $Gb/R$ (kappa = 1)")
-    ax.plot(R * 1e6, C_DP / R / 1e6, color=COLORS["j19damage"], label="option 4 / J19: $c_{dp}/R$ (kappa = 1)")
+    ax.plot(R * 1e6, G_SHEAR * B / R / 1e6, color=COLORS["kulacsy"], label="K15: $Gb/R$")
+    ax.plot(R * 1e6, C_DP / R / 1e6, color=COLORS["jernkvist"], ls="--", label="J19: punching limit $c_{dp}/R$")
     ax.plot(R * 1e6, np.full_like(R, 100.0), color=COLORS["lefm"], label="option 3: uniform overpressure (example)")
+    # option 4: classes of the SCIANTIX state of the NFIR anneal at 1200 C (P_h = 0), closure n_i ~ R_i^a
+    st = STATES["NFIR, anneal at 1200 C"]
+    d = build(radius_of(st["V"]), st["n"], st["var"], st["T"])
+    ax.plot(d["R"] * 1e6, (d["p"] - st["Ph"] - 2.0 * GAMMA_HBS / d["R"]) / 1e6, color=COLORS["j19damage"],
+            label=f"option 4: classes of the NFIR state at 1200 C ($a$ = {d['a']})")
+    ax.plot(R * 1e6, 2.0 * GAMMA_HBS / R / 1e6, color=MUTED, label="$2\\gamma/R$")
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlabel("pore radius R (um)", color=INK2)
@@ -607,17 +557,18 @@ FIGURES = {
     "release_budget": plot_release_budget,
     "pressure_time": plot_pressure_time,
     "kulacsy_class_breakdown": plot_kulacsy_classes,
-    "pore_eos": plot_pore_eos,
-    "pore_eos_volume": plot_pore_eos_volume,
 }
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--figure", choices=sorted(FIGURES), default=None, help="regenerate only this one")
+    ap.add_argument("--no-ifa", action="store_true", help="skip the figure of the IFA-650 cases")
     args = ap.parse_args()
     for name, fn in FIGURES.items():
         if args.figure and name != args.figure:
+            continue
+        if args.no_ifa and name == "frag_ifa650":
             continue
         fn()
     return 0

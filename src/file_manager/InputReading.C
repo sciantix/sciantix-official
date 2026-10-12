@@ -203,7 +203,7 @@ void InputReading(int                  Sciantix_options[],
 
             std::istringstream line_stream(line);
             double             value(0.0);
-            if (line_stream >> value && value >= 0.0 && value <= 5.0)
+            if (line_stream >> value && value >= 0.0 && value <= 4.0)
                 Sciantix_options[25] = int(value);
             else
                 ErrorMessages::Fatal(

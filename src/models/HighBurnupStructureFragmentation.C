@@ -11,11 +11,11 @@
 //  Version: 2.2.1                                                                  //
 //  Year: 2026                                                                      //
 //  Authors: E. Cappellari                                                          //
-//  author: E.Cappellari, POLIMI-CEA 2026                                           // //
+//  author: E.Cappellari, POLIMI-CEA 2026                                           //
 //////////////////////////////////////////////////////////////////////////////////////
 
 // Fine fragmentation of the high-burnup structure (HBS), iHighBurnupStructureFragmentation = 1, 2, 3, 4
-// (1 Jernkvist, 2 Kulacsy, 3 LEFM: utilities/HBFF/README.md; 4 rupture per pore class:
+// (1 Jernkvist, 2 Kulacsy, 3 LEFM: utilities/HBFF/archive/README_options123.md; 4 rupture per pore class:
 // utilities/HBFF/README_HBFFmodel.md).
 //
 // The model reads the HBS pore state of HighBurnupStructurePorosity (option 2 or 3), T and the hydrostatic pressure
@@ -90,7 +90,8 @@
 
 void Simulation::HighBurnupStructureFragmentation()
 {
-    if (!int(input_variable["iHighBurnupStructureFragmentation"].getValue()))
+    const int option = int(input_variable["iHighBurnupStructureFragmentation"].getValue());
+    if (!option)
         return;
 
     if (int(input_variable["iHighBurnupStructurePorosity"].getValue()) != 2 &&
@@ -105,17 +106,28 @@ void Simulation::HighBurnupStructureFragmentation()
 
     Matrix fuel_(matrices["UO2HBS"]);
 
+    // New restructured material is intact [R]: when the restructured volume fraction alpha grows, what is broken is
+    // diluted by alpha_old / alpha.
+    const double alpha_old = sciantix_variable["Restructured volume fraction"].getInitialValue();
+    const double alpha     = sciantix_variable["Restructured volume fraction"].getFinalValue();
+    const double dilution  = (alpha > alpha_old && alpha_old > 0.0) ? alpha_old / alpha : 1.0;
+
     // The gas of the pores that already vented was removed from the state, [R] L2
-    const double retention_old = sciantix_variable["HBS gas retention fraction"].getInitialValue() > 0.0
-                                     ? sciantix_variable["HBS gas retention fraction"].getInitialValue()
-                                     : 1.0;
+    double retention_old = sciantix_variable["HBS gas retention fraction"].getInitialValue() > 0.0
+                               ? sciantix_variable["HBS gas retention fraction"].getInitialValue()
+                               : 1.0;
     // option 4: retained fraction of the second moment of n, and the factors by which the venting of this step
     // reduces the two retained moments
-    const double retention2_old =
-        sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue() > 0.0
-            ? sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue()
-            : 1.0;
+    double retention2_old    = sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue() > 0.0
+                                   ? sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue()
+                                   : 1.0;
     double vent_first_moment = 1.0, vent_second_moment = 1.0;
+    // option 4: the vented fractions 1 - S and 1 - S_2 are sums over the broken classes, diluted like them [R]
+    if (option == 4 && dilution < 1.0)
+    {
+        retention_old  = 1.0 - (1.0 - retention_old) * dilution;
+        retention2_old = 1.0 - (1.0 - retention2_old) * dilution;
+    }
 
     const double T  = history_variable["Temperature"].getFinalValue();
     const double Ph = -history_variable["Hydrostatic stress"].getFinalValue() * 1.0e6;  // (Pa)
@@ -153,7 +165,7 @@ void Simulation::HighBurnupStructureFragmentation()
     // again. The fission rate carries a relative noise of about 1e-9 where the history changes T or P_h at constant
     // power: the 1 % and 50 % thresholds are not sensitive to it, the start test (any fall) is.
     double transient = sciantix_variable["HBFF transient flag"].getInitialValue();
-    if (int(input_variable["iHighBurnupStructureFragmentation"].getValue()) == 2)
+    if (option == 2)
     {
         const double fission_rate     = history_variable["Fission rate"].getFinalValue();
         const double fission_rate_old = history_variable["Fission rate"].getInitialValue();
@@ -192,7 +204,7 @@ void Simulation::HighBurnupStructureFragmentation()
     double      d_star = 0.0, g_star = 0.0;
     std::string reference;
 
-    switch (int(input_variable["iHighBurnupStructureFragmentation"].getValue()))
+    switch (option)
     {
         case 1:
         {
@@ -448,14 +460,11 @@ void Simulation::HighBurnupStructureFragmentation()
             //  Venting [R]: the gas leaves the broken classes only. The retained first and second moment of n are
             //  sum_i w_i n_i (1 - beta_i) and sum_i w_i n_i^2 (1 - beta_i); S and S_2 are their ratios to the unvented
             //  ones, so that the criterion sees the unvented moments n / S and (Var(n) + n^2) / S_2.
+            //  Dilution [R]: new restructured material is intact, in every class: beta_i, 1 - S and 1 - S_2 are
+            //  multiplied by alpha_old / alpha when alpha grows.
             reference = ": pore classes from the SCIANTIX moments; rupture per class with the mean-field stress "
                         "concentration factor of Jernkvist (2019), EPJ Nucl. Sci. Technol. 5, 11, Eq. 22; progressive "
                         "rupture as GrainBoundaryMicroCracking";
-
-            // new restructured material is intact: dilution of the broken fraction of every class
-            const double alpha_old_ = sciantix_variable["Restructured volume fraction"].getInitialValue();
-            const double alpha_new_ = sciantix_variable["Restructured volume fraction"].getFinalValue();
-            const double dilution   = (alpha_new_ > alpha_old_ && alpha_old_ > 0.0) ? alpha_old_ / alpha_new_ : 1.0;
 
             std::vector<double> beta(HBFF_N_CLASSES);
             for (int i = 0; i < HBFF_N_CLASSES; ++i)
@@ -566,9 +575,7 @@ void Simulation::HighBurnupStructureFragmentation()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__,
-                                  "iHighBurnupStructureFragmentation",
-                                  int(input_variable["iHighBurnupStructureFragmentation"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFragmentation", option);
             break;
     }
 
@@ -584,16 +591,8 @@ void Simulation::HighBurnupStructureFragmentation()
     //   the criterion:
     //     if alpha > alpha_old:  D <- D alpha_old / alpha,  G <- G alpha_old / alpha   (new restructured material is
     //     intact) D <- max(D, D*),  G <- max(G, G*)  (a broken pore never heals)
-    double D = sciantix_variable["HBS fragmented fraction"].getInitialValue();
-    double G = sciantix_variable["HBS burst release fraction"].getInitialValue();
-
-    const double alpha_old = sciantix_variable["Restructured volume fraction"].getInitialValue();
-    const double alpha     = sciantix_variable["Restructured volume fraction"].getFinalValue();
-    if (alpha > alpha_old && alpha_old > 0.0)
-    {
-        D *= alpha_old / alpha;
-        G *= alpha_old / alpha;
-    }
+    double D = sciantix_variable["HBS fragmented fraction"].getInitialValue() * dilution;
+    double G = sciantix_variable["HBS burst release fraction"].getInitialValue() * dilution;
 
     D                  = std::max(D, model["High-burnup structure fragmentation"].getParameter().at(0));
     const double G_new = std::max(G, model["High-burnup structure fragmentation"].getParameter().at(1));
@@ -605,18 +604,19 @@ void Simulation::HighBurnupStructureFragmentation()
     //   and the criteria are evaluated on the state before the venting, n / S and Var(n) / S^2.
     //   Option 4: the broken classes vent, with f_1 and f_2 the factors of the retained first and second moment of n,
     //     A -> f_1 A,  n -> f_1 n,  S -> f_1 S,  S_2 -> f_2 S_2,
-    //     Var(n) -> f_2 (Var(n) + n^2) - (f_1 n)^2,  B -> N_p Var(n).
-    double retention  = retention_old;
-    double retention2 = retention2_old;
-    if (int(input_variable["iHighBurnupStructureFragmentation"].getValue()) == 4)
+    //     Var(n) -> f_2 (Var(n) + n^2) - (f_1 n)^2,  B -> N_p Var(n),
+    //   on S and S_2 already diluted with the classes.
+    // [N] the gas retention of the population never falls below this value
+    const double retention_floor = 1.0e-12;
+    double       retention       = retention_old;
+    double       retention2      = retention2_old;
+    if (option == 4)
     {
         if (vent_first_moment < 1.0)
         {
-            // [N] the gas retention of the population never falls below this value
-            const double retention_floor = 1.0e-12;
-            const double f1              = std::max(vent_first_moment, retention_floor / retention_old);
-            const double f2              = std::max(vent_second_moment, retention_floor / retention2_old);
-            const double n_retained      = sciantix_variable["Xe atoms per HBS pore"].getFinalValue();
+            const double f1         = std::max(vent_first_moment, retention_floor / retention_old);
+            const double f2         = std::max(vent_second_moment, retention_floor / retention2_old);
+            const double n_retained = sciantix_variable["Xe atoms per HBS pore"].getFinalValue();
             const double second_moment =
                 (sciantix_variable["Xe atoms per HBS pore - variance"].getFinalValue() + n_retained * n_retained) * f2;
             const double variance = std::max(second_moment - (f1 * n_retained) * (f1 * n_retained), 0.0);
@@ -633,9 +633,7 @@ void Simulation::HighBurnupStructureFragmentation()
     {
         // the gas of the population and its variance scale with the survivors [R] L2
         double factor = (G < 1.0) ? (1.0 - G_new) / (1.0 - G) : 1.0;
-        // [N] the gas retention of the population never falls below this value
-        const double retention_floor = 1.0e-12;
-        factor                       = std::min(1.0, std::max(factor, retention_floor / retention_old));
+        factor        = std::min(1.0, std::max(factor, retention_floor / retention_old));
         retention *= factor;
         sciantix_variable["Xe in HBS pores"].rescaleFinalValue(factor);
         sciantix_variable["Xe in HBS pores - variance"].rescaleFinalValue(factor * factor);

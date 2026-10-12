@@ -2,29 +2,34 @@
 HBS pore classes from the SCIANTIX moments, rupture per class, and cases for the micromechanics (MMM).
 author: E.Cappellari, POLIMI-CEA 2026
 
-Script copy of pore_distribution.ipynb (same sections, same order) and Python transcription of
-iHighBurnupStructureFragmentation = 4 (src/models/HighBurnupStructureFragmentation.C, case 4).
-The model is described in README_HBFFmodel.md.
+Python transcription of iHighBurnupStructureFragmentation = 4 (src/models/HighBurnupStructureFragmentation.C, case 4),
+with its checks and the figures and tables of README_HBFFmodel.md, where the model is described.
 
 SCIANTIX carries, for the HBS pores, the mean volume V (radius R_V = (3 V / 4 pi)^(1/3)), the mean Xe atoms per pore n
 and its variance Var(n). The script rebuilds classes (R_i, V_i, w_i, n_i, p_i) that reproduce these three moments,
 
     sum_i w_i V_i = V,      sum_i w_i n_i = n,      sum_i w_i (n_i - n)^2 = Var(n),
 
-evaluates the rupture criterion on every class, and writes the radius / pressure tables of the cases MMM has to run.
+evaluates the rupture criterion on every class, and writes the inputs of the runs of MMM: radius, porosity and
+pressure of every pore class and the confining pressure, from the four factors of an RVE (no SCIANTIX run).
+With N_p the pore density, the porosity xi = N_p sum_i w_i V_i = N_p V holds by construction.
 
 Tags: [P] paper, [R] reduction into the SCIANTIX state, [N] numerics, [?] unknown parameter, [E] deviation from a source.
 K15: K. Kulacsy, J. Nucl. Mater. 466 (2015) 409. J19: L.O. Jernkvist, EPJ Nucl. Sci. Technol. 5 (2019) 11.
 OHP: OperaHPC Deliverable D5.2 (2026), section 2.2.
 
 usage
-    python3 utilities/HBFF/pore_distribution.py                    all sections: tables on screen, figures/classes_*.png,
-                                                                   with the rupture and release figures of the NFIR
-                                                                   case (regression/hbs_nfir/test_UO2HBS_frag_j19damage)
-    python3 utilities/HBFF/pore_distribution.py --mmm              mmm_cases.md and mmm_cases.csv
+    python3 utilities/HBFF/pore_distribution.py                    all sections: tables on screen, figures/pore_eos*.png
+                                                                   and figures/classes_*.png, with the rupture and
+                                                                   release figures of the NFIR case
+                                                                   (regression/hbs_nfir/test_UO2HBS_frag_j19damage)
+    python3 utilities/HBFF/pore_distribution.py --mmm              mmm_inputs/run_*.txt, one file per MMM run of the
+                                                                   coarse cover of the four factors of an RVE: radius,
+                                                                   porosity, pressure and confinement of every class
     python3 utilities/HBFF/pore_distribution.py --check CASE_DIR   replay of option 4 on a SCIANTIX case (the folder
                                                                    with input_history.txt, input_settings.txt and
-                                                                   output.txt), against the columns of output.txt
+                                                                   output.txt), against the columns of output.txt;
+                                                                   on the NFIR case, also STATES against the output
     python3 utilities/HBFF/pore_distribution.py --rupture CASE_DIR the rupture and release figures of another case:
                                                                    figures/classes_rupture_<case>.png (distribution and
                                                                    rupture of the classes, from the broken fractions of
@@ -32,6 +37,7 @@ usage
 """
 
 import argparse
+import itertools
 import os
 import sys
 
@@ -52,7 +58,7 @@ K_B = 1.380651e-23  # (J/K) the value of include/namespaces/Constants.h, so that
 GAMMA = 1.1  # (N/m) [R] UO2HBS, SetMatrix.C
 ETA_CAP = 0.65  # [R] cap of the hard-sphere packing fraction, HighBurnupStructurePorosity.C
 N_CLASSES, SPAN = 81, 4.0  # [N] nodes at ln R = ln R_median +/- 4 s
-A_CLOSURE = 2.0  # [?] closure exponent of the gas per class, n_i ~ R_i^a (2: overpressure ~ 1/R, 3: uniform pressure)
+A_CLOSURE = 2.0  # [?] closure exponent of the gas per class, n_i ~ R_i^a (2: gas density ~ 1/R, 3: uniform pressure)
 SIGMA_R = 21.0e6  # (Pa) [P] J19 Table 4: rupture stress that pairs with the mean-field stress concentration factor
 XI_PERC = 0.29  # (/) [P] J19, percolation of the HBS pores
 TAU = 2.0  # (s) [?] J19 Table 3 (interconnection and microcracking modes; J19 rupture is instantaneous)
@@ -60,8 +66,9 @@ C_DP = 55.0  # (N/m) [P] J19 Table 4: steady-state limit of the overpressure of 
 K15_SIGMA = 0.356  # [P] K15 Table 2: sigma_ln r of the reference pore-size distribution
 R_MIN_EVAL, XI_MAX_EVAL = 1.0e-7, 0.35  # [?] validity window of the criterion, on the mean pore
 
-# colours of the notebook
+# colours of the figures
 BLUE, ORANGE, GREEN, GREY, BROWN, GRID = "#2a78d6", "#eb6834", "#2f9e6e", "#898781", "#3e1c0f", "#e1e0d9"
+SEQ_BLUE = ("#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281")  # light to dark, for a sequence of curves
 
 
 # %% ------------------------------------------------------------------------------------------------------------------
@@ -93,7 +100,9 @@ def pore_pressure(n, V, T):
 #    that the third moment is exact on the nodes: sum(w R^3)^(1/3) = R_V, i.e. sum(w V) = V for any width s.
 # 2. Gas. Two moments of n do not say how the gas is shared among the radius classes. Closure [?]:
 #       n_i = n R_i^a / sum_j w_j R_j^a
-#    a = 3 is a uniform pressure (dilute limit), a = 2 an overpressure ~ 1/R (the punching shape of K15 and J19).
+#    The gas density of a class is n_i / V_i ~ R_i^(a - 3): a = 3 is a uniform density and pressure; a = 2 a density
+#    ~ 1/R, which for an ideal gas is a pressure ~ 1/R (the shape of the punching overpressure of K15 and J19). The
+#    hard-sphere pressure is steeper than the density, the more the smaller the class.
 #    The width s is the root of sum_i w_i (n_i - n)^2 = Var(n) on the truncated nodes.
 # 3. Pressure. Hard-sphere EoS on every class. The pressure of the mean quantities, p_EoS(n, V, T) (the
 #    'HBS pore pressure' of SCIANTIX), is the pressure of the volume-weighted mean density and holds on the classes
@@ -104,12 +113,20 @@ W = np.exp(-0.5 * X**2)  # Gaussian number weight in x = (ln R - ln R_median) / 
 W /= W.sum()
 
 
+def sphere_volume(R):
+    return 4.0 / 3.0 * np.pi * R**3
+
+
+def radius_of(V):
+    return np.cbrt(3.0 * V / (4.0 * np.pi))
+
+
 def classes(R_V, s):
     """Radius classes of width s (sigma of ln R): R (m), V (m3) and the number weights w, sum(w) = 1.
     R_V = (3 V / 4 pi)^(1/3) is the radius of the mean pore volume (the 'HBS pore radius' of SCIANTIX)."""
     g = np.exp(s * X)  # R_i up to a common factor
     R = R_V * g / np.cbrt(np.sum(W * g**3))  # the common factor: sum(w R^3)^(1/3) = R_V
-    return R, 4.0 / 3.0 * np.pi * R**3, W
+    return R, sphere_volume(R), W
 
 
 def cv2_on_nodes(s, a):
@@ -188,8 +205,8 @@ def broken(d, T, xi, Ph):
 
 
 def rupture_step(beta, V, n_ret, var_ret, S1, S2, T, xi, Ph, R_mean, dt, a=A_CLOSURE):
-    """One time step of option 4, on the broken fractions beta_i already diluted by the growth of the restructured
-    volume. Transcription of case 4 of HighBurnupStructureFragmentation.C.
+    """One time step of option 4, on the broken fractions beta_i and on the retained fractions S1, S2 already diluted
+    by the growth of the restructured volume. Transcription of case 4 of HighBurnupStructureFragmentation.C.
 
     n_ret, var_ret: retained moments of n ('Xe atoms per HBS pore' and its variance); S1, S2: retained fractions of
     the first and second moment, so that the unvented moments are n_ret / S1 and (var_ret + n_ret^2) / S2 [R].
@@ -200,7 +217,7 @@ def rupture_step(beta, V, n_ret, var_ret, S1, S2, T, xi, Ph, R_mean, dt, a=A_CLO
     if not valid or n_u <= 0.0 or V <= 0.0:
         return beta, 0.0, 0.0, 1.0, 1.0
     var_u = max((var_ret + n_ret**2) / S2 - n_u**2, 0.0)
-    d = build(np.cbrt(3.0 * V / (4.0 * np.pi)), n_u, var_u, T, a)
+    d = build(radius_of(V), n_u, var_u, T, a)
     w, n_i = d["w"], d["n"]
     kept_old, kept2_old = np.sum(w * n_i * (1.0 - beta)), np.sum(w * n_i**2 * (1.0 - beta))
     # progressive rupture [?]: first-order relaxation of every class towards its instantaneous state b*_i (0 or 1)
@@ -218,16 +235,12 @@ def rupture_step(beta, V, n_ret, var_ret, S1, S2, T, xi, Ph, R_mean, dt, a=A_CLO
 
 STATES = {
     "NFIR, end of base irradiation": {"T": 903.15, "Ph": 70.0e6, "xi": 0.1053, "Np": 5.774e17, "V": 1.825e-19, "n": 7.227e8, "var": 2.928e17},
-    "NFIR, anneal at 1200 C": {"T": 1473.5, "Ph": 0.0, "xi": 0.1030, "Np": 5.844e17, "V": 1.763e-19, "n": 7.141e8, "var": 2.904e17},
+    "NFIR, anneal at 1200 C": {"T": 1473.5, "Ph": 0.0, "xi": 0.1031, "Np": 5.844e17, "V": 1.764e-19, "n": 7.141e8, "var": 2.904e17},
 }
 
 
-def radius_of(V):
-    return np.cbrt(3.0 * V / (4.0 * np.pi))
-
-
 def dimensionless(st):
-    """The independent quantities of a state for the micromechanics: xi, CV_n, eta_bar = n v_Xe(T) / V."""
+    """The dimensionless quantities of a state: xi, CV_n, eta_bar = n v_Xe(T) / V."""
     return st["xi"], np.sqrt(st["var"]) / st["n"], st["n"] * xe_volume(st["T"]) / st["V"]
 
 
@@ -240,7 +253,48 @@ def savefig(fig, name):
 
 
 # %% ------------------------------------------------------------------------------------------------------------------
-# Sections of the notebook
+# Sections: tables on screen and figures
+
+
+def section_eos():
+    """The equation of state of a single pore, against the ideal gas (dashed); the dots are the cap eta = 0.65.
+    pore_eos.png: p against the Xe atoms per pore, for R = 0.35 um at 600, 1000 and 1500 K; beyond the cap p is linear
+    in n. pore_eos_volume.png: p against the pore volume at fixed gas and T = 1000 K; at fixed n the cap sets a
+    smallest volume n v_Xe / 0.65, below which p ~ 1 / V again. The dotted line is the volume of the R = 0.35 um
+    pore, the mean pore at the end of the NFIR base irradiation."""
+    V_ref = sphere_volume(0.35e-6)
+    fig, ax = plt.subplots(figsize=(6.4, 4.2))
+    for T, color in zip((600.0, 1000.0, 1500.0), (SEQ_BLUE[1], SEQ_BLUE[3], SEQ_BLUE[4])):
+        n_cap = ETA_CAP * V_ref / xe_volume(T)
+        n = np.linspace(1.0e6, 1.6 * n_cap, 400)
+        ax.plot(n, pore_pressure(n, V_ref, T) / 1e6, color=color, lw=1.8, label=f"hard sphere, {T:.0f} K")
+        ax.plot(n, n * K_B * T / V_ref / 1e6, color=color, lw=1.0, ls="--")
+        ax.plot([n_cap], [pore_pressure(n_cap, V_ref, T) / 1e6], "o", color=color, ms=6, mec="k", zorder=5)
+    ax.plot([], [], color=GREY, lw=1.0, ls="--", label="ideal gas")
+    ax.plot([], [], "o", color=GREY, mec="k", label=r"cap $\eta=0.65$ (linear beyond)")
+    ax.set(xlabel="Xe atoms per pore  n", ylabel=r"pore pressure  $p_g$  (MPa)", yscale="log", ylim=(1.0, 1.0e5),
+           title=r"Pore pressure, $R=0.35\ \mu$m")
+    ax.grid(True, color=GRID)
+    ax.legend(frameon=False, fontsize=8)
+    savefig(fig, "pore_eos.png")
+
+    T = 1000.0
+    fig, ax = plt.subplots(figsize=(6.4, 4.2))
+    for n, color in zip((1.0e9, 2.0e9, 4.0e9), (SEQ_BLUE[1], SEQ_BLUE[3], SEQ_BLUE[4])):
+        V_cap = n * xe_volume(T) / ETA_CAP
+        V = np.geomspace(0.6 * V_cap, 1.0e-18, 400)
+        ax.plot(V * 1e18, pore_pressure(n, V, T) / 1e6, color=color, lw=1.8, label=f"hard sphere, n = {n:.0e}")
+        ax.plot(V * 1e18, n * K_B * T / V / 1e6, color=color, lw=1.0, ls="--")
+        ax.plot([V_cap * 1e18], [pore_pressure(n, V_cap, T) / 1e6], "o", color=color, ms=6, mec="k", zorder=5)
+    ax.axvline(V_ref * 1e18, color=GREY, lw=1.0, ls=":")
+    ax.text(V_ref * 1e18 * 1.03, 2.0, r"$R=0.35\ \mu$m", fontsize=8)
+    ax.plot([], [], color=GREY, lw=1.0, ls="--", label="ideal gas")
+    ax.plot([], [], "o", color=GREY, mec="k", label=r"cap $\eta=0.65$ (smaller volume: linear in $1/V$)")
+    ax.set(xlabel=r"pore volume  $V_p$  ($\mu$m$^3$)", ylabel=r"pore pressure  $p_g$  (MPa)", xscale="log", yscale="log",
+           ylim=(1.0, 1.0e5), title="Pore pressure at fixed gas, T = 1000 K")
+    ax.grid(True, color=GRID)
+    ax.legend(frameon=False, fontsize=8)
+    savefig(fig, "pore_eos_volume.png")
 
 
 def section_inputs():
@@ -258,6 +312,7 @@ def section_inputs():
     print(f"{'':8s}{'target':>14s}{'classes':>16s}{'rel. err.':>12s}")
     for name, key, target in (("V (m3)", "V", st["V"]), ("n", "n", st["n"]), ("Var(n)", "var_n", st["var"])):
         print(f"{name:8s}{target:14.5e}{m[key]:16.5e}{err[key]:12.1e}")
+    print(f"R_V = {m['R_V'] * 1e6:.4f} um (input {R_V * 1e6:.4f} um), <p> = {m['p_mean'] / 1e6:.1f} MPa")
     return st, R_V, d, m
 
 
@@ -274,8 +329,10 @@ def section_k15_check():
 
 
 def section_truncation(d):
-    """Truncation of the log-normal tails. A quantity weighted by R^k (k = 0 number, 3 volume, a gas, 2a the second
-    moment of n) is again Gaussian in x with the mean shifted to k s, so the fraction outside +/- SPAN is
+    """Truncation of the log-normal tails. The continuous log-normal has an infinite tail towards large radii; the
+    classes cover x in [-SPAN, SPAN] and the weights are renormalised on the nodes. A quantity weighted by R^k (k = 0
+    number, 3 volume, a gas, 2a the second moment of n) is again Gaussian in x with the mean shifted to k s, so the
+    fraction outside +/- SPAN is
         f_k = Phi(-SPAN - k s) + [1 - Phi(SPAN - k s)].
     The upper tail dominates and grows with k: Var(n) is the most sensitive of the three moments, which is why s is
     solved on the truncated nodes instead of being taken from the continuous formula."""
@@ -291,17 +348,19 @@ def section_truncation(d):
 def section_distributions(st, d, m):
     """Radius pdf, pressure per class and gas per class. The capillary pressure 2 gamma / R is drawn in grey on the
     pressure panel: it is the part of the gas pressure carried by the pore surface. Ten times it (dashed) is on the
-    scale of p_i, to compare the shapes: 2 gamma / R falls as 1 / R, p_i as R^(a - 3) in the dilute limit."""
+    scale of p_i, to compare the shapes. What the closure fixes is the gas density of the classes, ~ R^(a - 3): the
+    pressure of the same gas as an ideal gas (dashed orange) has that shape, 1 / R for a = 2 like 2 gamma / R; the
+    hard-sphere pressure p_i is above it by the factor Z(eta_i), which grows towards the small classes."""
     R_um = d["R"] * 1e6
     pdf = d["w"] / np.gradient(np.log(d["R"]))  # pdf of ln R: integrates to 1 over ln R
     p_eos = float(pore_pressure(m["n"], m["V"], st["T"])) / 1e6  # EoS of the mean quantities, conserved
     fig, ax = plt.subplots(1, 3, figsize=(12, 3.8))
     for ax_ in ax:
-        ax_.set_xscale("log")  # R spans a decade: log axis
         ax_.axvline(m["R_V"] * 1e6, color=BROWN, lw=1.2, label=r"$R_V$ (mean volume)")
     ax[0].plot(R_um, pdf, color=BLUE)
     ax[0].set(xlabel="R (um)", ylabel="pdf in ln R", title=f"radii, s = {d['sigma']:.3f}")
-    ax[1].plot(R_um, d["p"] / 1e6, color=ORANGE, label=r"$p_i$")
+    ax[1].plot(R_um, d["p"] / 1e6, color=ORANGE, label=r"$p_i$ (hard spheres)")
+    ax[1].plot(R_um, d["n"] * K_B * st["T"] / d["V"] / 1e6, color=ORANGE, ls="--", label=r"$n_ik_BT/V_i$ (same gas, ideal)")
     ax[1].plot(R_um, 2.0 * GAMMA / d["R"] / 1e6, color=GREY, label=r"$2\gamma/R$")
     ax[1].plot(R_um, 10.0 * 2.0 * GAMMA / d["R"] / 1e6, color=GREY, ls="--", label=r"$10\times2\gamma/R$ (shape)")
     ax[1].axhline(p_eos, color="#ab522f", label=r"$p_{EoS}(\bar n,\bar V)$ (conserved)")
@@ -317,9 +376,11 @@ def section_distributions(st, d, m):
 
 
 def section_cumulative(st, R_V, d):
-    """Each moment as the cumulative contribution of the classes up to the radius R. All curves end at 1; they show
-    which pores carry each moment: the number sits near the median, the volume, the gas and above all the variance
-    come from the large pores."""
+    """Each moment as the cumulative contribution of the classes up to the radius R,
+        sum_{R_i <= R} w_i V_i / V,     sum_{R_i <= R} w_i n_i / n,     sum_{R_i <= R} w_i (n_i - n)^2 / Var(n).
+    All curves end at 1; they show which pores carry each moment: the number sits near the median, the volume, the gas
+    and above all the variance come from the large pores, so the upper tail matters more for Var(n) than for the
+    number of pores."""
     w, V, n, R = d["w"], d["V"], d["n"], d["R"]
     contrib = {"number  (w)": (w, 1.0), "volume  (w V / V)": (w * V, st["V"]), "gas  (w n / n)": (w * n, st["n"]),
                "variance  (w (n - n)^2)": (w * (n - st["n"]) ** 2, st["var"])}
@@ -343,17 +404,22 @@ def section_mean_pressure(st, R_V, d):
     """Mean pressure and what is conserved. p_EoS(n, V, T) is the pressure of the volume-weighted mean density
     rho_vol = sum(w n) / sum(w V) = n / V, conserved. The number-weighted mean <p_i> is not, and cannot be together
     with n and V when the pressure is higher in the small pores: <rho> = n / V - Cov(rho, V) / V, with
-    Cov(rho, V) < 0 when rho falls with V, and p(rho) convex gives <p_i> > p_EoS."""
+    Cov(rho, V) < 0 when rho falls with V, and p(rho) convex gives <p_i> > p_EoS. Within the closure n_i ~ R_i^a,
+    imposing <p_i> = p_EoS forces Cov = 0, a uniform pressure."""
     T = st["T"]
     w, Vi, ni, pi = d["w"], d["V"], d["n"], d["p"]
     p_bar = float(pore_pressure(st["n"], st["V"], T))
     rho_i = ni / Vi
+    rho_vol = np.sum(w * ni) / np.sum(w * Vi)
+    p_rho_vol = float(pore_pressure(rho_vol, 1.0, T))  # EoS at the density rho_vol: V = 1 m3, n = rho_vol atoms
     cov = np.sum(w * rho_i * Vi) - np.sum(w * rho_i) * np.sum(w * Vi)
     print("\n== mean pressure ==")
     print(f"p_EoS(n, V, T) = {p_bar / 1e6:.1f} MPa   (eta_bar = {st['n'] * xe_volume(T) / st['V']:.3f})")
     for name, wt in (("number-weighted", w), ("volume-weighted", w * Vi), ("gas-weighted", w * ni)):
         print(f"<p>, {name:16s}: {np.sum(wt * pi) / np.sum(wt) / 1e6:7.1f} MPa")
     print(f"p of the class with R = R_V     : {np.interp(R_V, d['R'], pi) / 1e6:7.1f} MPa")
+    print(f"volume-weighted mean density rho_vol = {rho_vol:.4e} atoms/m3, n/V = {st['n'] / st['V']:.4e}; "
+          f"p(rho_vol) = {p_rho_vol / 1e6:.3f} MPa (rel. diff. from p_EoS {abs(p_rho_vol / p_bar - 1.0):.1e})")
     print(f"<rho> = {np.sum(w * rho_i):.4e},  n/V - Cov(rho, V)/V = {st['n'] / st['V'] - cov / st['V']:.4e}  "
           f"(Cov/V = {cov / st['V']:.3e} < 0: higher density in the small pores)")
 
@@ -364,19 +430,21 @@ def section_closure_exponent(st, R_V):
     punching in steady state, so the closure is not consistent with the base irradiation there."""
     T, Ph = st["T"], st["Ph"]
     print(f"\n== closure exponent, {T:.0f} K ==")
-    print(f"{'a':>5s}{'sigma_lnR':>11s}{'p_min':>9s}{'p_max':>9s}{'<p>_vol':>9s}   (MPa)   classes above the punching limit")
+    print(f"{'a':>5s}{'sigma_lnR':>11s}{'p_min':>9s}{'p_max':>9s}{'<p>_vol':>9s}   (MPa)   classes above the punching limit"
+          "   rel. err. of V, n, Var(n)")
     fig, ax = plt.subplots(figsize=(5.8, 3.8))
     for a_ in (3.0, 2.75, 2.5, 2.25, 2.0):
         dp = build(R_V, st["n"], st["var"], T, a_)
-        check_moments(dp, st["V"], st["n"], st["var"])
+        e = check_moments(dp, st["V"], st["n"], st["var"])
         pv = np.sum(dp["w"] * dp["V"] * dp["p"]) / np.sum(dp["w"] * dp["V"]) / 1e6
         above = np.sum(dp["w"][dp["p"] > Ph + (2.0 * GAMMA + C_DP) / dp["R"]])
-        print(f"{a_:5.2f}{dp['sigma']:11.4f}{dp['p'].min() / 1e6:9.1f}{dp['p'].max() / 1e6:9.1f}{pv:9.1f}   {above:18.4f}")
+        print(f"{a_:5.2f}{dp['sigma']:11.4f}{dp['p'].min() / 1e6:9.1f}{dp['p'].max() / 1e6:9.1f}{pv:9.1f}   {above:18.4f}"
+              f"   {e['V']:.0e} {e['n']:.0e} {e['var_n']:.0e}")
         ax.plot(dp["R"] * 1e6, dp["p"] / 1e6, label=f"a = {a_}")
     R = np.geomspace(0.07e-6, 1.2e-6, 100)
     ax.plot(R * 1e6, 2.0 * GAMMA / R / 1e6, color=GREY, label=r"$2\gamma/R$")
     ax.plot(R * 1e6, (Ph + (2.0 * GAMMA + C_DP) / R) / 1e6, "k--", lw=1, label=r"$P_h+2\gamma/R+c_{dp}/R$ (J19)")
-    ax.set(xlabel="R (um)", ylabel="p (MPa)", xscale="log", yscale="log", title=f"T = {T:.0f} K, $P_h$ = {Ph / 1e6:.0f} MPa")
+    ax.set(xlabel="R (um)", ylabel="p (MPa)", yscale="log", title=f"T = {T:.0f} K, $P_h$ = {Ph / 1e6:.0f} MPa")
     ax.grid(True, color=GRID)
     ax.legend(frameon=False, fontsize=7)
     savefig(fig, "classes_closure_exponent.png")
@@ -432,7 +500,9 @@ def section_moment_checks(st, R_V):
 def section_heatup(st, R_V):
     """Rupture per class on a heat-up, rigid pores at fixed gas n_i and volume V_i (the NFIR anneal: P_h = 0).
     Instantaneous criterion, no relaxation time: D* = sum w [broken], G* = sum w n [broken] / sum w n.
-    The curves are staircases: one step per class that breaks (81 classes)."""
+    The porosity xi is an input: the pore density is not part of the moments. Solid lines: P_h = 0; dotted: the P_h of
+    the base irradiation. The curves are staircases, one step per class that breaks: the more classes, the smaller
+    the steps."""
     xi = st["xi"]
     T_list = np.linspace(600.0, 1700.0, 111)
     print(f"\n== heat-up at fixed gas, xi = {xi:.4f} ==")
@@ -464,7 +534,7 @@ def section_heatup(st, R_V):
 def normalised(a_, cv_n_, eta_bar, T_=1000.0, R_V_=0.35e-6):
     """Classes in relative variables for given (a, CV_n, eta_bar): x = R / R_V, p / p_bar, n / n_bar, w.
     R_V_ and T_ only set the scale: n_bar is chosen so that the mean packing fraction is eta_bar."""
-    V_ = 4.0 / 3.0 * np.pi * R_V_**3
+    V_ = sphere_volume(R_V_)
     n_ = eta_bar * V_ / xe_volume(T_)
     dd = build(R_V_, n_, (cv_n_ * n_) ** 2, T_, a_)
     return {"x": dd["R"] / R_V_, "w": dd["w"], "p_rel": dd["p"] / float(pore_pressure(n_, V_, T_)), "n_rel": dd["n"] / n_,
@@ -475,7 +545,9 @@ def section_normalised(st):
     """Normalised representation for the micromechanics. In x_i = R_i / R_V, p_i / p_bar and w_i depend on three
     numbers only: a, CV_n and eta_bar = n v_Xe(T) / V. R_V and p_bar rescale the axes, T enters through eta_bar.
     In the dilute limit (eta_bar -> 0) the shape is p_i / p_bar ~ x_i^(a - 3); the table gives the largest relative
-    deviation from it over the central classes (within +/- 2 s of the median) and over all classes."""
+    deviation from it over the central classes (within +/- 2 s of the median, about 96 % of the pores) and over all
+    classes. One universal curve is a usable approximation only below eta_bar of about 0.02; at the packing fraction
+    of the SCIANTIX states (0.09) it is not."""
     _, cv, eta_state = dimensionless(st)
     etas = (1e-4, 0.02, 0.05, eta_state, 0.15, 0.25)
     ref = normalised(A_CLOSURE, cv, etas[0])  # dilute limit
@@ -535,7 +607,8 @@ def section_coverage():
 
 
 def section_normalised_vs_direct():
-    """Normalised against direct: do CV_n and eta_bar suffice for the gas pressure of the classes?
+    """Normalised against direct: do CV_n and eta_bar suffice for the gas pressure of the classes, with R_V, n and T
+    left out of the parameter space?
     A. fixed (CV_n, eta_bar), different (R_V, T, n) with n = eta_bar V / v_Xe(T): the direct classes lie on the
        normalised curve.
     B. fixed R_V, T, CV_n, only n varied: eta_bar changes and so does the shape; each direct curve coincides with the
@@ -545,7 +618,7 @@ def section_normalised_vs_direct():
     a = A_CLOSURE
 
     def direct(R_V_, n_, cv_n_, T_):
-        V_ = 4.0 / 3.0 * np.pi * R_V_**3
+        V_ = sphere_volume(R_V_)
         dd = build(R_V_, n_, (cv_n_ * n_) ** 2, T_, a)
         return dd["R"] / R_V_, dd["p"] / float(pore_pressure(n_, V_, T_)), n_ * xe_volume(T_) / V_
 
@@ -557,7 +630,7 @@ def section_normalised_vs_direct():
         nn = normalised(a, cv_, eta_)
         ax[0].plot(nn["x"], nn["p_rel"], color=cmap(k, len(combos)), label=f"CV_n = {cv_}, eta_bar = {eta_}")
         for (RV_, T_), mk in zip(((0.25e-6, 600.0), (0.40e-6, 1000.0), (0.80e-6, 1500.0)), ("o", "s", "^")):
-            x, y, _ = direct(RV_, eta_ * (4.0 / 3.0 * np.pi * RV_**3) / xe_volume(T_), cv_, T_)
+            x, y, _ = direct(RV_, eta_ * sphere_volume(RV_) / xe_volume(T_), cv_, T_)
             errA = max(errA, np.max(np.abs(y / nn["p_rel"] - 1.0)))
             ax[0].plot(x[::8], y[::8], mk, ms=4, mfc="none", color=cmap(k, len(combos)))
     ax[0].set(xlabel="R / R_V", ylabel="p / p_bar", xscale="log", yscale="log", title="A: same (CV_n, eta_bar); o, s, ^ = 3 (R_V, T, n)")
@@ -575,7 +648,7 @@ def section_normalised_vs_direct():
     ex, it, pts = [], [], []
     while len(ex) < 200:
         RV_, T_, cv_ = rng.uniform(0.15e-6, 0.9e-6), rng.uniform(600.0, 1700.0), rng.uniform(GRID_CV[0], GRID_CV[-1])
-        x, y, eta_ = direct(RV_, rng.uniform(0.02, 0.23) * (4.0 / 3.0 * np.pi * RV_**3) / xe_volume(T_), cv_, T_)
+        x, y, eta_ = direct(RV_, rng.uniform(0.02, 0.23) * sphere_volume(RV_) / xe_volume(T_), cv_, T_)
         if not GRID_ETA[0] <= eta_ <= GRID_ETA[-1]:
             continue
         ex.append(np.max(np.abs(y / normalised(a, cv_, eta_)["p_rel"] - 1.0)))
@@ -600,25 +673,34 @@ def section_normalised_vs_direct():
 
 
 # %% ------------------------------------------------------------------------------------------------------------------
-# Cases for MMM
+# Inputs for MMM
 #
 # MMM solves a linear elastic problem on a periodic RVE of spherical pores under internal pressure (OHP 2.2.2) and
-# returns the maximum first principal stress at every pore. The SCIANTIX state fixes, of such a run:
-#   geometry  xi (porosity) and the radius distribution, i.e. s, a function of (CV_n, a);
-#   load      the pressure of every pore as a function of its radius, p_i / p_bar, a function of (eta_bar, CV_n, a),
-#             and the confinement P_h / p_bar.
-# The 81 nodes are grouped in 7 classes (bins of x centred on 0, +/-1, +/-2, +/-3; a node on a bin edge is shared in
-# halves). Each class keeps the pore volume and the gas of its nodes, so V and n of the population are exact and the
-# porosity and p_EoS(n, V) of the RVE are those of SCIANTIX; Var(n) is reduced by the grouping (printed).
+# returns the maximum first principal stress at every pore. An input is, for every size class of the pores, its
+# radius, its porosity and its gas pressure, and the confining pressure. No SCIANTIX run is needed.
+# An RVE is scale-free in length and linear in the load, so the radius of the mean pore volume R_V and the mean
+# pressure p_bar are not factors. With the closure exponent fixed, radius, porosity and pressure of the classes, each
+# relative to its mean, depend on four factors only:
+#   xi           porosity: the distance between the pores
+#   s            width of the radius distribution (sigma of ln R): R_k / R_V and the shares of the porosity xi_k / xi
+#   eta_bar      mean packing fraction of the gas: with s, the pressure profile p_k / p_bar
+#   P_h / p_bar  confinement
+# The 81 nodes are grouped in classes (bins of x centred on 0, +/-1, +/-2, ...; a node on a bin edge is shared in
+# halves). Each class keeps the pore volume and the gas of its nodes, so V and n of the population are exact: the
+# porosities of the classes sum to xi and p_EoS(n, V) of the RVE is p_bar. Var(n) is reduced by the grouping.
 
-MMM_EDGES = (-2.5, -1.5, -0.5, 0.5, 1.5, 2.5)
-MMM_SPHERES = 1200  # pores in the RVE of OHP
+MMM_CLASSES = 7  # [N] classes of an input, odd
+# [?] low and high level of each factor, over the rim states considered so far (STATES and other regression cases)
+MMM_FACTORS = {"xi": (0.07, 0.145), "s": (0.21, 0.42), "eta": (0.07, 0.11), "Ph_rel": (0.0, 1.0)}
+MMM_RUN_DIR = "mmm_inputs"
 
 
-def reduced_classes(d, T):
-    """Grouping of the nodes in len(MMM_EDGES) + 1 classes. Returns a list of dicts (x range, number fraction, R, V,
-    n, p) and the ratio of the variance of n on the reduced classes to the one on the nodes."""
-    edges = (-np.inf,) + MMM_EDGES + (np.inf,)
+def reduced_classes(d, T, n_classes=MMM_CLASSES):
+    """Grouping of the nodes in n_classes classes: a list of dicts with the x range, the number fraction w, R, V, n, p
+    and the share of the porosity w V / <V>."""
+    half = (n_classes - 1) // 2
+    edges = (-np.inf,) + tuple(j + 0.5 for j in range(-half, half)) + (np.inf,)
+    m = moments(d)
     out = []
     for lo, hi in zip(edges[:-1], edges[1:]):
         share = ((X > lo + 1e-9) & (X < hi - 1e-9)) + 0.5 * (np.isclose(X, lo) | np.isclose(X, hi))  # edge nodes in halves
@@ -626,124 +708,69 @@ def reduced_classes(d, T):
         Vk = np.sum(d["w"] * share * d["V"]) / wk
         nk = np.sum(d["w"] * share * d["n"]) / wk
         out.append({"x_lo": max(lo, -SPAN), "x_hi": min(hi, SPAN), "w": wk, "V": Vk, "R": radius_of(Vk), "n": nk,
-                    "p": float(pore_pressure(nk, Vk, T))})
+                    "p": float(pore_pressure(nk, Vk, T)), "xi_share": wk * Vk / m["V"]})
     w = np.array([c["w"] for c in out])
-    n = np.array([c["n"] for c in out])
-    V = np.array([c["V"] for c in out])
-    m = moments(d)
-    assert abs(np.sum(w) - 1.0) < 1e-12 and abs(np.sum(w * V) / m["V"] - 1.0) < 1e-12 and abs(np.sum(w * n) / m["n"] - 1.0) < 1e-12
-    var_ratio = np.sum(w * (n - m["n"]) ** 2) / m["var_n"] if m["var_n"] > 0.0 else 1.0
-    return out, var_ratio
+    assert abs(np.sum(w) - 1.0) < 1e-12 and abs(sum(c["xi_share"] for c in out) - 1.0) < 1e-12
+    assert abs(np.sum(w * np.array([c["n"] for c in out])) / m["n"] - 1.0) < 1e-12
+    return out
 
 
-def sphere_counts(w, total=MMM_SPHERES):
-    """Integer number of spheres per class, largest remainders, at least one per class."""
-    raw = np.asarray(w) * total
-    counts = np.maximum(np.floor(raw).astype(int), 1)
-    for k in np.argsort(-(raw - np.floor(raw))):
-        if counts.sum() >= total:
-            break
-        counts[k] += 1
-    return counts
+def mmm_case(tag, origin, xi, s, eta, Ph_rel, R_V, T, a=A_CLOSURE):
+    """A run from its four factors (porosity xi, width s, mean packing fraction eta, confinement Ph_rel = P_h / p_bar)
+    and from the scale R_V (m), T (K): the parameters, CV_n, p_bar and P_h (Pa), and the 81 classes."""
+    V = sphere_volume(R_V)
+    n = eta * V / xe_volume(T)
+    cv2 = cv2_on_nodes(s, a)
+    p_bar = float(pore_pressure(n, V, T))
+    return {"id": tag, "origin": origin, "xi": xi, "eta": eta, "R_V": R_V, "T": T, "a": a, "cv": np.sqrt(cv2), "p_bar": p_bar,
+            "Ph": Ph_rel * p_bar, "classes": build(R_V, n, cv2 * n**2, T, a)}
 
 
-def mmm_cases():
-    """The cases: the SCIANTIX states of the NFIR case (dimensional), and one-at-a-time variations around the NFIR
-    anneal in the dimensionless quantities, over the porosity and CV_n of other rim states. Each case: name, origin,
-    xi, CV_n, eta_bar, a, and for the SCIANTIX states the state."""
+def mmm_design():
+    """Coarse cover of the four factors of MMM_FACTORS, 9 runs: the centre and half of the 16 corners, those where the
+    level of the fourth factor is the product of the levels of the other three (-1 low, +1 high). Every factor is at
+    each level in 4 runs and every pair of factors takes its four combinations of levels twice. R_V and T are those
+    of the NFIR anneal: they set the scale of the radii and of the pressures."""
+    ref = STATES["NFIR, anneal at 1200 C"]
+    names = list(MMM_FACTORS)
+    signs = [(0, 0, 0, 0)] + [(i, j, k, i * j * k) for i, j, k in itertools.product((-1, 1), repeat=3)]
     cases = []
-    for key, tag in (("NFIR, anneal at 1200 C", "N1"), ("NFIR, end of base irradiation", "N2")):
-        xi, cv, eta = dimensionless(STATES[key])
-        cases.append({"id": tag, "origin": "SCIANTIX: " + key, "xi": xi, "cv": cv, "eta": eta, "a": A_CLOSURE, "state": STATES[key]})
-    xi0, cv0, eta0 = cases[0]["xi"], cases[0]["cv"], cases[0]["eta"]
-    for tag, xi, cv, eta, a, why in (("V1", 0.07, cv0, eta0, A_CLOSURE, "porosity, low"), ("V2", 0.145, cv0, eta0, A_CLOSURE, "porosity, high"),
-                                     ("V3", xi0, 0.45, eta0, A_CLOSURE, "CV_n, low"), ("V4", xi0, 1.0, eta0, A_CLOSURE, "CV_n, high"),
-                                     ("V5", xi0, cv0, 0.07, A_CLOSURE, "eta_bar, low"), ("V6", xi0, cv0, 0.11, A_CLOSURE, "eta_bar, high"),
-                                     ("A25", xi0, cv0, eta0, 2.5, "closure a = 2.5"),
-                                     ("A3", xi0, cv0, eta0, 3.0, "closure a = 3 (uniform pressure, the load of OHP)")):
-        cases.append({"id": tag, "origin": "variation of N1: " + why, "xi": xi, "cv": cv, "eta": eta, "a": a, "state": None})
+    for run, sign in enumerate(signs):
+        par = {f: 0.5 * (lo + hi) + 0.5 * sg * (hi - lo) for (f, (lo, hi)), sg in zip(MMM_FACTORS.items(), sign)}
+        origin = "centre" if run == 0 else "corner " + " ".join(f"{f}{'+' if sg > 0 else '-'}" for f, sg in zip(names, sign))
+        cases.append(mmm_case(f"R{run}", origin, R_V=radius_of(ref["V"]), T=ref["T"], **par))
     return cases
 
 
-def mmm_tables(write=True):
-    """Radius / pressure tables of the MMM cases: mmm_cases.md (7 classes per case) and mmm_cases.csv (81 nodes)."""
-    cases = mmm_cases()
-    md = ["# Cases for MMM: pore radii and pressures",
-          "#### Author of this folder: E.Cappellari, POLIMI-CEA 2026", "",
-          "Written by `python3 utilities/HBFF/pore_distribution.py --mmm`; the model is in `README_HBFFmodel.md`.", "",
-          "MMM solves the linear elastic problem on a periodic RVE of spherical pores under internal pressure and returns",
-          "the maximum first principal stress at every pore (OHP D5.2, 2.2.2). The SCIANTIX state fixes, of such a run:", "",
-          "- **geometry**: the porosity $\\xi$ and the radius distribution, log-normal of width $s$, a function of $(\\mathrm{CV}_n, a)$;",
-          "- **load**: the pressure of every pore as a function of its radius, $p_k/\\bar p$, a function of $(\\bar\\eta,\\mathrm{CV}_n,a)$,",
-          "  and the confinement $P_h/\\bar p$.", "",
-          f"The {N_CLASSES} nodes of the model are grouped in {len(MMM_EDGES) + 1} classes (bins of $x=(\\ln R-\\ln R_{{med}})/s$ centred on",
-          "$0,\\pm1,\\pm2,\\pm3$). Each class keeps the pore volume and the gas of its nodes: $\\bar V$, $\\bar n$, hence $\\xi$ and",
-          "$p_{\\rm EoS}(\\bar n,\\bar V)$ of the RVE are those of SCIANTIX; $\\mathrm{Var}(n)$ is reduced by the grouping (column *Var kept*).",
-          f"The number of spheres is for an RVE of {MMM_SPHERES} pores (OHP); the full {N_CLASSES}-node tables are in `mmm_cases.csv`.", "",
-          "## Cases", "",
-          "| id | origin | $\\xi$ | $\\mathrm{CV}_n$ | $\\bar\\eta$ | $a$ | $s$ | Var kept | $R_V$ (µm) | $T$ (K) | $\\bar p$ (MPa) | $P_h$ (MPa) | $P_h/\\bar p$ | RVE side (µm) |",
-          "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
-    csv = ["case,node,x,number_weight,R_over_RV,n_over_nbar,p_over_pbar,R_um,p_MPa"]
-    blocks = []
+def mmm_run_files(cases, n_classes=MMM_CLASSES):
+    """One text file per run in MMM_RUN_DIR, with one row per pore class: radius (um), porosity of the class,
+    gas pressure (MPa), confining pressure (MPa); and index.txt with the factors of every run."""
+    folder = os.path.join(HERE, MMM_RUN_DIR)
+    os.makedirs(folder, exist_ok=True)
+    for old in os.listdir(folder):  # the runs of a previous design
+        if old == "index.txt" or (old.startswith("run_") and old.endswith(".txt")):
+            os.remove(os.path.join(folder, old))
+    index = [f"# Inputs for MMM: {len(cases)} runs, {n_classes} pore classes each (python3 utilities/HBFF/pore_distribution.py --mmm)",
+             f"# closure exponent a = {A_CLOSURE:g}; R_V and T set the scale of the radii and of the pressures",
+             f"# {'run':6s}{'xi':>8s}{'s':>8s}{'CV_n':>8s}{'eta_bar':>9s}{'Ph/p_bar':>10s}{'R_V_um':>9s}{'T_K':>9s}{'p_bar_MPa':>11s}{'Ph_MPa':>9s}  file"]
     for c in cases:
-        st = c["state"]
-        if st is not None:
-            R_V, T, n, var, Ph = radius_of(st["V"]), st["T"], st["n"], st["var"], st["Ph"]
-        else:  # dimensionless case: the scale (R_V, T) is irrelevant for the relative columns
-            R_V, T, Ph = 0.35e-6, 1473.5, None
-            n = c["eta"] * (4.0 / 3.0 * np.pi * R_V**3) / xe_volume(T)
-            var = (c["cv"] * n) ** 2
-        d = build(R_V, n, var, T, c["a"])
-        p_bar = float(pore_pressure(n, 4.0 / 3.0 * np.pi * R_V**3, T))
-        red, var_ratio = reduced_classes(d, T)
-        counts = sphere_counts([k["w"] for k in red])
-        side = np.cbrt(np.sum(counts * np.array([k["V"] for k in red])) / c["xi"])  # RVE side that gives xi with these spheres
-        dim = st is not None
-        md.append(f"| {c['id']} | {c['origin']} | {c['xi']:.3f} | {c['cv']:.3f} | {c['eta']:.3f} | {c['a']:.1f} | {d['sigma']:.3f} | {var_ratio:.3f} | "
-                  + (f"{R_V * 1e6:.3f} | {T:.0f} | {p_bar / 1e6:.1f} | {Ph / 1e6:.1f} | {Ph / p_bar:.2f} | {side * 1e6:.1f} |" if dim
-                     else f"– | – | – | – | – | {side / R_V:.1f} $R_V$ |"))
-        head = f"### {c['id']} — {c['origin']}"
-        if dim:
-            rows = ["| class | $x$ range | number fraction | spheres | $R_k/R_V$ | $R_k$ (µm) | $p_k/\\bar p$ | $p_k$ (MPa) | $2\\gamma/R_k$ (MPa) | net $p_k-2\\gamma/R_k-P_h$ (MPa) |",
-                    "|---|---|---|---|---|---|---|---|---|---|"]
-        else:
-            rows = ["| class | $x$ range | number fraction | spheres | $R_k/R_V$ | $p_k/\\bar p$ |", "|---|---|---|---|---|---|"]
-        for j, (k, cnt) in enumerate(zip(red, counts), start=1):
-            base = f"| {j} | {k['x_lo']:+.1f} … {k['x_hi']:+.1f} | {k['w']:.4f} | {cnt} | {k['R'] / R_V:.3f} | "
-            if dim:
-                cap = 2.0 * GAMMA / k["R"]
-                rows.append(base + f"{k['R'] * 1e6:.3f} | {k['p'] / p_bar:.3f} | {k['p'] / 1e6:.1f} | {cap / 1e6:.1f} | {(k['p'] - cap - Ph) / 1e6:.1f} |")
-            else:
-                rows.append(base + f"{k['p'] / p_bar:.3f} |")
-        blocks += ["", head, ""] + rows
-        for i in range(N_CLASSES):
-            csv.append(f"{c['id']},{i},{X[i]:.1f},{d['w'][i]:.6e},{d['R'][i] / R_V:.6f},{d['n'][i] / n:.6e},{d['p'][i] / p_bar:.6e},"
-                       + (f"{d['R'][i] * 1e6:.6f},{d['p'][i] / 1e6:.4f}" if dim else ","))
-    md += ["",
-           "Reference of OHP (already run): monodisperse pores of diameter 1.75 µm, $\\xi\\approx0.11$, uniform pressure, RVE side 30 µm.",
-           "A3 is the same load (uniform pressure) on the log-normal radii of the SCIANTIX state.", "",
-           "## What to return for each case", "",
-           "For every pore of the RVE: its radius and $\\sigma_I^{max}$ in the surrounding matrix, for the loads below. The model needs,",
-           "per class, the mean and the scatter of $\\ln\\hat s$ (README_HBFFmodel.md, 4–5).", "",
-           "- **Load A**: unit pressure in all the pores, zero macroscopic strain; with the hydrostatic stress $p_{hyd}$ that arises, the",
-           "  stress-free factor is $\\hat s=[\\sigma_I^{max}(1,p_{hyd})+p_{hyd}]/(1-p_{hyd})$ (the rescaling of OHP).",
-           "- **Load B**: the pressure profile of the table, $p_k/\\bar p$ in the pores of class $k$, same boundary conditions.", "",
-           "With a uniform pressure a confinement $P_h$ is a rescaling of load A. With a pressure that depends on the radius it is",
-           "not: the net load of class $k$ is $p_k-P_h$, whose ratios between the classes change with $P_h/\\bar p$. The stress **field**",
-           "of any $(\\bar p, P_h)$ is $-P_h\\,\\mathbf 1+\\bar p\\,\\boldsymbol\\sigma_B-P_h\\,\\boldsymbol\\sigma_A$ ($\\boldsymbol\\sigma_A$, $\\boldsymbol\\sigma_B$ the stress-free",
-           "fields of the two loads; for load B, with $p_{hyd,B}$ the hydrostatic stress of the constrained run,",
-           "$\\boldsymbol\\sigma_B=\\boldsymbol\\sigma_B^{constr}+p_{hyd,B}\\,(\\mathbf 1+\\boldsymbol\\sigma_A)$), and the maximum principal stress has to be taken on",
-           "the combined field: the two scalar maxima do not add. Returning the two fields at the pore walls, or the maxima for the",
-           "values of $P_h/\\bar p$ of the table, covers it.",
-           "The capillary pressure $2\\gamma/R_k$ is subtracted from $p_k$ in the model and is listed for the SCIANTIX states.",
-           "", "## Tables"] + blocks
-    if write:
-        with open(os.path.join(HERE, "mmm_cases.md"), "w") as fh:
-            fh.write("\n".join(md) + "\n")
-        with open(os.path.join(HERE, "mmm_cases.csv"), "w") as fh:
-            fh.write("\n".join(csv) + "\n")
-        print("wrote mmm_cases.md and mmm_cases.csv")
-    return md
+        d, xi, p_bar, Ph = c["classes"], c["xi"], c["p_bar"], c["Ph"]
+        file = f"run_{c['id']}.txt"
+        lines = [f"# MMM input, run {c['id']} ({c['origin']})",
+                 f"# xi = {xi:g}, s = {d['sigma']:.4g} (CV_n = {c['cv']:.4g}), eta_bar = {c['eta']:.4g}, P_h / p_bar = {Ph / p_bar:.4g}, a = {c['a']:g}",
+                 f"# scale: R_V = {c['R_V'] * 1e6:.4g} um, T = {c['T']:g} K, p_bar = {p_bar / 1e6:.5g} MPa",
+                 "# one row per pore class; the porosities sum to xi",
+                 f"# {'radius_um':>10s}{'porosity':>14s}{'pressure_MPa':>14s}{'confinement_MPa':>17s}"]
+        lines += [f"{k['R'] * 1e6:12.6f}{xi * k['xi_share']:14.6e}{k['p'] / 1e6:14.4f}{Ph / 1e6:17.4f}"
+                  for k in reduced_classes(d, c["T"], n_classes)]
+        with open(os.path.join(folder, file), "w") as fh:
+            fh.write("\n".join(lines) + "\n")
+        index.append(f"  {c['id']:6s}{xi:8.4f}{d['sigma']:8.4f}{c['cv']:8.4f}{c['eta']:9.4f}{Ph / p_bar:10.3f}{c['R_V'] * 1e6:9.4f}{c['T']:9.1f}"
+                     f"{p_bar / 1e6:11.2f}{Ph / 1e6:9.2f}  {file}")
+    with open(os.path.join(folder, "index.txt"), "w") as fh:
+        fh.write("\n".join(index) + "\n")
+    print(f"wrote {len(cases)} run files and index.txt in {MMM_RUN_DIR}/")
+    print("\n".join(index))
 
 
 # %% ------------------------------------------------------------------------------------------------------------------
@@ -796,11 +823,41 @@ def time_steps(case_dir, n_rows):
     return np.array(dt)
 
 
-def check(case_dir):
+def state_of_row(o, k):
+    """The state of row k of output.txt in the format of STATES: a row holds the retained moments and S, S_2 after the
+    venting of the step, so the unvented moments are n / S and (Var + n^2) / S_2 - (n / S)^2 of the same row."""
+    S, S2 = o["HBS gas retention fraction"][k], o["HBS gas retention fraction - second moment"][k]
+    n = o["Xe atoms per HBS pore"][k] / S
+    var = max((o["Xe atoms per HBS pore - variance"][k] + o["Xe atoms per HBS pore"][k] ** 2) / S2 - n**2, 0.0)
+    return {"T": o["Temperature"][k], "Ph": -o["Hydrostatic stress"][k] * 1.0e6, "xi": o["HBS porosity"][k],
+            "Np": o["HBS pore density"][k], "V": o["HBS pore volume"][k], "n": n, "var": var}
+
+
+def states_agree(o, tol=1.0e-3):
+    """STATES against the output of the NFIR case: the last row at full power and the row of the peak temperature of
+    the transient. Prints the two states as read from the output; False if a value of STATES is off by more than tol
+    (relative; STATES holds 4 digits)."""
+    at_power = np.nonzero(o["Fission rate"] >= o["Fission rate"].max() * (1.0 - 1e-6))[0]
+    k0 = transient_start(o)
+    rows = {"NFIR, end of base irradiation": int(at_power[-1]), "NFIR, anneal at 1200 C": k0 + int(np.argmax(o["Temperature"][k0:]))}
+    print("\n== STATES against the output of the case ==")
+    worst = 0.0
+    for name, k in rows.items():
+        st = state_of_row(o, k)
+        print(f'"{name}": ' + ", ".join(f'"{key}": {v:.6g}' if key == "T" else f'"{key}": {v:.4g}' for key, v in st.items()))
+        for key, v in st.items():
+            ref = STATES[name][key]
+            worst = max(worst, abs(v - ref) / max(abs(ref), 1.0e6 if key == "Ph" else 0.0))  # P_h = 0 in the anneal: against 1 MPa
+    print(f"largest relative difference from STATES: {worst:.1e}" + ("" if worst <= tol else f"  -> STATES is stale (more than {tol:.0e})"))
+    return worst <= tol
+
+
+def check(case_dir, tol=1.0e-6):
     """Replays the recursion of option 4 on the history of a SCIANTIX case and compares D, G, S, S_2 and the broken
     fraction of every class with output.txt. A row of output.txt holds the retained moments and S, S_2 after the
     venting of the step: the unvented moments are n / S and (Var + n^2) / S_2 of the same row. The state read from
-    output.txt has 7 digits, so the agreement is not to round-off."""
+    output.txt has 7 digits, so the agreement is not to round-off: tol [N] is above the digits of the file.
+    Returns 0 if every difference is within tol and, on the NFIR case, STATES agrees with the output; 1 otherwise."""
     o = read_output(os.path.join(case_dir, "output.txt"))
     rows = len(o["Time"])
     dt = time_steps(case_dir, rows)
@@ -810,6 +867,8 @@ def check(case_dir):
     for k in range(1, rows):
         alpha_old, alpha = o["Restructured volume fraction"][k - 1], o["Restructured volume fraction"][k]
         dilution = alpha_old / alpha if alpha > alpha_old > 0.0 else 1.0
+        if dilution < 1.0:  # [R] the vented fractions 1 - S and 1 - S_2 are diluted like the broken fractions
+            S1, S2 = 1.0 - (1.0 - S1) * dilution, 1.0 - (1.0 - S2) * dilution
         beta, d_star, g_star, f1, f2 = rupture_step(
             beta * dilution, o["HBS pore volume"][k], o["Xe atoms per HBS pore"][k], o["Xe atoms per HBS pore - variance"][k],
             o["HBS gas retention fraction"][k], o["HBS gas retention fraction - second moment"][k], o["Temperature"][k],
@@ -827,7 +886,12 @@ def check(case_dir):
           f"S = {S1:.6f} ({o['HBS gas retention fraction'][-1]:.6f})")
     for name in err:
         print(f"max |{name}: python - sciantix| = {err[name]:.2e}  (row {row[name]}, T = {o['Temperature'][row[name]]:.1f} K)")
-    return err
+    ok = max(err.values()) <= tol
+    if not ok:
+        print(f"the transcription and the C++ differ by more than {tol:.0e}")
+    if os.path.samefile(case_dir, NFIR_CASE):
+        ok = states_agree(o) and ok
+    return 0 if ok else 1
 
 
 def transient_start(o):
@@ -835,6 +899,12 @@ def transient_start(o):
     (the first row, if the history has no fissions)."""
     at_power = np.nonzero(o["Fission rate"] > 0.0)[0]
     return int(at_power[-1]) + 1 if len(at_power) else 0
+
+
+def case_label(case_dir):
+    """Name of a case in the figure files: regression/hbs_nfir/test_UO2HBS_frag_j19damage -> nfir_j19damage."""
+    group, case = os.path.normpath(os.path.abspath(case_dir)).split(os.sep)[-2:]
+    return group.replace("hbs_", "") + "_" + case.replace("test_UO2HBS_frag_", "")
 
 
 def rupture_figure(case_dir, fractions=(0.25, 0.5, 1.0)):
@@ -854,11 +924,9 @@ def rupture_figure(case_dir, fractions=(0.25, 0.5, 1.0)):
     first = int(np.argmax(D > 0.0))
     fig, ax = plt.subplots(2, 2, figsize=(11, 7.4))
     for k, color in zip(rows, ("#86b6ef", BLUE, "#104281")):
-        S, S2 = o["HBS gas retention fraction"][k], o["HBS gas retention fraction - second moment"][k]
-        n_u = o["Xe atoms per HBS pore"][k] / S
-        var_u = max((o["Xe atoms per HBS pore - variance"][k] + o["Xe atoms per HBS pore"][k] ** 2) / S2 - n_u**2, 0.0)
-        xi, Ph = o["HBS porosity"][k], -o["Hydrostatic stress"][k] * 1.0e6
-        d = build(radius_of(o["HBS pore volume"][k]), n_u, var_u, T[k])
+        st = state_of_row(o, k)
+        n_u, xi, Ph = st["n"], st["xi"], st["Ph"]
+        d = build(radius_of(st["V"]), n_u, st["var"], T[k])
         beta, R_um, dlnR = o["beta"][k], d["R"] * 1e6, np.gradient(np.log(d["R"]))
         label = f"T = {T[k]:.0f} K, D = {D[k]:.3f}, G = {G[k]:.3f}"
         ax[0, 0].plot(R_um, d["w"] / dlnR, color=color, lw=1.0)
@@ -883,8 +951,7 @@ def rupture_figure(case_dir, fractions=(0.25, 0.5, 1.0)):
     for ax_ in ax.ravel():
         ax_.grid(True, color=GRID)
         ax_.legend(frameon=False, fontsize=7)
-    group, case = os.path.normpath(os.path.abspath(case_dir)).split(os.sep)[-2:]
-    name = group.replace("hbs_", "") + "_" + case.replace("test_UO2HBS_frag_", "")
+    name = case_label(case_dir)
     fig.suptitle(f"{name}: classes rebuilt from output.txt, a = {A_CLOSURE}", fontsize=10)
     return fig, name
 
@@ -928,8 +995,7 @@ def fgr_figure(case_dir):
     for ax_ in ax:
         ax_.grid(True, color=GRID)
         ax_.legend(frameon=False, fontsize=7)
-    group, case = os.path.normpath(os.path.abspath(case_dir)).split(os.sep)[-2:]
-    name = group.replace("hbs_", "") + "_" + case.replace("test_UO2HBS_frag_", "")
+    name = case_label(case_dir)
     fig.suptitle(f"{name}: fission gas release of the transient, a = {A_CLOSURE}", fontsize=10)
     print(f"release at the end of the transient: {release[-1]:.2f} % of the gas produced; D = {o['HBS fragmented fraction'][-1]:.4f}, "
           f"G = {o['HBS burst release fraction'][-1]:.4f}, 1 - S = {1.0 - o['HBS gas retention fraction'][-1]:.4f}")
@@ -948,21 +1014,27 @@ def case_figures(case_dir):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--mmm", action="store_true", help="write mmm_cases.md and mmm_cases.csv")
+    ap.add_argument("--mmm", action="store_true",
+                    help=f"write {MMM_RUN_DIR}/run_*.txt: one file per run of the coarse cover of the four factors of an RVE "
+                         "(porosity, width of the radii, packing fraction, confinement), with radius, porosity, pressure and "
+                         "confining pressure of every class")
+    ap.add_argument("--classes", type=int, default=MMM_CLASSES, help=f"with --mmm: classes per run, odd, 3 to 9 (default {MMM_CLASSES})")
     ap.add_argument("--check", metavar="CASE_DIR", help="replay option 4 on a SCIANTIX case and compare with its output.txt")
     ap.add_argument("--rupture", metavar="CASE_DIR", help="rupture and release figures of a SCIANTIX case other than the NFIR one")
     args = ap.parse_args()
     if args.check:
-        check(args.check)
-        return 0
+        return check(args.check)
     if args.rupture:
         plt.switch_backend("Agg")
         case_figures(args.rupture)
         return 0
     if args.mmm:
-        mmm_tables()
+        if args.classes % 2 == 0 or not 3 <= args.classes <= 9:
+            ap.error("--classes is odd, from 3 to 9")
+        mmm_run_files(mmm_design(), args.classes)
         return 0
     plt.switch_backend("Agg")  # the figures go to files
+    section_eos()
     st, R_V, d, m = section_inputs()
     section_k15_check()
     section_truncation(d)
