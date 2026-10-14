@@ -31,39 +31,38 @@ K15: K. Kulacsy, J. Nucl. Mater. 466 (2015) 409. J19: L.O. Jernkvist, EPJ Nucl. 
 OHP: OperaHPC Deliverable D5.2 (2026), section 2.2.
 
 usage
-    python3 utilities/HBFF/pore_distribution.py                    all sections: tables on screen, figures/pore_eos*.png
-                                                                   and figures/classes_*.png, with the rupture and
-                                                                   release figures of the NFIR case
-                                                                   (regression/hbs_nfir/test_UO2HBS_frag_j19damage)
-    python3 utilities/HBFF/pore_distribution.py --mmm              mmm_inputs/run_*.txt, one file per MMM run of the
-                                                                   coarse cover of the four factors of an RVE: radius,
-                                                                   porosity, pressure and confinement of every class
-    python3 utilities/HBFF/pore_distribution.py --check CASE_DIR   replay of option 4 on a SCIANTIX case (the folder
-                                                                   with input_history.txt, input_settings.txt and
-                                                                   output.txt), against the columns of output.txt;
-                                                                   on the NFIR case, also STATES against the output
-    python3 utilities/HBFF/pore_distribution.py --rupture CASE_DIR the rupture and release figures of another case:
-                                                                   figures/classes_rupture_<case>.png (distribution and
-                                                                   rupture of the classes, from the broken fractions of
-                                                                   output.txt) and figures/classes_fgr_<case>.png
+    python3 utilities/HBFF/pore_distribution.py
+
+Every run:
+    1.  the tables on screen and the figures of README_HBFFmodel.md: figures/pore_eos*.png and figures/classes_*.png;
+    2.  the inputs of MMM: mmm_inputs/run_*.txt, one file per run of the Latin hypercube in the three factors of an
+        RVE (porosity, width of the radii, packing fraction), with radius, porosity, pressure and confinement of every
+        class, and the figures of the design;
+    3.  for every SCIANTIX case of CASES (the folder with input_history.txt, input_settings.txt and output.txt), if
+        it has been run: the replay of option 4 against the columns of output.txt (on the NFIR case, also STATES
+        against the output) and the rupture and release figures figures/classes_rupture_<case>.png and
+        figures/classes_fgr_<case>.png.
+The exit status is 1 if a replay disagrees with its output.txt.
 """
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Libraries and paths
-import argparse
-import itertools
 import os
 import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.cm import ScalarMappable
+from matplotlib.colors import LinearSegmentedColormap, Normalize
 from scipy.interpolate import RegularGridInterpolator
-from scipy.optimize import brentq
+from scipy.optimize import brentq, least_squares
 from scipy.special import ndtr  # standard normal cdf
+from scipy.stats import qmc
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FIG_DIR = os.path.join(HERE, "figures")
 NFIR_CASE = os.path.normpath(os.path.join(HERE, "..", "..", "regression", "hbs_nfir", "test_UO2HBS_frag_j19damage"))
+NFIR_DATA = os.path.join(os.path.dirname(NFIR_CASE), "data")
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Constants (from papers and original SCIANTIX code)
@@ -74,6 +73,7 @@ SIGMA_R = 21.0e6  # (Pa) J19 Table 4: rupture stress that pairs with the mean-fi
 XI_PERC = 0.29  # (/) J19, percolation of the HBS pores
 C_DP = 55.0  # (N/m) J19 Table 4: steady-state limit of the overpressure of a pore growing by punching, c_dp / R
 K15_SIGMA = 0.356  # K15 Table 2: sigma_ln r of the reference pore-size distribution
+NFIR_GAS_VOLUME = 1.518e-28  # (m3/atom) volume per gas atom in the pores of the NFIR disc, from the measured Xe (ReadMe of NFIR_DATA)
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Model choices (TBD)
@@ -81,11 +81,25 @@ N_CLASSES, SPAN = 81, 4.0  # nodes at ln R = ln R_median +/- 4 s
 A_CLOSURE = 2.0  # closure exponent of the gas per class, n_i ~ R_i^a (2: gas density ~ 1/R, 3: uniform pressure)
 TAU = 2.0  # (s) J19 Table 3 (interconnection and microcracking modes; J19 rupture is instantaneous)
 R_MIN_EVAL, XI_MAX_EVAL = 1.0e-7, 0.35  # validity window of the criterion, on the mean pore
+# Design of the MMM runs (section "Inputs for MMM" below for the meaning of the factors and of the classes).
+MMM_CLASSES = 7  # classes of an input
+MMM_RUNS, MMM_SEED = 20, 1  # runs of the Latin hypercube (at least 2) and its seed
+# Ranges of the factors.
+#   xi   up to xi_sat of HighBurnupStructurePorosity.C.
+#        Below 0.02 the cube of Merope/distributedpore.py holds fewer than two pores of each class at the ends.
+#   s    SCIANTIX 0.05 to 0.42 (CV_n 0.10 to 1.00); NFIR disc 0.36; K15 0.356
+#   eta  SCIANTIX 0.045 to 0.228; NFIR disc 0.14 (1474 K) to 0.18 (293 K)
+MMM_FACTORS = {"xi": (0.02, 0.18), "s": (0.05, 0.42), "eta": (0.045, 0.23)}
+MMM_PH_REL = 0.0  # [R] P_h / p_bar of the runs
+MMM_RUN_DIR = "mmm_inputs"
+# SCIANTIX cases replayed and drawn (rupture and release figures): the NFIR one, plus any other case folder.
+CASES = [NFIR_CASE]
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Colours of the figures
 BLUE, ORANGE, GREEN, GREY, BROWN, GRID = "#2a78d6", "#eb6834", "#2f9e6e", "#898781", "#3e1c0f", "#e1e0d9"
-SEQ_BLUE = ("#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281")  # light to dark, for a sequence of curves
+SEQ_BLUE = ("#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281")
+SEQ_ORANGE = ("#f2b094", "#ee8c62", "#eb6834", "#b54a1f", "#7c300f")
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Equation of state: hard spheres (Carnahan-Starling), from HighBurnupStructurePorosity.C
@@ -245,6 +259,27 @@ def dimensionless(st):
     """The dimensionless quantities of a state: xi, CV_n, eta_bar = n v_Xe(T) / V."""
     return st["xi"], np.sqrt(st["var"]) / st["n"], st["n"] * xe_volume(st["T"]) / st["V"]
 
+# Measured pores of the NFIR disc: the bars of NFIR_DATA are the porosity, in per cent of the
+# surface, per 0.2 um of pore diameter from 0 to 4 um, before and after the anneal.
+
+def porosity_per_bin(xi, R_V, s, edges):
+    """Porosity in the bins of pore diameter `edges` (m) of a log-normal of ln R with the porosity xi, the radius of
+    the mean pore volume R_V and the width s, tails included: the porosity-weighted ln R is Gaussian with the same s
+    and the median R_V exp(1.5 s^2)."""
+    with np.errstate(divide="ignore"):  # the edge at zero diameter
+        z = (np.log(0.5 * edges) - np.log(R_V) - 1.5 * s**2) / s
+    return xi * np.diff(ndtr(z))
+
+def nfir_disc(name="AsIrradiated.txt"):
+    """Pores of the NFIR disc, with the least-squares fit of a log-normal: 
+    the bars (porosity per bin), the edges of the bins (m) and the fitted xi, R_V (m), s."""
+    with open(os.path.join(NFIR_DATA, name), encoding="utf-8") as fh:
+        bars = np.array([float(line.split(";")[1]) for line in fh if line.startswith("Bar")]) / 100.0
+    edges = 0.2e-6 * np.arange(len(bars) + 1)
+    fit = least_squares(lambda q: porosity_per_bin(q[0], q[1] * 1e-6, q[2], edges) - bars, x0=(bars.sum(), 0.5, 0.3),
+                        bounds=(1e-3, (1.0, 5.0, 2.0)))  # xi, R_V (um), s
+    return {"bars": bars, "edges": edges, "xi": fit.x[0], "R_V": fit.x[1] * 1e-6, "s": fit.x[2]}
+
 def savefig(fig, name):
     os.makedirs(FIG_DIR, exist_ok=True)
     fig.tight_layout()
@@ -312,6 +347,24 @@ def section_inputs():
         print(f"{name:8s}{target:14.5e}{m[key]:16.5e}{err[key]:12.1e}")
     print(f"R_V = {m['R_V'] * 1e6:.4f} um (input {R_V * 1e6:.4f} um), <p> = {m['p_mean'] / 1e6:.1f} MPa")
     return st, R_V, d, m
+
+def section_nfir_data():
+    """The measured pores of the NFIR disc in the variables of the classes, next to the SCIANTIX states: porosity,
+    radius of the mean pore volume and width from the fit of nfir_disc, mean packing fraction from the volume per
+    gas atom. The measured disc is inside the ranges of the runs for MMM (MMM_FACTORS)."""
+    print("\n== NFIR disc, measured pores (log-normal fit of the bars) against the SCIANTIX states ==")
+    print(f"{'':34s}{'xi':>8s}{'R_V (um)':>10s}{'s':>8s}{'CV_n':>8s}{'eta_bar':>9s}")
+    inside = lambda key, value: MMM_FACTORS[key][0] <= value <= MMM_FACTORS[key][1]
+    for label, name in (("disc, as irradiated", "AsIrradiated.txt"), ("disc, after the anneal", "PostAnnealing.txt")):
+        disc = nfir_disc(name)
+        print(f"{label:34s}{disc['xi']:8.4f}{disc['R_V'] * 1e6:10.4f}{disc['s']:8.4f}{np.sqrt(cv2_on_nodes(disc['s'], A_CLOSURE)):8.4f}")
+        assert inside("xi", disc["xi"]) and inside("s", disc["s"]), label
+    for name, st in STATES.items():
+        xi, cv, eta = dimensionless(st)
+        eta_disc = xe_volume(st["T"]) / NFIR_GAS_VOLUME
+        print(f"{'SCIANTIX, ' + name.removeprefix('NFIR, '):34s}{xi:8.4f}{radius_of(st['V']) * 1e6:10.4f}{width(cv**2, A_CLOSURE):8.4f}{cv:8.4f}{eta:9.4f}"
+              f"   (disc at {st['T']:.0f} K: eta_bar = {eta_disc:.4f})")
+        assert inside("eta", eta_disc), name
 
 def section_k15_check():
     """Self-check of build() on a case with a known solution: Var(n) of the K15 reference width with the closure
@@ -661,19 +714,17 @@ def section_normalised_vs_direct():
 # starting with #; the side of the cube is fixed there, and the number of pores follows from the porosities).
 # An RVE is scale-free in length and linear in the load, so the radius of the mean pore volume R_V and the mean
 # pressure p_bar are not factors. With the closure exponent fixed, radius, porosity and pressure of the classes, each
-# relative to its mean, depend on four factors only:
-#   xi           porosity: the distance between the pores
-#   s            width of the radius distribution (sigma of ln R): R_k / R_V and the shares of the porosity xi_k / xi
-#   eta_bar      mean packing fraction of the gas: with s, the pressure profile p_k / p_bar
-#   P_h / p_bar  confinement
+# relative to its mean, depend on three factors:
+#   xi       porosity: the distance between the pores
+#   s        width of the radius distribution (sigma of ln R): R_k / R_V and the shares of the porosity xi_k / xi
+#   eta_bar  mean packing fraction of the gas: with s, the pressure profile p_k / p_bar
+# Confinement. The runs have P_h = 0. .
+# Scale. R_V is that of the NFIR disc (nfir_disc) and T that of its anneal. The side of the cube, the repulsion
+# distance and the mesh size of Merope/distributedpore.py are in um (those of the RVE of OHP, with pores of 1.75 um in
+# diameter).
 # The 81 nodes are grouped in classes (bins of x centred on 0, +/-1, +/-2, ...; a node on a bin edge is shared in
 # halves). Each class keeps the pore volume and the gas of its nodes, so V and n of the population are exact: the
 # porosities of the classes sum to xi and p_EoS(n, V) of the RVE is p_bar. Var(n) is reduced by the grouping.
-
-MMM_CLASSES = 7  # classes of an input, odd
-# low and high level of each factor, TBD
-MMM_FACTORS = {"xi": (0.07, 0.145), "s": (0.21, 0.42), "eta": (0.07, 0.11), "Ph_rel": (0.0, 1.0)}
-MMM_RUN_DIR = "mmm_inputs"
 
 def reduced_classes(d, T, n_classes=MMM_CLASSES):
     """Grouping of the nodes in n_classes classes: a list of dicts with the x range, the number fraction w, R, V, n, p
@@ -694,9 +745,13 @@ def reduced_classes(d, T, n_classes=MMM_CLASSES):
     assert abs(np.sum(w * np.array([c["n"] for c in out])) / m["n"] - 1.0) < 1e-12
     return out
 
+def packing_max(reduced, T):
+    """Largest packing fraction of the classes of a run."""
+    return max(k["n"] * xe_volume(T) / k["V"] for k in reduced)
+
 def mmm_case(tag, origin, xi, s, eta, Ph_rel, R_V, T, a=A_CLOSURE):
-    """A run from its four factors (porosity xi, width s, mean packing fraction eta, confinement Ph_rel = P_h / p_bar)
-    and from the scale R_V (m), T (K): the parameters, CV_n, p_bar and P_h (Pa), and the 81 classes."""
+    """A run from its three factors (porosity xi, width s, mean packing fraction eta), from the confinement
+    Ph_rel = P_h / p_bar and from the scale R_V (m), T (K): the parameters, CV_n, p_bar and P_h (Pa), and the 81 classes."""
     V = sphere_volume(R_V)
     n = eta * V / xe_volume(T)
     cv2 = cv2_on_nodes(s, a)
@@ -704,20 +759,17 @@ def mmm_case(tag, origin, xi, s, eta, Ph_rel, R_V, T, a=A_CLOSURE):
     return {"id": tag, "origin": origin, "xi": xi, "eta": eta, "R_V": R_V, "T": T, "a": a, "cv": np.sqrt(cv2), "p_bar": p_bar,
             "Ph": Ph_rel * p_bar, "classes": build(R_V, n, cv2 * n**2, T, a)}
 
-def mmm_design():
-    """Coarse cover of the four factors of MMM_FACTORS, 9 runs: the centre and half of the 16 corners, those where the
-    level of the fourth factor is the product of the levels of the other three (-1 low, +1 high). Every factor is at
-    each level in 4 runs and every pair of factors takes its four combinations of levels twice. R_V and T are those
-    of the NFIR anneal: they set the scale of the radii and of the pressures."""
-    ref = STATES["NFIR, anneal at 1200 C"]
-    names = list(MMM_FACTORS)
-    signs = [(0, 0, 0, 0)] + [(i, j, k, i * j * k) for i, j, k in itertools.product((-1, 1), repeat=3)]
-    cases = []
-    for run, sign in enumerate(signs):
-        par = {f: 0.5 * (lo + hi) + 0.5 * sg * (hi - lo) for (f, (lo, hi)), sg in zip(MMM_FACTORS.items(), sign)}
-        origin = "centre" if run == 0 else "corner " + " ".join(f"{f}{'+' if sg > 0 else '-'}" for f, sg in zip(names, sign))
-        cases.append(mmm_case(f"R{run}", origin, R_V=radius_of(ref["V"]), T=ref["T"], **par))
-    return cases
+def mmm_design(n_runs=MMM_RUNS):
+    """Latin hypercube of n_runs runs in the box of MMM_FACTORS. 
+    The levels of the factors are paired by permutations that lower the centred discrepancy of
+    the points (scipy.stats.qmc, optimization 'random-cd')."""
+    lo, hi = np.array(list(MMM_FACTORS.values())).T
+    u = qmc.LatinHypercube(d=len(MMM_FACTORS), scramble=False, optimization="random-cd", rng=MMM_SEED).random(n_runs)
+    assert all(np.allclose(np.sort(u[:, j]), (np.arange(n_runs) + 0.5) / n_runs) for j in range(u.shape[1]))  # one run per stratum
+    R_V, T = nfir_disc()["R_V"], STATES["NFIR, anneal at 1200 C"]["T"]
+    digits = len(str(n_runs - 1))
+    return [mmm_case(f"R{run:0{digits}d}", f"Latin hypercube, run {run + 1} of {n_runs}", R_V=R_V, T=T, Ph_rel=MMM_PH_REL,
+                     **dict(zip(MMM_FACTORS, x))) for run, x in enumerate(qmc.scale(u, lo, hi))]
 
 def mmm_run_files(cases, n_classes=MMM_CLASSES):
     """One text file per run in MMM_RUN_DIR, with one row per pore class: radius (um), porosity of the class,
@@ -728,10 +780,13 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
     for old in os.listdir(folder):  # the runs of a previous design
         if old == "index.txt" or (old.startswith("run_") and old.endswith(".txt")):
             os.remove(os.path.join(folder, old))
-    index = [f"# Inputs for MMM: {len(cases)} runs, {n_classes} pore classes each (python3 utilities/HBFF/pore_distribution.py --mmm)",
-             f"# closure exponent a = {A_CLOSURE:g}; R_V and T set the scale of the radii and of the pressures",
+    ranges = ", ".join(f"{name} {lo:g}-{hi:g}" for name, (lo, hi) in zip(("xi", "s", "eta_bar"), MMM_FACTORS.values()))
+    index = [f"# Inputs for MMM: Latin hypercube of {len(cases)} runs (seed {MMM_SEED}) in {ranges}; {n_classes} pore classes each "
+             "(python3 utilities/HBFF/pore_distribution.py)",
+             f"# closure exponent a = {A_CLOSURE:g}; R_V (NFIR disc) and T set the scale of the radii and of the pressures",
+             f"# eta_max: largest packing fraction of the classes of the run; from {ETA_CAP:g} the class is at the cap of the equation of state",
              "# geometry of the runs: python3 utilities/HBFF/Merope/distributedpore.py (it reads every run_*.txt of this folder)",
-             f"# {'run':6s}{'xi':>8s}{'s':>8s}{'CV_n':>8s}{'eta_bar':>9s}{'Ph/p_bar':>10s}{'R_V_um':>9s}{'T_K':>9s}{'p_bar_MPa':>11s}{'Ph_MPa':>9s}  file"]
+             f"# {'run':6s}{'xi':>8s}{'s':>8s}{'CV_n':>8s}{'eta_bar':>9s}{'eta_max':>9s}{'Ph/p_bar':>10s}{'R_V_um':>9s}{'T_K':>9s}{'p_bar_MPa':>11s}{'Ph_MPa':>9s}  file"]
     for c in cases:
         d, xi, p_bar, Ph = c["classes"], c["xi"], c["p_bar"], c["Ph"]
         file = f"run_{c['id']}.txt"
@@ -740,16 +795,95 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
                  f"# scale: R_V = {c['R_V'] * 1e6:.4g} um, T = {c['T']:g} K, p_bar = {p_bar / 1e6:.5g} MPa",
                  "# one row per pore class; the porosities sum to xi",
                  f"# {'radius_um':>10s}{'porosity':>14s}{'pressure_MPa':>14s}{'confinement_MPa':>17s}"]
-        lines += [f"{k['R'] * 1e6:12.6f}{xi * k['xi_share']:14.6e}{k['p'] / 1e6:14.4f}{Ph / 1e6:17.4f}"
-                  for k in reduced_classes(d, c["T"], n_classes)]
+        reduced = reduced_classes(d, c["T"], n_classes)
+        lines += [f"{k['R'] * 1e6:12.6f}{xi * k['xi_share']:14.6e}{k['p'] / 1e6:14.4f}{Ph / 1e6:17.4f}" for k in reduced]
         with open(os.path.join(folder, file), "w") as fh:
             fh.write("\n".join(lines) + "\n")
-        index.append(f"  {c['id']:6s}{xi:8.4f}{d['sigma']:8.4f}{c['cv']:8.4f}{c['eta']:9.4f}{Ph / p_bar:10.3f}{c['R_V'] * 1e6:9.4f}{c['T']:9.1f}"
-                     f"{p_bar / 1e6:11.2f}{Ph / 1e6:9.2f}  {file}")
+        index.append(f"  {c['id']:6s}{xi:8.4f}{d['sigma']:8.4f}{c['cv']:8.4f}{c['eta']:9.4f}{packing_max(reduced, c['T']):9.4f}{Ph / p_bar:10.3f}{c['R_V'] * 1e6:9.4f}"
+                     f"{c['T']:9.1f}{p_bar / 1e6:11.2f}{Ph / 1e6:9.2f}  {file}")
     with open(os.path.join(folder, "index.txt"), "w") as fh:
         fh.write("\n".join(index) + "\n")
     print(f"wrote {len(cases)} run files and index.txt in {MMM_RUN_DIR}/")
     print("\n".join(index))
+
+def mmm_figures(cases, n_classes=MMM_CLASSES):
+    """Figures of the design LHS."""
+    n_runs, disc = len(cases), nfir_disc()
+    R_V, T, a = cases[0]["R_V"], cases[0]["T"], cases[0]["a"]
+    label = {"xi": r"porosity  $\xi$", "s": r"width  $s$  ($\sigma$ of ln R)", "eta": r"mean packing fraction  $\bar\eta$"}
+    run = {"xi": [c["xi"] for c in cases], "s": [c["classes"]["sigma"] for c in cases], "eta": [c["eta"] for c in cases]}
+    states = [{"xi": xi, "s": width(cv**2, a), "eta": eta} for xi, cv, eta in map(dimensionless, STATES.values())]
+    measured = {"xi": disc["xi"], "s": disc["s"], "eta": xe_volume(T) / NFIR_GAS_VOLUME}
+
+    def eta_bar_at_cap(s):
+        """Mean packing fraction at which the densest class reaches the cap: the packing fractions of the classes
+        relative to the mean depend on s only."""
+        c = mmm_case("", "", 0.1, s, 0.1, MMM_PH_REL, R_V, T, a)
+        return ETA_CAP * c["eta"] / packing_max(reduced_classes(c["classes"], T, n_classes), T)
+
+    fig, ax = plt.subplots(1, 3, figsize=(13.5, 4.6))
+    for ax_, (fx, fy) in zip(ax, (("xi", "s"), ("xi", "eta"), ("s", "eta"))):
+        ax_.set(xlabel=label[fx], ylabel=label[fy], xlim=MMM_FACTORS[fx], ylim=MMM_FACTORS[fy])
+        ax_.set_xticks(np.linspace(*MMM_FACTORS[fx], n_runs + 1), minor=True)  # edges of the strata
+        ax_.set_yticks(np.linspace(*MMM_FACTORS[fy], n_runs + 1), minor=True)
+        ax_.grid(True, which="minor", color=GRID, lw=0.6)
+        ax_.tick_params(which="minor", length=0)
+        if (fx, fy) == ("s", "eta"):
+            s_ = np.linspace(*MMM_FACTORS["s"], 80)
+            top = MMM_FACTORS["eta"][1]
+            ax_.fill_between(s_, [min(eta_bar_at_cap(v), top) for v in s_], top, color=GREY, alpha=0.25, lw=0,
+                             label=rf"a class at the cap $\eta={ETA_CAP:g}$")
+        ax_.plot(run[fx], run[fy], "o", color=BLUE, ms=7, mec="white", mew=1.0, zorder=3, label=f"runs ({n_runs})")
+        for c, x, y in zip(cases, run[fx], run[fy]):
+            left, below = x > np.quantile(MMM_FACTORS[fx], 0.9), y > np.quantile(MMM_FACTORS[fy], 0.9)  # keeps the number in the frame
+            ax_.annotate(c["id"][1:], (x, y), xytext=(-4 if left else 4, -3 if below else 3), textcoords="offset points", fontsize=6,
+                         color="#52514e", ha="right" if left else "left", va="top" if below else "bottom")
+        ax_.plot([st[fx] for st in states], [st[fy] for st in states], "s", color=ORANGE, ms=7, mec="white", mew=1.0, zorder=4,
+                 label="SCIANTIX, NFIR case")
+        ax_.plot(measured[fx], measured[fy], "D", color=GREEN, ms=7, mec="white", mew=1.0, zorder=4, label="NFIR disc, measured")
+    for ax_ in (ax[0], ax[2]):
+        ax_.legend(frameon=False, fontsize=7, ncol=2, loc="lower left", bbox_to_anchor=(0.0, 1.01))
+    fig.suptitle(f"Latin hypercube of the runs for MMM: {n_runs} runs, one in every stratum of each factor (grid); the numbers are the runs",
+                 fontsize=10)
+    savefig(fig, "mmm_design.png")
+
+    blue, orange = LinearSegmentedColormap.from_list("blue", SEQ_BLUE), LinearSegmentedColormap.from_list("orange", SEQ_ORANGE)
+    by_s, by_eta = Normalize(*MMM_FACTORS["s"]), Normalize(*MMM_FACTORS["eta"])
+    fig, ax = plt.subplots(1, 3, figsize=(14.5, 4.3))
+    D = np.linspace(0.0, 6.0e-6, 301)[1:]  # (m) pore diameter
+    cumulative = lambda xi, R_V_, s: 100.0 * np.cumsum(porosity_per_bin(xi, R_V_, s, np.append(0.0, D)))
+    for c in cases:
+        s, reduced = c["classes"]["sigma"], reduced_classes(c["classes"], T, n_classes)
+        R_k, p_k = np.array([k["R"] for k in reduced]), np.array([k["p"] for k in reduced])
+        capped = np.array([k["n"] * xe_volume(T) / k["V"] >= ETA_CAP for k in reduced])
+        ax[0].plot(D * 1e6, cumulative(1.0, R_V, s), color=blue(by_s(s)), lw=1.2)
+        ax[1].plot(R_k * 1e6, [c["xi"] * k["xi_share"] for k in reduced], "o-", color=blue(by_s(s)), lw=1.0, ms=4.5, mec="white", mew=0.5)
+        ax[2].plot(R_k / R_V, p_k / c["p_bar"], "-", color=orange(by_eta(c["eta"])), lw=1.0)
+        ax[2].plot(R_k[~capped] / R_V, p_k[~capped] / c["p_bar"], "o", color=orange(by_eta(c["eta"])), ms=4.5, mec="white", mew=0.5)
+        ax[2].plot(R_k[capped] / R_V, p_k[capped] / c["p_bar"], "o", color=orange(by_eta(c["eta"])), ms=4.5, mfc="white", mew=1.0)
+    ax[0].plot(disc["edges"][1:] * 1e6, 100.0 * np.cumsum(disc["bars"]) / disc["bars"].sum(), "o", color="k", ms=4, mec="white", mew=0.5, zorder=4,
+               label="NFIR disc, as irradiated (bars)")
+    ax[0].plot(D * 1e6, cumulative(disc["xi"] / disc["bars"].sum(), disc["R_V"], disc["s"]), color=BROWN, lw=1.5, ls="--", zorder=3,
+               label=f"log-normal fit: $R_V$ = {disc['R_V'] * 1e6:.2f} um, s = {disc['s']:.2f}")
+    x_ = np.geomspace(0.15, 3.0, 50)
+    ax[2].plot(x_, x_ ** (a - 3.0), "k--", lw=1.0, label=rf"dilute limit, $(R/R_V)^{{{a - 3.0:g}}}$")
+    ax[2].plot([], [], "o", color=GREY, ms=4.5, mfc="white", mew=1.0, label=rf"class at the cap $\eta={ETA_CAP:g}$")
+    ax[0].set(xlabel="pore diameter (um)", ylabel="cumulative share of the porosity (%)", xlim=(0.0, 6.0),
+              title=f"radius distributions, $R_V$ = {R_V * 1e6:.2f} um (colour: s)")
+    ax[1].set(xlabel="radius of the class (um)", ylabel="porosity of the class", xscale="log", yscale="log",
+              title=f"the {n_classes} classes of every run (colour: s)")
+    ax[2].set(xlabel="R / R_V", ylabel="p / p_bar", xscale="log", yscale="log", title="pressure of the classes (colour: eta_bar)")
+    fig.colorbar(ScalarMappable(by_s, blue), ax=ax[1], label="s")
+    fig.colorbar(ScalarMappable(by_eta, orange), ax=ax[2], label="eta_bar")
+    for ax_ in ax:
+        ax_.grid(True, color=GRID)
+        ax_.title.set_fontsize(10)
+    for ax_ in ax[1:]:  # decimal labels on the logarithmic axis of the radii
+        ax_.set_xticks((0.2, 0.5, 1.0, 2.0), labels=("0.2", "0.5", "1", "2"))
+        ax_.tick_params(axis="x", which="minor", labelbottom=False)
+    ax[0].legend(frameon=False, fontsize=7, loc="lower right")
+    ax[2].legend(frameon=False, fontsize=7)
+    savefig(fig, "mmm_runs.png")
 
 
 # %% ------------------------------------------------------------------------------------------------------------------
@@ -981,29 +1115,12 @@ def case_figures(case_dir):
 # %% ------------------------------------------------------------------------------------------------------------------
 # Main
 def main():
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--mmm", action="store_true",
-                    help=f"write {MMM_RUN_DIR}/run_*.txt: one file per run of the coarse cover of the four factors of an RVE "
-                         "(porosity, width of the radii, packing fraction, confinement), with radius, porosity, pressure and "
-                         "confining pressure of every class")
-    ap.add_argument("--classes", type=int, default=MMM_CLASSES, help=f"with --mmm: classes per run, odd, 3 to 9 (default {MMM_CLASSES})")
-    ap.add_argument("--check", metavar="CASE_DIR", help="replay option 4 on a SCIANTIX case and compare with its output.txt")
-    ap.add_argument("--rupture", metavar="CASE_DIR", help="rupture and release figures of a SCIANTIX case other than the NFIR one")
-    args = ap.parse_args()
-    if args.check:
-        return check(args.check)
-    if args.rupture:
-        plt.switch_backend("Agg")
-        case_figures(args.rupture)
-        return 0
-    if args.mmm:
-        if args.classes % 2 == 0 or not 3 <= args.classes <= 9:
-            ap.error("--classes is odd, from 3 to 9")
-        mmm_run_files(mmm_design(), args.classes)
-        return 0
+    assert MMM_CLASSES % 2 == 1 and 3 <= MMM_CLASSES <= 9, "MMM_CLASSES is odd, from 3 to 9"
+    assert MMM_RUNS >= 2, "MMM_RUNS is at least 2"
     plt.switch_backend("Agg")  # the figures go to files
     section_eos()
     st, R_V, d, m = section_inputs()
+    section_nfir_data()
     section_k15_check()
     section_truncation(d)
     section_distributions(st, d, m)
@@ -1015,11 +1132,18 @@ def main():
     section_normalised(st)
     section_coverage()
     section_normalised_vs_direct()
-    if os.path.exists(os.path.join(NFIR_CASE, "output.txt")):
-        case_figures(NFIR_CASE)
-    else:
-        print(f"\nno output.txt in {NFIR_CASE}: run the case for the rupture and release figures")
-    return 0
+    print("\n== inputs for MMM ==")
+    cases = mmm_design(MMM_RUNS)
+    mmm_run_files(cases, MMM_CLASSES)
+    mmm_figures(cases, MMM_CLASSES)
+    status = 0
+    for case_dir in CASES:
+        if not os.path.exists(os.path.join(case_dir, "output.txt")):
+            print(f"\nno output.txt in {case_dir}: run the case for its replay and its rupture and release figures")
+            continue
+        status = max(status, check(case_dir))
+        case_figures(case_dir)
+    return status
 
 if __name__ == "__main__":
     sys.exit(main())
