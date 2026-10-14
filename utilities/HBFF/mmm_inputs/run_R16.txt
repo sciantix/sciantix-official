@@ -1,0 +1,12 @@
+# MMM input, run R16 (Latin hypercube, run 17 of 20)
+# xi = 0.048, s = 0.2073 (CV_n = 0.4324), eta_bar = 0.04962, P_h / p_bar = 0, a = 2
+# scale: R_V = 0.732 um, T = 1473.5 K, p_bar = 56.464 MPa
+# one row per pore class; the porosities sum to xi
+#  radius_um      porosity  pressure_MPa  confinement_MPa
+    0.385068  4.347010e-05      137.5336           0.0000
+    0.470263  7.728810e-04      104.2827           0.0000
+    0.570130  5.482285e-03       80.9297           0.0000
+    0.690004  1.538413e-02       63.6655           0.0000
+    0.834699  1.720404e-02       50.5770           0.0000
+    1.010741  7.673794e-03       40.4349           0.0000
+    1.236518  1.439397e-03       32.0996           0.0000
