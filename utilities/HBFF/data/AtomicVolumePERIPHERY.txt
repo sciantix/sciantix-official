@@ -1,0 +1,16 @@
+# J. Noirot et al. / Journal of Nuclear Materials 446 (2014) 163–171
+# Fig. 17. ‘‘As irradiated’’ average atomic volume of fission gasses in the HBS bubbles, comparison of results from this study with [5].
+# UO2 and MOX periphery from [5], where [5] J. Noirot, L. Desgranges, J. Lamontagne, J. Nucl. Mater. 372 (2008) 318–339.
+Local burnup (GWd/tHM); Gas volume (A^3/at)
+100;185 
+105;150
+120;150
+120;170
+160;185 
+180;175
+200;185
+220;170
+270;210
+# Data description
+# UO2 and MOX periphery from [5]. Data for both standard UO2 and MIMAS MOX commercial fuel, but taken at the pellet periphery, the rim zone where the HBS develops during irradiation at similar local burn-up (~103 GWd/tHM) but under the high compressive stress and low temperature typical of the rim. These are the most directly comparable samples to NFIR disc, and the paper concludes that despite very different stress conditions (no cladding restraint in the HBWR disc geometry), both fuels show similar porosity, Xe content in the grains and average molar volume in the bubbles; the main differences are larger grain and bubble sizes in the disc, attributed to higher irradiation temperatures and fission rates. UO2 (105–120 GWd/t) and MIMAS MOX fuel (peripheral Pu-rich agglomerates, bu from about 100 up to 270 GWd/t) sampled in the rim. The irradiation temperatures assumed in the underlying evaluation are 650 K for the rim/peripheral samples.
+# Data reported in table 2 from Noirot, J., Desgranges, L., and Lamontagne, J. (2008). Detailed characterisations of high burn-up structures in oxide fuels. Journal of Nuclear Materials, 372(2-3), 318-339. https://doi.org/10.1016/J.JNUCMAT.2007.04.037

@@ -1,0 +1,14 @@
+# J. Noirot et al. / Journal of Nuclear Materials 446 (2014) 163–171
+# Fig. 17. ‘‘As irradiated’’ average atomic volume of fission gasses in the HBS bubbles, comparison of results from this study with [5].
+# MOX mid-radius from [5], where [5] J. Noirot, L. Desgranges, J. Lamontagne, J. Nucl. Mater. 372 (2008) 318–339.
+Local burnup (GWd/tHM); Gas volume (A^3/at)
+80;150
+120;200
+130;175
+150;270
+160;190
+180;265
+# Data description
+# MOX mid-radius from [5]. MIMAS MOX fuel from commercial LWR pellets, measured at mid-radius position, from the earlier CEA study [5]. This series extends to much higher local burn-up than the disc, because the plutonium-rich agglomerates in MOX reach very high local burn-up in the pellet interior while the fuel there stays at high temperature without full HBS restructuring.
+MIMAS MOX fuel sampled both in the mid-radius agglomerates (local burn-ups from about 80 up to 180 GWd/t). The irradiation temperatures assumed in the underlying evaluation is 900 K for the mid-radius MOX agglomerates. 
+# Data from table 2 in Noirot, J., Desgranges, L., and Lamontagne, J. (2008). Detailed characterisations of high burn-up structures in oxide fuels. Journal of Nuclear Materials, 372(2-3), 318-339. https://doi.org/10.1016/J.JNUCMAT.2007.04.037

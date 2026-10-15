@@ -1,0 +1,10 @@
+# J. Noirot et al. / Journal of Nuclear Materials 446 (2014) 163–171
+# Fig. 17. ‘‘As irradiated’’ average atomic volume of fission gasses in the HBS bubbles, comparison of results from this study with [5].
+# rod 07 disc 08 UO2 103.5 GWd/tHM 
+Local burnup (GWd/tHM); Gas volume (A^3/at)
+93;149
+112;150
+# Data description
+# rod 07 disc 08 UO2, 103.5 GWd/tHM (NFIR program): a standard-grain UO2 disc (3D grain size 18 µm, NFD fabrication) cut from rod 07 of the HBWR IFA-649 irradiation, sandwiched between Mo discs in the "hot" position of the rod, reaching 103.5 GWd/tHM with calculated local temperatures of 560–700 °C, and the HBS formed over the entire disc. Its gas volume is not directly measured but deduced from the EPMA/SIMS Xe data plus the SEM porosity of about 11%, assuming the bubble gas Xe/Kr ratio equals the punctured-gas ratio of 8.8, giving about 9 × 10⁻⁵ m³/mol, i.e. roughly 149 Å³/at (about 3.6 times the UO2 trivacancy volume)
+# References
+# Noirot, J. et al. (2014). Fission gas release behaviour of a 103GWd/tHM fuel disc during a 1200°C annealing test. Journal of Nuclear Materials, 446(1-3), 163-171. https://doi.org/10.1016/j.jnucmat.2013.12.002
