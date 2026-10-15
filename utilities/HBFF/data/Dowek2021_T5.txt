@@ -1,0 +1,11 @@
+# R. Dowek, C. Cagna, J. Noirot et al. Journal of Nuclear Materials 543 (2021) 152591
+# TABLE 5 - Sample B: results of density measurements by single-bubble process
+Bubble;1;2;3;4
+Position;0R;0.30R;1R;1R
+Gas quantity (mol);3.38e-15;3.03e-15;13.81e-15;14.69e-15
+Volume (um3);0.306;0.215;0.845;1.183
+Equivalent spherical diameter ESD (um);0.84;0.74;1.17;1.31
+Molar volume (m3/mol);9.04E-5;7.08E-5;6.12E-5;8.05E-5
+Atomic volume of fission gases (Schottky defect volume/atom);3.7;2.9;2.5;3.4
+Pressure at 293 K - Soave (MPa);8.8;14.7;25.1;9.9
+Pressure at irradiated temperature - Soave (MPa);150;230;180;90

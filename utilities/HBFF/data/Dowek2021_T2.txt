@@ -1,0 +1,11 @@
+# R. Dowek, C. Cagna, J. Noirot et al. Journal of Nuclear Materials 543 (2021) 152591
+#  TABLE 2 - UO2 samples A and B: fabrication and irradiation characteristics
+Characteristic;Sample A (ramped);Sample B (not ramped)
+235U (%);4.89;4.89
+Grain size (um);64;60
+Burn-up (GWd/tU);38.8;62.7 
+Cycles;2;4
+FGR (%);7.52;3.04
+Xe/Kr;9.0;9.7
+Temperature in the centre (C);1878 (ramp);840
+Temperature in the rim (C);nan;380

@@ -1,0 +1,12 @@
+# R. Dowek, C. Cagna, J. Noirot et al. Journal of Nuclear Materials 543 (2021) 152591
+# Bibliographic data reported in table 1
+References;Pellet burn-up (GWd/tU);Local burn-up (GWd/tU);Location in the pellet;Coupled technique;Bubble equivalent diameter (um);Porosity (%);Gas molar volume (x 10^-5 m3/mol);Pressure supplied by the paper (MPa);Pressure recalculated, Soave EOS 293 K (MPa)
+Noirot et al., 2008;68;105;1R;EPMA/SEM;0.5;7.9;9.0;90 (Van der Waals, 650 K);8.6
+Noirot et al., 2008;62;120;1R;EPMA/SEM;nan;10.4;10.0;70 (Van der Waals, 650 K);7.7
+Noirot et al., 2008;78;120;1R;EPMA/SEM;nan;12.3;9.0;90 (Van der Waals, 650 K);8.6
+Walker et al., 2009;65;100;1R;EPMA/SEM;1.5;16;nan;45 (B&MI, room temp.);19.6
+Horvath et al., 2007;100;300;1R;LA-ICP-MS;2;21;11.5;30 (Unknown, room temp.);7.5
+Noirot et al., 2009;103;103;fuel disc;EPMA/SIMS/SEM;1.7;11;9.0;11 (Ronchi, room temp.);9.0
+Noirot et al., 2009;83;80;0R-0.24R;EPMA/SIMS/SEM;nan;nan;19.3-11.7;nan;6.4-7.3
+Noirot et al., 2009;83;100;1R;EPMA/SIMS/SEM;nan;nan;10.2;nan;7.8
+Cagna, PhD thesis 2016;73;70;0R;EPMA/SIMS/SEM;1.4;2.5;5.0;nan;68.1
