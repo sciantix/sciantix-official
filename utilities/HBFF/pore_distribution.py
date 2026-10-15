@@ -278,7 +278,7 @@ def nfir_disc(name="PoreRadiusASIRRADIATED.txt"):
 # Average volume per fission-gas atom in the HBS bubbles against the local burnup, J. Noirot et al., J. Nucl. Mater.
 # 446 (2014) 163, Fig. 17: the file in DATA_DIR and the label of every series.
 GAS_VOLUME_SERIES = {"AtomicVolumePERIPHERY.txt": "UO2 and MOX, periphery (Noirot et al., 2008)",
-                     "AtomicVolumeMIDRADIUS.txt": "MOX, mid-radius agglomerates (Noirot et al., 2008)",
+                     "AtomicVolumeMIDRADIUS.txt": "MOX, mid-radius Pu-rich agglomerates (Noirot et al., 2008)",
                      "AtomicVolumeROD07.txt": "NFIR UO2 disc, rod 07 (Noirot et al., 2014)"}
 
 def gas_volume_data():
@@ -326,11 +326,6 @@ def literature_pores():
     return [{"ref": r[0], "bu": number(r[2]), "where": r[3], "D": number(r[5]) * 1e-6, "xi": number(r[6]) / 100.0,
              "v": number(r[7]) * 1e-5 / N_A} for r in rows]
 
-def rim_gas_volume():
-    """Volume per gas atom (m3) at the rim of sample B of D21 (Table 3, position 1R); its local burnup is not given."""
-    t = read_columns("Dowek2021_T3.txt")
-    return number(cells(t, "Molar volume")[t["Position"].index("1R")]) / N_A
-
 def single_bubbles():
     """Single bubbles of D21 (Tables 4, 5): sample, position, R (m), v (m3 per gas atom), the Soave pressures p_293 and
     p_irr (Pa) and T_irr (K), the temperature of irradiation of the position from Table 2: the centre for 0R, the rim
@@ -347,12 +342,27 @@ def single_bubbles():
                         "p_irr": 1e6 * number(cells(t, "Pressure at irradiated")[k]), "T_irr": T_irr.get((sample, pos), np.nan)})
     return out
 
+def dowek_gas_volumes():
+    """Every volume per gas atom of D21: the means of sample B along the radius (Table 3, kind 'mean') and the single
+    bubbles of samples A and B (Tables 4, 5, kind 'single bubble'), with sample, position, v (m3) and bu, the average
+    burnup of the sample (GWd/tU, Table 2); the local burnup of the positions is not given."""
+    t2, t3 = read_columns("Dowek2021_T2.txt"), read_columns("Dowek2021_T3.txt")
+    bu = dict(zip("AB", map(number, cells(t2, "Burn-up"))))
+    means = [{"sample": "B", "position": pos, "v": number(v) / N_A, "kind": "mean"}
+             for pos, v in zip(t3["Position"], cells(t3, "Molar volume"))]
+    return [dict(d, bu=bu[d["sample"]]) for d in means + [dict(b, kind="single bubble") for b in single_bubbles()]]
+
 def savefig(fig, name):
     os.makedirs(FIG_DIR, exist_ok=True)
     fig.tight_layout()
     fig.savefig(os.path.join(FIG_DIR, name), dpi=150)
     plt.close(fig)
     print("wrote", os.path.join("figures", name))
+
+def column_positions(n_runs):
+    """x of the columns of the MMM panels: the two references (NFIR disc, SCIANTIX), then the runs; wider steps around
+    SCIANTIX, the widest label."""
+    return np.r_[0.0, 1.5, 2.9 + np.arange(n_runs)]
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Sections: tables on screen and figures
@@ -609,12 +619,10 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
     for c in cases:
         s, reduced = c["classes"]["sigma"], reduced_classes(c["classes"], T, n_classes)
         R_k, p_k = np.array([k["R"] for k in reduced]), np.array([k["p"] for k in reduced])
-        capped = np.array([k["n"] * xe_volume(T) / k["V"] >= ETA_CAP for k in reduced])
         ax[0].plot(D * 1e6, cumulative(1.0, R_V, s), color=blue(by_s(s)), lw=1.2)
         ax[1].plot(R_k * 1e6, [c["xi"] * k["xi_share"] for k in reduced], "o-", color=blue(by_s(s)), lw=1.0, ms=4.5, mec="white", mew=0.5)
         ax[2].plot(R_k / R_V, p_k / c["p_bar"], "-", color=orange(by_eta(c["eta"])), lw=1.0)
-        ax[2].plot(R_k[~capped] / R_V, p_k[~capped] / c["p_bar"], "o", color=orange(by_eta(c["eta"])), ms=4.5, mec="white", mew=0.5)
-        ax[2].plot(R_k[capped] / R_V, p_k[capped] / c["p_bar"], "o", color=orange(by_eta(c["eta"])), ms=4.5, mec="white", mew=0.5)
+        ax[2].plot(R_k / R_V, p_k / c["p_bar"], "o", color=orange(by_eta(c["eta"])), ms=4.5, mec="white", mew=0.5)
     ax[0].plot(disc["edges"][1:] * 1e6, 100.0 * np.cumsum(disc["bars"]) / disc["bars"].sum(), "o", color="k", ms=4, mec="white", mew=0.5, zorder=4,
                label="NFIR disc, as irradiated")
     ax[0].plot(D * 1e6, cumulative(disc["xi"] / disc["bars"].sum(), disc["R_V"], disc["s"]), color=BROWN, lw=1.5, ls="--", zorder=3,
@@ -645,11 +653,12 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
     # the rim rows of Dowek review in Table 1, Noirot 2008 excluded
     rim = [r for r in literature_pores() if r["where"] == "1R" and r["ref"] != "Noirot et al., 2008" and np.isfinite(r["v"])] # (m3/at)
 
-    # bubble B, Dowek
-    v_rim_B = rim_gas_volume() * A3 # (m3/at) * (A^3/m3)
+    # Dowek, samples A and B at the average burnup of the sample
+    dowek = dowek_gas_volumes() # (m3/at)
 
-    # concatenate all datasets
-    measured = np.concatenate([v for _, v in data.values()] + [[r["v"] * A3 for r in rim], [v_rim_B]])
+    # concatenate all datasets: averages in the HBS, the single bubbles of Dowek excluded
+    measured = np.concatenate([v for _, v in data.values()] + [[r["v"] * A3 for r in rim],
+                              [d["v"] * A3 for d in dowek if d["position"] == "1R" and d["kind"] == "mean"]])
 
     # LHS ranges
     eta_lo, eta_hi = MMM_FACTORS["eta"]
@@ -659,9 +668,9 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
     disc, anneal = nfir_disc(), STATES["NFIR, anneal at 1200 C"]
     columns = [("Exp.\nNFIR", GREEN, "D", mmm_case("", "", disc["xi"], disc["s"], xe_volume(T) / NFIR_GAS_VOLUME, MMM_PH_REL, disc["R_V"], T)["classes"]),
                ("SCIANTIX\nNFIR", ORANGE, "s", build(radius_of(anneal["V"]), anneal["n"], anneal["var"], T))]
-    columns += [("MMM\n" + c["id"][1:], BLUE, "o", c["classes"]) for c in cases]
+    columns += [(c["id"][1:], BLUE, "o", c["classes"]) for c in cases]
 
-    fig, ax = plt.subplots(1, 2, figsize=(13.5, 5.0), sharey=True, gridspec_kw={"width_ratios": (1.0, 2.0)})
+    fig, ax = plt.subplots(1, 2, figsize=(15.0, 7.0), sharey=True, gridspec_kw={"width_ratios": (1.4, 2.0)})
     ax[0].axhspan(*band, color=BLUE, alpha=0.12, lw=0, label=rf"MMM input, $\bar\eta$ = {eta_lo:g} to {eta_hi:g}")
     ax[1].axhspan(*band, color=BLUE, alpha=0.12, lw=0)
 
@@ -673,113 +682,85 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
             ax[0].plot(bu, v, marker, color="#52514e", mfc="none", ms=7, mew=1.2, label=label)
     ax[0].plot([r["bu"] for r in rim], [r["v"] * A3 for r in rim], "s", color="#52514e", mfc="none", ms=7, mew=1.2,
                label="rim, " + ", ".join(r["ref"].replace(" et al.,", "") for r in rim))
-    ax[0].axhline(v_rim_B, color="#52514e", lw=1.0, ls="-.", 
-    label="rim of sample B, Dowek 2021 Table 3 (local burnup not given)")
+    for sample, marker in (("A", "D"), ("B", "v")):
+        for at_rim in (True, False):
+            pts = [d for d in dowek if d["sample"] == sample and (d["position"] == "1R") == at_rim]
+            if pts:
+                ax[0].plot([d["bu"] for d in pts], [d["v"] * A3 for d in pts], marker, color=BROWN, mfc=BROWN if at_rim else "none",
+                           ms=7, mew=1.2, label=f"Dowek et al. 2021, sample {sample}, {'rim' if at_rim else 'not rim'} (average burnup)")
     ax[0].plot([NFIR_BURNUP] * len(STATES), [st["V"] / st["n"] * A3 for st in STATES.values()], "s", color=ORANGE, ms=7,
                mec="white", mew=1.0, zorder=4, label="SCIANTIX, NFIR case")
     ax[1].axhspan(measured.min(), measured.max(), color=GREY, alpha=0.2, lw=0, label="measured, all series")
-    for x, (name, color, marker, d) in enumerate(columns):
+    xs = column_positions(len(cases))
+    for x, (name, color, marker, d) in zip(xs, columns):
         reduced, m = reduced_classes(d, T, n_classes), moments(d)
         v = np.array([k["V"] / k["n"] for k in reduced]) * A3
         gas = np.array([k["w"] * k["n"] for k in reduced]) / m["n"]
-        capped = np.array([k["n"] * xe_volume(T) / k["V"] >= ETA_CAP for k in reduced])
-        ax[1].scatter(np.full(n_classes, x)[~capped], v[~capped], s=8.0 + 160.0 * gas[~capped], marker=marker, color=color,
-                      edgecolors="white", linewidths=0.5, zorder=3)
-        ax[1].scatter(np.full(n_classes, x)[capped], v[capped], s=8.0 + 160.0 * gas[capped], marker=marker, facecolors="white",
-                      edgecolors=color, linewidths=1.0, zorder=3)
+        ax[1].scatter(np.full(n_classes, x), v, s=8.0 + 160.0 * gas, marker=marker, color=color, edgecolors="white", linewidths=0.5,
+                      zorder=3)
         ax[1].plot(x, m["V"] / m["n"] * A3, "_", color="k", ms=14, mew=1.6, zorder=4)
     ax[1].scatter([], [], s=60, color=GREY, edgecolors="white", label="class, area ~ share of the gas")
     ax[1].plot([], [], "_", color="k", ms=14, mew=1.6, label="mean V / n")
-    ax[1].axvline(1.5, color=GREY, lw=0.8)
-    ax[1].set_xticks(range(len(columns)), labels=[c[0] for c in columns], fontsize=7)
+    ax[1].axvline(0.5 * (xs[1] + xs[2]), color=GREY, lw=0.8)
+    ax[1].set_xticks(xs, labels=[c[0] for c in columns])
+    ax[1].set_xlabel("MMM run")
     ax[0].set(xlabel="local burnup (GWd/tHM)", ylabel=r"volume per gas atom  ($\AA^3$/atom)", yscale="log", ylim=(20.0, 1000.0))
     ax[0].set_yticks((20, 50, 100, 200, 500, 1000), labels=("20", "50", "100", "200", "500", "1000"))
     ax[0].tick_params(axis="y", which="minor", labelleft=False)
     for ax_ in ax:
         ax_.grid(True, color=GRID)
-    ax[0].legend(frameon=False,loc="lower right")
+    ax[0].legend(frameon=False, loc="upper left")
     ax[1].legend(frameon=False,ncol=3, loc="lower left")
     fig.suptitle(f"Volume per gas atom: measured and imposed for MMM calculations with {n_classes} classes and at T = {T:.0f} K")
     savefig(fig, "mmm_gas_volume.png")
 
-    print(f"\n== volume per gas atom (A^3/atom); packing fractions at T = {T:.0f} K ==")
-    for label, (bu, v) in data.items():
-        print(f"{label:46s}{v.min():6.0f} to {v.max():4.0f}   at {bu.min():.0f} to {bu.max():.0f} GWd/tHM")
-    for r in rim:
-        print(f"{r['ref'] + ', rim (D21 Table 1)':46s}{r['v'] * A3:6.0f}         at {r['bu']:.0f} GWd/tU")
-    print(f"{'Dowek 2021, rim of sample B (Table 3)':46s}{v_rim_B:6.0f}         local burnup not given")
-    print(f"{'NFIR disc, NFIR_GAS_VOLUME':46s}{NFIR_GAS_VOLUME * A3:6.0f}         eta_bar = {xe_volume(T) / NFIR_GAS_VOLUME:.3f}")
-    for name, st in STATES.items():
-        print(f"{'SCIANTIX, ' + name.removeprefix('NFIR, '):46s}{st['V'] / st['n'] * A3:6.0f}         eta_bar = {xe_volume(T) * st['n'] / st['V']:.3f}")
-    print(f"{'runs for MMM, mean':46s}{band[0]:6.0f} to {band[1]:4.0f}   eta_bar = {eta_hi:g} to {eta_lo:g}")
-    below = [c["id"] for c in cases if xe_volume(T) / c["eta"] * A3 < measured.min()]
-    above = [c["id"] for c in cases if xe_volume(T) / c["eta"] * A3 > measured.max()]
-    print(f"runs with the mean below the measurements ({measured.min():.0f}): {', '.join(below) or 'none'}")
-    print(f"runs with the mean above the measurements ({measured.max():.0f}): {', '.join(above) or 'none'}")
-
 def pore_radius_figure(cases, n_classes=MMM_CLASSES):
-    """Pore radii of the classes against the pore sizes measured on the NFIR disc (nfir_disc). Left: the measured
-    porosity per 0.1 um of radius (the bars per 0.2 um of diameter) before and after the anneal, the log-normal fit of
-    the disc and the log-normal of the SCIANTIX state at the end of the base irradiation (xi, R_V and s of STATES),
-    with the range of the class radii of the runs for MMM. Right: the classes of every run, R_k with the area of the
-    marker ~ share of the porosity xi_k / xi, and R_V; before the runs, the disc (fitted xi, R_V, s) and the SCIANTIX
-    state in the same classes. The grey band holds 90 % of the measured porosity (5 to 95 % of the bars)."""
+    """Pore radii of the classes against the pore sizes measured on the NFIR disc."""
     T, um = cases[0]["T"], 1.0e6
     disc, after, st = nfir_disc(), nfir_disc("PoreRadiusPOSTANNEALING.txt"), STATES["NFIR, end of base irradiation"]
     s_state = width(st["var"] / st["n"] ** 2, A_CLOSURE)
     edges = 0.5 * disc["edges"] * um  # (um) radius edges of the bins of 0.2 um of diameter
     cum = np.concatenate(([0.0], np.cumsum(disc["bars"]))) / disc["bars"].sum()
     measured = np.interp((0.05, 0.95), cum, edges)
-    columns = [("disc", GREEN, "D", mmm_case("", "", disc["xi"], disc["s"], xe_volume(T) / NFIR_GAS_VOLUME, MMM_PH_REL, disc["R_V"], T)["classes"]),
-               ("SCX", ORANGE, "s", build(radius_of(st["V"]), st["n"], st["var"], st["T"]))]
+    columns = [("Exp.\nNFIR", GREEN, "D", mmm_case("", "", disc["xi"], disc["s"], xe_volume(T) / NFIR_GAS_VOLUME, MMM_PH_REL, disc["R_V"], T)["classes"]),
+               ("SCIANTIX\nNFIR", ORANGE, "s", build(radius_of(st["V"]), st["n"], st["var"], st["T"]))]
     columns += [(c["id"][1:], BLUE, "o", c["classes"]) for c in cases]
     reduced = [reduced_classes(d, T, n_classes) for *_, d in columns]
     R_runs = np.array([[k["R"] for k in red] for red in reduced[2:]]) * um
     band = (R_runs.min(), R_runs.max())
 
-    fig, ax = plt.subplots(1, 2, figsize=(13.5, 5.0), sharey=True, gridspec_kw={"width_ratios": (1.0, 1.35)})
-    ax[0].axhspan(*band, color=BLUE, alpha=0.12, lw=0, label=f"classes of the runs for MMM, {band[0]:.2f} to {band[1]:.2f} um")
+    fig, ax = plt.subplots(1, 2, figsize=(16.0, 7.0), sharey=True, gridspec_kw={"width_ratios": (1.15, 1.35)})
+    ax[0].axhspan(*band, color=BLUE, alpha=0.12, lw=0, label=f"MMM input, {band[0]:.2f} to {band[1]:.2f} um")
     ax[1].axhspan(*band, color=BLUE, alpha=0.12, lw=0)
     ax[1].axhspan(*measured, color=GREY, alpha=0.2, lw=0, label="NFIR disc, 90 % of the measured porosity")
     ax[0].barh(edges[:-1], 100.0 * disc["bars"], height=np.diff(edges), align="edge", color=GREEN, alpha=0.45, edgecolor="white",
-               lw=0.5, label="NFIR disc, as irradiated (Noirot 2014, Fig. 12)")
-    ax[0].stairs(100.0 * after["bars"], edges, orientation="horizontal", color="#52514e", lw=1.4, label="NFIR disc, after the anneal")
+               lw=0.5, label="NFIR UO2 disc, as irradiated (Noirot et al., 2014)")
+    ax[0].stairs(100.0 * after["bars"], edges, orientation="horizontal", color=GREEN, lw=1.4, label="NFIR UO2 disc, after the anneal (Noirot et al., 2014)")
     r = np.linspace(0.0, edges[-1], 401)  # (um)
     per_bin = lambda xi, R_V, s: 100.0 * porosity_per_bin(xi, R_V, s, 2.0e-6 * r) * (edges[1] - edges[0]) / np.diff(r)  # % per bar
     ax[0].plot(per_bin(disc["xi"], disc["R_V"], disc["s"]), 0.5 * (r[1:] + r[:-1]), color=BROWN, lw=1.5, ls="--",
-               label=f"log-normal fit: $R_V$ = {disc['R_V'] * um:.2f} um, s = {disc['s']:.2f}")
+               label=f"Log-normal fit: $R_V$ = {disc['R_V'] * um:.2f} um, s = {disc['s']:.2f}")
     ax[0].plot(per_bin(st["xi"], radius_of(st["V"]), s_state), 0.5 * (r[1:] + r[:-1]), color=ORANGE, lw=1.8,
-               label=f"SCIANTIX, end of base irradiation: $R_V$ = {radius_of(st['V']) * um:.2f} um, s = {s_state:.2f}")
-    for x, ((name, color, marker, d), red) in enumerate(zip(columns, reduced)):
+               label=f"SCIANTIX, NFIR end of base irradiation")
+    xs = column_positions(len(cases))
+    for x, (name, color, marker, d), red in zip(xs, columns, reduced):
         R_k = np.array([k["R"] for k in red]) * um
         share = np.array([k["xi_share"] for k in red])
         ax[1].scatter(np.full(n_classes, x), R_k, s=8.0 + 160.0 * share, marker=marker, color=color, edgecolors="white",
                       linewidths=0.5, zorder=3)
         ax[1].plot(x, moments(d)["R_V"] * um, "_", color="k", ms=14, mew=1.6, zorder=4)
     ax[1].scatter([], [], s=60, color=GREY, edgecolors="white", label="class, area ~ share of the porosity")
-    ax[1].plot([], [], "_", color="k", ms=14, mew=1.6, label="$R_V$, radius of the mean pore volume")
-    ax[1].axvline(1.5, color=GREY, lw=0.8)
-    ax[1].set_xticks(range(len(columns)), labels=[c[0] for c in columns], fontsize=7)
-    ax[1].set(xlabel="disc: NFIR disc;  SCX: SCIANTIX, end of base irradiation;  00 to 19: runs for MMM", xlim=(-0.7, len(columns) - 0.3))
+    ax[1].plot([], [], "_", color="k", ms=14, mew=1.6, label="$R_V$")
+    ax[1].axvline(0.5 * (xs[1] + xs[2]), color=GREY, lw=0.8)
+    ax[1].set_xticks(xs, labels=[c[0] for c in columns])
+    ax[1].set(xlabel="MMM run", xlim=(-0.7, xs[-1] + 0.7))
     ax[0].set(xlabel="porosity per 0.1 um of radius (%)", ylabel="pore radius (um)", xlim=(0.0, None), ylim=(0.0, edges[-1]))
     for ax_ in ax:
         ax_.grid(True, color=GRID)
-    ax[0].legend(frameon=False, fontsize=7, loc="upper right")
-    ax[1].legend(frameon=False, fontsize=7, ncol=3, loc="lower left", bbox_to_anchor=(0.0, 1.01))
-    fig.suptitle(f"Pore radius: measured on the NFIR disc (Noirot 2014, Fig. 12) and of the {n_classes} classes of the runs for MMM",
-                 fontsize=10)
+    ax[0].legend(frameon=False, loc="upper right")
+    ax[1].legend(frameon=False, ncol=3, loc="lower left")
+    fig.suptitle(f"Pore radius: measured on the NFIR disc and imposed for MMM calculations of the {n_classes} classes")
     savefig(fig, "mmm_pore_radius.png")
-
-    print("\n== pore radius (um) ==")
-    print(f"{'':40s}{'xi':>8s}{'R_V':>8s}{'s':>8s}   90 % of the porosity")
-    for label, dd in (("NFIR disc, as irradiated", disc), ("NFIR disc, after the anneal", after)):
-        cum_ = np.concatenate(([0.0], np.cumsum(dd["bars"]))) / dd["bars"].sum()
-        lo, hi = np.interp((0.05, 0.95), cum_, edges)
-        print(f"{label:40s}{dd['xi']:8.4f}{dd['R_V'] * um:8.3f}{dd['s']:8.3f}   {lo:.2f} to {hi:.2f}")
-    print(f"{'SCIANTIX, end of base irradiation':40s}{st['xi']:8.4f}{radius_of(st['V']) * um:8.3f}{s_state:8.3f}   "
-          f"classes {min(k['R'] for k in reduced[1]) * um:.2f} to {max(k['R'] for k in reduced[1]) * um:.2f}")
-    print(f"{'runs for MMM':40s}{'':8s}{disc['R_V'] * um:8.3f}{'':8s}   classes {band[0]:.2f} to {band[1]:.2f}")
-
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Replay of option 4 on a SCIANTIX case
