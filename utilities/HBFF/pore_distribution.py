@@ -28,7 +28,8 @@ This script
         -   width of the radii, 
         -   packing fraction
     
-4.  for every SCIANTIX case of CASES with an output.txt available is used to assess model performance;
+4.  replays option 4 on the NFIR case (NFIR_CASE, when its output.txt is available) against the C++ and draws its
+    rupture and release figures.
 
 Reference papers that will be cited in the following:
     -   K. Kulacsy, J. Nucl. Mater. 466 (2015) 409.             = K15
@@ -88,8 +89,6 @@ MMM_RUNS, MMM_SEED = 20, 1  # runs of the Latin hypercube and its seed
 MMM_FACTORS = {"xi": (0.02, 0.18), "s": (0.05, 0.42), "eta": (0.045, 0.23)} #TBC
 MMM_PH_REL = 0.0  # P_h / p_bar of the runs
 MMM_RUN_DIR = "mmm_inputs"
-# SCIANTIX cases considered
-CASES = [NFIR_CASE]
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # SCIANTIX states of regression/hbs_nfir/test_UO2HBS_frag_j19damage (formation 1, porosity 3), read from output.txt:
@@ -234,7 +233,6 @@ def rupture_step(beta, V, n_ret, var_ret, S1, S2, T, xi, Ph, R_mean, dt, a=A_CLO
     n_u = n_ret / S1
     valid = R_mean >= R_MIN_EVAL and 0.0 < xi < XI_MAX_EVAL
     if not valid or n_u <= 0.0 or V <= 0.0:
-        print(f"Warning out of the domain: {R_mean} >= {R_MIN_EVAL} and 0.0 < {xi} < {XI_MAX_EVAL}")
         return beta, 0.0, 0.0, 1.0, 1.0
     var_u = max((var_ret + n_ret**2) / S2 - n_u**2, 0.0)
     d = build(radius_of(V), n_u, var_u, T, a)
@@ -786,8 +784,7 @@ def read_output(path):
     return out
 
 def time_steps(case_dir, n_rows):
-    """Time step (s) of every row of output.txt, by the loop of MainSCIANTIX.C and TimeStepCalculation.C: the times of
-    output.txt have 10 digits and cannot give it."""
+    """Time step (s) of every row of output.txt."""
     t_in = np.loadtxt(os.path.join(case_dir, "input_history.txt"))[:, 0]
     n_steps = 100.0
     with open(os.path.join(case_dir, "input_settings.txt")) as fh:
@@ -836,15 +833,14 @@ def states_agree(o, tol=1.0e-3):
     print(f"largest relative difference from STATES: {worst:.1e}" + ("" if worst <= tol else f"  -> STATES is stale (more than {tol:.0e})"))
     return worst <= tol
 
-def check(case_dir, tol=1.0e-6):
-    """Replays the recursion of option 4 on the history of a SCIANTIX case and compares D, G, S, S_2 and the broken
-    fraction of every class with output.txt. A row of output.txt holds the retained moments and S, S_2 after the
+def check(o, tol=1.0e-6):
+    """Replays the recursion of option 4 on the history of the NFIR case and compares D, G, S, S_2 and the broken
+    fraction of every class with its output o. A row of output.txt holds the retained moments and S, S_2 after the
     venting of the step: the unvented moments are n / S and (Var + n^2) / S_2 of the same row. The state read from
     output.txt has 7 digits, so the agreement is not to round-off: tol [N] is above the digits of the file.
-    Returns 0 if every difference is within tol and, on the NFIR case, STATES agrees with the output; 1 otherwise."""
-    o = read_output(os.path.join(case_dir, "output.txt"))
+    Returns 0 if every difference is within tol and STATES agrees with the output; 1 otherwise."""
     rows = len(o["Time"])
-    dt = time_steps(case_dir, rows)
+    dt = time_steps(NFIR_CASE, rows)
     beta, S1, S2, D, G = np.zeros(N_CLASSES), 1.0, 1.0, 0.0, 0.0
     err = {"D": 0.0, "G": 0.0, "S": 0.0, "S_2": 0.0, "beta_i": 0.0}
     row = dict.fromkeys(err, 0)
@@ -865,7 +861,7 @@ def check(case_dir, tol=1.0e-6):
                                    ("beta_i", 0.0, np.max(np.abs(beta - o["beta"][k])))):
             if abs(mine - theirs) > err[name]:
                 err[name], row[name] = abs(mine - theirs), k
-    print(f"\n== replay of option 4 on {case_dir} ({rows} rows) ==")
+    print(f"\n== replay of option 4 on {NFIR_CASE} ({rows} rows) ==")
     print(f"final  D = {D:.6e} (SCIANTIX {o['HBS fragmented fraction'][-1]:.6e}),  G = {G:.6e} ({o['HBS burst release fraction'][-1]:.6e}),  "
           f"S = {S1:.6f} ({o['HBS gas retention fraction'][-1]:.6f})")
     for name in err:
@@ -873,30 +869,19 @@ def check(case_dir, tol=1.0e-6):
     ok = max(err.values()) <= tol
     if not ok:
         print(f"the transcription and the C++ differ by more than {tol:.0e}")
-    if os.path.samefile(case_dir, NFIR_CASE):
-        ok = states_agree(o) and ok
+    ok = states_agree(o) and ok
     return 0 if ok else 1
 
 def transient_start(o):
-    """Row at which the out-of-pile transient starts: the first one without fissions after the base irradiation
-    (the first row, if the history has no fissions)."""
-    at_power = np.nonzero(o["Fission rate"] > 0.0)[0]
-    return int(at_power[-1]) + 1 if len(at_power) else 0
+    """Row at which the out-of-pile transient starts: the first one without fissions after the base irradiation."""
+    return int(np.nonzero(o["Fission rate"] > 0.0)[0][-1]) + 1
 
-def case_label(case_dir):
-    """Name of a case in the figure files: regression/hbs_nfir/test_UO2HBS_frag_j19damage -> nfir_j19damage."""
-    group, case = os.path.normpath(os.path.abspath(case_dir)).split(os.sep)[-2:]
-    return group.replace("hbs_", "") + "_" + case.replace("test_UO2HBS_frag_", "")
-
-def rupture_figure(case_dir, fractions=(0.25, 0.5, 1.0)):
-    """Distribution and rupture of the classes of a SCIANTIX case, at the rows where D reaches the given fractions of
+def rupture_figure(o, fractions=(0.25, 0.5, 1.0)):
+    """Distribution and rupture of the classes of the NFIR case, at the rows where D reaches the given fractions of
     its final value (or at the last row with S >= 0.1, if the gas is all vented before): number distribution with
     its broken part, pressure against critical pressure (2 gamma / R in grey), gas distribution with its vented part,
-    and D, G against the temperature. Returns the figure and the name of the case."""
-    o = read_output(os.path.join(case_dir, "output.txt"))
+    and D, G against the temperature."""
     D, G, T = o["HBS fragmented fraction"], o["HBS burst release fraction"], o["Temperature"]
-    if D[-1] <= 0.0:
-        raise SystemExit(f"{case_dir}: no class breaks")
     rows = [int(np.argmax(D >= f * D[-1] * (1.0 - 1e-6))) for f in fractions]
     # the unvented moments are n / S and (Var + n^2) / S_2: they cannot be rebuilt once the retained gas is negligible
     S_min = 0.1
@@ -906,15 +891,15 @@ def rupture_figure(case_dir, fractions=(0.25, 0.5, 1.0)):
     fig, ax = plt.subplots(2, 2, figsize=(11, 7.4))
     for k, color in zip(rows, ("#86b6ef", BLUE, "#104281")):
         st = state_of_row(o, k)
-        n_u, xi, Ph = st["n"], st["xi"], st["Ph"]
-        d = build(radius_of(st["V"]), n_u, st["var"], T[k])
-        beta, R_um, dlnR = o["beta"][k], d["R"] * 1e6, np.gradient(np.log(d["R"]))
+        d = build(radius_of(st["V"]), st["n"], st["var"], T[k])
+        beta, R_um = o["beta"][k], d["R"] * 1e6
+        pdf = d["w"] / np.gradient(R_um)  # per um of radius
         label = f"T = {T[k]:.0f} K, D = {D[k]:.3f}, G = {G[k]:.3f}"
-        ax[0, 0].plot(R_um, d["w"] / dlnR, color=color, lw=1.0)
-        ax[0, 0].fill_between(R_um, d["w"] * beta / dlnR, color=color, alpha=0.45, lw=0, label=label)
+        ax[0, 0].plot(R_um, pdf, color=color, lw=1.0)
+        ax[0, 0].fill_between(R_um, pdf * beta, color=color, alpha=0.45, lw=0, label=label)
         ax[0, 1].plot(R_um, d["p"] / 1e6, color=color, label=f"$p_i$, {T[k]:.0f} K")
-        ax[0, 1].plot(R_um, critical_pressure(d["R"], xi, Ph) / 1e6, color=color, ls="--")
-        gas = d["w"] * d["n"] / n_u / dlnR
+        ax[0, 1].plot(R_um, critical_pressure(d["R"], st["xi"], st["Ph"]) / 1e6, color=color, ls="--")
+        gas = pdf * d["n"] / st["n"]
         ax[1, 0].plot(R_um, gas, color=color, lw=1.0)
         ax[1, 0].fill_between(R_um, gas * beta, color=color, alpha=0.45, lw=0, label=label)
         ax[1, 1].plot(T[k], D[k], "o", color=color)
@@ -925,67 +910,33 @@ def rupture_figure(case_dir, fractions=(0.25, 0.5, 1.0)):
     heat = slice(max(first - 1, k0), k0 + int(np.argmax(T[k0:])) + 1)  # heat-up of the transient, from the first break
     ax[1, 1].plot(T[heat], D[heat], color=ORANGE, label="D (number)")
     ax[1, 1].plot(T[heat], G[heat], color=GREEN, label="G (gas)")
-    ax[0, 0].set(xlabel="R (um)", ylabel="pdf in ln R", xscale="log", title="pores: all (line) and broken (filled)")
-    ax[0, 1].set(xlabel="R (um)", ylabel="p (MPa)", xscale="log", yscale="log", title="pressure and critical pressure per class")
-    ax[1, 0].set(xlabel="R (um)", ylabel="gas share per ln R", xscale="log", title="gas: all (line) and vented (filled)")
+    ax[0, 0].set(xlabel="R (um)", ylabel="pdf in R (1/um)", title="pores: all (line) and broken (filled)")
+    ax[0, 1].set(xlabel="R (um)", ylabel="p (MPa)", yscale="log", title="pressure and critical pressure per class")
+    ax[1, 0].set(xlabel="R (um)", ylabel="gas share per um", title="gas: all (line) and vented (filled)")
     ax[1, 1].set(xlabel="T (K)", ylabel="fraction", title="broken fractions on the heat-up")
     for ax_ in ax.ravel():
         ax_.grid(True, color=GRID)
-        ax_.legend(frameon=False, fontsize=7)
-    name = case_label(case_dir)
-    fig.suptitle(f"{name}: classes rebuilt from output.txt, a = {A_CLOSURE}", fontsize=10)
-    return fig, name
+        ax_.legend(frameon=False)
+    savefig(fig, "classes_rupture_nfir_j19damage.png")
 
-def fgr_figure(case_dir):
-    """Fission gas release of the transient of a SCIANTIX case: the release of the base irradiation is subtracted, in
-    per cent of the gas produced, against the time from the start of the transient and against the temperature of the
-    heat-up. With the Kr-85 curve of the NFIR anneal (regression/hbs_nfir/data, Fig. 9 of the source) when the data
-    folder of the case has it; the measured release is put on the temperature axis through the measured temperature
-    history. Returns the figure and the name of the case."""
-    o = read_output(os.path.join(case_dir, "output.txt"))
+def fgr_figure(o):
+    """Fission gas release of the transient of the NFIR case, the release of the base irradiation subtracted, in per
+    cent of the gas produced, against the time from the start of the transient, with the Kr-85 release measured in the
+    anneal (Noirot 2014, Fig. 9, in regression/hbs_nfir/data)."""
     k0 = transient_start(o)
-    k1 = k0 + int(np.argmax(o["Temperature"][k0:]))  # peak temperature
     minutes = (o["Time"][k0:] - o["Time"][k0]) * 60.0
     release = 100.0 * (o["Fission gas release"][k0:] - o["Fission gas release"][k0])
-    T_C = o["Temperature"][k0:] - 273.15
-    fig, ax = plt.subplots(1, 3, figsize=(15, 4.0))
-    ax[0].plot(minutes, release, color=ORANGE, label="SCIANTIX")
-    heat = slice(0, k1 - k0 + 1)
-    for ax_ in ax[1:]:
-        ax_.plot(T_C[heat], release[heat], color=ORANGE, label="SCIANTIX")
-    ax[2].plot(T_C[heat], 100.0 * o["HBS fragmented fraction"][k0:][heat], color=BLUE, ls="--", label="D (% of the pores)")
-    ax[2].plot(T_C[heat], 100.0 * o["HBS burst release fraction"][k0:][heat], color=GREEN, ls="--", label="G (% of the pore gas)")
-    data_dir = os.path.join(case_dir, "..", "data")
-    if os.path.exists(os.path.join(data_dir, "CumulativeRelease.txt")):
-        load = lambda name: np.loadtxt(os.path.join(data_dir, name), delimiter=";", comments="#", skiprows=2, encoding="utf-8")
-        cum, temp = load("CumulativeRelease.txt"), load("TemperatureAnnealing.txt")
-        ax[0].plot(cum[:, 0], cum[:, 1], "o", ms=3, mfc="none", color="k", label="Kr-85 (NFIR, Fig. 9)")
-        ramp = cum[:, 0] <= temp[np.argmax(temp[:, 1]), 0]  # the measured release on the heat-up
-        T_data = np.interp(cum[ramp, 0], temp[:, 0], temp[:, 1])
-        for ax_ in ax[1:]:
-            ax_.plot(T_data, cum[ramp, 1], "o", ms=3, mfc="none", color="k", label="Kr-85 (NFIR, Fig. 9)")
-        print("\n== release on the heat-up, % of the gas produced ==")
-        print(f"{'T (C)':>8s}{'SCIANTIX':>10s}{'Kr-85':>8s}")
-        for T_ in (800.0, 900.0, 1000.0, 1100.0, 1150.0, 1200.0):
-            if T_ <= T_C[heat].max() and T_data.min() <= T_ <= T_data.max():
-                print(f"{T_:8.0f}{np.interp(T_, T_C[heat], release[heat]):10.2f}{np.interp(T_, T_data, cum[ramp, 1]):8.2f}")
-    ax[0].set(xlabel="time from the start of the transient (min)", ylabel="release (% of the gas produced)", title="cumulative release")
-    ax[1].set(xlabel="T (C)", ylabel="release (% of the gas produced)", title="release on the heat-up")
-    ax[2].set(xlabel="T (C)", ylabel="%", yscale="log", ylim=(1e-3, 100.0), title="onset: release, D and G on the heat-up")
-    for ax_ in ax:
-        ax_.grid(True, color=GRID)
-        ax_.legend(frameon=False, fontsize=7)
-    name = case_label(case_dir)
-    fig.suptitle(f"{name}: fission gas release of the transient, a = {A_CLOSURE}", fontsize=10)
+    cum = np.loadtxt(os.path.join(NFIR_CASE, "..", "data", "CumulativeRelease.txt"), delimiter=";", comments="#", skiprows=2,
+                     encoding="utf-8")
+    fig, ax = plt.subplots(figsize=(6.4, 4.4))
+    ax.plot(minutes, release, color=ORANGE, label="SCIANTIX")
+    ax.plot(cum[:, 0], cum[:, 1], "o", ms=3, mfc="none", color="k", label="NFIR, Noirot et al., 2014 (Kr-85)")
+    ax.set(xlabel="time from the start of the transient (min)", ylabel="release (% of the gas produced)")
+    ax.grid(True, color=GRID)
+    ax.legend(frameon=False)
+    savefig(fig, "classes_fgr_nfir_j19damage.png")
     print(f"release at the end of the transient: {release[-1]:.2f} % of the gas produced; D = {o['HBS fragmented fraction'][-1]:.4f}, "
           f"G = {o['HBS burst release fraction'][-1]:.4f}, 1 - S = {1.0 - o['HBS gas retention fraction'][-1]:.4f}")
-    return fig, name
-
-def case_figures(case_dir):
-    """The rupture and the release figures of a SCIANTIX case."""
-    for figure, prefix in ((rupture_figure, "classes_rupture_"), (fgr_figure, "classes_fgr_")):
-        fig, name = figure(case_dir)
-        savefig(fig, f"{prefix}{name}.png")
 
 
 # %% ------------------------------------------------------------------------------------------------------------------
@@ -1005,13 +956,14 @@ def main():
     mmm_run_files(cases, MMM_CLASSES)
     gas_volume_figure(cases, MMM_CLASSES)
     pore_radius_figure(cases, MMM_CLASSES)
-    status = 0
-    for case_dir in CASES:
-        if not os.path.exists(os.path.join(case_dir, "output.txt")):
-            print(f"\nno output.txt in {case_dir}: run the case for its replay and its rupture and release figures")
-            continue
-        status = max(status, check(case_dir))
-        case_figures(case_dir)
+    output = os.path.join(NFIR_CASE, "output.txt")
+    if not os.path.exists(output):
+        print(f"\nno {output}: run the NFIR case for its replay and its rupture and release figures")
+        return 0
+    o = read_output(output)
+    status = check(o)
+    rupture_figure(o)
+    fgr_figure(o)
     return status
 
 if __name__ == "__main__":
