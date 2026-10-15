@@ -57,18 +57,6 @@ $$
 
 Above $\eta=0.65$ the pressure is linear in the gas, $Z=Z(0.65)$. The criterion sees the gas of the pores before any venting (7).
 
-![pore EoS](figures/pore_eos.png)
-
-> `figures/pore_eos.png` (`python3 pore_distribution.py`): $p_g$ against $n$ for $R=0.35$ µm at 600, 1000 and 1500 K. The solid lines are the hard-sphere EoS, the dashed lines the ideal gas, the dots the cap $\eta=0.65$ beyond which $p_g$ is linear in $n$. Already at $n\approx2\times10^{9}$ the hard-sphere pressure is about 3 times the ideal one, and it grows steeply up to the cap.
-
-![pore EoS vs volume](figures/pore_eos_volume.png)
-
-> `figures/pore_eos_volume.png` (`python3 pore_distribution.py`): $p_g$ against $V_p$ at fixed gas ($n=1,2,4\times10^{9}$) and $T=1000$ K, same conventions. At fixed $n$ the cap sets a smallest volume $V_p=n\,v_{Xe}/0.65$ (the dots); the dotted line is the volume of the $R=0.35$ µm pore. The pressure is $\propto1/V_p$ for the ideal gas, steeper than $1/V_p$ for the hard-sphere gas, and again $\propto1/V_p$ below the cap.
-
-![pore EoS against data](figures/pore_eos_data.png)
-
-> `figures/pore_eos_data.png` (`python3 pore_distribution.py`, `section_eos_data`): the hard-sphere pressure over the Soave pressure of Dowek 2021 at the gas density of six single bubbles (Tables 4–5), at 293 K and at the temperature of irradiation of their position (Table 2: 380 °C at the rim, 840 °C and 1878 °C at the centre of samples B and A; none for 0.3R **[?]**). The ratio is 4–8 at 293 K, 1.5–1.7 at the rim temperature, 1.3 at 1113 K and 1.0–1.1 at 2151 K (L3).
-
 #### 2. Pore classes
 
 SCIANTIX carries $\bar V$ (radius $R_V=(3\bar V/4\pi)^{1/3}$), $\bar n$ and $\mathrm{Var}(n)$. The pore radius is log-normal (K15 Eq. 6) on 81 nodes $x_i\in[-4,4]$ equally spaced **[N]**, with number weights
@@ -102,11 +90,7 @@ At this state $s=0.24$ ($a=2$; 0.19 for $a=2.5$, 0.16 for $a=3$), against 0.36 o
 
 > `figures/classes_closure_exponent.png`: pressure per class for $a$ from 3 to 2 at the same moments, with $2\gamma/R$ (grey) and the punching limit (dashed).
 
-**Closure against measured pores.** The closure gives a volume per gas atom $V_i/n_i\propto R_i^{3-a}$. Dowek 2021 measured it on single bubbles: in the two pairs at one position the smaller bubble holds the denser gas, the direction of $a<3$, with local exponents $a=0.6$ at the rim of sample B (0.585 and 0.655 µm, 25.1 and 9.9 MPa at 293 K) and $a=1.5$ at the centre of the ramped sample A, which is not HBS. Two bubbles are not a fit, and the pressure changes by a factor 2.5 between two rim pores 12 % apart in radius: more than a closure in $R$ alone gives (L16a). Between samples the rim means (mean radius 0.25–1.0 µm) are 149–191 Å³, with no clear trend with the mean bubble size.
-
-![closure against data](figures/classes_closure_data.png)
-
-> `figures/classes_closure_data.png` (`section_closure_data`): volume per gas atom against the radius, for the single bubbles of Dowek 2021 (circles; Tables 4–5) and the mean values of its Table 1 that have a mean bubble diameter (squares, radius = diameter / 2); filled at the rim. Lines: the classes of the NFIR disc (fitted $R_V$ and $s$, measured gas density) for $a=2$ and $a=3$, and the classes of the SCIANTIX state at the end of the base irradiation, within $\pm3s$ of the median.
+**Closure against measured pores.** The closure gives a volume per gas atom $V_i/n_i\propto R_i^{3-a}$. Dowek 2021 measured it on single bubbles: in the two pairs at one position the smaller bubble holds the denser gas, the direction of $a<3$, with local exponents $a=0.6$ at the rim of sample B (0.585 and 0.655 µm, 25.1 and 9.9 MPa at 293 K) and $a=1.5$ at the centre of the ramped sample A, which is not HBS. Two bubbles are not a fit, and the pressure changes by a factor 2.5 between two rim pores 12 % apart in radius: more than a closure in $R$ alone gives (L16a). Between samples the rim means (mean radius 0.25–1.0 µm) are 149–191 Å³, with no clear trend with the mean bubble size (`section_closure_data`).
 
 #### 3. Pressure per class
 The equation of state of 1 on every class, $p_i=p_g(n_i,V_i,T)$, with the packing fraction of the class $\eta_i=\min(n_iv_{Xe}/V_i,\,0.65)$.
@@ -222,19 +206,15 @@ $$
 
 **[R]**: between two steps the porosity model changes the retained moments, and the unvented ones follow in proportion. The state of the model is $\beta_i$ (81 values), $S$ and $S_2$, all written to `output.txt`: the classes of any step can be rebuilt from it. $1-S$ is the gas vented; $G$ is evaluated on the classes of the current step and differs from it when the gas of the classes changes after a rupture ($G=52.2$ % against $1-S=52.5$ % at the end of the NFIR anneal).
 
-Which classes break first depends on $a$ (2). For $a<3$ the pressure falls with the radius, so the small pores break first and carry little gas ($n_i\propto R_i^{a}$): $D$ leads $G$. At the NFIR state heated at fixed gas to 1200 °C with $P_h=0$, $P_{cr,i}=142$–$156$ MPa and $p_i=49$–$1092$ MPa: the classes below $R\approx0.40$ µm break, $D^*=67$ %, $G^*=49$ %. With $P_h=70$ MPa, $P_{cr,i}\approx690$ MPa and only the smallest classes break ($D^*=0.1$ %).
-
-![heat-up](figures/classes_heatup.png)
-
-> `figures/classes_heatup.png`: $D^*$ and $G^*$ of the NFIR state heated at fixed gas, for $a$ from 3 to 2. The curves are staircases, one step per class.
+Which classes break first depends on $a$ (2). For $a<3$ the pressure falls with the radius, so the small pores break first and carry little gas ($n_i\propto R_i^{a}$): $D$ leads $G$. At the NFIR state heated at fixed gas to 1200 °C with $P_h=0$ (`section_heatup`), $P_{cr,i}=142$–$156$ MPa and $p_i=49$–$1092$ MPa: the classes below $R\approx0.40$ µm break, $D^*=67$ %, $G^*=49$ %. With $P_h=70$ MPa, $P_{cr,i}\approx690$ MPa and only the smallest classes break ($D^*=0.1$ %).
 
 ![rupture](figures/classes_rupture_nfir_j19damage.png)
 
-> `figures/classes_rupture_nfir_j19damage.png` (`python3 pore_distribution.py`): the classes of the SCIANTIX run of the NFIR anneal, rebuilt from `output.txt` at the rows where $D$ is 25, 50 and 100 % of its final value. Pores and gas with their broken part (filled), pressure against critical pressure (dashed) with $2\gamma/R$ in grey, and $D$, $G$ on the heat-up.
+> `figures/classes_rupture_nfir_j19damage.png` (`python3 pore_distribution.py`): the classes of the SCIANTIX run of the NFIR anneal, rebuilt from `output.txt` at the rows where $D$ is 25, 50 and 100 % of its final value. Pores and gas per µm of radius with their broken part (filled), pressure against critical pressure (dashed) with $2\gamma/R$ in grey, and $D$, $G$ on the heat-up.
 
 ![release](figures/classes_fgr_nfir_j19damage.png)
 
-> `figures/classes_fgr_nfir_j19damage.png` (`python3 pore_distribution.py`): fission gas release of the NFIR anneal, in per cent of the gas produced (the release of the base irradiation is subtracted), against the time and against the temperature of the heat-up, with the Kr-85 curve of the test (put on the temperature axis through the measured temperature history). Right: release, $D$ and $G$ on a logarithmic axis, for the onset.
+> `figures/classes_fgr_nfir_j19damage.png` (`python3 pore_distribution.py`): fission gas release of the NFIR anneal, in per cent of the gas produced (the release of the base irradiation is subtracted), against the time from the start of the transient, with the Kr-85 release measured in the test (Noirot 2014, Fig. 9).
 
 #### 8. Fragment size
 
@@ -258,6 +238,10 @@ p_i^*=\eta_iZ(\eta_i),\qquad \eta_i=\frac{n_iv_{Xe}(T)}{V_i}\le0.65,\qquad \bar\
 $$
 
 In the variable $x_i=R_i/R_V$, $p_i/\bar p$ and $w_i$ depend on three numbers only, $(\bar\eta,\mathrm{CV}_n,a)$. $R_V$ and $\bar p$ only rescale the axes; $\bar n$, $\bar V$ and $T$ enter only through $\bar\eta$ (verified to $10^{-14}$ by `section_normalised_vs_direct` of `pore_distribution.py`). For $a=2$ the dilute shape $x_i^{a-3}$ is not a usable approximation: the central classes deviate from it by 7 % at $\bar\eta=0.02$ and by 53 % at $\bar\eta=0.11$ (the NFIR state), and a linear interpolation of $\ln(p_i/\bar p)$ on a $6\times6$ grid of $(\mathrm{CV}_n,\bar\eta)$ is off by up to 75 %: the classes are built at the $(\mathrm{CV}_n,\bar\eta)$ of the state.
+
+![coverage](figures/classes_coverage.png)
+
+> `figures/classes_coverage.png` (`python3 pore_distribution.py`): the classes in the relative variables, $a=2$. Left: radius pdf for $\mathrm{CV}_n$ from 0.1 to 1.1 ($s$ from 0.05 to 0.45). Centre: $p_i/\bar p$ against $R_i/R_V$ for $\bar\eta$ from 0.02 to 0.23 at $\mathrm{CV}_n=0.7$. Right: the same for $\mathrm{CV}_n$ from 0.1 to 1.1 at $\bar\eta=0.09$. $\bar\eta$ changes the shape of the pressure; $\mathrm{CV}_n$ changes mostly the range of the radii.
 
 The reduction stops at the gas pressure: the rupture criterion has absolute terms,
 
@@ -287,15 +271,21 @@ The row of the disc is the log-normal fit of the bars of `data/PoreRadiusASIRRAD
 
 The column of the SCIANTIX cases is the envelope of the rows inside the validity window of the criterion in the outputs of `regression/hbs` (`test_UO2HBS`, `test_UO2HBS_dislocation`, `test_UO2HBS_landau`: 723 K, up to 178–202 MWd/kgUO2) and of the NFIR case. The $\bar\eta$ below 0.045 are NFIR rows with $\xi<0.02$, below the range of the runs. In these cases the wide distributions are the dilute ones ($s>0.33$ with $\bar\eta<0.11$) and the dense ones are narrow ($\bar\eta>0.15$ with $s<0.18$).
 
+![gas volume](figures/mmm_gas_volume.png)
+
+> `figures/mmm_gas_volume.png` (`python3 pore_distribution.py`): volume per gas atom at the temperature of the NFIR anneal. Left: the measured values against the local burnup, the series of Noirot 2014 Fig. 17 (UO2 and MOX periphery, Pu-rich HBS agglomerates at mid-radius of MOX, the NFIR disc), the rim rows of Dowek 2021 Table 1 (Horvath 2007, Noirot 2009) and every value of Dowek 2021 (means of sample B along the radius, Table 3; single bubbles of samples A and B, Tables 4–5) at the average burnup of its sample (Table 2), filled at the rim; the SCIANTIX states of the NFIR case; the blue band is the range of the runs, $v_{Xe}/\bar\eta$. Right: the classes of the NFIR disc, of the SCIANTIX state after the anneal and of every run, area ∝ share of the gas, with the mean $\bar V/\bar n$; grey: the range of the measured values in the HBS (rim, mid-radius agglomerates, NFIR disc; Dowek 2021 out of the rim excluded).
+
 The range of every factor is cut in 20 strata and every stratum is used by one run, at its centre: each factor takes 20 equally spaced levels, whatever the number of factors. The levels of the three factors are paired by `scipy.stats.qmc.LatinHypercube` with `optimization="random-cd"`, which lowers the centred discrepancy of the points (seed 1) **[N]**.
 
-![design](figures/mmm_design.png)
-
-Each run is a file of `mmm_inputs/` with one row per class (the 81 nodes grouped in 7 classes that keep $\bar V$ and $\bar n$, hence $\xi$ and $\bar p$): radius (µm), porosity $\xi_k=\xi\,w_kV_k/\bar V$, gas pressure (MPa), confining pressure (MPa, zero in every run). `index.txt` lists the factors of the runs and `eta_max`, the largest packing fraction of their classes. In the corner of wide and dense distributions ($s>0.33$ with $\bar\eta>0.13$–0.2, in grey in the figure) the smallest class is at the cap $\eta=0.65$ of 1: runs R04 and R05, where its pressure is 52 and 94 times the mean. No SCIANTIX state is in that corner. No SCIANTIX run is needed.
+Each run is a file of `mmm_inputs/` with one row per class (the 81 nodes grouped in 7 classes that keep $\bar V$ and $\bar n$, hence $\xi$ and $\bar p$): radius (µm), porosity $\xi_k=\xi\,w_kV_k/\bar V$, gas pressure (MPa), confining pressure (MPa, zero in every run). `index.txt` lists the factors of the runs and `eta_max`, the largest packing fraction of their classes. In the corner of wide and dense distributions ($s>0.33$ with $\bar\eta>0.13$–0.2) the smallest class is at the cap $\eta=0.65$ of 1: runs R04 and R05, where its pressure is 52 and 94 times the mean. No SCIANTIX state is in that corner. No SCIANTIX run is needed.
 
 ![runs](figures/mmm_runs.png)
 
 The scale of the files is the measured one **[?]**: $R_V=0.73$ µm of the disc, and the temperature of the anneal, which only sets $\bar p$. $\hat s$ does not depend on $R_V$; the scale matters because the lengths of `Merope/distributedpore.py` are in µm. The side of the cube (30 µm, 41 $R_V$), the repulsion distance (0.3 µm, 0.41 $R_V$) and the mesh size (0.15 µm, 0.2 $R_V$) are those of the RVE of OHP, which has pores of 1.75 µm in diameter (repulsion distance 0.34 radii). The class radii of the runs go from 0.18 to 1.85 µm (diameters 0.4–3.7 µm, the range of the bars) and the number of pores, which follows from the porosities of the classes, from 390 at $\xi=0.024$ to 2900 at $\xi=0.176$, with 2 to 18 pores in each class at the ends.
+
+![pore radius](figures/mmm_pore_radius.png)
+
+> `figures/mmm_pore_radius.png` (`python3 pore_distribution.py`): pore radius. Left: porosity per 0.1 µm of radius of the NFIR disc as irradiated (bars) and after the anneal (line) (Noirot 2014, Fig. 12), the log-normal fit of the disc and the log-normal of the SCIANTIX state at the end of the base irradiation; blue band: the radii of the classes of the runs. Right: the classes of the disc, of the SCIANTIX state and of every run, area ∝ share of the porosity, with $R_V$; grey: 90 % of the measured porosity.
 
 From each run the model needs, for every pore of the RVE, its class and $\sigma_I^{max}$ in the surrounding matrix under the pressures $p_k$ of the file, at zero macroscopic stress (the rescaling of 4 from a run at zero macroscopic strain holds for one pressure in all the pores only **[?]**). The factor of the criterion is $\hat s=\sigma_I^{max}/p_k$; its mean and scatter per class are the $c_0$, $c_1$, $\sigma_\varepsilon$ of 4. The capillary pressure $2\gamma/R_k$ and the confinement $P_h$ are in the criterion and are not loads of MMM.
 
@@ -304,7 +294,7 @@ From each run the model needs, for every pore of the RVE, its class and $\sigma_
 ### Implementation
 
 - `src/models/HighBurnupStructureFragmentation.C`, case 4. The state $\beta_i$ is in `Sciantix_variables[213..293]` (`HBFF_CLASS_OFFSET`, `HBFF_N_CLASSES` of `MainVariables.h`), $S_2$ in `[212]`; they are written to `output.txt` only with this option (82 columns).
-- `pore_distribution.py` is the Python transcription (`build`, `broken`, `rupture_step`). `python3 pore_distribution.py` replays the recursion on the history of every SCIANTIX case of its list `CASES` (the NFIR one by default) and compares $D$, $G$, $S$, $S_2$ and every $\beta_i$ with `output.txt`: on `regression/hbs_nfir/test_UO2HBS_frag_j19damage` the largest differences over the 10 429 rows are $2\times10^{-7}$ (the state in `output.txt` has 7 digits; the check fails above $10^{-6}$). On that case it also compares the two states that this file quotes (`STATES`) with the output, and fails if they differ by more than $10^{-3}$. The same run draws the figures of this file and the rupture and release figures of every case of `CASES`; another case folder is added to that list.
+- `pore_distribution.py` is the Python transcription (`build`, `broken`, `rupture_step`). `python3 pore_distribution.py` replays the recursion on the history of the NFIR case (`NFIR_CASE`) and compares $D$, $G$, $S$, $S_2$ and every $\beta_i$ with `output.txt`: on `regression/hbs_nfir/test_UO2HBS_frag_j19damage` the largest differences over the 10 429 rows are $2\times10^{-7}$ (the state in `output.txt` has 7 digits; the check fails above $10^{-6}$). It also compares the two states that this file quotes (`STATES`) with the output, and fails if they differ by more than $10^{-3}$. The same run draws the figures of this file, the rupture and release figures of the NFIR case included. The checks quoted here that the run does not repeat (`section_truncation`, `section_closure_data`, `section_heatup`, `section_normalised_vs_direct`, with the self-check of `build` on the K15 width, the cumulative moments and the scans of the conserved moments) are kept, not called, at the end of the file.
 - Options 1, 2, 3 do not use the classes: their NFIR outputs are identical byte by byte with and without this option in the build.
 - `./utilities/HBFF/runHBFF.sh` does the whole sequence for this option: build, NFIR case against its gold file, check against the Python transcription, figures of this file and of `regression/hbs_nfir/figures/j19damage`, inputs for MMM.
 
@@ -364,7 +354,7 @@ The labels are those of the register in the header of `src/models/HighBurnupStru
 - **L16d [?]** the interaction of the pores is that of the intact population; after a break the pressure of the broken pore is not removed from the load of its neighbours (cascade not modelled), and vented pores stay voids.
 - **L16e [R]** the classes are rebuilt each step from the unvented moments $\bar n/S$ and $(\mathrm{Var}(n)+\bar n^2)/S_2$; a pore keeps its rank in the size distribution; new restructured material dilutes all the classes alike, with their vented fractions (6). The proportionality holds for the venting itself, not for what the porosity model does afterwards: gas trapped after a partial venting shifts the retained mean and lowers the rebuilt variance. On the NFIR anneal ($1-S=52$ %) the rebuilt $\mathrm{CV}_n$ moves from 0.50 to 0.53.
 - **L8 [?]** the porosity model evolves the retained mean gas: after a partial venting the mean pore volume falls (the gas volume of the vented pores is removed, the pores relax by vacancy emission) and the gas trapped afterwards is attributed to the intact pores through $\bar n/S$. Both raise the pressure of the intact classes. On the NFIR anneal $\bar V$ falls by 10 % between 300 and 1150 °C.
-- **L3 [R]** the hard-sphere equation of state has no attractive term. Xenon is close to its critical point at room temperature (290 K, 5.8 MPa; critical density about $5\times10^{27}$ m$^{-3}$, that of the pores): at the gas density measured in the NFIR pores the hard-sphere pressure is 5 times the one inferred with a real-gas equation of state at 20 °C, 1.3 times at 700 °C and equal to it at 1190 °C (table of *Results*). The pressures measured in rim pores at room temperature are 7–20 MPa (SoA: Dowek 2021). At the gas density of six single bubbles of Dowek 2021 the hard-sphere pressure is 4–8 times the Soave one at 293 K, 1.5–1.7 times at the rim temperature (653 K), 1.3 times at 1113 K and 1.0–1.1 times at 2151 K (`figures/pore_eos_data.png`). The rupture of the classes at low temperature, hence the release from room temperature of the NFIR case, is overestimated by it; at the temperatures of the measured release the error is small.
+- **L3 [R]** the hard-sphere equation of state has no attractive term. Xenon is close to its critical point at room temperature (290 K, 5.8 MPa; critical density about $5\times10^{27}$ m$^{-3}$, that of the pores): at the gas density measured in the NFIR pores the hard-sphere pressure is 5 times the one inferred with a real-gas equation of state at 20 °C, 1.3 times at 700 °C and equal to it at 1190 °C (table of *Results*). The pressures measured in rim pores at room temperature are 7–20 MPa (SoA: Dowek 2021). At the gas density of six single bubbles of Dowek 2021 the hard-sphere pressure is 4–8 times the Soave one at 293 K, 1.5–1.7 times at the rim temperature (653 K), 1.3 times at 1113 K and 1.0–1.1 times at 2151 K (Tables 4–5; temperatures of irradiation of the positions from Table 2: 380 °C at the rim, 840 °C and 1878 °C at the centre of samples B and A). The rupture of the classes at low temperature, hence the release from room temperature of the NFIR case, is overestimated by it; at the temperatures of the measured release the error is small.
 - **L9 [?]** the validity window is on the mean pore; the classes extend below 0.1 µm.
 - **L15 [?]** no dependence on the heating rate except the relaxation time; higher heating rates give more release and smaller fragments (NEA16; SoA: J20), and the empirical thresholds do not resolve it either.
 - **[?]** $\sigma_R$ of either pair has no direct physical meaning: it absorbs the toughness and the spherical idealisation of the pores (OHP), or the stress concentration that the ligament balance ignores (J19).
@@ -397,7 +387,7 @@ The labels are those of the register in the header of `src/models/HighBurnupStru
 | CS69 | N.F. Carnahan, K.E. Starling, J. Chem. Phys. 51 (1969) 635 | hard-sphere equation of state |
 | Aagesen 2021 | L.K. Aagesen et al., *Phase-field simulations of fission gas bubbles in high burnup UO2 during steady-state and LOCA transient conditions*, J. Nucl. Mater. 557 (2021) 153267 | pore radius constant and pressure linear in $T$ in a LOCA ramp |
 | Noirot 2014 | J. Noirot et al., *Fission gas release behaviour of a 103 GWd/tHM fuel disc during a 1200 °C annealing test*, J. Nucl. Mater. 446 (2014) 163 | NFIR disc: release curve, pore sizes, pore pressure (data in `regression/hbs_nfir/data`) |
-| Dowek 2021 | R. Dowek et al., *Determination of the pressure in micrometric bubbles in irradiated nuclear fuels*, J. Nucl. Mater. 543 (2021) 152591 (SoA) | pore pressures at room temperature, single-pore values; Tables 1–5 in `data/` (`Dowek2021_T2`–`T5.txt`, `PorePressureCOLLECTION.txt`): molar volumes, single-bubble pressures (Soave) and radii, against the equation of state (1) and the closure (2), and the rim gas volumes of `figures/mmm_gas_volume.png` |
+| Dowek 2021 | R. Dowek et al., *Determination of the pressure in micrometric bubbles in irradiated nuclear fuels*, J. Nucl. Mater. 543 (2021) 152591 (SoA) | pore pressures at room temperature, single-pore values; Tables 1–5 in `data/` (`Dowek2021_T2`–`T5.txt`, `PorePressureCOLLECTION.txt`): molar volumes, single-bubble pressures (Soave) and radii, against the closure (2) and the equation of state (L3), and the gas volumes of samples A and B in `figures/mmm_gas_volume.png` |
 | Cappia 2016 | F. Cappia et al., *Critical assessment of the pore size distribution in the rim region of high burnup UO2 fuels*, J. Nucl. Mater. 480 (2016) 138 (SoA) | range of validity of the log-normal pore size distribution |
 | Capps 2021 | N. Capps et al., *A critical review of high burnup fuel fragmentation, relocation, and dispersal under loss-of-coolant accident conditions*, J. Nucl. Mater. 546 (2021) 152750 (SoA) | empirical thresholds and what they do not resolve |
 | Kanit 2003 | T. Kanit et al., *Determination of the size of the representative volume element for random composites: statistical and numerical approach*, Int. J. Solids Struct. 40 (2003) 3647 | size of the RVE, Sections 5.2 and 6: variance against volume and integral range (Eq. 61–62), power law and point variance of two phases (Eq. 63–64, fit Eq. 66), precision against number of realisations (Eq. 68–70), RVE of the volume fraction (Eq. 71–72); mesh density, Section 4.1.2 |
