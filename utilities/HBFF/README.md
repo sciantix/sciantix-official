@@ -9,7 +9,10 @@ and returns the fraction of broken pores, the burst release of their gas and the
 | `README_HBFFmodel.md` | the model: equations, parameters, results on the NFIR anneal, limitations |
 | `pore_distribution.py` | Python transcription of the option, with its checks, the figures of `README_HBFFmodel.md` and the inputs for MMM |
 | `runHBFF.sh` | build, run of the regression case against its gold, check of the C++ against the transcription, figures and tables |
-| `mmm_inputs/` | one text file per MMM run of the coarse cover of the four factors of an RVE (`run_R0.txt` … `run_R8.txt`: radius, porosity, pressure and confining pressure of every pore class) and `index.txt`, written by `pore_distribution.py --mmm` |
+| `mmm_inputs/` | one text file per MMM run of the Latin hypercube in the three factors of an RVE, porosity, width of the radii and mean packing fraction (`run_R00.txt` … `run_R19.txt`: radius, porosity, pressure and confining pressure of every pore class), and `index.txt`, written by `pore_distribution.py` with the figures `figures/mmm_design.png` and `figures/mmm_runs.png` |
+| `Merope/distributedpore.py` | geometry of the MMM runs with Mérope: without arguments it reads every file of `mmm_inputs/`, and for each it throws the spheres of every class in a periodic cube of side 30 µm and writes the pores with their pressure (`bubbles_<run>.txt`), the geometry for the mesh (`mesh_<run>.geo`) and, in `summary_<run>.txt`, the porosity obtained per class with the confining pressure, the smallest gap between two pores and the ratios of the cube that are outside those of the RVE of OperaHPC (cube side / largest pore diameter, mesh size / smallest pore diameter) **[?]**. Cube side, repulsion distance, mesh size and seed are constants at the top of the script |
+| `Merope/test_rve.py` | the cubes (geometry and `.geo` only, with Mérope) of two tests of the RVE of the runs on R13, the worst case of the grid (the run with the fewest and largest pores), in `test_rve/<run>/` of the current directory. Size of the cube: the statistical procedure of Kanit et al. (2003) on 10 cubes of 30 µm, the cube of the runs: per pore class the scatter of the mean of $\hat s$ between the cubes, hence whether one cube gives it within 5 %, the integral range and the number of cubes needed otherwise (`rve_size.txt`, `rve_size.png`); 10 cubes of 20 µm and 2 of 40 µm as an optional exploration (`EXPLORE`). Size of the mesh (Kanit 2003, Section 4.1.2): one base cube meshed again at 0.30 µm with the same pores, against its 0.15 µm twin, $\hat s$ pore by pore and the class means, which must agree within the tolerance (`mesh_test.txt`, `mesh_test.png`). The statistics are in `Merope/analyse_rve.py`, run after MMM has solved the cubes; its reading of the MMM output is provisional **[?]** until that output is fixed |
+| `data/` | measured HBS pores read by `pore_distribution.py`: volume per gas atom against the local burnup (`AtomicVolume*.txt`, Noirot 2014 Fig. 17), pore sizes of the NFIR disc before and after the anneal (`PoreRadius*.txt`, Noirot 2014 Fig. 12), and Dowek 2021 Tables 1–5 (`PorePressureCOLLECTION.txt`, `Dowek2021_T*.txt`: molar volumes, single-bubble pressures and radii) |
 | `archive/` | options 1, 2, 3 (Jernkvist 2019, Kulacsy 2015, LEFM) and the comparison of the four options |
 | `abstract_MRS_HBFF/`, `presentation/` | abstract and slides |
 
@@ -27,7 +30,7 @@ It needs `iHighBurnupStructurePorosity` = 2 or 3. Temperature and hydrostatic st
 ## Regression case
 
 `regression/hbs_nfir/test_UO2HBS_frag_j19damage`: the NFIR disc (103 GWd/tHM), base irradiation and anneal to 1200 °C, with
-`iHighBurnupStructureFormation = 4` and `iHighBurnupStructurePorosity = 3`. The data and their source are in `regression/hbs_nfir/data`.
+`iHighBurnupStructureFormation = 1` (Barani et al. 2020) and `iHighBurnupStructurePorosity = 3`. The data and their source are in `regression/hbs_nfir/data`.
 
 - Base irradiation: 903 K, $2\times10^{19}$ fiss/(m³ s), 38 000 h, confining stress rising linearly from 0 to 70 MPa (the rule of
   `regression/hbs`; no datum for the disc, an unknown of the case). The history gives it in 25 intervals of 200 steps: a step of 7.6 h.
@@ -37,11 +40,11 @@ It needs `iHighBurnupStructurePorosity` = 2 or 3. Temperature and hydrostatic st
 Gates of the case:
 
 1. gold file: `python3 -m regression.runner --hbs_nfir.j19damage` (`output.txt` has 10 429 rows);
-2. transcription: `python3 utilities/HBFF/pore_distribution.py --check regression/hbs_nfir/test_UO2HBS_frag_j19damage` compares the C++ with the
+2. transcription: `python3 utilities/HBFF/pore_distribution.py` replays `regression/hbs_nfir/test_UO2HBS_frag_j19damage` and compares the C++ with the
    Python at every step, and the states that `README_HBFFmodel.md` quotes with the output;
 3. options 1, 2, 3 do not use the pore classes: their outputs on the NFIR history are identical byte by byte before and after a change of option 4.
 
-`./utilities/HBFF/runHBFF.sh` does 1 and 2 and draws the figures and the tables (`--no-build`, `--no-run`, `--gold`).
+`./utilities/HBFF/runHBFF.sh` does 1 and 2 and draws the figures and the tables; its choices (build, run, re-bless the gold) are the three variables at its top.
 `python3 regression/hbs_nfir/plot.py j19damage` draws the comparison with the data into `regression/hbs_nfir/figures/j19damage`.
 
 ---
