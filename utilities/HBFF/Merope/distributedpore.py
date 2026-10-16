@@ -4,7 +4,7 @@ Generator of pore classes in a cube with each pore class defined by its
    -   porosity fraction
    -   pressure
 and with the confining pressure of the cube, defined by an external script: the run files
-../mmm_inputs/run_*.txt written by `python3 ../pore_distribution.py` 
+../mmm_inputs/run_*.txt written by `python3 ../pore_distribution.py`. run_NFIR.txt is the reference, the NFIR disc before the anneal (log-normal fit of its measured pores); run_R*.txt are the Latin hypercube, at its R_V and temperature.
 
 This script will feed the future MMM micromechanical calculations.
 

@@ -89,6 +89,7 @@ MMM_RUNS, MMM_SEED = 20, 1  # runs of the Latin hypercube and its seed
 MMM_FACTORS = {"xi": (0.02, 0.18), "s": (0.05, 0.42), "eta": (0.045, 0.23)} #TBC
 MMM_PH_REL = 0.0  # P_h / p_bar of the runs
 MMM_RUN_DIR = "mmm_inputs"
+MMM_STATE = "NFIR, end of base irradiation"
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # SCIANTIX states of regression/hbs_nfir/test_UO2HBS_frag_j19damage (formation 1, porosity 3), read from output.txt:
@@ -524,8 +525,8 @@ def section_coverage():
 #   s        width of the radius distribution (sigma of ln R): R_k / R_V and the shares of the porosity xi_k / xi
 #   eta_bar  mean packing fraction of the gas: with s, the pressure profile p_k / p_bar
 # Confinement: the runs have P_h = 0.
-# Scale: R_V is that of the NFIR disc and T that of its anneal. The side of the cube, the repulsion
-# distance and the mesh size of Merope/distributedpore.py are in um.
+# Reference: the NFIR disc before the anneal. The run NFIR is the log-normal fit of its measured pores with the measured gas density; the runs of the hypercube take its R_V and the T of MMM_STATE, the end of the base irradiation, which only sets p_bar.
+# The side of the cube, the repulsion distance and the mesh size of Merope/distributedpore.py are in um.
 # The 81 nodes are grouped in classes (bins of x centred on 0, +/-1, +/-2, ...). 
 # The run files written here are read by Merope/distributedpore.py.
 
@@ -569,10 +570,15 @@ def mmm_design(n_runs=MMM_RUNS):
     lo, hi = np.array(list(MMM_FACTORS.values())).T
     u = qmc.LatinHypercube(d=len(MMM_FACTORS), scramble=False, optimization="random-cd", rng=MMM_SEED).random(n_runs)
     assert all(np.allclose(np.sort(u[:, j]), (np.arange(n_runs) + 0.5) / n_runs) for j in range(u.shape[1]))
-    R_V, T = nfir_disc()["R_V"], STATES["NFIR, anneal at 1200 C"]["T"]
+    R_V, T = nfir_disc()["R_V"], STATES[MMM_STATE]["T"]
     digits = len(str(n_runs - 1))
     return [mmm_case(f"R{run:0{digits}d}", f"Latin hypercube, run {run + 1} of {n_runs}", R_V=R_V, T=T, Ph_rel=MMM_PH_REL,
                      **dict(zip(MMM_FACTORS, x))) for run, x in enumerate(qmc.scale(u, lo, hi))]
+
+def mmm_reference():
+    """The reference run NFIR: the NFIR disc before the anneal."""
+    disc, T = nfir_disc(), STATES[MMM_STATE]["T"]
+    return mmm_case("NFIR", "NFIR disc before the anneal, log-normal fit of the measured pores", disc["xi"], disc["s"], xe_volume(T) / NFIR_GAS_VOLUME, MMM_PH_REL, disc["R_V"], T)
 
 def mmm_run_files(cases, n_classes=MMM_CLASSES):
     """One text file per run in MMM_RUN_DIR, with one row per pore class: radius (um), porosity of the class,
@@ -585,9 +591,9 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
             os.remove(os.path.join(folder, old))
     ranges = ", ".join(f"{name} {lo:g}-{hi:g}" for name, (lo, hi) in zip(("xi", "s", "eta_bar"), MMM_FACTORS.values()))
     index = [f"Latin hypercube of {len(cases)} runs (seed {MMM_SEED}) in {ranges};", 
-             f"{n_classes} pore classes each, closure exponent a = {A_CLOSURE:g}; R_V and T are set by NFIR case",
+             f"{n_classes} pore classes each, closure exponent a = {A_CLOSURE:g}; reference: NFIR disc before the anneal (sets R_V and T)",
              f"# {'run':6s}{'xi':>8s}{'s':>8s}{'CV_n':>8s}{'eta_bar':>9s}{'eta_max':>9s}{'Ph/p_bar':>10s}{'R_V_um':>9s}{'T_K':>9s}{'p_bar_MPa':>11s}{'Ph_MPa':>9s}  file"]
-    for c in cases:
+    for c in [mmm_reference()] + cases:
         d, xi, p_bar, Ph = c["classes"], c["xi"], c["p_bar"], c["Ph"]
         file = f"run_{c['id']}.txt"
         lines = [f"# MMM input, run {c['id']} ({c['origin']})",
@@ -603,7 +609,7 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
                      f"{c['T']:9.1f}{p_bar / 1e6:11.2f}{Ph / 1e6:9.2f}  {file}")
     with open(os.path.join(folder, "index.txt"), "w") as fh:
         fh.write("\n".join(index) + "\n")
-    print(f"wrote {len(cases)} run files and index.txt in {MMM_RUN_DIR}/ that can be read by Merope/distributedpore.py")
+    print(f"wrote {len(cases) + 1} run files and index.txt in {MMM_RUN_DIR}/ that can be read by Merope/distributedpore.py")
     print("\n".join(index))
 
     _, disc = len(cases), nfir_disc()
@@ -663,9 +669,9 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
     band = (xe_volume(T) / eta_hi * A3, xe_volume(T) / eta_lo * A3)
 
     # EXP , SCIANTIX
-    disc, anneal = nfir_disc(), STATES["NFIR, anneal at 1200 C"]
-    columns = [("Exp.\nNFIR", GREEN, "D", mmm_case("", "", disc["xi"], disc["s"], xe_volume(T) / NFIR_GAS_VOLUME, MMM_PH_REL, disc["R_V"], T)["classes"]),
-               ("SCIANTIX\nNFIR", ORANGE, "s", build(radius_of(anneal["V"]), anneal["n"], anneal["var"], T))]
+    st = STATES[MMM_STATE]
+    columns = [("Exp.\nNFIR", GREEN, "D", mmm_reference()["classes"]),
+               ("SCIANTIX\nNFIR", ORANGE, "s", build(radius_of(st["V"]), st["n"], st["var"], st["T"]))]
     columns += [(c["id"][1:], BLUE, "o", c["classes"]) for c in cases]
 
     fig, ax = plt.subplots(1, 2, figsize=(15.0, 7.0), sharey=True, gridspec_kw={"width_ratios": (1.4, 2.0)})
@@ -715,12 +721,12 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
 def pore_radius_figure(cases, n_classes=MMM_CLASSES):
     """Pore radii of the classes against the pore sizes measured on the NFIR disc."""
     T, um = cases[0]["T"], 1.0e6
-    disc, after, st = nfir_disc(), nfir_disc("PoreRadiusPOSTANNEALING.txt"), STATES["NFIR, end of base irradiation"]
+    disc, after, st = nfir_disc(), nfir_disc("PoreRadiusPOSTANNEALING.txt"), STATES[MMM_STATE]
     s_state = width(st["var"] / st["n"] ** 2, A_CLOSURE)
     edges = 0.5 * disc["edges"] * um  # (um) radius edges of the bins of 0.2 um of diameter
     cum = np.concatenate(([0.0], np.cumsum(disc["bars"]))) / disc["bars"].sum()
     measured = np.interp((0.05, 0.95), cum, edges)
-    columns = [("Exp.\nNFIR", GREEN, "D", mmm_case("", "", disc["xi"], disc["s"], xe_volume(T) / NFIR_GAS_VOLUME, MMM_PH_REL, disc["R_V"], T)["classes"]),
+    columns = [("Exp.\nNFIR", GREEN, "D", mmm_reference()["classes"]),
                ("SCIANTIX\nNFIR", ORANGE, "s", build(radius_of(st["V"]), st["n"], st["var"], st["T"]))]
     columns += [(c["id"][1:], BLUE, "o", c["classes"]) for c in cases]
     reduced = [reduced_classes(d, T, n_classes) for *_, d in columns]
