@@ -11,11 +11,7 @@ This script will feed the future MMM micromechanical calculations.
 For every run it writes, in the folder <run>_seed_<seed>_dmin<distMin> of the current directory:
     bubbles_<run>.txt   one row per pore: phase, x, y, z, radius, pressure
     mesh_<run>.geo      geometry for the mesh generator
-    summary_<run>.txt   cube side, confining pressure, smallest gap between two pores, the ratios outside those
-                        of the RVE of OperaHPC, and per class the porosity
-
-test_rve.py (size of the cube, size of the mesh) holds its own copy of generate(), so that its test cubes do not depend on
-the runs: a change of the Mérope setup below (RSA, Tore, phase ids, mesh order, pores not meshed) is made in both files.
+    summary_<run>.txt   cube side, confining pressure, and per class the porosity
 
 @author E. Cappellari
 @date   October 2026
@@ -29,23 +25,15 @@ import merope
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RUN_FILES = os.path.join(HERE, "..", "mmm_inputs", "run_*.txt")  # every run file of the folder is processed
+RUN_FILES = os.path.join(HERE, "..", "sciantix-official/utilities/HBFF/mmm_inputs", "run_*.txt")  # every run file of the folder is processed
 
 ###### Matrix ######
 # The RVE is dimensionless, nevertheless dimensions of objects within the RVE should stay consistent through each other: lengths are in um, as the radii of the run file. The side of the cube, the repulsion distance and the mesh size are fixed.
 dimensions_side = 30  # um - side of the cube
-distMin = 0.3         # um - repulsion distance, between the surfaces of two pores (Mérope adds distMin / 2 to the radii) [?]: one HBS grain
-                      # between two pores, assumed in OperaHPC D5.2 (2.2.2) with no sensitivity study; the smallest gap obtained is in the summary
+distMin = 0.3         # um - repulsion distance from OperaHPC D5.2 - to be verified a posteriori
 mesh_size = 0.15      # um - mesh size, should be fine enough but it can be changed
-SEED = 5  # Single seed value - random positioning of the pores, however at low
+SEED = 1  # Single seed value - random positioning of the pores, however at low
           # cube size / defect size the seed could be meaningless.
-
-###### RVE of OperaHPC D5.2 (2.2.2) ######
-# Cube of 30 um with pores of 1.75 um in diameter, ten seeds, checked on the FGR curve. A run outside its two ratios to the pore
-# diameter is flagged [?]: the largest class against the side of the cube, the smallest against the mesh size, which is one for
-# all the classes.
-OHP_SIDE_OVER_DIAMETER = 30.0 / 1.75  # cube side / pore diameter
-OHP_MESH_OVER_DIAMETER = 0.15 / 1.75  # mesh size / pore diameter (D5.2 gives 32 M elements in the cube, an edge of about 0.19 um)
 
 
 ###### Set of all triples between radius, pore fraction, pressure ######
@@ -75,64 +63,38 @@ def pores_in_cube(radius, pore_fraction, side):
     return r_v, density * side**3
 
 
-def ohp_flags(radius, side):
-    """Ratios of the cube outside those of the RVE of OperaHPC [?]: one line for each."""
-    flags = []
-    cube, mesh = side / (2.0 * radius.max()), mesh_size / (2.0 * radius.min())
-    if cube < OHP_SIDE_OVER_DIAMETER:
-        flags.append(f"[?] cube side / largest pore diameter {cube:.1f}, below the {OHP_SIDE_OVER_DIAMETER:.1f} of the RVE of OperaHPC")
-    if mesh > OHP_MESH_OVER_DIAMETER:
-        flags.append(f"[?] mesh size / smallest pore diameter {mesh:.2f}, above the {OHP_MESH_OVER_DIAMETER:.3f} of the RVE of OperaHPC: "
-                     "one mesh size for all the classes")
-    return flags
-
-
-def smallest_gap(centres, radii, side):
-    """Smallest distance between the surfaces of two pores, with the periodicity of the cube."""
-    gap = np.inf
-    for i in range(len(radii) - 1):
-        d = centres[i + 1:] - centres[i]
-        d -= side * np.round(d / side)
-        gap = min(gap, (np.linalg.norm(d, axis=1) - radii[i + 1:] - radii[i]).min())
-    return gap
-
-
-def generate(path, side=dimensions_side, seed=SEED, counts=None, folder=None, with_pressure=True):
-    """Pores of a run file in a periodic cube, and the files of the cube. Without counts Mérope takes the number of pores of a
-    class from its porosity (integer part of porosity x volume / pore volume); with counts, the pores of every class in the
-    order of read_run, the pores are those. with_pressure=False leaves the pressure out of bubbles_<run>.txt: the five columns
-    that test-bubble of MMM reads."""
+def generate(path, side=dimensions_side, seed=SEED, mesh=mesh_size, folder=None):
+    """Pores of a run file in a periodic cube of the given side (um), placed with the given seed and meshed at the given
+    size (um), and the files of the cube, written in folder (by default mmm_inputs/<run>_seed_<seed>_dmin<distMin> of the
+    current directory). The defaults are the choices at the top of this file."""
     run = os.path.splitext(os.path.basename(path))[0]
     radius, pore_fraction, pressure, confinement = read_run(path)
     r_v, expected = pores_in_cube(radius, pore_fraction, side)
     L = [side, side, side]  # cube
 
     print(f"\n{run}: porosity {pore_fraction.sum():.4f}, R_V = {r_v:.4f} um, cube side {side:g} um with {expected.sum():.0f} pores, "
-          f"distMin {distMin:.3f} um, mesh size {mesh_size:.3f} um, confining pressure {confinement:g} MPa")
+          f"distMin {distMin:.3f} um, mesh size {mesh:.3f} um, confining pressure {confinement:g} MPa")
     print(f"{'radius_um':>10s}{'porosity':>12s}{'pressure_MPa':>14s}{'pores expected':>16s}")
     for r, pf, p, n in zip(radius, pore_fraction, pressure, expected):
         print(f"{r:10.4f}{pf:12.4e}{p:14.2f}{n:16.1f}")
-    if mesh_size > 0.5 * radius.min():
+    if mesh > 0.5 * radius.min():
         print(f"mesh size above half of the smallest radius ({radius.min():.3f} um): the smallest class is poorly resolved")
-    flags = ohp_flags(radius, side)
 
     ###### Folder for the case: run, seed, dmin ######
-    folder_name = folder or f"{run}_seed_{seed}_dmin{distMin:.3f}"
+    parent_folder = "mmm_inputs/"
+    folder_name = folder or parent_folder + f"{run}_seed_{seed}_dmin{distMin:.3f}"
     os.makedirs(folder_name, exist_ok=True)
 
     ###### Generation of spheres for each triple between radius, pore fraction, pressure ######
-    if counts is None:
-        pores = [[float(r), float(pf)] for r, pf in zip(radius, pore_fraction)]
-    else:
-        pores = [float(r) for r, n in zip(radius, counts) for _ in range(int(n))]  # one radius per pore
+    radius_pore_fraction = [[float(r), float(pf)] for r, pf in zip(radius, pore_fraction)]
     theSpheres = sdb.throwSpheres_3D(
         sdb.TypeAlgo.RSA,     # RSA algorithm will try to fullfil the porosity required by the user (upper limit),
                               # RSAmax instead will reach the theoretical limit of maximum porosity (approx 40%)
         sdb.NameShape.Tore,   # Tore - cubic shape for covering surface pores
         L,
         seed,
-        pores,
-        [2] * len(pores),     # TBC, phase name, 1 = solid matrix, 2 = pores
+        radius_pore_fraction,
+        [2] * len(radius),    # TBC, phase name, 1 = solid matrix, 2 = pores
         distMin
         )
 
@@ -153,30 +115,20 @@ def generate(path, side=dimensions_side, seed=SEED, counts=None, folder=None, wi
             bbl.write(str(sphere.center[0]) + " " +
                       str(sphere.center[1]) + " " +
                       str(sphere.center[2]) + " ")
-            bbl.write(str(sphere.radius))
-            bbl.write((" " + str(pressure[k]) if with_pressure else "") + "\n")
-
-    # Repulsion distance verified a posteriori: smallest gap between the surfaces of two pores placed
-    gap = smallest_gap(np.array([sphere.center for sphere in theSpheres]), np.array([sphere.radius for sphere in theSpheres]), side)
-    if gap < distMin - 1.0e-9:
-        flags.append(f"[?] smallest gap between two pore surfaces {gap:.4f} um, below distMin {distMin:.3f} um")
+            bbl.write(str(sphere.radius) + " ")
+            bbl.write(str(pressure[k]) + "\n")
 
     # Porosity obtained per class, against the one asked (RSA stays below it), and the load of the cube
     placed = np.bincount(classes, minlength=len(radius))
     obtained = placed * 4.0 / 3.0 * np.pi * radius**3 / side**3
     with open(os.path.join(folder_name, f"summary_{run}.txt"), 'w') as out:
-        out.write(f"# {run}: seed {seed}, cube side {side:.6f} um, distMin {distMin:.6f} um, mesh size {mesh_size:.6f} um\n")
+        out.write(f"# {run}: seed {seed}, cube side {side:.6f} um, distMin {distMin:.6f} um, mesh size {mesh:.6f} um\n")
         out.write(f"# confining pressure {confinement:g} MPa\n")
         out.write(f"# pores {len(theSpheres)} (expected {expected.sum():.0f}), porosity {obtained.sum():.6f} (asked {pore_fraction.sum():.6f})\n")
-        out.write(f"# smallest gap between two pore surfaces {gap:.6f} um\n")
-        for flag in flags:
-            out.write(f"# {flag}\n")
         out.write(f"# {'radius_um':>10s}{'pressure_MPa':>14s}{'porosity_asked':>16s}{'porosity':>14s}{'pores_expected':>16s}{'pores':>8s}\n")
         for r, p, pf, got, n, m in zip(radius, pressure, pore_fraction, obtained, expected, placed):
             out.write(f"{r:12.6f}{p:14.4f}{pf:16.6e}{got:14.6e}{n:16.1f}{m:8d}\n")
-    print(f"{len(theSpheres)} pores placed, porosity {obtained.sum():.4f} (asked {pore_fraction.sum():.4f}), smallest gap {gap:.4f} um")
-    for flag in flags:
-        print(flag)
+    print(f"{len(theSpheres)} pores placed, porosity {obtained.sum():.4f} (asked {pore_fraction.sum():.4f})")
 
     # Mesh generation setup (do not change)
     sphInc = merope.SphereInclusions_3D()
@@ -187,12 +139,12 @@ def generate(path, side=dimensions_side, seed=SEED, counts=None, folder=None, wi
     mi.setMatrixPhase(1)
     meshGenerator = merope.mesh.MeshGenerator()
     meshGenerator.setMeshOrder(2)  # perfect spheres
-    meshGenerator.setMeshSize(mesh_size)  # mesh size, should be fine enough but it can be changed
+    meshGenerator.setMeshSize(mesh)  # mesh size Z
     meshGenerator.setMultiInclusions(mi)
     meshGenerator.do_not_mesh(tab_phase_not_to_mesh)
 
     # Set output file names
-    #meshGenerator.set_nameOutput([os.path.join(folder_name, "mesh_" + run + ".vtk")])
+    # meshGenerator.set_nameOutput([os.path.join(folder_name, "mesh_" + run + ".vtk")])
     meshGenerator.write(os.path.join(folder_name, "mesh_" + run + ".geo"))
 
     print(f"Geometry generation completed: {folder_name}")

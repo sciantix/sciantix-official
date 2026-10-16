@@ -83,7 +83,7 @@ MMM_CLASSES = 7  # classes of an input
 MMM_RUNS, MMM_SEED = 20, 1  # runs of the Latin hypercube and its seed
 # Ranges of the factors.
 #   xi   up to xi_sat of HighBurnupStructurePorosity.C.
-#        Below 0.02 the cube of Merope/distributedpore.py holds fewer than two pores of each class at the ends.
+#        Below 0.02 the cube of Merope/merope_pore_pressure.py holds fewer than two pores of each class at the ends.
 #   s    SCIANTIX 0.05 to 0.42 (CV_n 0.10 to 1.00); NFIR disc 0.36; K15 0.356
 #   eta  SCIANTIX 0.034 to 0.228, 0.048 to 0.228 for xi >= 0.02; NFIR disc 0.14 (1474 K) to 0.18 (293 K)
 MMM_FACTORS = {"xi": (0.02, 0.18), "s": (0.05, 0.42), "eta": (0.045, 0.23)} #TBC
@@ -526,9 +526,9 @@ def section_coverage():
 #   eta_bar  mean packing fraction of the gas: with s, the pressure profile p_k / p_bar
 # Confinement: the runs have P_h = 0.
 # Reference: the NFIR disc before the anneal. The run NFIR is the log-normal fit of its measured pores with the measured gas density; the runs of the hypercube take its R_V and the T of MMM_STATE, the end of the base irradiation, which only sets p_bar.
-# The side of the cube, the repulsion distance and the mesh size of Merope/distributedpore.py are in um.
+# The side of the cube, the repulsion distance and the mesh size of Merope/merope_pore_pressure.py are in um.
 # The 81 nodes are grouped in classes (bins of x centred on 0, +/-1, +/-2, ...). 
-# The run files written here are read by Merope/distributedpore.py.
+# The run files written here are read by Merope/merope_pore_pressure.py.
 
 def reduced_classes(d, T, n_classes=MMM_CLASSES):
     """Grouping of the nodes in n_classes classes: a list of dicts with the x range, the number fraction w, R, V, n, p
@@ -582,7 +582,7 @@ def mmm_reference():
 
 def mmm_run_files(cases, n_classes=MMM_CLASSES):
     """One text file per run in MMM_RUN_DIR, with one row per pore class: radius (um), porosity of the class,
-    gas pressure (MPa), confining pressure (MPa), the input of Merope/distributedpore.py; and index.txt with the
+    gas pressure (MPa), confining pressure (MPa), the input of Merope/merope_pore_pressure.py; and index.txt with the
     factors of every run."""
     folder = os.path.join(HERE, MMM_RUN_DIR)
     os.makedirs(folder, exist_ok=True)
@@ -609,7 +609,7 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
                      f"{c['T']:9.1f}{p_bar / 1e6:11.2f}{Ph / 1e6:9.2f}  {file}")
     with open(os.path.join(folder, "index.txt"), "w") as fh:
         fh.write("\n".join(index) + "\n")
-    print(f"wrote {len(cases) + 1} run files and index.txt in {MMM_RUN_DIR}/ that can be read by Merope/distributedpore.py")
+    print(f"wrote {len(cases) + 1} run files and index.txt in {MMM_RUN_DIR}/ that can be read by Merope/merope_pore_pressure.py")
     print("\n".join(index))
 
     _, disc = len(cases), nfir_disc()
