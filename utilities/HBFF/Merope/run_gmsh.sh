@@ -13,5 +13,6 @@
 
 for geo in $(find mmm_inputs test_rve -name "mesh_*.geo" 2>/dev/null | sort); do
     echo "$geo"
-    gmsh "$geo" -3 -o "${geo%.geo}.msh" > "${geo%.geo}.log" 2>&1
+    # log: only warnings, errors, times and size of the mesh
+    gmsh "$geo" -3 -o "${geo%.geo}.msh" 2>&1 | grep -E "Warning|Error|Done|nodes" > "${geo%.geo}.log"
 done
