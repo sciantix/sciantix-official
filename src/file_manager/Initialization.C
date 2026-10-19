@@ -37,6 +37,10 @@ void Initialization(int                 Sciantix_options[],
     Sciantix_history[9]  = Steampressure_input[0];
     Sciantix_history[10] = Steampressure_input[0];
 
+    // L3 owns its initialization and full spectral state inside Simulation.
+    if (Sciantix_options[11] == 3)
+        return;
+
     // Sciantix_variables initialization
     Sciantix_variables[25] = 2.0e+13;  // Intergranular_bubble_concentration[0]
     Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]

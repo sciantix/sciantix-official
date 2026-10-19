@@ -15,6 +15,8 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include <cmath>
+#include <stdexcept>
 
 /**
  * @brief Read a single setting from the input file.
@@ -299,6 +301,16 @@ void InputReading(int                  Sciantix_options[],
 
     Time_end_h = Time_input[Input_history_points - 1];
     Time_end_s = Time_end_h * 3600.0;
+
+    if (Sciantix_options[11] == 3)
+    {
+        if (Time_input.front() != 0.0 || !std::isfinite(Time_end_s) || Time_end_s <= 0.0)
+            throw std::invalid_argument("UN L3 requires a finite positive history starting at zero");
+        for (int j = 0; j < Input_history_points; ++j)
+            if (Temperature_input[j] != Temperature_input[0] || Fissionrate_input[j] != Fissionrate_input[0] ||
+                Hydrostaticstress_input[j] != Hydrostaticstress_input[0])
+                throw std::invalid_argument("UN L3 currently supports constant histories only");
+    }
 
     if (!input_scaling_factors.fail())
     {
