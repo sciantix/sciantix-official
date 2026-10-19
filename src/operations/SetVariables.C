@@ -51,7 +51,15 @@ void Simulation::setVariables(int                            Sciantix_options[],
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
          toOutputPrescribedOMRatio      = input_variable["iStoichiometryDeviation"].getValue() == 9,
          toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0,
-         toOutputMOX                    = input_variable["iFuelMatrix"].getValue() == 2;
+         toOutputMOX                    = input_variable["iFuelMatrix"].getValue() == 2,
+         toOutputMatrixVaporisation =
+             Sciantix_thermochemistry_settings != nullptr && Sciantix_thermochemistry_settings->matrix_vaporisation;
+
+    // Iodine and tellurium are simulated only when listed in input_thermochemistry_settings.txt (see setSystem)
+    bool toOutputIodine    = toOutputThermochimica && Sciantix_thermochemistry_settings != nullptr &&
+                             Sciantix_thermochemistry_settings->fission_products.hasElement("I"),
+         toOutputTellurium = toOutputThermochimica && Sciantix_thermochemistry_settings != nullptr &&
+                             Sciantix_thermochemistry_settings->fission_products.hasElement("Te");
 
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
@@ -79,7 +87,10 @@ void Simulation::setVariables(int                            Sciantix_options[],
                                         toOutputStoichiometryDeviation,
                                         toOutputChromiumContent,
                                         toOutputThermochimica,
-                                        toOutputMOX);
+                                        toOutputMOX,
+                                        toOutputMatrixVaporisation,
+                                        toOutputIodine,
+                                        toOutputTellurium);
 
     for (SciantixVariable initial_value : values)
     {

@@ -46,15 +46,16 @@ namespace ThermochemistrySettingsDetail
         return stat(path.c_str(), &info) == 0 && S_ISDIR(info.st_mode);
     }
 
-    // OpenCalphad is always checked out as a sibling of sciantix-official (the same
-    // layout Allmake.sh --oc assumes: OC_ROOT="${SCI_ROOT}/../opencalphad-for-sciantix").
-    std::string resolveOpenCalphadPath()
+    // OpenCalphad and Thermochimica are always checked out as siblings of sciantix-official
+    // (the same layout Allmake.sh --oc/--tc assumes, e.g. OC_ROOT="${SCI_ROOT}/../opencalphad-for-sciantix").
+    std::string resolveSiblingCheckout(const std::string& checkout_name, const std::string& library_name)
     {
         char          buffer[4096];
         const ssize_t length = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
         if (length <= 0)
         {
-            std::cerr << "Error: Cannot resolve the SCIANTIX executable path to locate OpenCalphad." << std::endl;
+            std::cerr << "Error: Cannot resolve the SCIANTIX executable path to locate " << library_name << "."
+                      << std::endl;
             exit(1);
         }
         buffer[length] = '\0';
@@ -62,12 +63,13 @@ namespace ThermochemistrySettingsDetail
         for (std::string directory = parentDirectory(std::string(buffer)); !directory.empty();
              directory             = parentDirectory(directory))
         {
-            const std::string candidate = parentDirectory(directory) + "/opencalphad-for-sciantix/";
+            const std::string candidate = parentDirectory(directory) + "/" + checkout_name + "/";
             if (isDirectory(candidate))
                 return candidate;
         }
 
-        std::cerr << "Error: Cannot locate the opencalphad-for-sciantix checkout as a sibling of "
+        std::cerr << "Error: Cannot locate the " << checkout_name
+                  << " checkout as a sibling of "
                      "sciantix-official (searched upward from executable path: "
                   << buffer << ")" << std::endl;
         exit(1);
@@ -149,6 +151,16 @@ ThermochemistrySettings LoadThermochemistrySettings(const std::string& path)
             settings.matrix.elements = splitList(value, ',');
         else if (key == "matrix.locations")
             settings.matrix.locations = splitList(value, ',');
+        else if (key == "matrix.vaporisation")
+            settings.matrix_vaporisation = parseBool(value);
+        else if (key == "matrix.vaporisation_start_time")
+            settings.matrix_vaporisation_start_time = std::stod(value);
+        else if (key == "matrix.vaporisation_orifice_diameter")
+            settings.matrix_vaporisation_orifice_diameter = std::stod(value);
+        else if (key == "matrix.vaporisation_sample_mass")
+            settings.matrix_vaporisation_sample_mass = std::stod(value);
+        else if (key == "matrix.vaporisation_clausing_factor")
+            settings.matrix_vaporisation_clausing_factor = std::stod(value);
         else
         {
             std::cerr << "Error: Unknown thermochemistry settings key: " << key << std::endl;
@@ -156,8 +168,39 @@ ThermochemistrySettings LoadThermochemistrySettings(const std::string& path)
         }
     }
 
+    if (settings.matrix_vaporisation_orifice_diameter < 0.0 || settings.matrix_vaporisation_sample_mass < 0.0 ||
+        settings.matrix_vaporisation_clausing_factor <= 0.0 || settings.matrix_vaporisation_clausing_factor > 1.0)
+    {
+        std::cerr << "Error: matrix.vaporisation_orifice_diameter and matrix.vaporisation_sample_mass must be "
+                     "non-negative, matrix.vaporisation_clausing_factor between 0 (excluded) and 1"
+                  << std::endl;
+        exit(1);
+    }
+
+    if (settings.matrix.module == "THERMOCHIMICA")
+    {
+        std::cerr << "Error: matrix.module = THERMOCHIMICA is not supported: the Thermochimica coupling "
+                     "supports fission_products only"
+                  << std::endl;
+        exit(1);
+    }
+
 #ifdef USE_OPENCALPHAD
-    settings.opencalphad_path = resolveOpenCalphadPath();
+    settings.opencalphad_path = resolveSiblingCheckout("opencalphad-for-sciantix", "OpenCalphad");
+#endif
+#ifdef USE_THERMOCHIMICA
+    if (settings.fission_products.module == "THERMOCHIMICA")
+        settings.thermochimica_path = resolveSiblingCheckout("thermochimica-for-sciantix", "Thermochimica");
+#else
+    static bool warned_missing_thermochimica = false;
+    if (settings.fission_products.module == "THERMOCHIMICA" && !warned_missing_thermochimica)
+    {
+        std::cerr << "Warning: fission_products.module = THERMOCHIMICA, but SCIANTIX was built without the "
+                     "Thermochimica coupling (build with Allmake.sh --tc): fission products are moved without "
+                     "thermochemistry."
+                  << std::endl;
+        warned_missing_thermochimica = true;
+    }
 #endif
 
     return settings;

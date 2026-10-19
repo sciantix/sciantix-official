@@ -281,6 +281,11 @@ void Simulation::JOGFormation()
     if (thermochimica_mode == 0)
         return;
 
+    // The JOG model post-processes the OpenCalphad fission-product phases (Cs-Ba-Mo-O liquid and
+    // compounds); it does not apply to the Thermochimica coupling (Cs-I-Te).
+    if (thermochemistry_settings != nullptr && thermochemistry_settings->fission_products.module == "THERMOCHIMICA")
+        return;
+
     // THERMOCHEMISTRY OUTER-NODE MODE
     const bool is_outer_node = input_variable["iThermochimicaOuterNode"].getValue() != 0;
     if (thermochimica_mode == 1 && !is_outer_node)

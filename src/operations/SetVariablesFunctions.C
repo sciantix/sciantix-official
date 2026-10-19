@@ -108,6 +108,9 @@ std::vector<SciantixVariable> initializeHistoryVariable(double Sciantix_history[
  * @param toOutputChromiumContent Flag for outputting chromium content information.
  * @param toOutputThermochimica Flag for outputting thermochemical information.
  * @param toOutputMOX Flag for outputting MOX fuel information.
+ * @param toOutputMatrixVaporisation Flag for outputting the matrix vaporisation information.
+ * @param toOutputIodine Flag for outputting iodine information.
+ * @param toOutputTellurium Flag for outputting tellurium information.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
 std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
@@ -120,7 +123,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
                                                          bool   toOutputThermochimica,
-                                                         bool   toOutputMOX)
+                                                         bool   toOutputMOX,
+                                                         bool   toOutputMatrixVaporisation,
+                                                         bool   toOutputIodine,
+                                                         bool   toOutputTellurium)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -236,6 +242,43 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "Cs in the gap", "(at/m3)", Sciantix_variables[110], Sciantix_variables[110], toOutputThermochimica),
 #endif
+        // Iodine and Tellurium
+        SciantixVariable("I produced", "(at/m3)", Sciantix_variables[111], Sciantix_variables[111], toOutputIodine),
+        SciantixVariable("I in grain", "(at/m3)", Sciantix_variables[112], Sciantix_variables[112], toOutputIodine),
+        SciantixVariable(
+            "I in intragranular solution", "(at/m3)", Sciantix_variables[113], Sciantix_variables[113], toOutputIodine),
+        SciantixVariable(
+            "I in intragranular bubbles", "(at/m3)", Sciantix_variables[114], Sciantix_variables[114], toOutputIodine),
+        SciantixVariable(
+            "I at grain boundary", "(at/m3)", Sciantix_variables[115], Sciantix_variables[115], toOutputIodine),
+        SciantixVariable("I released", "(at/m3)", Sciantix_variables[116], Sciantix_variables[116], toOutputIodine),
+        SciantixVariable("I decayed", "(at/m3)", 0.0, 0.0, 0),
+        SciantixVariable("I reacted", "(at/m3)", Sciantix_variables[117], Sciantix_variables[117], toOutputIodine),
+        SciantixVariable(
+            "Intragranular I atoms per bubble", "(at/bub)", Sciantix_variables[118], Sciantix_variables[118], 0),
+        SciantixVariable(
+            "Intergranular I atoms per bubble", "(at/bub)", Sciantix_variables[119], Sciantix_variables[119], 0),
+        SciantixVariable("Te produced", "(at/m3)", Sciantix_variables[120], Sciantix_variables[120], toOutputTellurium),
+        SciantixVariable("Te in grain", "(at/m3)", Sciantix_variables[121], Sciantix_variables[121], toOutputTellurium),
+        SciantixVariable("Te in intragranular solution",
+                         "(at/m3)",
+                         Sciantix_variables[122],
+                         Sciantix_variables[122],
+                         toOutputTellurium),
+        SciantixVariable("Te in intragranular bubbles",
+                         "(at/m3)",
+                         Sciantix_variables[123],
+                         Sciantix_variables[123],
+                         toOutputTellurium),
+        SciantixVariable(
+            "Te at grain boundary", "(at/m3)", Sciantix_variables[124], Sciantix_variables[124], toOutputTellurium),
+        SciantixVariable("Te released", "(at/m3)", Sciantix_variables[125], Sciantix_variables[125], toOutputTellurium),
+        SciantixVariable("Te decayed", "(at/m3)", 0.0, 0.0, 0),
+        SciantixVariable("Te reacted", "(at/m3)", Sciantix_variables[126], Sciantix_variables[126], toOutputTellurium),
+        SciantixVariable(
+            "Intragranular Te atoms per bubble", "(at/bub)", Sciantix_variables[127], Sciantix_variables[127], 0),
+        SciantixVariable(
+            "Intergranular Te atoms per bubble", "(at/bub)", Sciantix_variables[128], Sciantix_variables[128], 0),
         // METALS
         SciantixVariable(
             "Mo produced", "(at/m3)", Sciantix_variables[130], Sciantix_variables[130], toOutputThermochimica),
@@ -515,6 +558,13 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[163],
                          Sciantix_variables[163],
                          toOutputThermochimica && toOutputMOX),
+        // MATRIX VAPORISATION: partial pressures of the vapour species over the matrix (GrainVaporisation)
+        SciantixVariable("Matrix vapour pressure UO", "(atm)", 0.0, 0.0, toOutputMatrixVaporisation),
+        SciantixVariable("Matrix vapour pressure UO2", "(atm)", 0.0, 0.0, toOutputMatrixVaporisation),
+        SciantixVariable("Matrix vapour pressure UO3", "(atm)", 0.0, 0.0, toOutputMatrixVaporisation),
+        SciantixVariable("Matrix vapour pressure PuO", "(atm)", 0.0, 0.0, toOutputMatrixVaporisation && toOutputMOX),
+        SciantixVariable("Matrix vapour pressure PuO2", "(atm)", 0.0, 0.0, toOutputMatrixVaporisation && toOutputMOX),
+        SciantixVariable("Matrix vapour pressure O2", "(atm)", 0.0, 0.0, toOutputMatrixVaporisation),
         // JOG
         SciantixVariable(
             "Mo/Ru in HCP_A3", "(/)", Sciantix_variables[180], Sciantix_variables[180], toOutputThermochimica),

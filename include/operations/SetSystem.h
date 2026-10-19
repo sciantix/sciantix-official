@@ -72,6 +72,27 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
                     SciantixArray<SciantixVariable>& history_variable,
                     SciantixArray<InputVariable>&    scaling_factors);
 
+System Cs_in_UO2(SciantixArray<Matrix>&           matrices,
+                 SciantixArray<FissionProducts>&  volatile_fp,
+                 SciantixArray<InputVariable>&    input_variable,
+                 SciantixArray<SciantixVariable>& sciantix_variable,
+                 SciantixArray<SciantixVariable>& history_variable,
+                 SciantixArray<InputVariable>&    scaling_factors);
+
+System I_in_UO2(SciantixArray<Matrix>&           matrices,
+                SciantixArray<FissionProducts>&  volatile_fp,
+                SciantixArray<InputVariable>&    input_variable,
+                SciantixArray<SciantixVariable>& sciantix_variable,
+                SciantixArray<SciantixVariable>& history_variable,
+                SciantixArray<InputVariable>&    scaling_factors);
+
+System Te_in_UO2(SciantixArray<Matrix>&           matrices,
+                 SciantixArray<FissionProducts>&  volatile_fp,
+                 SciantixArray<InputVariable>&    input_variable,
+                 SciantixArray<SciantixVariable>& sciantix_variable,
+                 SciantixArray<SciantixVariable>& history_variable,
+                 SciantixArray<InputVariable>&    scaling_factors);
+
 System Xe_in_MOX(SciantixArray<Matrix>&           matrices,
                  SciantixArray<FissionProducts>&  gas_fp,
                  SciantixArray<InputVariable>&    input_variable,
@@ -108,6 +129,20 @@ System Kr85m_in_MOX(SciantixArray<Matrix>&           matrices,
                     SciantixArray<InputVariable>&    scaling_factors);
 
 System Cs_in_MOX(SciantixArray<Matrix>&           matrices,
+                 SciantixArray<FissionProducts>&  volatile_fp,
+                 SciantixArray<InputVariable>&    input_variable,
+                 SciantixArray<SciantixVariable>& sciantix_variable,
+                 SciantixArray<SciantixVariable>& history_variable,
+                 SciantixArray<InputVariable>&    scaling_factors);
+
+System I_in_MOX(SciantixArray<Matrix>&           matrices,
+                SciantixArray<FissionProducts>&  volatile_fp,
+                SciantixArray<InputVariable>&    input_variable,
+                SciantixArray<SciantixVariable>& sciantix_variable,
+                SciantixArray<SciantixVariable>& history_variable,
+                SciantixArray<InputVariable>&    scaling_factors);
+
+System Te_in_MOX(SciantixArray<Matrix>&           matrices,
                  SciantixArray<FissionProducts>&  volatile_fp,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,

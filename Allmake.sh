@@ -19,19 +19,23 @@ fi
 header() { printf '%s== %s ==%s\n' "$C_HEADER" "$1" "$C_RESET"; }
 
 OC=0
+TC=0
 FORCE=0
 for arg in "$@"; do
   case "$arg" in
     --oc) OC=1 ;;
+    --tc) TC=1 ;;
     --force) FORCE=1 ;;
     *) echo "Unknown argument: $arg" >&2; exit 1 ;;
   esac
 done
 
 oc_make_flags=()
+tc_make_flags=()
 sci_make_flags=()
 if [ "$FORCE" -eq 1 ]; then
   oc_make_flags+=(-B)
+  tc_make_flags+=(-B)
   sci_make_flags+=(-B)
 fi
 
@@ -87,6 +91,45 @@ if [ "$OC" -eq 1 ]; then
 
   printf '  -> %s symbols renamed -> %s\n' \
     "$(wc -l < /tmp/oc_gb_symbols.map)" "$OC_ROOT/build/liboctq-isoc-gb.a"
+fi
+
+if [ "$TC" -eq 1 ]; then
+  TC_ROOT="$(cd "${SCI_ROOT}/../thermochimica-for-sciantix" && pwd)"
+
+  header "BUILDING THERMOCHIMICA LIBRARY"
+
+  tc_total=$(make -C "$TC_ROOT" --no-print-directory -n -B all 2>/dev/null \
+    | grep -Ec '^gfortran ')
+  [ "$tc_total" -gt 0 ] || tc_total=1
+
+  tc_log="$(mktemp)"
+  set +e
+  make -C "$TC_ROOT" --no-print-directory "${tc_make_flags[@]}" all 2>&1 \
+    | tee "$tc_log" | awk \
+    -v total="$tc_total" -v c_build="$C_BUILD" -v c_link="$C_LINK" -v c_reset="$C_RESET" '
+    /^gfortran / {
+      step++
+      pct = int(step * 100 / total)
+      if (pct > 100) pct = 100
+      out = ""
+      for (i = 1; i <= NF; i++) if ($i == "-o") out = $(i + 1)
+      printf("%s[%3d%%] Building Fortran object %s%s\n", c_build, pct, out, c_reset)
+      next
+    }
+    /^ar rcs / { printf("%s[100%%] Linking static library %s%s\n", c_link, $3, c_reset); next }
+    { next }
+  '
+  tc_status=${PIPESTATUS[0]}
+  set -e
+
+  if [ "$tc_status" -ne 0 ]; then
+    printf '%s== THERMOCHIMICA BUILD FAILED ==%s\n' "$C_FAIL" "$C_RESET"
+    tail -n 60 "$tc_log"
+    rm -f "$tc_log"
+    exit "$tc_status"
+  fi
+  rm -f "$tc_log"
+  header "THERMOCHIMICA BUILD DONE"
 fi
 
 mkdir -p build

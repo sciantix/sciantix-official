@@ -89,6 +89,8 @@ void Simulation::execute()
 
     SetPhaseDiagram();
 
+    GrainVaporisation();
+
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();

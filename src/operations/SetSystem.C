@@ -37,6 +37,20 @@ void Simulation::setSystem()
             sciantix_system.push(
                 Kr85m_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 #endif
+
+            if ((int)input_variable["iThermochimica"].getValue() == 0)
+                break;
+
+            // Volatile fission products: only those listed in input_thermochemistry_settings.txt
+            if (thermochemistry_settings->fission_products.hasElement("Cs"))
+                sciantix_system.push(Cs_in_UO2(
+                    matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            if (thermochemistry_settings->fission_products.hasElement("I"))
+                sciantix_system.push(I_in_UO2(
+                    matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            if (thermochemistry_settings->fission_products.hasElement("Te"))
+                sciantix_system.push(Te_in_UO2(
+                    matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         case 1:
@@ -69,6 +83,12 @@ void Simulation::setSystem()
 
             sciantix_system.push(
                 Cs_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            if (thermochemistry_settings->fission_products.hasElement("I"))
+                sciantix_system.push(I_in_MOX(
+                    matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            if (thermochemistry_settings->fission_products.hasElement("Te"))
+                sciantix_system.push(Te_in_MOX(
+                    matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(
                 Mo_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(
@@ -278,6 +298,118 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.013027);
+    system_.setRadiusInLattice(0.21e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionProductDiffusivity(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                         sciantix_variable,
+                                         history_variable,
+                                         scaling_factors,
+                                         matrices);
+    system_.setBubbleDiffusivity(
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Cs_in_UO2(SciantixArray<Matrix>&           matrices,
+                 SciantixArray<FissionProducts>&  volatile_fp,
+                 SciantixArray<InputVariable>&    input_variable,
+                 SciantixArray<SciantixVariable>& sciantix_variable,
+                 SciantixArray<SciantixVariable>& history_variable,
+                 SciantixArray<InputVariable>&    scaling_factors)
+{
+    System system_;
+
+    system_.setName("Cs in UO2");
+    system_.setVolatileFP(volatile_fp["Cs"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(
+        0.1943 * scaling_factors["Cs production"].getValue());  // ENDF/B-VIII.0, U-235 thermal cumulative yields of the
+                                                                // stable and long-lived isotopes (Cs-133, 135, 137)
+    system_.setRadiusInLattice(0.21e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionProductDiffusivity(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                         sciantix_variable,
+                                         history_variable,
+                                         scaling_factors,
+                                         matrices);
+    system_.setBubbleDiffusivity(
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    return system_;
+}
+
+System I_in_UO2(SciantixArray<Matrix>&           matrices,
+                SciantixArray<FissionProducts>&  volatile_fp,
+                SciantixArray<InputVariable>&    input_variable,
+                SciantixArray<SciantixVariable>& sciantix_variable,
+                SciantixArray<SciantixVariable>& history_variable,
+                SciantixArray<InputVariable>&    scaling_factors)
+{
+    System system_;
+
+    system_.setName("I in UO2");
+    system_.setVolatileFP(volatile_fp["I"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(
+        0.0070);  // ENDF/B-VIII.0, U-235 thermal cumulative yields of the stable and long-lived isotopes (I-127, 129)
+    system_.setRadiusInLattice(0.21e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionProductDiffusivity(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                         sciantix_variable,
+                                         history_variable,
+                                         scaling_factors,
+                                         matrices);
+    system_.setBubbleDiffusivity(
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Te_in_UO2(SciantixArray<Matrix>&           matrices,
+                 SciantixArray<FissionProducts>&  volatile_fp,
+                 SciantixArray<InputVariable>&    input_variable,
+                 SciantixArray<SciantixVariable>& sciantix_variable,
+                 SciantixArray<SciantixVariable>& history_variable,
+                 SciantixArray<InputVariable>&    scaling_factors)
+{
+    System system_;
+
+    system_.setName("Te in UO2");
+    system_.setVolatileFP(volatile_fp["Te"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.0225);  // ENDF/B-VIII.0, U-235 thermal cumulative yields of the stable and long-lived isotopes
+                               // (Te-125, 126, 128, 130)
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -528,6 +660,96 @@ System Cs_in_MOX(SciantixArray<Matrix>&           matrices,
                                         // C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in
                                         // fast reactors based on thermodynamic calculations. Journal of Nuclear
                                         // Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
+    system_.setRadiusInLattice(0.21e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(
+        1,
+        history_variable,
+        input_variable,
+        sciantix_variable,
+        scaling_factors);  // MOX: using same production model as UO2 (no dedicated MOX correlation)
+    system_.setFissionProductDiffusivity(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                         sciantix_variable,
+                                         history_variable,
+                                         scaling_factors,
+                                         matrices);  // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due
+                                                     // to porosity and Pu content 1.75 * for MOX?
+    system_.setBubbleDiffusivity(
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    return system_;
+}
+
+System I_in_MOX(SciantixArray<Matrix>&           matrices,
+                SciantixArray<FissionProducts>&  volatile_fp,
+                SciantixArray<InputVariable>&    input_variable,
+                SciantixArray<SciantixVariable>& sciantix_variable,
+                SciantixArray<SciantixVariable>& history_variable,
+                SciantixArray<InputVariable>&    scaling_factors)
+{
+    System system_;
+
+    system_.setName("I in MOX");
+    system_.setVolatileFP(volatile_fp["I"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.016);  // I from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau,
+                              // C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in
+                              // fast reactors based on thermodynamic calculations. Journal of Nuclear
+                              // Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
+    system_.setRadiusInLattice(0.21e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(
+        1,
+        history_variable,
+        input_variable,
+        sciantix_variable,
+        scaling_factors);  // MOX: using same production model as UO2 (no dedicated MOX correlation)
+    system_.setFissionProductDiffusivity(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                         sciantix_variable,
+                                         history_variable,
+                                         scaling_factors,
+                                         matrices);  // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due
+                                                     // to porosity and Pu content 1.75 * for MOX?
+    system_.setBubbleDiffusivity(
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Te_in_MOX(SciantixArray<Matrix>&           matrices,
+                 SciantixArray<FissionProducts>&  volatile_fp,
+                 SciantixArray<InputVariable>&    input_variable,
+                 SciantixArray<SciantixVariable>& sciantix_variable,
+                 SciantixArray<SciantixVariable>& history_variable,
+                 SciantixArray<InputVariable>&    scaling_factors)
+{
+    System system_;
+
+    system_.setName("Te in MOX");
+    system_.setVolatileFP(volatile_fp["Te"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.037);  // Te from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau,
+                              // C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in
+                              // fast reactors based on thermodynamic calculations. Journal of Nuclear
+                              // Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);

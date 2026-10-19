@@ -65,6 +65,26 @@ else()
     message(STATUS "OpenCalphad coupling disabled (built ../opencalphad-for-sciantix libraries not found and COUPLING_OC not forced ON)")
 endif()
 
+# Optional coupling with Thermochimica (fission-product chemistry only):
+# auto-detected if a "thermochimica-for-sciantix" directory with the built static library
+# (build/libthermochimica.a, built with Allmake.sh --tc) is next to this repository, e.g.
+#   workspace/
+#   |-- sciantix-official/
+#   `-- thermochimica-for-sciantix/
+# Override with -DCOUPLING_THERMOCHIMICA=ON/OFF to force it on or off regardless of detection.
+set(THERMOCHIMICA_LIBRARY "${CMAKE_SOURCE_DIR}/../thermochimica-for-sciantix/build/libthermochimica.a")
+if(EXISTS "${THERMOCHIMICA_LIBRARY}")
+    set(COUPLING_THERMOCHIMICA_DEFAULT ON)
+else()
+    set(COUPLING_THERMOCHIMICA_DEFAULT OFF)
+endif()
+option(COUPLING_THERMOCHIMICA "Enable Thermochimica coupling" ${COUPLING_THERMOCHIMICA_DEFAULT})
+if(COUPLING_THERMOCHIMICA)
+    message(STATUS "Thermochimica coupling enabled")
+else()
+    message(STATUS "Thermochimica coupling disabled (../thermochimica-for-sciantix/build/libthermochimica.a not found and COUPLING_THERMOCHIMICA not forced ON)")
+endif()
+
 # Include CTest
 include(CTest)
 enable_testing()
@@ -82,6 +102,11 @@ if(NOT COUPLING_OC)
     list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/coupling/OCUtilsCoupling.C)
 endif()
 
+# TCUtilsCoupling.C links directly against Thermochimica's compiled TCAPI library.
+if(NOT COUPLING_THERMOCHIMICA)
+    list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/coupling/TCUtilsCoupling.C)
+endif()
+
 # Set custom object file directory (to have all object files in the obj directory)
 set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 
@@ -92,6 +117,9 @@ if(COUPLING_TU)
     if(COUPLING_OC)
         target_compile_definitions(sciantix PRIVATE USE_OPENCALPHAD)
     endif()
+    if(COUPLING_THERMOCHIMICA)
+        target_compile_definitions(sciantix PRIVATE USE_THERMOCHIMICA)
+    endif()
 else()
     add_executable(sciantix ${SOURCES})
     if(COUPLING_OC)
@@ -100,6 +128,10 @@ else()
             ${PROJECT_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc.a
             ${PROJECT_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc-gb.a
             gfortran quadmath gomp)
+    endif()
+    if(COUPLING_THERMOCHIMICA)
+        target_compile_definitions(sciantix PRIVATE USE_THERMOCHIMICA)
+        target_link_libraries(sciantix ${THERMOCHIMICA_LIBRARY} lapack blas gfortran)
     endif()
     if (UNIX)
         set(CMAKE_EXECUTABLE_SUFFIX ".x")
@@ -126,10 +158,10 @@ if(BUILD_TESTING AND NOT COUPLING_TU)
     find_program(PYTHON3_EXECUTABLE NAMES python3 python)
     if(PYTHON3_EXECUTABLE)
         set(TESTING_GROUPS_verification
-            mox-po2 openPorosity powerPulse oxidation vercors gpr)
+            mox-po2 openPorosity powerPulse oxidation vercors gpr matrixVaporisation)
         set(TESTING_GROUPS_validation
             baker cornell white kashibe talip chromium contact hbs jog
-            oxygenpotential-freshfuel oxygenpotential-burnup)
+            oxygenpotential-freshfuel oxygenpotential-burnup volatileFPs)
         foreach(suite verification validation)
             foreach(group ${TESTING_GROUPS_${suite}})
                 add_test(NAME ${suite}_${group}

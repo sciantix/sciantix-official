@@ -67,4 +67,18 @@ const std::map<std::string, double> thermochemistry_atomic_masses = {{"Cs", 132.
                                                                      {"Ru", 101.07},
                                                                      {"Tc", 98.906}};
 
+// Atomic numbers of the elements/species.
+const std::map<std::string, int> thermochemistry_atomic_numbers = {{"Cs", 55},
+                                                                   {"I", 53},
+                                                                   {"Mo", 42},
+                                                                   {"Ba", 56},
+                                                                   {"O", 8},
+                                                                   {"Te", 52},
+                                                                   {"U", 92},
+                                                                   {"Pu", 94},
+                                                                   {"Pd", 46},
+                                                                   {"Rh", 45},
+                                                                   {"Ru", 44},
+                                                                   {"Tc", 43}};
+
 #endif

@@ -6,11 +6,14 @@ cd "$(dirname "$0")"
 
 echo "===== COMPILING SCIANTIX ====="
 ./Allclean.sh || true
+allmake_flags=()
 if [[ " $* " == *" --oc "* ]]; then
-  ./Allmake.sh --oc
-else
-  ./Allmake.sh
+  allmake_flags+=(--oc)
 fi
+if [[ " $* " == *" --tc "* ]]; then
+  allmake_flags+=(--tc)
+fi
+./Allmake.sh "${allmake_flags[@]}"
 
 # Determine number of jobs (nproc if available, else 4)
 JOBS=$(nproc 2>/dev/null || echo 4)

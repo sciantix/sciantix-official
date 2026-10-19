@@ -42,7 +42,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
                                                          bool   toOutputThermochimica,
-                                                         bool   toOutputMOX);
+                                                         bool   toOutputMOX,
+                                                         bool   toOutputMatrixVaporisation,
+                                                         bool   toOutputIodine,
+                                                         bool   toOutputTellurium);
 
 std::vector<ThermochemistryVariable>
 initializeThermochemistryVariable(const std::vector<ThermochemistryManifestEntry>& manifest,

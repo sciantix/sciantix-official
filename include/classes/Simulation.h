@@ -199,6 +199,18 @@ class Simulation
     void SetPhaseDiagram();
 
     /**
+     * @brief Matrix vaporisation of (U,Pu)O2 (e.g. annealing in a Knudsen cell): Hertz-Knudsen effusion of the
+     * oxide vapour species (partial pressures from Olander (1976), oxygen potential from Kato et al. or
+     * Blackburn), shrinking grain and release of the fission products of the vaporised matrix.
+     * Active when matrix.vaporisation = true in input_thermochemistry_settings.txt.
+     *
+     * @author C. Besio
+     * @author E. Cappellari
+     *
+     */
+    void GrainVaporisation();
+
+    /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
      *
      * @author D. Pizzocri

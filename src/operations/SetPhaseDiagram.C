@@ -16,8 +16,8 @@
 
 #include "Constants.h"
 #include "MainVariables.h"
-#include "OCUtilsCoupling.h"
 #include "Simulation.h"
+#include "ThermochemistryCoupling.h"
 #include "ThermochemistrySettings.h"
 
 #include <algorithm>
@@ -28,10 +28,9 @@
 #include <string>
 #include <vector>
 
-#ifdef USE_OPENCALPHAD
 namespace SetPhaseDiagramDetail
 {
-    // Caches the last OpenCalphad equilibrium actually solved for a location, so
+    // Caches the last thermochemical equilibrium actually solved for a location, so
     // SetPhaseDiagram() can skip the GEM on timesteps where the driving conditions
     // have not moved meaningfully.
     //
@@ -120,7 +119,6 @@ namespace SetPhaseDiagramDetail
 }  // namespace SetPhaseDiagramDetail
 
 using namespace SetPhaseDiagramDetail;
-#endif  // USE_OPENCALPHAD
 
 void Simulation::SetPhaseDiagram()
 {
@@ -152,25 +150,21 @@ void Simulation::SetPhaseDiagram()
 // THERMOCHEMISTRY OUTER-NODE MODE
 // iThermochimica, exactly as set in input_settings.txt:
 // 0 = off, 1 = all radial nodes of the outer/last axial slice
-// 2 = full OpenCalphad at every node.
-#if defined(COUPLING_TU) && defined(USE_OPENCALPHAD)
-    const int  thermochimica_mode   = (int)input_variable["iThermochimica"].getValue();
-    const bool is_outer_node        = input_variable["iThermochimicaOuterNode"].getValue() != 0;
-    const bool run_full_opencalphad = thermochimica_mode == 2 || (thermochimica_mode == 1 && is_outer_node);
-#elif defined(USE_OPENCALPHAD)
-    const bool run_full_opencalphad = true;
+// 2 = full thermochemistry at every node.
+#if defined(COUPLING_TU)
+    const int  thermochimica_mode       = (int)input_variable["iThermochimica"].getValue();
+    const bool is_outer_node            = input_variable["iThermochimicaOuterNode"].getValue() != 0;
+    const bool run_full_thermochemistry = thermochimica_mode == 2 || (thermochimica_mode == 1 && is_outer_node);
 #else
-    // Built without OpenCalphad
-    const bool run_full_opencalphad = false;
+    const bool run_full_thermochemistry = true;
 #endif
 
-    if (!run_full_opencalphad || thermochemistry_settings == nullptr)
+    if (!run_full_thermochemistry || thermochemistry_settings == nullptr)
     {
         moveFissionProductsWithoutThermochemistry();
         return;
     }
 
-#ifdef USE_OPENCALPHAD
     const ThermochemistrySettings& Sciantix_thermochemistry_settings = *thermochemistry_settings;
 
     enum class PhaseDiagramLocation
@@ -179,25 +173,16 @@ void Simulation::SetPhaseDiagram()
         GrainBoundary
     };
 
-    using OCSolver = OCUtilsCoupling::OpenCalphadSolveMode;
-
     for (const PhaseDiagramLocation location_case : {PhaseDiagramLocation::Matrix, PhaseDiagramLocation::GrainBoundary})
     {
         const ThermochemistryPhaseSettings* location_settings = nullptr;
         std::string                         location;
-        std::vector<OCSolver>               solvers;
-
-#if !defined(COUPLING_TU)
-        solvers.push_back(OCSolver::SaveReadWarmStart);
-#endif
-        solvers.push_back(OCSolver::GlobalEquilibrium);
 
         switch (location_case)
         {
             case PhaseDiagramLocation::Matrix:
                 location_settings = &Sciantix_thermochemistry_settings.matrix;
                 location          = "matrix";
-                solvers.push_back(OCSolver::OnlyC1MO2);
                 break;
 
             case PhaseDiagramLocation::GrainBoundary:
@@ -208,12 +193,12 @@ void Simulation::SetPhaseDiagram()
                 }
                 location_settings = &Sciantix_thermochemistry_settings.fission_products;
                 location          = "at grain boundary";
-
-                solvers.push_back(OCSolver::FreshRecordRecovery);
                 break;
         }
 
-        if (location_settings->module != "OPENCALPHAD")
+        const std::string& module = location_settings->module;
+
+        if (!ThermochemistryCoupling::isAvailable(module))
         {
             if (location_case == PhaseDiagramLocation::GrainBoundary)
                 moveFissionProductsWithoutThermochemistry();
@@ -221,12 +206,12 @@ void Simulation::SetPhaseDiagram()
         }
 
         std::set<std::string> selected_elements(location_settings->elements.begin(), location_settings->elements.end());
-        const std::string     data_path =
-            Sciantix_thermochemistry_settings.opencalphad_path + "data/" + location_settings->database;
+        const std::string     data_path = ThermochemistryCoupling::databasePath(
+            module, Sciantix_thermochemistry_settings, location_settings->database);
 
         double                      total_input_content = 0.0;
-        std::vector<InputComponent> components          = OCUtilsCoupling::buildInputComponents(
-            selected_elements, sciantix_variable, sciantix_system, total_input_content, location);
+        std::vector<InputComponent> components          = ThermochemistryCoupling::buildInputComponents(
+            module, selected_elements, sciantix_variable, sciantix_system, total_input_content, location);
 
         if (total_input_content <= 0.0 || components.empty())
         {
@@ -245,7 +230,7 @@ void Simulation::SetPhaseDiagram()
         const double current_temperature      = history_variable["Temperature"].getFinalValue();
         const double current_pressure         = history_variable["System pressure"].getFinalValue();
         const double current_oxygen_potential = sciantix_variable["Fuel oxygen potential"].getFinalValue();
-        const bool   oxygen_potential_matters = (location == "at grain boundary");
+        const bool   oxygen_potential_matters = ThermochemistryCoupling::isOpenToOxygen(module, location);
 
         bool         solved = false;
         OCOutputData output_data;
@@ -267,28 +252,15 @@ void Simulation::SetPhaseDiagram()
         }
         else
         {
-            for (const auto& solver : solvers)
-            {
-                output_data.solution_phases.clear();
-                output_data.components.clear();
-
-                const bool case_success      = OCUtilsCoupling::runOpenCalphadCaseOCASI(data_path,
-                                                                                   current_temperature,
-                                                                                   current_pressure,
-                                                                                   components,
-                                                                                   valid_elements,
-                                                                                   solver,
-                                                                                   location,
-                                                                                   current_oxygen_potential,
-                                                                                   output_data);
-                const bool has_usable_output = !output_data.solution_phases.empty();
-
-                if (case_success && has_usable_output)
-                {
-                    solved = true;
-                    break;
-                }
-            }
+            solved = ThermochemistryCoupling::solveEquilibrium(module,
+                                                               data_path,
+                                                               current_temperature,
+                                                               current_pressure,
+                                                               components,
+                                                               valid_elements,
+                                                               location,
+                                                               current_oxygen_potential,
+                                                               output_data);
 
             if (solved)
             {
@@ -317,34 +289,40 @@ void Simulation::SetPhaseDiagram()
         if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)
         {
             const std::string sublattice_output_path = TestPath + "phase_sublattice_composition.txt";
-            if (!OCUtilsCoupling::writePhaseSublatticeCompositionOutput(sublattice_output_path,
-                                                                        history_variable["Time"].getFinalValue(),
-                                                                        location,
-                                                                        output_data,
-                                                                        total_input_content))
+            if (!ThermochemistryCoupling::writePhaseSublatticeCompositionOutput(module,
+                                                                                sublattice_output_path,
+                                                                                history_variable["Time"].getFinalValue(),
+                                                                                location,
+                                                                                output_data,
+                                                                                total_input_content))
             {
                 std::cerr << "Warning: cannot write phase sublattice composition output: " << sublattice_output_path
                           << std::endl;
             }
         }
 
-        OCUtilsCoupling::updateThermochemistryVariablesFromOutput(
-            output_data.solution_phases, location, total_input_content, thermochemistry_variable, sciantix_variable);
+        ThermochemistryCoupling::updateThermochemistryVariablesFromOutput(module,
+                                                                          output_data.solution_phases,
+                                                                          location,
+                                                                          total_input_content,
+                                                                          thermochemistry_variable,
+                                                                          sciantix_variable);
 
         switch (location_case)
         {
             case PhaseDiagramLocation::Matrix:
-                OCUtilsCoupling::updateMatrixFromOutput(output_data, current_temperature, sciantix_variable);
+                ThermochemistryCoupling::updateMatrixFromOutput(
+                    module, output_data, current_temperature, sciantix_variable);
                 break;
 
             case PhaseDiagramLocation::GrainBoundary:
-                OCUtilsCoupling::updateGrainBoundaryFromOutput(output_data.solution_phases,
-                                                               selected_elements,
-                                                               total_input_content,
-                                                               sciantix_variable,
-                                                               sciantix_system);
+                ThermochemistryCoupling::updateGrainBoundaryFromOutput(module,
+                                                                       output_data.solution_phases,
+                                                                       selected_elements,
+                                                                       total_input_content,
+                                                                       sciantix_variable,
+                                                                       sciantix_system);
                 break;
         }
     }
-#endif  // USE_OPENCALPHAD
 }
