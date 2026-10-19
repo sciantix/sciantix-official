@@ -154,6 +154,11 @@ std::map<int, std::string> update_sciantix_variable = {
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
+    if (un_l3_active)
+    {
+        un_l3_model->exportVariables(Sciantix_variables);
+        return; // L3 modes remain owned by Simulation, not the legacy buffer.
+    }
     for (int i = 0; i < n_modes; ++i)
     {
         for (int j = 0; j <= 17; j++)

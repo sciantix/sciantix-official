@@ -32,7 +32,7 @@ struct GrainFaceState
 
 // Explicit owner of UN data across calls. No singleton/global storage, no
 // reconstruction of spectral profiles from averages, no restart API yet.
-// Wiring this state into Simulation is intentionally deferred to integration.
+// The complete model owns this state as a member of Simulation's UN L3 path.
 class State
 {
   public:

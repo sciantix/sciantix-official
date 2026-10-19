@@ -23,6 +23,8 @@
 #include "SciantixVariable.h"
 #include "Solver.h"
 #include "System.h"
+#include "UNL3Model.h"
+#include <memory>
 #include <cmath>
 #include <vector>
 
@@ -60,6 +62,9 @@ class Simulation
     // END UN AD URANIUMNITRIDE
 
     Solver solver;
+    std::unique_ptr<un_l3::Model> un_l3_model;
+    bool un_l3_active = false;
+    double un_l3_history[20] = {};
 
     static Simulation* instance;
 

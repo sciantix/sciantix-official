@@ -1,0 +1,3 @@
+results/*/snapshot/
+results/*/mplconfig/
+__pycache__/
