@@ -1,0 +1,33 @@
+{
+  "case": "AP3p4_1800K",
+  "steps": 550,
+  "n_modes": 160,
+  "uninterrupted_prefix_steps": 3,
+  "reference_files_sha256": {
+    "UN_model/regression_reference/results/full/AP3p4_1800K/manifest.json": "c02d9dd36bd7e50a7c2137be5595dd4e6811b980c3a9fa11e6cb37966f026483",
+    "UN_model/regression_reference/results/full/AP3p4_1800K/trace.jsonl.gz": "c972bcc1e1503a8209a78d92f13ef6f660f7e9186df142334ea1576f67ede886",
+    "UN_model/regression_reference/results/full/AP3p4_1800K/modes.npz": "e70a733442cbd5d00bce92896a9795af180c0d875481d9a1cd5c618a065e6b25"
+  },
+  "coefficient_fields": [
+    "dt",
+    "Dg",
+    "grain_radius_from_case_manifest",
+    "source_c",
+    "g_b",
+    "g_d",
+    "b_b_gas",
+    "b_d_gas",
+    "source_mb",
+    "source_md"
+  ],
+  "input_convention": "initial modes at step 0, preceding saved step_end otherwise",
+  "intervention_convention": "before step i>0: saved_input[i] - saved_after_exchange[i-1]; add, never rebase",
+  "binary_format": "little-endian float64, C order, config dimensions, no binary header",
+  "derived_files_sha256": {
+    "coefficients.bin": "18d6ae18ec8d2ee43ff91d47950622f4d18dfc10c511b46433e08ff2c3929653",
+    "input_modes.bin": "1d88ee0aec4d0d18e808ba0a337d833895055ab72455ac9376a39d8afb5c0e92",
+    "config.txt": "6c9c97144ded5ce5508cf6427c4fd61138f24e5d5b2f446834580f199030e42c",
+    "interventions.bin": "ca0815ca48bdd0b0fa37628bd142abf4dbd12b12750f649184547bf401aa5202",
+    "expected.npz": "18cb480f39252f8d9921555d3b24013c39d00d8b73c587b5e83b55d56f8c7abb"
+  }
+}

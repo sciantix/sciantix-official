@@ -1,0 +1,185 @@
+{
+  "status": "pass",
+  "scope": "2B/2C component tests only; no 2D/3/4",
+  "tests": [
+    {
+      "test": "B1_transport",
+      "result_sha256": "2fd34e201cae4d2940d2387683f7b812c81d47f5640930578541f40e55222035",
+      "values": 60240,
+      "max_normalized_error": 2.050629512582434e-16,
+      "failures": 0
+    },
+    {
+      "test": "B2_seed",
+      "result_sha256": "6ca13f5579e16810b8f182b257b4dc14c1f3fa482b6030358639cddd2d233c05",
+      "values": 24,
+      "max_normalized_error": 1.6653345369377348e-16,
+      "failures": 0
+    },
+    {
+      "test": "B2_vacancy",
+      "result_sha256": "d6389e02ddb8151fbd1c5408cd0a93b6d78d8bd248ccdb3bc38fbb0765786713",
+      "values": 12032,
+      "max_normalized_error": 1.360691917845246e-13,
+      "failures": 0
+    },
+    {
+      "test": "B3_intragranular_cached",
+      "result_sha256": "360dee295245bdd0e80db056c75841cb8b150d930789afdda8fff1170e26520c",
+      "values": 2999952,
+      "max_normalized_error": 3.1184817802276346e-13,
+      "failures": 0
+    },
+    {
+      "test": "B3_intragranular_chain",
+      "result_sha256": "8b5363712ebe490446f3345f52c5a2d3fa3148f4e0d35a9e8fe76ae84fdd85fd",
+      "values": 2999952,
+      "max_normalized_error": 4.644222253003149e-13,
+      "failures": 0
+    },
+    {
+      "test": "B4_solver_state_recheck",
+      "result_sha256": "2b59fd5bb64a7dbcc2f79e192113de7030c8ad13bbce2710457186630caeb24c",
+      "values": 5829810,
+      "max_normalized_error": 0.0,
+      "failures": 0
+    },
+    {
+      "test": "C1_limited",
+      "result_sha256": "2b210c72178bcb280432a7c42d007a6d95fc19a68a38990d96f4f702d9b527fa",
+      "values": 3012,
+      "max_normalized_error": 0.0,
+      "failures": 0
+    },
+    {
+      "test": "C1_3x3",
+      "result_sha256": "4e829be816f38b602497f616eaf4b284a797d823b7205f813bdd045a6988af88",
+      "values": 9036,
+      "max_normalized_error": 0.0,
+      "failures": 0
+    },
+    {
+      "test": "C2_initial",
+      "result_sha256": "8155ce7a018f9fd8265a3dbd938ecfec8d8e9baabef844ffb05cd4c1d3dbb4f1",
+      "values": 80,
+      "max_normalized_error": 0.0,
+      "failures": 0
+    },
+    {
+      "test": "C2_grainface",
+      "result_sha256": "f8a14ff58fb0b3ad9817976e6e81757d90b09a136dba50a6f6f6e923948a65ff",
+      "values": 60240,
+      "max_normalized_error": 1.688941629305483e-13,
+      "failures": 0
+    },
+    {
+      "test": "C2_grainface_chain",
+      "result_sha256": "159015dd88f9caee9610e0ee3408ece4dd540f3a4df2165c8c809de9faaa1113",
+      "values": 60240,
+      "max_normalized_error": 2.98313654183331e-13,
+      "failures": 0
+    },
+    {
+      "test": "C3_lookup_nodes",
+      "result_sha256": "0dcdc14a390fbbce259ef7d1d08779d9b117587123977b52b0067ab68571efec",
+      "values": 776,
+      "max_normalized_error": 1.6155530053873687e-16,
+      "failures": 0
+    },
+    {
+      "test": "C3_ig_sanitized",
+      "result_sha256": "526ce2727a89bd768797858f7d5f4d7e94c3f97100f73a987f3b482d3bd2ea4c",
+      "values": 2999952,
+      "max_normalized_error": 4.644222253003149e-13,
+      "failures": 0
+    },
+    {
+      "test": "C3_gf_sanitized",
+      "result_sha256": "23425bf372ed3463ee77c7bbdbff2e3f3f0a371b5283610f62a35de7adeebaf8",
+      "values": 60240,
+      "max_normalized_error": 2.98313654183331e-13,
+      "failures": 0
+    },
+    {
+      "test": "C3_final_solver_state",
+      "result_sha256": "e3d6bde6aa0495afcec9420816e1055a52f7fa7c256b67b412c101b7944e39b4",
+      "values": 5829810,
+      "max_normalized_error": 0.0,
+      "failures": 0
+    }
+  ],
+  "grainface_invariants": {
+    "C2_grainface/AP3p4_1800K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 2.220446049250313e-16,
+      "first_saturated_step_zero_based": 538,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface/AP3p4_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface/AP3p2_900K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface/ANP6_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 3.3306690738754696e-16,
+      "first_saturated_step_zero_based": 735,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/AP3p4_1800K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 2.220446049250313e-16,
+      "first_saturated_step_zero_based": 538,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/AP3p4_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/AP3p2_900K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/ANP6_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 3.3306690738754696e-16,
+      "first_saturated_step_zero_based": 735,
+      "saturation_flags_identical_to_reference": true
+    }
+  },
+  "nonregression": {
+    "total": 109,
+    "passed": 109,
+    "failed": 0
+  },
+  "preexisting_supplemental": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1
+  },
+  "preservation": {
+    "status": "pass",
+    "files_checked": 4099,
+    "changed_existing_files": [
+      "CMakeLists.txt",
+      "include/models/UNIntraGranular.h",
+      "include/models/UNParameters.h",
+      "include/models/UNState.h",
+      "src/models/UNIntraGranular.C"
+    ],
+    "all_reference_gold_legacy_and_other_fuel_files_unchanged": true,
+    "staged_diff_unchanged": true,
+    "head_unchanged": true
+  }
+}

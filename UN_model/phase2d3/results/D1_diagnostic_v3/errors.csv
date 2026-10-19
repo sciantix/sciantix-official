@@ -1,0 +1,445 @@
+case,stage,field,count,failures,max_absolute_error,max_relative_error_nonzero,max_normalized_error,max_index,first_failure,cpp_at_max,python_at_max,discrete
+AP3p2_900K,history,time,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,burnup_percent_fima,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,rho_d,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+AP3p2_900K,history,rho_d_next,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+AP3p2_900K,history,delta_Nd_rho,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,c,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,mb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,md,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,Nb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,Nd,4,0,0.0,0.0,0.0,"(0,)",,1.435e+19,1.435e+19,False
+AP3p2_900K,history,Vb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,Vd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,Rb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,Rd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,nvb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,nvd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,generated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,retained,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,retained_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,q_gb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,q_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,q_rel,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,swelling_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,swelling_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,swelling_gf,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+AP3p2_900K,history,swelling_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,swelling_total_gas,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+AP3p2_900K,history,Ngf_areal,4,0,0.0,0.0,0.0,"(0,)",,10000000000000.0,10000000000000.0,False
+AP3p2_900K,history,Ngf_vol,4,0,0.0,0.0,0.0,"(0,)",,2.5e+18,2.5e+18,False
+AP3p2_900K,history,ng_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,nv_gf,4,0,0.0,0.0,0.0,"(0,)",,0.600986119103485,0.600986119103485,False
+AP3p2_900K,history,V_gf,4,0,0.0,0.0,0.0,"(0,)",,1.7557576192188547e-29,1.7557576192188547e-29,False
+AP3p2_900K,history,R_gf,4,0,0.0,0.0,0.0,"(0,)",,2.4200000000000025e-10,2.4200000000000025e-10,False
+AP3p2_900K,history,A_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360967e-19,1.3517979858360967e-19,False
+AP3p2_900K,history,Fc_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360968e-06,1.3517979858360968e-06,False
+AP3p2_900K,history,p_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,p_gf_eq,4,0,0.0,0.0,0.0,"(0,)",,9173553719.008255,9173553719.008255,False
+AP3p2_900K,history,zeta_gf,4,0,0.0,0.0,0.0,"(0,)",,6.007038856931469,6.007038856931469,False
+AP3p2_900K,history,gf_saturated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p2_900K,history,p_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,p_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,p_b_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+AP3p2_900K,history,p_d_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+AP3p2_900K,history,lambda_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,nu_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,phi_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,phi_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,cap_raw_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,capture_fraction_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,capture_raw_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,capture_bubbles_cumulative,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,max_f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,matrix_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,bulk_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,dislocation_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,qgb_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,grainface_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,release_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,mass_balance_residual,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,pressure_ratio_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,vacancies_per_bubble_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,pressure_ratio_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,history,vacancies_per_bubble_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,state,bulk_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p2_900K,state,dislocation_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p2_900K,state,qv_gf,3,0,0.0,0.0,0.0,"(0,)",,1.7425574955007212e+18,1.7425574955007212e+18,False
+AP3p2_900K,intermediate,Dg,3,0,0.0,0.0,0.0,"(0,)",,6.859556060984681e-19,6.859556060984681e-19,False
+AP3p2_900K,intermediate,Dv,3,0,0.0,0.0,0.0,"(0,)",,5.096721272601947e-25,5.096721272601947e-25,False
+AP3p2_900K,intermediate,Dv1,3,0,0.0,0.0,0.0,"(0,)",,5.119872410101689e-34,5.119872410101689e-34,False
+AP3p2_900K,intermediate,Dv_dislocation,3,0,0.0,0.0,0.0,"(0,)",,5.0967212726019465e-24,5.0967212726019465e-24,False
+AP3p2_900K,intermediate,V_b_growth,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,b_b,3,0,0.0,0.0,0.0,"(0,)",,1.5227063540480894e-05,1.5227063540480894e-05,False
+AP3p2_900K,intermediate,b_d,3,0,0.0,0.0,0.0,"(0,)",,1.5227063540480894e-05,1.5227063540480894e-05,False
+AP3p2_900K,intermediate,beta,3,0,0.0,0.0,0.0,"(0,)",,1.3842827431568335e+19,1.3842827431568335e+19,False
+AP3p2_900K,intermediate,c_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,1.845653835776372e+22,1.845653835776372e+22,False
+AP3p2_900K,intermediate,cap_raw_step,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,captured_bubbles,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,dVd_growth_dt,3,0,0.0,0.0,0.0,"(0,)",,1.7827469419963588e-28,1.7827469419963588e-28,False
+AP3p2_900K,intermediate,dnvb_dt,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,dnvd_dt,3,0,0.0,0.0,0.0,"(0,)",,5.288134748537831e+19,5.288134748537831e+19,False
+AP3p2_900K,intermediate,dq_to_gb,3,0,0.0,0.0,0.0,"(0,)",,2.292994728227458e+21,2.292994728227458e+21,False
+AP3p2_900K,intermediate,f_cap,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,g_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,g_d,3,0,0.0,0.0,0.0,"(0,)",,0.000752151040424317,0.000752151040424317,False
+AP3p2_900K,intermediate,lambda_d,3,0,0.0,0.0,0.0,"(0,)",,1.0,1.0,False
+AP3p2_900K,intermediate,mb_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,md_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,1.2875300317494684e+23,1.2875300317494684e+23,False
+AP3p2_900K,intermediate,negative_reset,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,nu_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,nvb_after_seed,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,nvb_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,nvd_after_seed,3,0,0.0,0.0,0.0,"(0,)",,5.711185528420857e+23,5.711185528420857e+23,False
+AP3p2_900K,intermediate,nvd_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,5.711185528420857e+23,5.711185528420857e+23,False
+AP3p2_900K,intermediate,phi_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,phi_d,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,intermediate,q_gb_total_target,3,0,0.0,0.0,0.0,"(0,)",,2.292994728227458e+21,2.292994728227458e+21,False
+AP3p2_900K,intermediate,source_c,3,0,0.0,0.0,0.0,"(0,)",,1.3842827431568335e+19,1.3842827431568335e+19,False
+AP3p2_900K,intermediate,source_mb,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p2_900K,initial,modes_c,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p2_900K,initial,modes_mb,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p2_900K,initial,modes_md,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p2_900K,after_exchange,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.9903521251974716e+22,2.9903521251974716e+22,False
+AP3p2_900K,after_exchange,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p2_900K,after_exchange,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.0860727467228575e+23,2.0860727467228575e+23,False
+AP3p2_900K,after_capture,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.9903521251974716e+22,2.9903521251974716e+22,False
+AP3p2_900K,after_capture,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p2_900K,after_capture,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.0860727467228575e+23,2.0860727467228575e+23,False
+AP3p2_900K,step_end,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.9903521251974716e+22,2.9903521251974716e+22,False
+AP3p2_900K,step_end,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p2_900K,step_end,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.0860727467228575e+23,2.0860727467228575e+23,False
+AP3p4_1600K,history,time,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,burnup_percent_fima,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,rho_d,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+AP3p4_1600K,history,rho_d_next,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+AP3p4_1600K,history,delta_Nd_rho,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,c,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,mb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,md,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,Nb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,Nd,4,0,0.0,0.0,0.0,"(0,)",,1.435e+19,1.435e+19,False
+AP3p4_1600K,history,Vb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,Vd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,Rb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,Rd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,nvb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,nvd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,generated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,retained,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,retained_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,q_gb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,q_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,q_rel,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,swelling_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,swelling_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,swelling_gf,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+AP3p4_1600K,history,swelling_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,swelling_total_gas,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+AP3p4_1600K,history,Ngf_areal,4,0,0.0,0.0,0.0,"(0,)",,10000000000000.0,10000000000000.0,False
+AP3p4_1600K,history,Ngf_vol,4,0,0.0,0.0,0.0,"(0,)",,2.5e+18,2.5e+18,False
+AP3p4_1600K,history,ng_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,nv_gf,4,0,0.0,0.0,0.0,"(0,)",,0.600986119103485,0.600986119103485,False
+AP3p4_1600K,history,V_gf,4,0,0.0,0.0,0.0,"(0,)",,1.7557576192188547e-29,1.7557576192188547e-29,False
+AP3p4_1600K,history,R_gf,4,0,0.0,0.0,0.0,"(0,)",,2.4200000000000025e-10,2.4200000000000025e-10,False
+AP3p4_1600K,history,A_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360967e-19,1.3517979858360967e-19,False
+AP3p4_1600K,history,Fc_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360968e-06,1.3517979858360968e-06,False
+AP3p4_1600K,history,p_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,p_gf_eq,4,0,0.0,0.0,0.0,"(0,)",,9173553719.008255,9173553719.008255,False
+AP3p4_1600K,history,zeta_gf,4,0,0.0,0.0,0.0,"(0,)",,6.007038856931469,6.007038856931469,False
+AP3p4_1600K,history,gf_saturated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p4_1600K,history,p_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,p_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,p_b_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+AP3p4_1600K,history,p_d_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+AP3p4_1600K,history,lambda_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,nu_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,phi_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,phi_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,cap_raw_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,capture_fraction_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,capture_raw_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,capture_bubbles_cumulative,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,max_f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,matrix_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,bulk_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,dislocation_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,qgb_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,grainface_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,release_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,mass_balance_residual,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,pressure_ratio_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,vacancies_per_bubble_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,pressure_ratio_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,history,vacancies_per_bubble_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,state,bulk_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p4_1600K,state,dislocation_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p4_1600K,state,qv_gf,3,0,0.0,0.0,0.0,"(0,)",,2.553523845926509e+20,2.553523845926509e+20,False
+AP3p4_1600K,intermediate,Dg,3,0,0.0,0.0,0.0,"(0,)",,1.3705602340796549e-18,1.3705602340796549e-18,False
+AP3p4_1600K,intermediate,Dv,3,0,0.0,0.0,0.0,"(0,)",,2.804370316124471e-20,2.804370316124471e-20,False
+AP3p4_1600K,intermediate,Dv1,3,0,0.0,0.0,0.0,"(0,)",,2.6363059898109155e-20,2.6363059898109155e-20,False
+AP3p4_1600K,intermediate,Dv_dislocation,3,0,0.0,0.0,0.0,"(0,)",,2.804370316124471e-19,2.804370316124471e-19,False
+AP3p4_1600K,intermediate,V_b_growth,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,b_b,3,0,0.0,0.0,0.0,"(0,)",,1.9795182602625162e-05,1.9795182602625162e-05,False
+AP3p4_1600K,intermediate,b_d,3,0,0.0,0.0,0.0,"(0,)",,1.9795182602625162e-05,1.9795182602625162e-05,False
+AP3p4_1600K,intermediate,beta,3,0,0.0,0.0,0.0,"(0,)",,1.7995675661038836e+19,1.7995675661038836e+19,False
+AP3p4_1600K,intermediate,c_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,1.3305281389150918e+22,1.3305281389150918e+22,False
+AP3p4_1600K,intermediate,cap_raw_step,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,captured_bubbles,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,dVd_growth_dt,3,0,0.0,0.0,0.0,"(0,)",,4.604440544948184e-28,4.604440544948184e-28,False
+AP3p4_1600K,intermediate,dnvb_dt,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,dnvd_dt,3,0,0.0,0.0,0.0,"(0,)",,1.782367175633102e+20,1.782367175633102e+20,False
+AP3p4_1600K,intermediate,dq_to_gb,3,0,0.0,0.0,0.0,"(0,)",,3.1331786512526884e+21,3.1331786512526884e+21,False
+AP3p4_1600K,intermediate,f_cap,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,g_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,g_d,3,0,0.0,0.0,0.0,"(0,)",,0.0015028207319282814,0.0015028207319282814,False
+AP3p4_1600K,intermediate,lambda_d,3,0,0.0,0.0,0.0,"(0,)",,1.0,1.0,False
+AP3p4_1600K,intermediate,mb_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,md_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,1.779148370988158e+23,1.779148370988158e+23,False
+AP3p4_1600K,intermediate,negative_reset,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,nu_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,nvb_after_seed,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,nvb_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,nvd_after_seed,3,0,0.0,0.0,0.0,"(0,)",,1.9249565496837504e+24,1.9249565496837504e+24,False
+AP3p4_1600K,intermediate,nvd_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,1.9249565496837504e+24,1.9249565496837504e+24,False
+AP3p4_1600K,intermediate,phi_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,phi_d,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,intermediate,q_gb_total_target,3,0,0.0,0.0,0.0,"(0,)",,3.1331786512526884e+21,3.1331786512526884e+21,False
+AP3p4_1600K,intermediate,source_c,3,0,0.0,0.0,0.0,"(0,)",,1.7995675661038836e+19,1.7995675661038836e+19,False
+AP3p4_1600K,intermediate,source_mb,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1600K,initial,modes_c,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1600K,initial,modes_mb,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1600K,initial,modes_md,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1600K,after_exchange,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.1573958486942957e+22,2.1573958486942957e+22,False
+AP3p4_1600K,after_exchange,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1600K,after_exchange,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.8848148321844846e+23,2.8848148321844846e+23,False
+AP3p4_1600K,after_capture,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.1573958486942957e+22,2.1573958486942957e+22,False
+AP3p4_1600K,after_capture,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1600K,after_capture,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.8848148321844846e+23,2.8848148321844846e+23,False
+AP3p4_1600K,step_end,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.1573958486942957e+22,2.1573958486942957e+22,False
+AP3p4_1600K,step_end,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1600K,step_end,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.8848148321844846e+23,2.8848148321844846e+23,False
+AP3p4_1800K,history,time,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,burnup_percent_fima,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,rho_d,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+AP3p4_1800K,history,rho_d_next,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+AP3p4_1800K,history,delta_Nd_rho,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,c,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,mb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,md,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,Nb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,Nd,4,0,0.0,0.0,0.0,"(0,)",,1.435e+19,1.435e+19,False
+AP3p4_1800K,history,Vb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,Vd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,Rb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,Rd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,nvb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,nvd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,generated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,retained,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,retained_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,q_gb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,q_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,q_rel,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,swelling_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,swelling_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,swelling_gf,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+AP3p4_1800K,history,swelling_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,swelling_total_gas,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+AP3p4_1800K,history,Ngf_areal,4,0,0.0,0.0,0.0,"(0,)",,10000000000000.0,10000000000000.0,False
+AP3p4_1800K,history,Ngf_vol,4,0,0.0,0.0,0.0,"(0,)",,2.5e+18,2.5e+18,False
+AP3p4_1800K,history,ng_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,nv_gf,4,0,0.0,0.0,0.0,"(0,)",,0.600986119103485,0.600986119103485,False
+AP3p4_1800K,history,V_gf,4,0,0.0,0.0,0.0,"(0,)",,1.7557576192188547e-29,1.7557576192188547e-29,False
+AP3p4_1800K,history,R_gf,4,0,0.0,0.0,0.0,"(0,)",,2.4200000000000025e-10,2.4200000000000025e-10,False
+AP3p4_1800K,history,A_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360967e-19,1.3517979858360967e-19,False
+AP3p4_1800K,history,Fc_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360968e-06,1.3517979858360968e-06,False
+AP3p4_1800K,history,p_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,p_gf_eq,4,0,0.0,0.0,0.0,"(0,)",,9173553719.008255,9173553719.008255,False
+AP3p4_1800K,history,zeta_gf,4,0,0.0,0.0,0.0,"(0,)",,6.007038856931469,6.007038856931469,False
+AP3p4_1800K,history,gf_saturated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p4_1800K,history,p_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,p_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,p_b_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+AP3p4_1800K,history,p_d_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+AP3p4_1800K,history,lambda_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,nu_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,phi_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,phi_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,cap_raw_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,capture_fraction_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,capture_raw_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,capture_bubbles_cumulative,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,max_f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,matrix_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,bulk_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,dislocation_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,qgb_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,grainface_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,release_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,mass_balance_residual,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,pressure_ratio_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,vacancies_per_bubble_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,pressure_ratio_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,history,vacancies_per_bubble_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,state,bulk_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p4_1800K,state,dislocation_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+AP3p4_1800K,state,qv_gf,3,0,0.0,0.0,0.0,"(0,)",,2.968215454242915e+20,2.968215454242915e+20,False
+AP3p4_1800K,intermediate,Dg,3,0,0.0,0.0,0.0,"(0,)",,2.8109916689626407e-17,2.8109916689626407e-17,False
+AP3p4_1800K,intermediate,Dv,3,0,0.0,0.0,0.0,"(0,)",,2.4025223904971453e-18,2.4025223904971453e-18,False
+AP3p4_1800K,intermediate,Dv1,3,0,0.0,0.0,0.0,"(0,)",,2.397813173290163e-18,2.397813173290163e-18,False
+AP3p4_1800K,intermediate,Dv_dislocation,3,0,0.0,0.0,0.0,"(0,)",,2.4025223904971453e-17,2.4025223904971453e-17,False
+AP3p4_1800K,intermediate,V_b_growth,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,b_b,3,0,0.0,0.0,0.0,"(0,)",,1.9795182602625162e-05,1.9795182602625162e-05,False
+AP3p4_1800K,intermediate,b_d,3,0,0.0,0.0,0.0,"(0,)",,1.9795182602625162e-05,1.9795182602625162e-05,False
+AP3p4_1800K,intermediate,beta,3,0,0.0,0.0,0.0,"(0,)",,1.7995675661038836e+19,1.7995675661038836e+19,False
+AP3p4_1800K,intermediate,c_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,6.943263143754463e+20,6.943263143754463e+20,False
+AP3p4_1800K,intermediate,cap_raw_step,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,captured_bubbles,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,dVd_growth_dt,3,0,0.0,0.0,0.0,"(0,)",,5.749184260668331e-28,5.749184260668331e-28,False
+AP3p4_1800K,intermediate,dnvb_dt,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,dnvd_dt,3,0,0.0,0.0,0.0,"(0,)",,2.310967353085836e+20,2.310967353085836e+20,False
+AP3p4_1800K,intermediate,dq_to_gb,3,0,0.0,0.0,0.0,"(0,)",,3.238708056820474e+21,3.238708056820474e+21,False
+AP3p4_1800K,intermediate,f_cap,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,g_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,g_d,3,0,0.0,0.0,0.0,"(0,)",,0.030822553087070093,0.030822553087070093,False
+AP3p4_1800K,intermediate,lambda_d,3,0,0.0,0.0,0.0,"(0,)",,1.0,1.0,False
+AP3p4_1800K,intermediate,mb_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,md_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,1.904202627680235e+23,1.904202627680235e+23,False
+AP3p4_1800K,intermediate,negative_reset,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,nu_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,nvb_after_seed,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,nvb_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,nvd_after_seed,3,0,0.0,0.0,0.0,"(0,)",,2.495844741332703e+24,2.495844741332703e+24,False
+AP3p4_1800K,intermediate,nvd_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,2.495844741332703e+24,2.495844741332703e+24,False
+AP3p4_1800K,intermediate,phi_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,phi_d,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,intermediate,q_gb_total_target,3,0,0.0,0.0,0.0,"(0,)",,3.238708056820474e+21,3.238708056820474e+21,False
+AP3p4_1800K,intermediate,source_c,3,0,0.0,0.0,0.0,"(0,)",,1.7995675661038836e+19,1.7995675661038836e+19,False
+AP3p4_1800K,intermediate,source_mb,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+AP3p4_1800K,initial,modes_c,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1800K,initial,modes_mb,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1800K,initial,modes_md,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1800K,after_exchange,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,1.1264202583230203e+21,1.1264202583230203e+21,False
+AP3p4_1800K,after_exchange,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1800K,after_exchange,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,3.0892281789727826e+23,3.0892281789727826e+23,False
+AP3p4_1800K,after_capture,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,1.1264202583230203e+21,1.1264202583230203e+21,False
+AP3p4_1800K,after_capture,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1800K,after_capture,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,3.0892281789727826e+23,3.0892281789727826e+23,False
+AP3p4_1800K,step_end,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,1.1264202583230203e+21,1.1264202583230203e+21,False
+AP3p4_1800K,step_end,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+AP3p4_1800K,step_end,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,3.0892281789727826e+23,3.0892281789727826e+23,False
+ANP6_1600K,history,time,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,burnup_percent_fima,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,rho_d,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+ANP6_1600K,history,rho_d_next,4,0,0.0,0.0,0.0,"(0,)",,35000000000000.0,35000000000000.0,False
+ANP6_1600K,history,delta_Nd_rho,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,c,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,mb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,md,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,Nb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,Nd,4,0,0.0,0.0,0.0,"(0,)",,1.435e+19,1.435e+19,False
+ANP6_1600K,history,Vb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,Vd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,Rb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,Rd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,nvb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,nvd,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,generated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,retained,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,retained_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,q_gb,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,q_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,q_rel,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,swelling_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,swelling_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,swelling_gf,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+ANP6_1600K,history,swelling_ig,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,swelling_total_gas,4,0,0.0,0.0,0.0,"(0,)",,4.3893940480471364e-11,4.3893940480471364e-11,False
+ANP6_1600K,history,Ngf_areal,4,0,0.0,0.0,0.0,"(0,)",,10000000000000.0,10000000000000.0,False
+ANP6_1600K,history,Ngf_vol,4,0,0.0,0.0,0.0,"(0,)",,2.5e+18,2.5e+18,False
+ANP6_1600K,history,ng_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,nv_gf,4,0,0.0,0.0,0.0,"(0,)",,0.600986119103485,0.600986119103485,False
+ANP6_1600K,history,V_gf,4,0,0.0,0.0,0.0,"(0,)",,1.7557576192188547e-29,1.7557576192188547e-29,False
+ANP6_1600K,history,R_gf,4,0,0.0,0.0,0.0,"(0,)",,2.4200000000000025e-10,2.4200000000000025e-10,False
+ANP6_1600K,history,A_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360967e-19,1.3517979858360967e-19,False
+ANP6_1600K,history,Fc_gf,4,0,0.0,0.0,0.0,"(0,)",,1.3517979858360968e-06,1.3517979858360968e-06,False
+ANP6_1600K,history,p_gf,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,p_gf_eq,4,0,0.0,0.0,0.0,"(0,)",,9173553719.008255,9173553719.008255,False
+ANP6_1600K,history,zeta_gf,4,0,0.0,0.0,0.0,"(0,)",,6.007038856931469,6.007038856931469,False
+ANP6_1600K,history,gf_saturated,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+ANP6_1600K,history,p_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,p_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,p_b_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+ANP6_1600K,history,p_d_eq,4,0,0.0,0.0,0.0,"(0,)",,2220000000000000.0,2220000000000000.0,False
+ANP6_1600K,history,lambda_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,nu_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,phi_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,phi_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,cap_raw_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,capture_fraction_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,capture_raw_sum,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,capture_bubbles_cumulative,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,max_f_cap_step,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,matrix_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,bulk_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,dislocation_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,qgb_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,grainface_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,release_gas_percent,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,mass_balance_residual,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,pressure_ratio_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,vacancies_per_bubble_b,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,pressure_ratio_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,history,vacancies_per_bubble_d,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,state,bulk_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+ANP6_1600K,state,dislocation_first_gas_seed_done,4,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,True
+ANP6_1600K,state,qv_gf,3,0,0.0,0.0,0.0,"(0,)",,2.651056729010622e+20,2.651056729010622e+20,False
+ANP6_1600K,intermediate,Dg,3,0,0.0,0.0,0.0,"(0,)",,1.4017765731852965e-18,1.4017765731852965e-18,False
+ANP6_1600K,intermediate,Dv,3,0,0.0,0.0,0.0,"(0,)",,2.8072866441166047e-20,2.8072866441166047e-20,False
+ANP6_1600K,intermediate,Dv1,3,0,0.0,0.0,0.0,"(0,)",,2.6363059898109155e-20,2.6363059898109155e-20,False
+ANP6_1600K,intermediate,Dv_dislocation,3,0,0.0,0.0,0.0,"(0,)",,2.8072866441166047e-19,2.8072866441166047e-19,False
+ANP6_1600K,intermediate,V_b_growth,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,b_b,3,0,0.0,0.0,0.0,"(0,)",,2.0488132955150955e-05,2.0488132955150955e-05,False
+ANP6_1600K,intermediate,b_d,3,0,0.0,0.0,0.0,"(0,)",,2.0488132955150955e-05,2.0488132955150955e-05,False
+ANP6_1600K,intermediate,beta,3,0,0.0,0.0,0.0,"(0,)",,1.8625632456264503e+19,1.8625632456264503e+19,False
+ANP6_1600K,intermediate,c_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,1.356193811633694e+22,1.356193811633694e+22,False
+ANP6_1600K,intermediate,cap_raw_step,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,captured_bubbles,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,dVd_growth_dt,3,0,0.0,0.0,0.0,"(0,)",,4.8315703741023424e-28,4.8315703741023424e-28,False
+ANP6_1600K,intermediate,dnvb_dt,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,dnvd_dt,3,0,0.0,0.0,0.0,"(0,)",,1.8766207269237742e+20,1.8766207269237742e+20,False
+ANP6_1600K,intermediate,dq_to_gb,3,0,0.0,0.0,0.0,"(0,)",,3.2542823329307694e+21,3.2542823329307694e+21,False
+ANP6_1600K,intermediate,f_cap,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,g_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,g_d,3,0,0.0,0.0,0.0,"(0,)",,0.0015370494804475786,0.0015370494804475786,False
+ANP6_1600K,intermediate,lambda_d,3,0,0.0,0.0,0.0,"(0,)",,1.0,1.0,False
+ANP6_1600K,intermediate,mb_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,md_new_exchange,3,0,0.0,0.0,0.0,"(0,)",,1.843406100783889e+23,1.843406100783889e+23,False
+ANP6_1600K,intermediate,negative_reset,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,nu_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,nvb_after_seed,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,nvb_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,nvd_after_seed,3,0,0.0,0.0,0.0,"(0,)",,2.026750385077676e+24,2.026750385077676e+24,False
+ANP6_1600K,intermediate,nvd_after_vacancy,3,0,0.0,0.0,0.0,"(0,)",,2.026750385077676e+24,2.026750385077676e+24,False
+ANP6_1600K,intermediate,phi_b,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,phi_d,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,intermediate,q_gb_total_target,3,0,0.0,0.0,0.0,"(0,)",,3.2542823329307694e+21,3.2542823329307694e+21,False
+ANP6_1600K,intermediate,source_c,3,0,0.0,0.0,0.0,"(0,)",,1.8625632456264503e+19,1.8625632456264503e+19,False
+ANP6_1600K,intermediate,source_mb,3,0,0.0,0.0,0.0,"(0,)",,0.0,0.0,False
+ANP6_1600K,initial,modes_c,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+ANP6_1600K,initial,modes_mb,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+ANP6_1600K,initial,modes_md,160,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+ANP6_1600K,after_exchange,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.1991340660162023e+22,2.1991340660162023e+22,False
+ANP6_1600K,after_exchange,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+ANP6_1600K,after_exchange,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.989172431669301e+23,2.989172431669301e+23,False
+ANP6_1600K,after_capture,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.1991340660162023e+22,2.1991340660162023e+22,False
+ANP6_1600K,after_capture,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+ANP6_1600K,after_capture,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.989172431669301e+23,2.989172431669301e+23,False
+ANP6_1600K,step_end,modes_c,480,0,0.0,0.0,0.0,"(0, 0)",,2.1991340660162023e+22,2.1991340660162023e+22,False
+ANP6_1600K,step_end,modes_mb,480,0,0.0,0.0,0.0,"(0, 0)",,0.0,0.0,False
+ANP6_1600K,step_end,modes_md,480,0,0.0,0.0,0.0,"(0, 0)",,2.989172431669301e+23,2.989172431669301e+23,False

@@ -30,6 +30,11 @@ inline bool if_exist(const std::string& name)
 
 void Simulation::output()
 {
+    if (un_l3_active)
+    {
+        un_l3_model->output(TestPath);
+        return;
+    }
     std::string  output_name = TestPath + "output.txt";
     std::fstream output_file;
     output_file.open(output_name, std::fstream::in | std::fstream::out | std::fstream::app);

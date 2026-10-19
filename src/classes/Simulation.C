@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 
@@ -35,6 +36,14 @@ void Simulation::initialize(int    Sciantix_options[],
                             double Sciantix_scaling_factors[],
                             double Sciantix_diffusion_modes[])
 {
+    un_l3_active = Sciantix_options[11] == 3;
+    if (un_l3_active)
+    {
+        if (!un_l3_model)
+            un_l3_model.reset(new un_l3::Model(Sciantix_history, Sciantix_variables, Sciantix_scaling_factors));
+        std::copy(Sciantix_history, Sciantix_history + 20, un_l3_history);
+        return;
+    }
     setVariables(
         Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
     setGas();
@@ -45,6 +54,11 @@ void Simulation::initialize(int    Sciantix_options[],
 
 void Simulation::execute()
 {
+    if (un_l3_active)
+    {
+        un_l3_model->execute(solver, un_l3_history);
+        return; // All legacy physics updates belong to the other paths.
+    }
 #if !defined(COUPLING_TU)
     Burnup();
 

@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build
+Test project /home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build
+    Start 1: un_l3_state_contract
+1/1 Test #1: un_l3_state_contract .............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec

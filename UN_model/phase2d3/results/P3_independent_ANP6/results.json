@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "case": "ANP6_1600K",
+  "steps": 1307,
+  "wall_seconds": 0.23917941400577547,
+  "identical_bytes": {
+    "output.txt": true,
+    "un_l3_diagnostics.txt": true,
+    "un_l3_modes.bin": true,
+    "un_l3_exchange_modes.bin": true
+  },
+  "independent_process": true
+}

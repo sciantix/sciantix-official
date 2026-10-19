@@ -1,0 +1,12 @@
+{
+  "rtol": 1e-11,
+  "roundoff_multiplier": 64,
+  "float64_epsilon": 2.220446049250313e-16,
+  "criterion": "abs(actual-reference) <= rtol*abs(reference) + 64*epsilon*characteristic_scale",
+  "scalar_scale": "maximum absolute frozen value over the compared history, in the quantity's own units; a 1e-300 computational guard applies to identically zero histories",
+  "cancellation_scale": "q_gb, q_gf, q_rel and mass residual use maximum cumulative production; boundary gas percentages use 100; dq_to_gb and q_gb_total_target use maximum cumulative production",
+  "modal_scale": "per row and population maximum absolute frozen modal coefficient, floor 1 atom/m^3",
+  "discrete_fields": "exact equality, including zero: counts, seed and saturation flags",
+  "mass_balance": "abs(residual) <= 1e-11 * max(cumulative production, 1 atom/m^3)",
+  "rationale": "Same rtol and roundoff multiplier as 2A. Explicit additive roundoff term for integration outputs obtained by subtraction of large inventories, particularly mass residuals and boundary gas near zero. Defined before diagnostic or complete integration execution; does not change the frozen reference or 2B/2C tolerances."
+}

@@ -1,0 +1,17 @@
+{
+  "source_files_sha256": {
+    "CMakeLists.txt": "24541779e73e748fcb88b4ef02be2c3f8f72bf5f9ef3d471e45629a0b9cbd144",
+    "include/models/UNParameters.h": "55aafbb92f4655e5cc126e9e2447a854aef50c85cec7f299b5d4706679f5e34d",
+    "include/models/UNState.h": "dba22f0870931d288cc40e23eebca873862e84303ba6a18be91b89dbe4a9e8ef",
+    "include/models/UNIntraGranular.h": "37307d58e340103796df0f2d50c33a836fb9c0b2d214c1bde0d0b8411371ed90",
+    "src/models/UNIntraGranular.C": "32cd397ed0a9a4fa1cff7324bf9ebd5fa70ac8a72acae0f76f10bddfaf1081e1",
+    "src/classes/Solver.C": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+    "UN_model/phase2a/solver_fixture.cpp": "9717d6ea38bdc059c283d2681f78a7b7940326afb6bf855adf37cfd2723bc365",
+    "UN_model/phase2a/state_test.cpp": "5c48dec521cfbd95550a5984b97748a4ef2327713f39a637e87f000d4c2d2ee0"
+  },
+  "runner_sha256": {
+    "UN_model/phase2a/run_phase2a.py": "4a3e19ca8999a955251a6bd93a59dababa1a4f54e031d178a51ad778136e93a3",
+    "UN_model/phase2a/run_extra_checks.py": "4e17f4aa17305ea897919b8bbd66b1330cb7a96a20e9ffe4726954e065c7906c"
+  },
+  "compile_commands_sha256": "f65c96d61ab81414284d16d413bac3eb36ab079f8d3293ffad525481c5eb65a2"
+}

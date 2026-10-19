@@ -1,0 +1,9 @@
+case,field,count,failures,max_absolute_error,max_normalized_error,max_step,first_failure
+AP3p2_900K,inventory,1208,0,0.0,0.0,0,
+AP3p2_900K,rate,1208,0,0.0,0.0,0,
+AP3p4_1600K,inventory,1098,0,0.0,0.0,0,
+AP3p4_1600K,rate,1098,0,0.0,0.0,0,
+AP3p4_1800K,inventory,1098,0,549755813888.0,1.7779279672084784e-16,927,
+AP3p4_1800K,rate,1098,0,50855936.0,1.360691917845246e-13,927,
+ANP6_1600K,inventory,2612,0,0.0,0.0,0,
+ANP6_1600K,rate,2612,0,0.0,0.0,0,

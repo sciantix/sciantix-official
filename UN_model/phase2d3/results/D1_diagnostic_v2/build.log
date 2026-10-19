@@ -1,0 +1,42 @@
+[  2%] Building CXX object CMakeFiles/sciantix.dir/src/MainSCIANTIX.C.o
+[  4%] Building CXX object CMakeFiles/sciantix.dir/src/MainVariables.C.o
+[  6%] Building CXX object CMakeFiles/sciantix.dir/src/Sciantix.C.o
+[  8%] Building CXX object CMakeFiles/sciantix.dir/src/classes/Matrix.C.o
+[ 10%] Building CXX object CMakeFiles/sciantix.dir/src/classes/SciantixVariable.C.o
+[ 12%] Building CXX object CMakeFiles/sciantix.dir/src/classes/Simulation.C.o
+[ 14%] Building CXX object CMakeFiles/sciantix.dir/src/classes/Solver.C.o
+[ 16%] Building CXX object CMakeFiles/sciantix.dir/src/classes/System.C.o
+[ 18%] Building CXX object CMakeFiles/sciantix.dir/src/coupling/TUSrcCoupling.C.o
+[ 20%] Building CXX object CMakeFiles/sciantix.dir/src/file_manager/Initialization.C.o
+[ 22%] Building CXX object CMakeFiles/sciantix.dir/src/file_manager/InputInterpolation.C.o
+[ 25%] Building CXX object CMakeFiles/sciantix.dir/src/file_manager/InputReading.C.o
+[ 27%] Building CXX object CMakeFiles/sciantix.dir/src/file_manager/Output.C.o
+[ 29%] Building CXX object CMakeFiles/sciantix.dir/src/file_manager/TimeStepCalculation.C.o
+[ 31%] Building CXX object CMakeFiles/sciantix.dir/src/models/Burnup.C.o
+[ 33%] Building CXX object CMakeFiles/sciantix.dir/src/models/ChromiumSolubility.C.o
+[ 35%] Building CXX object CMakeFiles/sciantix.dir/src/models/Densification.C.o
+[ 37%] Building CXX object CMakeFiles/sciantix.dir/src/models/EffectiveBurnup.C.o
+[ 39%] Building CXX object CMakeFiles/sciantix.dir/src/models/GapPartialPressure.C.o
+[ 41%] Building CXX object CMakeFiles/sciantix.dir/src/models/GasDecay.C.o
+[ 43%] Building CXX object CMakeFiles/sciantix.dir/src/models/GasDiffusion.C.o
+[ 45%] Building CXX object CMakeFiles/sciantix.dir/src/models/GasProduction.C.o
+[ 47%] Building CXX object CMakeFiles/sciantix.dir/src/models/GasRelease.C.o
+[ 50%] Building CXX object CMakeFiles/sciantix.dir/src/models/GrainBoundaryMicroCracking.C.o
+[ 52%] Building CXX object CMakeFiles/sciantix.dir/src/models/GrainBoundarySweeping.C.o
+[ 54%] Building CXX object CMakeFiles/sciantix.dir/src/models/GrainBoundaryVenting.C.o
+[ 56%] Building CXX object CMakeFiles/sciantix.dir/src/models/GrainGrowth.C.o
+[ 58%] Building CXX object CMakeFiles/sciantix.dir/src/models/HighBurnupStructureFormation.C.o
+[ 60%] Building CXX object CMakeFiles/sciantix.dir/src/models/HighBurnupStructurePorosity.C.o
+[ 62%] Building CXX object CMakeFiles/sciantix.dir/src/models/InterGranularBubbleBehavior.C.o
+[ 64%] Building CXX object CMakeFiles/sciantix.dir/src/models/IntraGranularBubbleBehavior.C.o
+/home/destro/sciantix-official/UN_model/phase2d3/results/D1_diagnostic_v2/snapshot/src/models/IntraGranularBubbleBehavior.C: In member function ‘void Simulation::IntraGranularBubbleBehavior()’:
+/home/destro/sciantix-official/UN_model/phase2d3/results/D1_diagnostic_v2/snapshot/src/models/IntraGranularBubbleBehavior.C:440:32: error: ‘un_model’ has not been declared
+  440 |         const double rho_old = un_model::dynamic_dislocation_density(
+      |                                ^~~~~~~~
+/home/destro/sciantix-official/UN_model/phase2d3/results/D1_diagnostic_v2/snapshot/src/models/IntraGranularBubbleBehavior.C:442:33: error: ‘un_model’ has not been declared
+  442 |         const double rho_next = un_model::dynamic_dislocation_density(
+      |                                 ^~~~~~~~
+gmake[2]: *** [CMakeFiles/sciantix.dir/build.make:499: CMakeFiles/sciantix.dir/src/models/IntraGranularBubbleBehavior.C.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:1011: CMakeFiles/sciantix.dir/all] Error 2
+gmake: *** [Makefile:121: all] Error 2

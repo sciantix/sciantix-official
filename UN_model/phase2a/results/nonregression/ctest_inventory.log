@@ -1,0 +1,15 @@
+{
+  "backtraceGraph" : 
+  {
+    "commands" : [],
+    "files" : [],
+    "nodes" : []
+  },
+  "kind" : "ctestInfo",
+  "tests" : [],
+  "version" : 
+  {
+    "major" : 1,
+    "minor" : 0
+  }
+}

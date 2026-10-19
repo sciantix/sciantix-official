@@ -1,0 +1,298 @@
+{
+  "status": "pass",
+  "cases": {
+    "AP3p2_900K": {
+      "first_nonzero_differences": [
+        {
+          "history_row": 246,
+          "stage": "transport_before_exchange",
+          "field": "nu_b",
+          "absolute_error": 8.0
+        },
+        {
+          "history_row": 246,
+          "stage": "history",
+          "field": "nu_b",
+          "absolute_error": 8.0
+        }
+      ],
+      "error_windows": [
+        {
+          "history_fraction": [
+            0,
+            0.25
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.25,
+            0.5
+          ],
+          "max_normalized_error": 1.2927851357172887e-16
+        },
+        {
+          "history_fraction": [
+            0.5,
+            0.75
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.75,
+            1.0
+          ],
+          "max_normalized_error": 0.0
+        }
+      ],
+      "modal_max_absolute_error": 0.0,
+      "modal_max_normalized_error": 0.0,
+      "max_mass_residual_over_generated": 2.5650348980556946e-15
+    },
+    "AP3p4_1600K": {
+      "first_nonzero_differences": [
+        {
+          "history_row": 544,
+          "stage": "history",
+          "field": "A_gf",
+          "absolute_error": 1.262177448353619e-29
+        },
+        {
+          "history_row": 544,
+          "stage": "history",
+          "field": "Fc_gf",
+          "absolute_error": 5.551115123125783e-17
+        },
+        {
+          "history_row": 544,
+          "stage": "history",
+          "field": "zeta_gf",
+          "absolute_error": 1.1102230246251565e-16
+        },
+        {
+          "history_row": 545,
+          "stage": "history",
+          "field": "swelling_gf",
+          "absolute_error": 6.938893903907228e-18
+        },
+        {
+          "history_row": 545,
+          "stage": "history",
+          "field": "Ngf_areal",
+          "absolute_error": 0.0009765625
+        },
+        {
+          "history_row": 545,
+          "stage": "history",
+          "field": "Ngf_vol",
+          "absolute_error": 256.0
+        },
+        {
+          "history_row": 545,
+          "stage": "history",
+          "field": "ng_gf",
+          "absolute_error": 9.313225746154785e-10
+        },
+        {
+          "history_row": 545,
+          "stage": "history",
+          "field": "nv_gf",
+          "absolute_error": 2.384185791015625e-07
+        },
+        {
+          "history_row": 545,
+          "stage": "history",
+          "field": "V_gf",
+          "absolute_error": 7.52316384526264e-36
+        },
+        {
+          "history_row": 545,
+          "stage": "history",
+          "field": "R_gf",
+          "absolute_error": 5.293955920339377e-23
+        }
+      ],
+      "error_windows": [
+        {
+          "history_fraction": [
+            0,
+            0.25
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.25,
+            0.5
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.5,
+            0.75
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.75,
+            1.0
+          ],
+          "max_normalized_error": 2.0331309186450058e-15
+        }
+      ],
+      "modal_max_absolute_error": 0.0,
+      "modal_max_normalized_error": 0.0,
+      "max_mass_residual_over_generated": 2.0257198682080884e-15
+    },
+    "AP3p4_1800K": {
+      "first_nonzero_differences": [
+        {
+          "history_row": 5,
+          "stage": "transport_before_exchange",
+          "field": "nu_b",
+          "absolute_error": 0.015625
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "Vb",
+          "absolute_error": 8.96831017167883e-44
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "Rb",
+          "absolute_error": 5.169878828456423e-26
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "nvb",
+          "absolute_error": 256.0
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "swelling_b",
+          "absolute_error": 1.0339757656912846e-25
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "p_b",
+          "absolute_error": 1.9073486328125e-06
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "p_b_eq",
+          "absolute_error": 9.5367431640625e-07
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "nu_b",
+          "absolute_error": 0.015625
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "pressure_ratio_b",
+          "absolute_error": 2.220446049250313e-16
+        },
+        {
+          "history_row": 5,
+          "stage": "history",
+          "field": "vacancies_per_bubble_b",
+          "absolute_error": 1.1102230246251565e-16
+        }
+      ],
+      "error_windows": [
+        {
+          "history_fraction": [
+            0,
+            0.25
+          ],
+          "max_normalized_error": 3.5142285655522634e-16
+        },
+        {
+          "history_fraction": [
+            0.25,
+            0.5
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.5,
+            0.75
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.75,
+            1.0
+          ],
+          "max_normalized_error": 1.8091796875e-12
+        }
+      ],
+      "modal_max_absolute_error": 120259084288.0,
+      "modal_max_normalized_error": 3.068470182314702e-15,
+      "max_mass_residual_over_generated": 2.4981209441933817e-15
+    },
+    "ANP6_1600K": {
+      "first_nonzero_differences": [
+        {
+          "history_row": 594,
+          "stage": "transport_before_exchange",
+          "field": "nu_b",
+          "absolute_error": 16.0
+        },
+        {
+          "history_row": 594,
+          "stage": "history",
+          "field": "nu_b",
+          "absolute_error": 16.0
+        }
+      ],
+      "error_windows": [
+        {
+          "history_fraction": [
+            0,
+            0.25
+          ],
+          "max_normalized_error": 0.0
+        },
+        {
+          "history_fraction": [
+            0.25,
+            0.5
+          ],
+          "max_normalized_error": 1.919267823671567e-16
+        },
+        {
+          "history_fraction": [
+            0.5,
+            0.75
+          ],
+          "max_normalized_error": 1.8778105016970434e-16
+        },
+        {
+          "history_fraction": [
+            0.75,
+            1.0
+          ],
+          "max_normalized_error": 0.0
+        }
+      ],
+      "modal_max_absolute_error": 0.0,
+      "modal_max_normalized_error": 0.0,
+      "max_mass_residual_over_generated": 3.336146419883731e-15
+    }
+  },
+  "note": "Nonzero differences are roundoff; no failed numerical comparison in P3_full."
+}

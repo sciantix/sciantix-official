@@ -1,0 +1,328 @@
+[
+  {
+    "name": "configure",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/cmake",
+      "-S",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot",
+      "-B",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "-DSCIANTIX_UN_L3_TESTS=ON"
+    ],
+    "returncode": 0,
+    "wall_seconds": 2.1378281630022684
+  },
+  {
+    "name": "build",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/cmake",
+      "--build",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build",
+      "-j",
+      "2"
+    ],
+    "returncode": 0,
+    "wall_seconds": 21.41571962499802
+  },
+  {
+    "name": "state_ctest",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/ctest",
+      "--test-dir",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0455295549982111
+  },
+  {
+    "name": "AP3p2_900K_single_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p2_900K",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p2_900K/single_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.007719744997302769
+  },
+  {
+    "name": "AP3p2_900K_single_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p2_900K",
+      "single",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p2_900K/single_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.00942832800137694
+  },
+  {
+    "name": "AP3p2_900K_prefix_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p2_900K",
+      "prefix",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p2_900K/prefix_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0017895199998747557
+  },
+  {
+    "name": "AP3p2_900K_prefix_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p2_900K",
+      "prefix",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p2_900K/prefix_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0016622910006844904
+  },
+  {
+    "name": "AP3p2_900K_replay_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p2_900K",
+      "replay",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p2_900K/replay_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.007217192000098294
+  },
+  {
+    "name": "AP3p2_900K_replay_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p2_900K",
+      "replay",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p2_900K/replay_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.007634796002093935
+  },
+  {
+    "name": "AP3p4_1600K_single_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1600K",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1600K/single_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.006818182999268174
+  },
+  {
+    "name": "AP3p4_1600K_single_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1600K",
+      "single",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1600K/single_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.007987708002474392
+  },
+  {
+    "name": "AP3p4_1600K_prefix_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1600K",
+      "prefix",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1600K/prefix_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0015197950015135575
+  },
+  {
+    "name": "AP3p4_1600K_prefix_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1600K",
+      "prefix",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1600K/prefix_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.002052687999821501
+  },
+  {
+    "name": "AP3p4_1600K_replay_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1600K",
+      "replay",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1600K/replay_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.007020280998403905
+  },
+  {
+    "name": "AP3p4_1600K_replay_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1600K",
+      "replay",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1600K/replay_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.006838540000899229
+  },
+  {
+    "name": "AP3p4_1800K_single_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1800K",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1800K/single_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.006927599999471568
+  },
+  {
+    "name": "AP3p4_1800K_single_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1800K",
+      "single",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1800K/single_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.006679699003143469
+  },
+  {
+    "name": "AP3p4_1800K_prefix_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1800K",
+      "prefix",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1800K/prefix_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0017226759991899598
+  },
+  {
+    "name": "AP3p4_1800K_prefix_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1800K",
+      "prefix",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1800K/prefix_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.001425254002242582
+  },
+  {
+    "name": "AP3p4_1800K_replay_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1800K",
+      "replay",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1800K/replay_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.006708375000016531
+  },
+  {
+    "name": "AP3p4_1800K_replay_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/AP3p4_1800K",
+      "replay",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/AP3p4_1800K/replay_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.008122962000925327
+  },
+  {
+    "name": "ANP6_1600K_single_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/ANP6_1600K",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/ANP6_1600K/single_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.013832004999130731
+  },
+  {
+    "name": "ANP6_1600K_single_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/ANP6_1600K",
+      "single",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/ANP6_1600K/single_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.014375272003235295
+  },
+  {
+    "name": "ANP6_1600K_prefix_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/ANP6_1600K",
+      "prefix",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/ANP6_1600K/prefix_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.001621283998247236
+  },
+  {
+    "name": "ANP6_1600K_prefix_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/ANP6_1600K",
+      "prefix",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/ANP6_1600K/prefix_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0013273859985929448
+  },
+  {
+    "name": "ANP6_1600K_replay_direct",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/ANP6_1600K",
+      "replay",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/ANP6_1600K/replay_direct.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.01473885099767358
+  },
+  {
+    "name": "ANP6_1600K_replay_state",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/fixtures/ANP6_1600K",
+      "replay",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/B4_solver_state_recheck/outputs/ANP6_1600K/replay_state.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.014840929001366021
+  }
+]

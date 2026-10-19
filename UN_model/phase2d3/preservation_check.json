@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "files_checked": 6741,
+  "changed_existing_files": [
+    "include/classes/Simulation.h",
+    "include/models/UNState.h",
+    "src/MainSCIANTIX.C",
+    "src/classes/Simulation.C",
+    "src/file_manager/Initialization.C",
+    "src/file_manager/InputReading.C",
+    "src/file_manager/Output.C",
+    "src/models/UNIntraGranular.C",
+    "src/operations/UpdateVariables.C"
+  ],
+  "legacy_header_restored_exactly": true,
+  "reference_gold_thesis_and_user_files_unchanged": true,
+  "head_and_staged_diff_unchanged": true
+}

@@ -1,0 +1,447 @@
+{
+  "status": "pass",
+  "all_110_case_outputs_identical_bytes": true,
+  "legacy_un_summary_identical_bytes": true,
+  "case_checks": [
+    {
+      "case": "baker/test_Baker1977__1273K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__1373K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__1473K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__1573K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__1673K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__1773K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__1873K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__1973K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "baker/test_Baker1977__2073K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1133K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1253K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1333K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1543K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1698K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1743K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1783K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1843K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "cornell/test_Cornell1969_1853K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4000-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4000-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4000-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4000-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4000-5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4004-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4004-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4004-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4004-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4004-5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4004-6",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4005-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4005-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4005-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4005-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4005-5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4064-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4064-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4064-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4064-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4064-5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4065-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4065-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4065-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4065-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4065-5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4135-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4135-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4135-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4136-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4136-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4136-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4136-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4140-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4140-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4162-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4162-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4162-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4162-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4163-1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4163-2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4163-3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "white/test_White2004_4163-4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_1873K_06",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_1873K_16",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_1873K_23",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_1873K_28",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_2073K_06",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_2073K_16",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_2073K_23",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1990_2073K_28",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_1673K_23_Multiple",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_1673K_23_Single",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_1673K_28_Multiple",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_1673K_28_Single",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_23_1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_23_2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_23_3",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_23_4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_23_5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_28_1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_28_2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_28_4",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1991_2073K_28_5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1993_23",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "kashibe/test_Kashibe1993_44",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "talip/test_Talip2014_1320K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "talip/test_Talip2014_1400K_b",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "talip/test_Talip2014_1400K_c",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "talip/test_Talip2014_1600K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "talip/test_Talip2014_1800K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "oxidation/test_UO2_oxidation_Cox_et_al_data_1273K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "oxidation/test_UO2_oxidation_Cox_et_al_data_1473K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "oxidation/test_UO2_oxidation_Imamura_and_Une_data",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "oxidation/test_UO2_oxidation_PS-623C",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "chromium/test_Chromium_Killeen",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "chromium/test_Chromium_solubility1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "chromium/test_Chromium_solubility2",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "contact/test_CONTACT1",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "hbs/test_UO2HBS",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "vercors/test_Vercors5",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "analytics/test_powerPulse",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1273K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1373K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1473K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1573K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1673K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1773K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1873K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__1973K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "gpr/test_GPR__2073K",
+      "output_identical_bytes_to_phase1": true
+    },
+    {
+      "case": "analytics/test_Baker1977_1273K_porosityevolution",
+      "output_identical_bytes_to_phase1": true
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "vercors/test_Vercors5": {
+    "nonfinite_values": [
+      {
+        "row_zero_based": 400,
+        "variable": "Fuel oxygen partial pressure (MPa)",
+        "output": "nan",
+        "gold": "nan",
+        "time_first_column": 32400.0
+      },
+      {
+        "row_zero_based": 400,
+        "variable": "Fuel oxygen potential (KJ/mol)",
+        "output": "nan",
+        "gold": "nan",
+        "time_first_column": 32400.0
+      },
+      {
+        "row_zero_based": 401,
+        "variable": "Equilibrium stoichiometry deviation (/)",
+        "output": "nan",
+        "gold": "nan",
+        "time_first_column": 32400.5017
+      }
+    ],
+    "mismatching_cells_historical_thresholds": 0,
+    "first_discrepancies": []
+  },
+  "analytics/test_Baker1977_1273K_porosityevolution": {
+    "nonfinite_values": [],
+    "mismatching_cells_historical_thresholds": 1127,
+    "first_discrepancies": [
+      {
+        "row_zero_based": 0,
+        "variable": "Intergranular venting probability (/)",
+        "output": 0.05874837,
+        "gold": 0.02712685,
+        "absolute_difference": 0.03162152
+      },
+      {
+        "row_zero_based": 0,
+        "variable": "Open porosity (/)",
+        "output": 0.001455292,
+        "gold": 0.001455359,
+        "absolute_difference": 6.700000000007915e-08
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Xe at grain boundary (at/m3)",
+        "output": 2.460857e+22,
+        "gold": 2.54372e+22,
+        "absolute_difference": 8.286300000000011e+20
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Xe released (at/m3)",
+        "output": 1.535023e+21,
+        "gold": 7.064025e+20,
+        "absolute_difference": 8.286204999999999e+20
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Kr at grain boundary (at/m3)",
+        "output": 3.076072e+21,
+        "gold": 3.179649e+21,
+        "absolute_difference": 1.0357700000000036e+20
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Kr released (at/m3)",
+        "output": 1.918779e+20,
+        "gold": 8.830031e+19,
+        "absolute_difference": 1.0357759e+20
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Fission gas release (/)",
+        "output": 0.003230267,
+        "gold": 0.001486537,
+        "absolute_difference": 0.0017437300000000002
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Intergranular bubble concentration (bub/m2)",
+        "output": 19965580000000.0,
+        "gold": 19964520000000.0,
+        "absolute_difference": 1060000000.0
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Intergranular atoms per bubble (at/bub)",
+        "output": 2311.031,
+        "gold": 2388.975,
+        "absolute_difference": 77.94399999999996
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Intergranular vacancies per bubble (vac/bub)",
+        "output": 4427.356,
+        "gold": 4618.991,
+        "absolute_difference": 191.63500000000022
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Intergranular fractional coverage (/)",
+        "output": 0.002401682,
+        "gold": 0.00246261,
+        "absolute_difference": 6.0928000000000024e-05
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Intergranular gas swelling (/)",
+        "output": 4.459342e-06,
+        "gold": 4.630228e-06,
+        "absolute_difference": 1.7088600000000038e-07
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Intergranular venting probability (/)",
+        "output": 0.05871506,
+        "gold": 0.02702009,
+        "absolute_difference": 0.03169497
+      },
+      {
+        "row_zero_based": 1,
+        "variable": "Open porosity (/)",
+        "output": 0.001453643,
+        "gold": 0.001453708,
+        "absolute_difference": 6.500000000004766e-08
+      },
+      {
+        "row_zero_based": 2,
+        "variable": "Xe at grain boundary (at/m3)",
+        "output": 5.466614e+22,
+        "gold": 5.65087e+22,
+        "absolute_difference": 1.8425599999999958e+21
+      }
+    ]
+  }
+}
