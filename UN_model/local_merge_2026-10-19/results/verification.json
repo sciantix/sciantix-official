@@ -1,0 +1,95 @@
+{
+  "status": "pass",
+  "merge_commit": "115c93612b51826ab5f67a31dd4a52fd9cec04ec",
+  "merge_parents": [
+    "8f5bfc7e123b0241507c5d1e587a28d20e4dcb24",
+    "607540b61e9c32e37388fb1763876bb904063d89"
+  ],
+  "feature_backup": "607540b61e9c32e37388fb1763876bb904063d89",
+  "origin_development_unchanged": "8f5bfc7e123b0241507c5d1e587a28d20e4dcb24",
+  "preserved_files": 7039,
+  "full_values_compared": 4637652,
+  "full_max_normalized_error": 1.8091796875e-12,
+  "cases": {
+    "AP3p2_900K": {
+      "steps": 605,
+      "first_saturation_history_row": null,
+      "max_mass_residual_over_generated": 2.5650348980556946e-15,
+      "last_dt_s": 4782.800675923936,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "grainface_balance_max_normalized": 0.0,
+      "outputs_identical_to_phase3_bytes": [
+        "output.txt",
+        "un_l3_diagnostics.txt",
+        "un_l3_modes.bin",
+        "un_l3_exchange_modes.bin"
+      ]
+    },
+    "AP3p4_1600K": {
+      "steps": 550,
+      "first_saturation_history_row": null,
+      "max_mass_residual_over_generated": 2.0257198682080884e-15,
+      "last_dt_s": 5329.81879629381,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "grainface_balance_max_normalized": 0.0,
+      "outputs_identical_to_phase3_bytes": [
+        "output.txt",
+        "un_l3_diagnostics.txt",
+        "un_l3_modes.bin",
+        "un_l3_exchange_modes.bin"
+      ]
+    },
+    "AP3p4_1800K": {
+      "steps": 550,
+      "first_saturation_history_row": 539,
+      "max_mass_residual_over_generated": 2.4981209441933817e-15,
+      "last_dt_s": 5329.81879629381,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "grainface_balance_max_normalized": 0.0,
+      "outputs_identical_to_phase3_bytes": [
+        "output.txt",
+        "un_l3_diagnostics.txt",
+        "un_l3_modes.bin",
+        "un_l3_exchange_modes.bin"
+      ]
+    },
+    "ANP6_1600K": {
+      "steps": 1307,
+      "first_saturation_history_row": 736,
+      "max_mass_residual_over_generated": 3.336146419883731e-15,
+      "last_dt_s": 9198.628416094929,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "grainface_balance_max_normalized": 0.0,
+      "outputs_identical_to_phase3_bytes": [
+        "output.txt",
+        "un_l3_diagnostics.txt",
+        "un_l3_modes.bin",
+        "un_l3_exchange_modes.bin"
+      ]
+    }
+  },
+  "solver_values_compared": 5829810,
+  "solver_max_error": 0,
+  "grainface_3x3_values_compared": 9036,
+  "grainface_3x3_max_error": 0,
+  "historical_standard": {
+    "total": 109,
+    "passed": 109,
+    "failed": 0
+  },
+  "preexisting_supplemental": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1
+  },
+  "legacy_un": {
+    "PASS": 91
+  },
+  "historical_outputs_identical_bytes": 110,
+  "metadata_note": "Old HEAD/branch/path hashes are historical provenance; original manifests were not rewritten.",
+  "phase4_started": false
+}

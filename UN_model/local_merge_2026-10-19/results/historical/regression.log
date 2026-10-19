@@ -1,0 +1,234 @@
+Running 9 cases in baker with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1473K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1573K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1873K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1973K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1273K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1373K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1673K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__1773K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/baker/test_Baker1977__2073K/
+Running 9 cases in cornell with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1333K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1543K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1698K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1743K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1133K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1253K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1783K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1843K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/cornell/test_Cornell1969_1853K/
+Running 43 cases in white with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4000-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4000-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4000-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4000-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4000-5/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4004-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4064-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4064-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4064-5/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4065-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4065-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4065-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4065-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4065-5/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4135-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4135-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4135-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4136-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4163-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4004-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4004-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4004-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4004-5/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4004-6/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4005-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4005-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4005-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4005-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4005-5/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4064-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4064-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4136-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4136-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4136-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4140-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4140-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4162-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4162-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4162-3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4162-4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4163-1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4163-2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/white/test_White2004_4163-3/
+Running 23 cases in kashibe with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_1873K_28/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_2073K_06/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_2073K_16/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_1673K_23_Single/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_1673K_28_Multiple/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_1673K_28_Single/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_23_4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_23_5/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_28_1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1993_23/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1993_44/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_1873K_06/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_1873K_16/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_1873K_23/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_2073K_23/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1990_2073K_28/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_1673K_23_Multiple/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_23_1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_23_2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_23_3/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_28_2/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_28_4/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/kashibe/test_Kashibe1991_2073K_28_5/
+Running 5 cases in talip with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/talip/test_Talip2014_1400K_b/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/talip/test_Talip2014_1600K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/talip/test_Talip2014_1320K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/talip/test_Talip2014_1400K_c/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/talip/test_Talip2014_1800K/
+Running 4 cases in oxidation with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/oxidation/test_UO2_oxidation_Cox_et_al_data_1273K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/oxidation/test_UO2_oxidation_Imamura_and_Une_data/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/oxidation/test_UO2_oxidation_Cox_et_al_data_1473K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/oxidation/test_UO2_oxidation_PS-623C/
+Running 3 cases in chromium with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/chromium/test_Chromium_solubility1/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/chromium/test_Chromium_Killeen/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/chromium/test_Chromium_solubility2/
+Running 1 cases in contact with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/contact/test_CONTACT1/
+Running 1 cases in hbs with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/hbs/test_UO2HBS/
+Running 1 cases in vercors with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/vercors/test_Vercors5/
+Running 1 cases in analytics with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/analytics/test_powerPulse/
+Running 9 cases in gpr with 2 threads...
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1273K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1373K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1873K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1973K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1473K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1573K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1673K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__1773K/
+Running: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/gpr/test_GPR__2073K/
+
+=== RESULTS ===
+baker/test_Baker1977__1273K                                  PASS
+baker/test_Baker1977__1373K                                  PASS
+baker/test_Baker1977__1473K                                  PASS
+baker/test_Baker1977__1573K                                  PASS
+baker/test_Baker1977__1673K                                  PASS
+baker/test_Baker1977__1773K                                  PASS
+baker/test_Baker1977__1873K                                  PASS
+baker/test_Baker1977__1973K                                  PASS
+baker/test_Baker1977__2073K                                  PASS
+cornell/test_Cornell1969_1133K                               PASS
+cornell/test_Cornell1969_1253K                               PASS
+cornell/test_Cornell1969_1333K                               PASS
+cornell/test_Cornell1969_1543K                               PASS
+cornell/test_Cornell1969_1698K                               PASS
+cornell/test_Cornell1969_1743K                               PASS
+cornell/test_Cornell1969_1783K                               PASS
+cornell/test_Cornell1969_1843K                               PASS
+cornell/test_Cornell1969_1853K                               PASS
+white/test_White2004_4000-1                                  PASS
+white/test_White2004_4000-2                                  PASS
+white/test_White2004_4000-3                                  PASS
+white/test_White2004_4000-4                                  PASS
+white/test_White2004_4000-5                                  PASS
+white/test_White2004_4004-1                                  PASS
+white/test_White2004_4004-2                                  PASS
+white/test_White2004_4004-3                                  PASS
+white/test_White2004_4004-4                                  PASS
+white/test_White2004_4004-5                                  PASS
+white/test_White2004_4004-6                                  PASS
+white/test_White2004_4005-1                                  PASS
+white/test_White2004_4005-2                                  PASS
+white/test_White2004_4005-3                                  PASS
+white/test_White2004_4005-4                                  PASS
+white/test_White2004_4005-5                                  PASS
+white/test_White2004_4064-1                                  PASS
+white/test_White2004_4064-2                                  PASS
+white/test_White2004_4064-3                                  PASS
+white/test_White2004_4064-4                                  PASS
+white/test_White2004_4064-5                                  PASS
+white/test_White2004_4065-1                                  PASS
+white/test_White2004_4065-2                                  PASS
+white/test_White2004_4065-3                                  PASS
+white/test_White2004_4065-4                                  PASS
+white/test_White2004_4065-5                                  PASS
+white/test_White2004_4135-1                                  PASS
+white/test_White2004_4135-2                                  PASS
+white/test_White2004_4135-3                                  PASS
+white/test_White2004_4136-1                                  PASS
+white/test_White2004_4136-2                                  PASS
+white/test_White2004_4136-3                                  PASS
+white/test_White2004_4136-4                                  PASS
+white/test_White2004_4140-1                                  PASS
+white/test_White2004_4140-2                                  PASS
+white/test_White2004_4162-1                                  PASS
+white/test_White2004_4162-2                                  PASS
+white/test_White2004_4162-3                                  PASS
+white/test_White2004_4162-4                                  PASS
+white/test_White2004_4163-1                                  PASS
+white/test_White2004_4163-2                                  PASS
+white/test_White2004_4163-3                                  PASS
+white/test_White2004_4163-4                                  PASS
+kashibe/test_Kashibe1990_1873K_06                            PASS
+kashibe/test_Kashibe1990_1873K_16                            PASS
+kashibe/test_Kashibe1990_1873K_23                            PASS
+kashibe/test_Kashibe1990_1873K_28                            PASS
+kashibe/test_Kashibe1990_2073K_06                            PASS
+kashibe/test_Kashibe1990_2073K_16                            PASS
+kashibe/test_Kashibe1990_2073K_23                            PASS
+kashibe/test_Kashibe1990_2073K_28                            PASS
+kashibe/test_Kashibe1991_1673K_23_Multiple                   PASS
+kashibe/test_Kashibe1991_1673K_23_Single                     PASS
+kashibe/test_Kashibe1991_1673K_28_Multiple                   PASS
+kashibe/test_Kashibe1991_1673K_28_Single                     PASS
+kashibe/test_Kashibe1991_2073K_23_1                          PASS
+kashibe/test_Kashibe1991_2073K_23_2                          PASS
+kashibe/test_Kashibe1991_2073K_23_3                          PASS
+kashibe/test_Kashibe1991_2073K_23_4                          PASS
+kashibe/test_Kashibe1991_2073K_23_5                          PASS
+kashibe/test_Kashibe1991_2073K_28_1                          PASS
+kashibe/test_Kashibe1991_2073K_28_2                          PASS
+kashibe/test_Kashibe1991_2073K_28_4                          PASS
+kashibe/test_Kashibe1991_2073K_28_5                          PASS
+kashibe/test_Kashibe1993_23                                  PASS
+kashibe/test_Kashibe1993_44                                  PASS
+talip/test_Talip2014_1320K                                   PASS
+talip/test_Talip2014_1400K_b                                 PASS
+talip/test_Talip2014_1400K_c                                 PASS
+talip/test_Talip2014_1600K                                   PASS
+talip/test_Talip2014_1800K                                   PASS
+oxidation/test_UO2_oxidation_Cox_et_al_data_1273K            PASS
+oxidation/test_UO2_oxidation_Cox_et_al_data_1473K            PASS
+oxidation/test_UO2_oxidation_Imamura_and_Une_data            PASS
+oxidation/test_UO2_oxidation_PS-623C                         PASS
+chromium/test_Chromium_Killeen                               PASS
+chromium/test_Chromium_solubility1                           PASS
+chromium/test_Chromium_solubility2                           PASS
+contact/test_CONTACT1                                        PASS
+hbs/test_UO2HBS                                              PASS
+vercors/test_Vercors5                                        PASS
+analytics/test_powerPulse                                    PASS
+gpr/test_GPR__1273K                                          PASS
+gpr/test_GPR__1373K                                          PASS
+gpr/test_GPR__1473K                                          PASS
+gpr/test_GPR__1573K                                          PASS
+gpr/test_GPR__1673K                                          PASS
+gpr/test_GPR__1773K                                          PASS
+gpr/test_GPR__1873K                                          PASS
+gpr/test_GPR__1973K                                          PASS
+gpr/test_GPR__2073K                                          PASS
+
+Report generated: /home/destro/sciantix-official/UN_model/local_merge_2026-10-19/results/historical/snapshot/regression/../regression/report.html

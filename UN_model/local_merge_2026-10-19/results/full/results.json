@@ -1,0 +1,7617 @@
+{
+  "status": "pass",
+  "suite": "full",
+  "values_compared": 4637652,
+  "failures": 0,
+  "max_normalized_error": 1.8091796875e-12,
+  "metrics": [
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "time",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "burnup_percent_fima",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "rho_d",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "rho_d_next",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "delta_Nd_rho",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "c",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "mb",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "md",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Nb",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Nd",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.435e+19,
+      "python_at_max": 1.435e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Vb",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Vd",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Rb",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Rd",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "nvb",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "nvd",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "generated",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "retained",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "retained_ig",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "q_gb",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "q_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "q_rel",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "swelling_b",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "swelling_d",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "swelling_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.3893940480471364e-11,
+      "python_at_max": 4.3893940480471364e-11,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "swelling_ig",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "swelling_total_gas",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.3893940480471364e-11,
+      "python_at_max": 4.3893940480471364e-11,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Ngf_areal",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 10000000000000.0,
+      "python_at_max": 10000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Ngf_vol",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.5e+18,
+      "python_at_max": 2.5e+18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "ng_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "nv_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.600986119103485,
+      "python_at_max": 0.600986119103485,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "V_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7557576192188547e-29,
+      "python_at_max": 1.7557576192188547e-29,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "R_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.4200000000000025e-10,
+      "python_at_max": 2.4200000000000025e-10,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "A_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3517979858360967e-19,
+      "python_at_max": 1.3517979858360967e-19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "Fc_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3517979858360968e-06,
+      "python_at_max": 1.3517979858360968e-06,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "p_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "p_gf_eq",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 9173553719.008255,
+      "python_at_max": 9173553719.008255,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "zeta_gf",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 6.007038856931469,
+      "python_at_max": 6.007038856931469,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "gf_saturated",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "p_b",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "p_d",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "p_b_eq",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2220000000000000.0,
+      "python_at_max": 2220000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "p_d_eq",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2220000000000000.0,
+      "python_at_max": 2220000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "lambda_d",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "nu_b",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 8.0,
+      "max_relative_error_nonzero": 1.2927851357172887e-16,
+      "max_normalized_error": 1.2927851357172887e-16,
+      "max_index": [
+        246
+      ],
+      "first_failure": null,
+      "cpp_at_max": 6.1881899621016936e+16,
+      "python_at_max": 6.188189962101693e+16,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "phi_b",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "phi_d",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "f_cap_step",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "cap_raw_step",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "capture_fraction_sum",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "capture_raw_sum",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "capture_bubbles_cumulative",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "max_f_cap_step",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "matrix_gas_percent",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "bulk_gas_percent",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "dislocation_gas_percent",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "qgb_gas_percent",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "grainface_gas_percent",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "release_gas_percent",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "mass_balance_residual",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "pressure_ratio_b",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_b",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "pressure_ratio_d",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_d",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "state",
+      "field": "bulk_first_gas_seed_done",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "state",
+      "field": "dislocation_first_gas_seed_done",
+      "count": 606,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "state",
+      "field": "qv_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7425574955007212e+18,
+      "python_at_max": 1.7425574955007212e+18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "Dg",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 6.859556060984681e-19,
+      "python_at_max": 6.859556060984681e-19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "Dv",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.096721272601947e-25,
+      "python_at_max": 5.096721272601947e-25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "Dv1",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.119872410101689e-34,
+      "python_at_max": 5.119872410101689e-34,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "Dv_dislocation",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.0967212726019465e-24,
+      "python_at_max": 5.0967212726019465e-24,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "V_b_growth",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "b_b",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.5227063540480894e-05,
+      "python_at_max": 1.5227063540480894e-05,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "b_d",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.5227063540480894e-05,
+      "python_at_max": 1.5227063540480894e-05,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "beta",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3842827431568335e+19,
+      "python_at_max": 1.3842827431568335e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "c_new_exchange",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.845653835776372e+22,
+      "python_at_max": 1.845653835776372e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "cap_raw_step",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "captured_bubbles",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "dVd_growth_dt",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7827469419963588e-28,
+      "python_at_max": 1.7827469419963588e-28,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "dnvb_dt",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "dnvd_dt",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.288134748537831e+19,
+      "python_at_max": 5.288134748537831e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "dq_to_gb",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.292994728227458e+21,
+      "python_at_max": 2.292994728227458e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "f_cap",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "g_b",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "g_d",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.000752151040424317,
+      "python_at_max": 0.000752151040424317,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "lambda_d",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.0,
+      "python_at_max": 1.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "mb_new_exchange",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "md_new_exchange",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.2875300317494684e+23,
+      "python_at_max": 1.2875300317494684e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "negative_reset",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "nu_b",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 8.0,
+      "max_relative_error_nonzero": 1.2927851357172887e-16,
+      "max_normalized_error": 1.2927851357172887e-16,
+      "max_index": [
+        245
+      ],
+      "first_failure": null,
+      "cpp_at_max": 6.1881899621016936e+16,
+      "python_at_max": 6.188189962101693e+16,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "nvb_after_seed",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "nvb_after_vacancy",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "nvd_after_seed",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.711185528420857e+23,
+      "python_at_max": 5.711185528420857e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "nvd_after_vacancy",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.711185528420857e+23,
+      "python_at_max": 5.711185528420857e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "phi_b",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "phi_d",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "q_gb_total_target",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.292994728227458e+21,
+      "python_at_max": 2.292994728227458e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "source_c",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3842827431568335e+19,
+      "python_at_max": 1.3842827431568335e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "intermediate",
+      "field": "source_mb",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 16.0,
+      "max_relative_error_nonzero": 1.2927851357172887e-16,
+      "max_normalized_error": 1.2927851357172887e-16,
+      "max_index": [
+        245
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.2376379924203387e+17,
+      "python_at_max": 1.2376379924203386e+17,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "initial",
+      "field": "modes_c",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "initial",
+      "field": "modes_mb",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "initial",
+      "field": "modes_md",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "after_exchange",
+      "field": "modes_c",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.9903521251974716e+22,
+      "python_at_max": 2.9903521251974716e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "after_exchange",
+      "field": "modes_mb",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "after_exchange",
+      "field": "modes_md",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.0860727467228575e+23,
+      "python_at_max": 2.0860727467228575e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "after_capture",
+      "field": "modes_c",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.9903521251974716e+22,
+      "python_at_max": 2.9903521251974716e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "after_capture",
+      "field": "modes_mb",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "after_capture",
+      "field": "modes_md",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.0860727467228575e+23,
+      "python_at_max": 2.0860727467228575e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "step_end",
+      "field": "modes_c",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.9903521251974716e+22,
+      "python_at_max": 2.9903521251974716e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "step_end",
+      "field": "modes_mb",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p2_900K",
+      "stage": "step_end",
+      "field": "modes_md",
+      "count": 96800,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.0860727467228575e+23,
+      "python_at_max": 2.0860727467228575e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "time",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "burnup_percent_fima",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "rho_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "rho_d_next",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "delta_Nd_rho",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "c",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "mb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "md",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Nb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Nd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.435e+19,
+      "python_at_max": 1.435e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Vb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Vd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Rb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Rd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "nvb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "nvd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "generated",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "retained",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "retained_ig",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "q_gb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "q_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "q_rel",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "swelling_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "swelling_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "swelling_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.214306433183765e-17,
+      "max_relative_error_nonzero": 1.3615855338073245e-15,
+      "max_normalized_error": 1.3615855338073245e-15,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.008918326488004518,
+      "python_at_max": 0.00891832648800453,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "swelling_ig",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "swelling_total_gas",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.3877787807814457e-17,
+      "max_relative_error_nonzero": 3.2096803083283736e-16,
+      "max_normalized_error": 3.2096803083283736e-16,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0432372899313518,
+      "python_at_max": 0.04323728993135181,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Ngf_areal",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.001953125,
+      "max_relative_error_nonzero": 4.457019525787402e-16,
+      "max_normalized_error": 4.457019525787402e-16,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4382132473729.63,
+      "python_at_max": 4382132473729.628,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Ngf_vol",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 640.0,
+      "max_relative_error_nonzero": 5.841904632840064e-16,
+      "max_normalized_error": 5.841904632840064e-16,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.0955331184324076e+18,
+      "python_at_max": 1.0955331184324069e+18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "ng_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.7939677238464355e-09,
+      "max_relative_error_nonzero": 6.66292544707716e-16,
+      "max_normalized_error": 6.66292544707716e-16,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4193304.796877278,
+      "python_at_max": 4193304.796877281,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "nv_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 5.364418029785156e-07,
+      "max_relative_error_nonzero": 2.013302190178598e-15,
+      "max_normalized_error": 2.013302190178598e-15,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 266448725.67834803,
+      "python_at_max": 266448725.67834857,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "V_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.6550960459577808e-35,
+      "max_relative_error_nonzero": 2.0331309186450058e-15,
+      "max_normalized_error": 2.0331309186450058e-15,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 8.140627004289658e-21,
+      "python_at_max": 8.140627004289675e-21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "R_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.3234889800848443e-22,
+      "max_relative_error_nonzero": 7.066003779386456e-16,
+      "max_normalized_error": 7.066003779386456e-16,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.8730374641828488e-07,
+      "python_at_max": 1.87303746418285e-07,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "A_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.0097419586828951e-28,
+      "max_relative_error_nonzero": 1.2469137438919288e-15,
+      "max_normalized_error": 1.2469137438919288e-15,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 8.097929496961332e-14,
+      "python_at_max": 8.097929496961343e-14,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "Fc_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 3.3306690738754696e-16,
+      "max_relative_error_nonzero": 9.367857784427666e-16,
+      "max_normalized_error": 9.367857784427666e-16,
+      "max_index": [
+        547
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.35554223286908654,
+      "python_at_max": 0.35554223286908687,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "p_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.6763806343078613e-08,
+      "max_relative_error_nonzero": 1.4165755890945851e-15,
+      "max_normalized_error": 1.271463946859814e-15,
+      "max_index": [
+        547
+      ],
+      "first_failure": null,
+      "cpp_at_max": 11877936.386552326,
+      "python_at_max": 11877936.38655231,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "p_gf_eq",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 7.450580596923828e-09,
+      "max_relative_error_nonzero": 6.297798701701004e-16,
+      "max_normalized_error": 5.715211531531537e-16,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 11852405.744422847,
+      "python_at_max": 11852405.74442284,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "zeta_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.1102230246251565e-16,
+      "max_relative_error_nonzero": 1.2147738738255663e-15,
+      "max_normalized_error": 1.2147738738255663e-15,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.09139339004129576,
+      "python_at_max": 0.09139339004129565,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "gf_saturated",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "p_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "p_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "p_b_eq",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2220000000000000.0,
+      "python_at_max": 2220000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "p_d_eq",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2220000000000000.0,
+      "python_at_max": 2220000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "lambda_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "nu_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "phi_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "phi_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "f_cap_step",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "cap_raw_step",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "capture_fraction_sum",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "capture_raw_sum",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "capture_bubbles_cumulative",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "max_f_cap_step",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "matrix_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "bulk_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "dislocation_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "qgb_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "grainface_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "release_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "mass_balance_residual",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "pressure_ratio_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "pressure_ratio_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "state",
+      "field": "bulk_first_gas_seed_done",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "state",
+      "field": "dislocation_first_gas_seed_done",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "state",
+      "field": "qv_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 446676598784.0,
+      "max_relative_error_nonzero": 1.5243403990668385e-15,
+      "max_normalized_error": 1.5243403990668385e-15,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.930294303407842e+26,
+      "python_at_max": 2.9302943034078463e+26,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "Dg",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3705602340796549e-18,
+      "python_at_max": 1.3705602340796549e-18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "Dv",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.804370316124471e-20,
+      "python_at_max": 2.804370316124471e-20,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "Dv1",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.6363059898109155e-20,
+      "python_at_max": 2.6363059898109155e-20,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "Dv_dislocation",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.804370316124471e-19,
+      "python_at_max": 2.804370316124471e-19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "V_b_growth",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "b_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.9795182602625162e-05,
+      "python_at_max": 1.9795182602625162e-05,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "b_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.9795182602625162e-05,
+      "python_at_max": 1.9795182602625162e-05,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "beta",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7995675661038836e+19,
+      "python_at_max": 1.7995675661038836e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "c_new_exchange",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3305281389150918e+22,
+      "python_at_max": 1.3305281389150918e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "cap_raw_step",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "captured_bubbles",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "dVd_growth_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.604440544948184e-28,
+      "python_at_max": 4.604440544948184e-28,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "dnvb_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "dnvd_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.782367175633102e+20,
+      "python_at_max": 1.782367175633102e+20,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "dq_to_gb",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.1331786512526884e+21,
+      "python_at_max": 3.1331786512526884e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "f_cap",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "g_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "g_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0015028207319282814,
+      "python_at_max": 0.0015028207319282814,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "lambda_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.0,
+      "python_at_max": 1.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "mb_new_exchange",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "md_new_exchange",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.779148370988158e+23,
+      "python_at_max": 1.779148370988158e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "negative_reset",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "nu_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "nvb_after_seed",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "nvb_after_vacancy",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "nvd_after_seed",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.9249565496837504e+24,
+      "python_at_max": 1.9249565496837504e+24,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "nvd_after_vacancy",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.9249565496837504e+24,
+      "python_at_max": 1.9249565496837504e+24,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "phi_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "phi_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "q_gb_total_target",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.1331786512526884e+21,
+      "python_at_max": 3.1331786512526884e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "source_c",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7995675661038836e+19,
+      "python_at_max": 1.7995675661038836e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "intermediate",
+      "field": "source_mb",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "initial",
+      "field": "modes_c",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "initial",
+      "field": "modes_mb",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "initial",
+      "field": "modes_md",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "after_exchange",
+      "field": "modes_c",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.1573958486942957e+22,
+      "python_at_max": 2.1573958486942957e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "after_exchange",
+      "field": "modes_mb",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "after_exchange",
+      "field": "modes_md",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.8848148321844846e+23,
+      "python_at_max": 2.8848148321844846e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "after_capture",
+      "field": "modes_c",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.1573958486942957e+22,
+      "python_at_max": 2.1573958486942957e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "after_capture",
+      "field": "modes_mb",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "after_capture",
+      "field": "modes_md",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.8848148321844846e+23,
+      "python_at_max": 2.8848148321844846e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "step_end",
+      "field": "modes_c",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.1573958486942957e+22,
+      "python_at_max": 2.1573958486942957e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "step_end",
+      "field": "modes_mb",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1600K",
+      "stage": "step_end",
+      "field": "modes_md",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.8848148321844846e+23,
+      "python_at_max": 2.8848148321844846e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "time",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "burnup_percent_fima",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "rho_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "rho_d_next",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "delta_Nd_rho",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "c",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 6291456.0,
+      "max_relative_error_nonzero": 6.015298344579281e-16,
+      "max_normalized_error": 6.015298344579281e-16,
+      "max_index": [
+        489
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.045909220058815e+22,
+      "python_at_max": 1.0459092200588155e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "mb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 34359738368.0,
+      "max_relative_error_nonzero": 1.0001861684542185e-15,
+      "max_normalized_error": 1.0001861684542185e-15,
+      "max_index": [
+        526
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.435334285926269e+25,
+      "python_at_max": 3.4353342859262655e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "md",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 60129542144.0,
+      "max_relative_error_nonzero": 9.84204788996302e-16,
+      "max_normalized_error": 9.84204788996302e-16,
+      "max_index": [
+        491
+      ],
+      "first_failure": null,
+      "cpp_at_max": 6.109454334734585e+25,
+      "python_at_max": 6.109454334734591e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Nb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 25165824.0,
+      "max_relative_error_nonzero": 6.026470124883847e-16,
+      "max_normalized_error": 6.026470124883847e-16,
+      "max_index": [
+        529
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.175881316674586e+22,
+      "python_at_max": 4.175881316674584e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Nd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 14336.0,
+      "max_relative_error_nonzero": 1.6042740092996112e-15,
+      "max_normalized_error": 1.6042740092996112e-15,
+      "max_index": [
+        544
+      ],
+      "first_failure": null,
+      "cpp_at_max": 8.936129312634531e+18,
+      "python_at_max": 8.936129312634545e+18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Vb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 6.887662211849341e-41,
+      "max_relative_error_nonzero": 7.481935615133634e-16,
+      "max_normalized_error": 7.481935615133634e-16,
+      "max_index": [
+        480
+      ],
+      "first_failure": null,
+      "cpp_at_max": 9.205722377398882e-26,
+      "python_at_max": 9.205722377398889e-26,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Vd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 3.3101920919155616e-35,
+      "max_relative_error_nonzero": 2.8932944071132074e-15,
+      "max_normalized_error": 2.8932944071132074e-15,
+      "max_index": [
+        535
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.1440910001337626e-20,
+      "python_at_max": 1.1440910001337593e-20,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Rb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 8.271806125530277e-25,
+      "max_relative_error_nonzero": 2.9544297355841234e-16,
+      "max_normalized_error": 2.9544297355841234e-16,
+      "max_index": [
+        479
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.7997978851559477e-09,
+      "python_at_max": 2.7997978851559485e-09,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Rd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.5881867761018131e-22,
+      "max_relative_error_nonzero": 1.1361724534764223e-15,
+      "max_normalized_error": 1.1361724534764223e-15,
+      "max_index": [
+        535
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.397839536808285e-07,
+      "python_at_max": 1.3978395368082835e-07,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "nvb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 42949672960.0,
+      "max_relative_error_nonzero": 1.1442990489946112e-15,
+      "max_normalized_error": 1.1442990489946112e-15,
+      "max_index": [
+        526
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.753360889160567e+25,
+      "python_at_max": 3.7533608891605625e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "nvd",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 4398046511104.0,
+      "max_relative_error_nonzero": 1.3199968120696597e-15,
+      "max_normalized_error": 1.3199968120696597e-15,
+      "max_index": [
+        535
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.3318614642774677e+27,
+      "python_at_max": 3.3318614642774633e+27,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "generated",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "retained",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 257698037760.0,
+      "max_relative_error_nonzero": 2.4229468438392336e-15,
+      "max_normalized_error": 2.4229468438392336e-15,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.063572807695892e+26,
+      "python_at_max": 1.0635728076958946e+26,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "retained_ig",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 68719476736.0,
+      "max_relative_error_nonzero": 7.618819397863774e-16,
+      "max_normalized_error": 7.618819397863774e-16,
+      "max_index": [
+        491
+      ],
+      "first_failure": null,
+      "cpp_at_max": 9.01970149801268e+25,
+      "python_at_max": 9.019701498012687e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "q_gb",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 68719476736.0,
+      "max_relative_error_nonzero": 1.3072094650589471e-14,
+      "max_normalized_error": 1.3072094650589471e-14,
+      "max_index": [
+        493
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.256959850187596e+24,
+      "python_at_max": 5.256959850187527e+24,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "q_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 239444426752.0,
+      "max_relative_error_nonzero": 4.100447447927175e-14,
+      "max_normalized_error": 4.100447447927175e-14,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.839470686864483e+24,
+      "python_at_max": 5.839470686864722e+24,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "q_rel",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 273804165120.0,
+      "max_relative_error_nonzero": 4.405073789696438e-12,
+      "max_normalized_error": 1.8041198185816216e-12,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.4832606270256421e+23,
+      "python_at_max": 1.483260627022904e+23,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "swelling_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 4.336808689942018e-18,
+      "max_relative_error_nonzero": 1.0797310177202998e-15,
+      "max_normalized_error": 1.0797310177202998e-15,
+      "max_index": [
+        526
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.004016563957844412,
+      "python_at_max": 0.004016563957844408,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "swelling_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.3877787807814457e-16,
+      "max_relative_error_nonzero": 1.3508940574883592e-15,
+      "max_normalized_error": 1.3508940574883592e-15,
+      "max_index": [
+        536
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.10273039348190384,
+      "python_at_max": 0.1027303934819037,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "swelling_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 8.430756093247282e-16,
+      "max_relative_error_nonzero": 5.1548286599473014e-14,
+      "max_normalized_error": 5.1548286599473014e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.01635506560820013,
+      "python_at_max": 0.016355065608200974,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "swelling_ig",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.3877787807814457e-16,
+      "max_relative_error_nonzero": 1.3003768422530096e-15,
+      "max_normalized_error": 1.3003768422530096e-15,
+      "max_index": [
+        534
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.10672127768570584,
+      "python_at_max": 0.1067212776857057,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "swelling_total_gas",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 8.187894806610529e-16,
+      "max_relative_error_nonzero": 6.760441333024651e-15,
+      "max_normalized_error": 6.760441333024651e-15,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.12111479714516174,
+      "python_at_max": 0.12111479714516256,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Ngf_areal",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.12744140625,
+      "max_relative_error_nonzero": 4.511290459107383e-14,
+      "max_normalized_error": 4.511290459107383e-14,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2824943492448.282,
+      "python_at_max": 2824943492448.4097,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Ngf_vol",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 31872.0,
+      "max_relative_error_nonzero": 4.5129398283823634e-14,
+      "max_normalized_error": 4.5129398283823634e-14,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 7.062358731120705e+17,
+      "python_at_max": 7.062358731121024e+17,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "ng_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 3.3061951398849487e-07,
+      "max_relative_error_nonzero": 4.340803231866169e-14,
+      "max_normalized_error": 4.340803231866169e-14,
+      "max_index": [
+        528
+      ],
+      "first_failure": null,
+      "cpp_at_max": 7616551.507365672,
+      "python_at_max": 7616551.507366003,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "nv_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 6.115436553955078e-05,
+      "max_relative_error_nonzero": 8.753895125137992e-14,
+      "max_normalized_error": 8.753895125137992e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 695872478.3612671,
+      "python_at_max": 695872478.361328,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "V_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.8145871194773488e-33,
+      "max_relative_error_nonzero": 8.595922750670789e-14,
+      "max_normalized_error": 8.595922750670789e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.0934818099037017e-20,
+      "python_at_max": 2.0934818099038816e-20,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "R_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 7.358598729271734e-21,
+      "max_relative_error_nonzero": 2.8675536047552775e-14,
+      "max_normalized_error": 2.8675536047552775e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.566159083153223e-07,
+      "python_at_max": 2.566159083153297e-07,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "A_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 8.734267942607043e-27,
+      "max_relative_error_nonzero": 5.746167688756077e-14,
+      "max_normalized_error": 5.746167688756077e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.5200161943929145e-13,
+      "python_at_max": 1.5200161943930018e-13,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "Fc_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.0769163338864018e-14,
+      "max_relative_error_nonzero": 2.267204311662319e-14,
+      "max_normalized_error": 2.267204311662319e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.4749974796478664,
+      "python_at_max": 0.4749974796478772,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "p_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 5.261972546577454e-07,
+      "max_relative_error_nonzero": 6.556090814476388e-14,
+      "max_normalized_error": 3.989296641872947e-14,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 8026082.4559633015,
+      "python_at_max": 8026082.455963828,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "p_gf_eq",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.477318048477173e-07,
+      "max_relative_error_nonzero": 2.86360009547716e-14,
+      "max_normalized_error": 1.900307834234236e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 8651061.481629297,
+      "python_at_max": 8651061.48162905,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "zeta_gf",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 3.164135620181696e-15,
+      "max_relative_error_nonzero": 7.752437649848593e-14,
+      "max_normalized_error": 7.752437649848593e-14,
+      "max_index": [
+        516
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.040814718712942344,
+      "python_at_max": 0.04081471871293918,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "gf_saturated",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "p_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.9073486328125e-06,
+      "max_relative_error_nonzero": 6.162637677577311e-16,
+      "max_normalized_error": 6.162637677577311e-16,
+      "max_index": [
+        545
+      ],
+      "first_failure": null,
+      "cpp_at_max": 773754978.2264371,
+      "python_at_max": 773754978.2264366,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "p_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.7939677238464355e-08,
+      "max_relative_error_nonzero": 1.760197289355484e-15,
+      "max_normalized_error": 1.760197289355484e-15,
+      "max_index": [
+        544
+      ],
+      "first_failure": null,
+      "cpp_at_max": 15873037.305207266,
+      "python_at_max": 15873037.305207293,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "p_b_eq",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 9.5367431640625e-07,
+      "max_relative_error_nonzero": 3.085099958781885e-16,
+      "max_normalized_error": 3.0229218018018015e-19,
+      "max_index": [
+        5
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5199397324.473875,
+      "python_at_max": 5199397324.473874,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "p_d_eq",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.862645149230957e-08,
+      "max_relative_error_nonzero": 1.1728283930807192e-15,
+      "max_normalized_error": 5.904144144144143e-21,
+      "max_index": [
+        535
+      ],
+      "first_failure": null,
+      "cpp_at_max": 15881651.230648194,
+      "python_at_max": 15881651.230648212,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "lambda_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 8.881784197001252e-16,
+      "max_relative_error_nonzero": 6.770092651379034e-16,
+      "max_normalized_error": 6.770092651379034e-16,
+      "max_index": [
+        533
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3119147188025682,
+      "python_at_max": 1.3119147188025673,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "nu_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 18.0,
+      "max_relative_error_nonzero": 1.2589129195597019e-15,
+      "max_normalized_error": 1.2589129195597019e-15,
+      "max_index": [
+        492
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.429805010365243e+16,
+      "python_at_max": 1.4298050103652448e+16,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "phi_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.0842021724855044e-18,
+      "max_relative_error_nonzero": 8.871696282476276e-16,
+      "max_normalized_error": 4.894204123887603e-16,
+      "max_index": [
+        511
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0012233453730526474,
+      "python_at_max": 0.0012233453730526463,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "phi_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.9116757561866574e-22,
+      "max_relative_error_nonzero": 2.0273480581891284e-15,
+      "max_normalized_error": 2.0273480581891284e-15,
+      "max_index": [
+        537
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.4361992477934075e-07,
+      "python_at_max": 1.4361992477934104e-07,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "f_cap_step",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 6.087795198506107e-17,
+      "max_relative_error_nonzero": 4.644222253003149e-13,
+      "max_normalized_error": 4.644222253003149e-13,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0001310832011661869,
+      "python_at_max": 0.000131083201166126,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "cap_raw_step",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 6.087795198506107e-17,
+      "max_relative_error_nonzero": 4.644222253003149e-13,
+      "max_normalized_error": 4.644222253003149e-13,
+      "max_index": [
+        546
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0001310832011661869,
+      "python_at_max": 0.000131083201166126,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "capture_fraction_sum",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.498001805406602e-16,
+      "max_relative_error_nonzero": 2.032363500991074e-15,
+      "max_normalized_error": 2.032363500991074e-15,
+      "max_index": [
+        474
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.12291117234630847,
+      "python_at_max": 0.12291117234630822,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "capture_raw_sum",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.498001805406602e-16,
+      "max_relative_error_nonzero": 2.032363500991074e-15,
+      "max_normalized_error": 2.032363500991074e-15,
+      "max_index": [
+        474
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.12291117234630847,
+      "python_at_max": 0.12291117234630822,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "capture_bubbles_cumulative",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 8912896.0,
+      "max_relative_error_nonzero": 5.9645204490522776e-15,
+      "max_normalized_error": 5.9645204490522776e-15,
+      "max_index": [
+        474
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.318516730251069e+21,
+      "python_at_max": 1.3185167302510612e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "max_f_cap_step",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "matrix_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 6.938893903907228e-18,
+      "max_relative_error_nonzero": 6.689461022522109e-16,
+      "max_normalized_error": 6.689461022522109e-16,
+      "max_index": [
+        527
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.010372874407288318,
+      "python_at_max": 0.010372874407288311,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "bulk_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 4.263256414560601e-14,
+      "max_relative_error_nonzero": 1.2686741974546715e-15,
+      "max_normalized_error": 1.2686741974546715e-15,
+      "max_index": [
+        526
+      ],
+      "first_failure": null,
+      "cpp_at_max": 33.60402870267194,
+      "python_at_max": 33.6040287026719,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "dislocation_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 5.684341886080802e-14,
+      "max_relative_error_nonzero": 8.891882142506108e-16,
+      "max_normalized_error": 8.891882142506108e-16,
+      "max_index": [
+        492
+      ],
+      "first_failure": null,
+      "cpp_at_max": 63.927319266950036,
+      "python_at_max": 63.92731926695009,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "qgb_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 7.194245199571014e-14,
+      "max_relative_error_nonzero": 1.3112617942725372e-14,
+      "max_normalized_error": 1.3112617942725372e-14,
+      "max_index": [
+        493
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.48650561695221,
+      "python_at_max": 5.4865056169521385,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "grainface_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.2382096176443156e-13,
+      "max_relative_error_nonzero": 4.082251394485027e-14,
+      "max_normalized_error": 4.082251394485027e-14,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.4827824192012375,
+      "python_at_max": 5.482782419201461,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "release_gas_percent",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 2.5709989692757063e-13,
+      "max_relative_error_nonzero": 4.405037991034925e-12,
+      "max_normalized_error": 1.8091796875e-12,
+      "max_index": [
+        548
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.13926596647266162,
+      "python_at_max": 0.13926596647240452,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "mass_balance_residual",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 51539607552.0,
+      "max_relative_error_nonzero": 2.0,
+      "max_normalized_error": 3.395990246741876e-13,
+      "max_index": [
+        507
+      ],
+      "first_failure": null,
+      "cpp_at_max": 17179869184.0,
+      "python_at_max": -34359738368.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "pressure_ratio_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 6.661338147750939e-16,
+      "max_relative_error_nonzero": 6.659278877978807e-16,
+      "max_normalized_error": 6.659278877978807e-16,
+      "max_index": [
+        545
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.0003092331481935,
+      "python_at_max": 1.0003092331481929,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_b",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.1368683772161603e-12,
+      "max_relative_error_nonzero": 1.2174954455518037e-15,
+      "max_normalized_error": 1.2174954455518037e-15,
+      "max_index": [
+        549
+      ],
+      "first_failure": null,
+      "cpp_at_max": 933.7762875169506,
+      "python_at_max": 933.7762875169517,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "pressure_ratio_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 8.881784197001252e-16,
+      "max_relative_error_nonzero": 8.853548306335011e-16,
+      "max_normalized_error": 8.853548306335011e-16,
+      "max_index": [
+        549
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.003189217440202,
+      "python_at_max": 1.0031892174402028,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_d",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 1.1324882507324219e-06,
+      "max_relative_error_nonzero": 3.0454480639995376e-15,
+      "max_normalized_error": 3.0454480639995376e-15,
+      "max_index": [
+        536
+      ],
+      "first_failure": null,
+      "cpp_at_max": 371862605.0858168,
+      "python_at_max": 371862605.08581567,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "state",
+      "field": "bulk_first_gas_seed_done",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "state",
+      "field": "dislocation_first_gas_seed_done",
+      "count": 551,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "state",
+      "field": "qv_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 28793460752384.0,
+      "max_relative_error_nonzero": 5.296404030314355e-14,
+      "max_normalized_error": 5.296404030314355e-14,
+      "max_index": [
+        515
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.436416970378581e+26,
+      "python_at_max": 5.436416970378869e+26,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "Dg",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.8109916689626407e-17,
+      "python_at_max": 2.8109916689626407e-17,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "Dv",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.4025223904971453e-18,
+      "python_at_max": 2.4025223904971453e-18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "Dv1",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.397813173290163e-18,
+      "python_at_max": 2.397813173290163e-18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "Dv_dislocation",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.4025223904971453e-17,
+      "python_at_max": 2.4025223904971453e-17,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "V_b_growth",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 8.035605913824231e-41,
+      "max_relative_error_nonzero": 8.692377536404512e-16,
+      "max_normalized_error": 8.692377536404512e-16,
+      "max_index": [
+        479
+      ],
+      "first_failure": null,
+      "cpp_at_max": 9.244428098262339e-26,
+      "python_at_max": 9.244428098262347e-26,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "b_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 5.082197683525802e-21,
+      "max_relative_error_nonzero": 3.8001569348159574e-16,
+      "max_normalized_error": 3.8001569348159574e-16,
+      "max_index": [
+        506
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3373652116743269e-05,
+      "python_at_max": 1.3373652116743264e-05,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "b_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.6940658945086007e-21,
+      "max_relative_error_nonzero": 3.4375087628678193e-16,
+      "max_normalized_error": 3.4375087628678193e-16,
+      "max_index": [
+        539
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.9281791302119835e-06,
+      "python_at_max": 4.928179130211985e-06,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "beta",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7995675661038836e+19,
+      "python_at_max": 1.7995675661038836e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "c_new_exchange",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 6291456.0,
+      "max_relative_error_nonzero": 6.015298344579281e-16,
+      "max_normalized_error": 6.015298344579281e-16,
+      "max_index": [
+        488
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.045909220058815e+22,
+      "python_at_max": 1.0459092200588155e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "cap_raw_step",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 6.087795198506107e-17,
+      "max_relative_error_nonzero": 4.644222253003149e-13,
+      "max_normalized_error": 4.644222253003149e-13,
+      "max_index": [
+        545
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0001310832011661869,
+      "python_at_max": 0.000131083201166126,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "captured_bubbles",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 2698240.0,
+      "max_relative_error_nonzero": 4.650489010768411e-13,
+      "max_normalized_error": 4.650489010768411e-13,
+      "max_index": [
+        545
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.802056501484815e+18,
+      "python_at_max": 5.802056501482117e+18,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "dVd_growth_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 3.5335142076414587e-40,
+      "max_relative_error_nonzero": 3.861357609879163e-13,
+      "max_normalized_error": 3.861357609879163e-13,
+      "max_index": [
+        527
+      ],
+      "first_failure": null,
+      "cpp_at_max": 9.150963377757183e-28,
+      "python_at_max": 9.15096337775365e-28,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "dnvb_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 4833280.0,
+      "max_relative_error_nonzero": 2.5103731473137546e-13,
+      "max_normalized_error": 2.5103731473137546e-13,
+      "max_index": [
+        549
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.925323334968391e+19,
+      "python_at_max": 1.9253233349679075e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "dnvd_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 101810176.0,
+      "max_relative_error_nonzero": 3.689050004819281e-13,
+      "max_normalized_error": 3.689050004819281e-13,
+      "max_index": [
+        527
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.759793872867956e+20,
+      "python_at_max": 2.759793872866938e+20,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "dq_to_gb",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 51539607552.0,
+      "max_relative_error_nonzero": 3.883077976827419e-12,
+      "max_normalized_error": 3.395990246741876e-13,
+      "max_index": [
+        506
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.327287472962599e+22,
+      "python_at_max": 1.327287472967753e+22,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "f_cap",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 6.087795198506107e-17,
+      "max_relative_error_nonzero": 4.644222253003149e-13,
+      "max_normalized_error": 4.644222253003149e-13,
+      "max_index": [
+        545
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0001310832011661869,
+      "python_at_max": 0.000131083201166126,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "g_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 3.469446951953614e-17,
+      "max_relative_error_nonzero": 7.702597539311325e-16,
+      "max_normalized_error": 7.702597539311325e-16,
+      "max_index": [
+        528
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.04504255784164745,
+      "python_at_max": 0.045042557841647415,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "g_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 3.469446951953614e-18,
+      "max_relative_error_nonzero": 1.1940838321610512e-16,
+      "max_normalized_error": 1.1940838321610512e-16,
+      "max_index": [
+        478
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.029055304648708074,
+      "python_at_max": 0.02905530464870807,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "lambda_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 8.881784197001252e-16,
+      "max_relative_error_nonzero": 6.770092651379034e-16,
+      "max_normalized_error": 6.770092651379034e-16,
+      "max_index": [
+        532
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3119147188025682,
+      "python_at_max": 1.3119147188025673,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "mb_new_exchange",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 34359738368.0,
+      "max_relative_error_nonzero": 9.91186696706277e-16,
+      "max_normalized_error": 9.91186696706277e-16,
+      "max_index": [
+        527
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.4665253763168714e+25,
+      "python_at_max": 3.466525376316868e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "md_new_exchange",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 51539607552.0,
+      "max_relative_error_nonzero": 8.427382914462059e-16,
+      "max_normalized_error": 8.427382914462059e-16,
+      "max_index": [
+        492
+      ],
+      "first_failure": null,
+      "cpp_at_max": 6.115731072757344e+25,
+      "python_at_max": 6.115731072757349e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "negative_reset",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "nu_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 18.0,
+      "max_relative_error_nonzero": 1.2589129195597019e-15,
+      "max_normalized_error": 1.2589129195597019e-15,
+      "max_index": [
+        491
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.429805010365243e+16,
+      "python_at_max": 1.4298050103652448e+16,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "nvb_after_seed",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 42949672960.0,
+      "max_relative_error_nonzero": 1.1442990489946112e-15,
+      "max_normalized_error": 1.1442990489946112e-15,
+      "max_index": [
+        526
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.753360889160567e+25,
+      "python_at_max": 3.7533608891605625e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "nvb_after_vacancy",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 42949672960.0,
+      "max_relative_error_nonzero": 1.1441349748501586e-15,
+      "max_normalized_error": 1.1441349748501586e-15,
+      "max_index": [
+        525
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.753899138134899e+25,
+      "python_at_max": 3.7538991381348947e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "nvd_after_seed",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 4398046511104.0,
+      "max_relative_error_nonzero": 1.3199968120696597e-15,
+      "max_normalized_error": 1.3199968120696597e-15,
+      "max_index": [
+        535
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.3318614642774677e+27,
+      "python_at_max": 3.3318614642774633e+27,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "nvd_after_vacancy",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 4398046511104.0,
+      "max_relative_error_nonzero": 1.319998949282781e-15,
+      "max_normalized_error": 1.319998949282781e-15,
+      "max_index": [
+        534
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.3318560696534463e+27,
+      "python_at_max": 3.331856069653442e+27,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "phi_b",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.0842021724855044e-18,
+      "max_relative_error_nonzero": 8.871696282476276e-16,
+      "max_normalized_error": 4.894204123887603e-16,
+      "max_index": [
+        510
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0012233453730526474,
+      "python_at_max": 0.0012233453730526463,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "phi_d",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 2.9116757561866574e-22,
+      "max_relative_error_nonzero": 2.0273480581891284e-15,
+      "max_normalized_error": 2.0273480581891284e-15,
+      "max_index": [
+        536
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.4361992477934075e-07,
+      "python_at_max": 1.4361992477934104e-07,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "q_gb_total_target",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 68719476736.0,
+      "max_relative_error_nonzero": 1.3072094650589471e-14,
+      "max_normalized_error": 1.3072094650589471e-14,
+      "max_index": [
+        492
+      ],
+      "first_failure": null,
+      "cpp_at_max": 5.256959850187596e+24,
+      "python_at_max": 5.256959850187527e+24,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "source_c",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7995675661038836e+19,
+      "python_at_max": 1.7995675661038836e+19,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "intermediate",
+      "field": "source_mb",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 36.0,
+      "max_relative_error_nonzero": 1.2589129195597019e-15,
+      "max_normalized_error": 1.2589129195597019e-15,
+      "max_index": [
+        491
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.859610020730486e+16,
+      "python_at_max": 2.8596100207304896e+16,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "initial",
+      "field": "modes_c",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "initial",
+      "field": "modes_mb",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "initial",
+      "field": "modes_md",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "after_exchange",
+      "field": "modes_c",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 14680064.0,
+      "max_relative_error_nonzero": 2.679732523601779e-15,
+      "max_normalized_error": 2.679732523601779e-15,
+      "max_index": [
+        537,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.3260394168073034e+21,
+      "python_at_max": 3.3260394168072945e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "after_exchange",
+      "field": "modes_mb",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 77309411328.0,
+      "max_relative_error_nonzero": 3.0549985268829988e-15,
+      "max_normalized_error": 3.0549985268829988e-15,
+      "max_index": [
+        536,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.1247055625606862e+25,
+      "python_at_max": 1.1247055625606827e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "after_exchange",
+      "field": "modes_md",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 120259084288.0,
+      "max_relative_error_nonzero": 2.869415812303248e-15,
+      "max_normalized_error": 2.869415812303248e-15,
+      "max_index": [
+        531,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.945851647174913e+25,
+      "python_at_max": 1.9458516471749073e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "after_capture",
+      "field": "modes_c",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 14680064.0,
+      "max_relative_error_nonzero": 2.679732523601779e-15,
+      "max_normalized_error": 2.679732523601779e-15,
+      "max_index": [
+        537,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.3260394168073034e+21,
+      "python_at_max": 3.3260394168072945e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "after_capture",
+      "field": "modes_mb",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 85899345920.0,
+      "max_relative_error_nonzero": 3.068470182314702e-15,
+      "max_normalized_error": 3.068470182314702e-15,
+      "max_index": [
+        535,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.1197677124592692e+25,
+      "python_at_max": 1.1197677124592657e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "after_capture",
+      "field": "modes_md",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 120259084288.0,
+      "max_relative_error_nonzero": 2.869189246270867e-15,
+      "max_normalized_error": 2.869189246270867e-15,
+      "max_index": [
+        531,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.9460053016917337e+25,
+      "python_at_max": 1.946005301691728e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "step_end",
+      "field": "modes_c",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 14680064.0,
+      "max_relative_error_nonzero": 2.679732523601779e-15,
+      "max_normalized_error": 2.679732523601779e-15,
+      "max_index": [
+        537,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.3260394168073034e+21,
+      "python_at_max": 3.3260394168072945e+21,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "step_end",
+      "field": "modes_mb",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 85899345920.0,
+      "max_relative_error_nonzero": 3.068470182314702e-15,
+      "max_normalized_error": 3.068470182314702e-15,
+      "max_index": [
+        535,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.1197677124592692e+25,
+      "python_at_max": 1.1197677124592657e+25,
+      "discrete": false
+    },
+    {
+      "case": "AP3p4_1800K",
+      "stage": "step_end",
+      "field": "modes_md",
+      "count": 88000,
+      "failures": 0,
+      "max_absolute_error": 120259084288.0,
+      "max_relative_error_nonzero": 2.869189246270867e-15,
+      "max_normalized_error": 2.869189246270867e-15,
+      "max_index": [
+        531,
+        4
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.9460053016917337e+25,
+      "python_at_max": 1.946005301691728e+25,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "time",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "burnup_percent_fima",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "rho_d",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "rho_d_next",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 35000000000000.0,
+      "python_at_max": 35000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "delta_Nd_rho",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "c",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "mb",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "md",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Nb",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Nd",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.435e+19,
+      "python_at_max": 1.435e+19,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Vb",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Vd",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Rb",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Rd",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "nvb",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "nvd",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "generated",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "retained",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "retained_ig",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "q_gb",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "q_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "q_rel",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "swelling_b",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "swelling_d",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "swelling_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.3893940480471364e-11,
+      "python_at_max": 4.3893940480471364e-11,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "swelling_ig",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "swelling_total_gas",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.3893940480471364e-11,
+      "python_at_max": 4.3893940480471364e-11,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Ngf_areal",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 10000000000000.0,
+      "python_at_max": 10000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Ngf_vol",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.5e+18,
+      "python_at_max": 2.5e+18,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "ng_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "nv_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.600986119103485,
+      "python_at_max": 0.600986119103485,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "V_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.7557576192188547e-29,
+      "python_at_max": 1.7557576192188547e-29,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "R_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.4200000000000025e-10,
+      "python_at_max": 2.4200000000000025e-10,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "A_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3517979858360967e-19,
+      "python_at_max": 1.3517979858360967e-19,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "Fc_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.3517979858360968e-06,
+      "python_at_max": 1.3517979858360968e-06,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "p_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "p_gf_eq",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 9173553719.008255,
+      "python_at_max": 9173553719.008255,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "zeta_gf",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 6.007038856931469,
+      "python_at_max": 6.007038856931469,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "gf_saturated",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "p_b",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "p_d",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "p_b_eq",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2220000000000000.0,
+      "python_at_max": 2220000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "p_d_eq",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2220000000000000.0,
+      "python_at_max": 2220000000000000.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "lambda_d",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "nu_b",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 16.0,
+      "max_relative_error_nonzero": 1.919267823671567e-16,
+      "max_normalized_error": 1.919267823671567e-16,
+      "max_index": [
+        594
+      ],
+      "first_failure": null,
+      "cpp_at_max": 8.336512394289992e+16,
+      "python_at_max": 8.336512394289994e+16,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "phi_b",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "phi_d",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "f_cap_step",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "cap_raw_step",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "capture_fraction_sum",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "capture_raw_sum",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "capture_bubbles_cumulative",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "max_f_cap_step",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "matrix_gas_percent",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "bulk_gas_percent",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "dislocation_gas_percent",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "qgb_gas_percent",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "grainface_gas_percent",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "release_gas_percent",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "mass_balance_residual",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "pressure_ratio_b",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_b",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "pressure_ratio_d",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "history",
+      "field": "vacancies_per_bubble_d",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "state",
+      "field": "bulk_first_gas_seed_done",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "state",
+      "field": "dislocation_first_gas_seed_done",
+      "count": 1308,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": true
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "state",
+      "field": "qv_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.651056729010622e+20,
+      "python_at_max": 2.651056729010622e+20,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "Dg",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.4017765731852965e-18,
+      "python_at_max": 1.4017765731852965e-18,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "Dv",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.8072866441166047e-20,
+      "python_at_max": 2.8072866441166047e-20,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "Dv1",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.6363059898109155e-20,
+      "python_at_max": 2.6363059898109155e-20,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "Dv_dislocation",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.8072866441166047e-19,
+      "python_at_max": 2.8072866441166047e-19,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "V_b_growth",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "b_b",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.0488132955150955e-05,
+      "python_at_max": 2.0488132955150955e-05,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "b_d",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.0488132955150955e-05,
+      "python_at_max": 2.0488132955150955e-05,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "beta",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.8625632456264503e+19,
+      "python_at_max": 1.8625632456264503e+19,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "c_new_exchange",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.356193811633694e+22,
+      "python_at_max": 1.356193811633694e+22,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "cap_raw_step",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "captured_bubbles",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "dVd_growth_dt",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 4.8315703741023424e-28,
+      "python_at_max": 4.8315703741023424e-28,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "dnvb_dt",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "dnvd_dt",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.8766207269237742e+20,
+      "python_at_max": 1.8766207269237742e+20,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "dq_to_gb",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.2542823329307694e+21,
+      "python_at_max": 3.2542823329307694e+21,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "f_cap",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "g_b",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "g_d",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0015370494804475786,
+      "python_at_max": 0.0015370494804475786,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "lambda_d",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.0,
+      "python_at_max": 1.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "mb_new_exchange",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "md_new_exchange",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.843406100783889e+23,
+      "python_at_max": 1.843406100783889e+23,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "negative_reset",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "nu_b",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 16.0,
+      "max_relative_error_nonzero": 1.919267823671567e-16,
+      "max_normalized_error": 1.919267823671567e-16,
+      "max_index": [
+        593
+      ],
+      "first_failure": null,
+      "cpp_at_max": 8.336512394289992e+16,
+      "python_at_max": 8.336512394289994e+16,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "nvb_after_seed",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "nvb_after_vacancy",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "nvd_after_seed",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.026750385077676e+24,
+      "python_at_max": 2.026750385077676e+24,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "nvd_after_vacancy",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.026750385077676e+24,
+      "python_at_max": 2.026750385077676e+24,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "phi_b",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "phi_d",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "q_gb_total_target",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 3.2542823329307694e+21,
+      "python_at_max": 3.2542823329307694e+21,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "source_c",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.8625632456264503e+19,
+      "python_at_max": 1.8625632456264503e+19,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "intermediate",
+      "field": "source_mb",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 32.0,
+      "max_relative_error_nonzero": 1.919267823671567e-16,
+      "max_normalized_error": 1.919267823671567e-16,
+      "max_index": [
+        593
+      ],
+      "first_failure": null,
+      "cpp_at_max": 1.6673024788579984e+17,
+      "python_at_max": 1.6673024788579987e+17,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "initial",
+      "field": "modes_c",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "initial",
+      "field": "modes_mb",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "initial",
+      "field": "modes_md",
+      "count": 160,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "after_exchange",
+      "field": "modes_c",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.1991340660162023e+22,
+      "python_at_max": 2.1991340660162023e+22,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "after_exchange",
+      "field": "modes_mb",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "after_exchange",
+      "field": "modes_md",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.989172431669301e+23,
+      "python_at_max": 2.989172431669301e+23,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "after_capture",
+      "field": "modes_c",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.1991340660162023e+22,
+      "python_at_max": 2.1991340660162023e+22,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "after_capture",
+      "field": "modes_mb",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "after_capture",
+      "field": "modes_md",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.989172431669301e+23,
+      "python_at_max": 2.989172431669301e+23,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "step_end",
+      "field": "modes_c",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.1991340660162023e+22,
+      "python_at_max": 2.1991340660162023e+22,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "step_end",
+      "field": "modes_mb",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 0.0,
+      "python_at_max": 0.0,
+      "discrete": false
+    },
+    {
+      "case": "ANP6_1600K",
+      "stage": "step_end",
+      "field": "modes_md",
+      "count": 209120,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_relative_error_nonzero": 0.0,
+      "max_normalized_error": 0.0,
+      "max_index": [
+        0,
+        0
+      ],
+      "first_failure": null,
+      "cpp_at_max": 2.989172431669301e+23,
+      "python_at_max": 2.989172431669301e+23,
+      "discrete": false
+    }
+  ],
+  "tolerances": {
+    "rtol": 1e-11,
+    "roundoff_multiplier": 64,
+    "float64_epsilon": 2.220446049250313e-16,
+    "criterion": "abs(actual-reference) <= rtol*abs(reference) + 64*epsilon*characteristic_scale",
+    "scalar_scale": "maximum absolute frozen value over the compared history, in the quantity's own units; a 1e-300 computational guard applies to identically zero histories",
+    "cancellation_scale": "q_gb, q_gf, q_rel and mass residual use maximum cumulative production; boundary gas percentages use 100; dq_to_gb and q_gb_total_target use maximum cumulative production",
+    "modal_scale": "per row and population maximum absolute frozen modal coefficient, floor 1 atom/m^3",
+    "discrete_fields": "exact equality, including zero: counts, seed and saturation flags",
+    "mass_balance": "abs(residual) <= 1e-11 * max(cumulative production, 1 atom/m^3)",
+    "rationale": "Same rtol and roundoff multiplier as 2A. Explicit additive roundoff term for integration outputs obtained by subtraction of large inventories, particularly mass residuals and boundary gas near zero. Defined before diagnostic or complete integration execution; does not change the frozen reference or 2B/2C tolerances."
+  }
+}
