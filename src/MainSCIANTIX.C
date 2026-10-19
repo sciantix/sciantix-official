@@ -118,6 +118,14 @@ int main(int argc, char** argv)
             Sciantix_history[3] = 0.0;
         Sciantix_history[4]  = Sciantix_history[5];
         Sciantix_history[5]  = InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
+        if (Sciantix_options[11] == 3)
+        {
+            // The approved L3 cases have constant histories. Preserve their
+            // input doubles exactly (legacy interpolation multiplies/divides).
+            Sciantix_history[1] = Temperature_input[0];
+            Sciantix_history[3] = Fissionrate_input[0];
+            Sciantix_history[5] = Hydrostaticstress_input[0];
+        }
         Sciantix_history[7]  = Time_h;
         Sciantix_history[8]  = static_cast<double>(Time_step_number);
         Sciantix_history[9]  = Sciantix_history[10];
@@ -126,14 +134,25 @@ int main(int argc, char** argv)
         Sciantix(
             Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
-        dTime_h = TimeStepCalculation(Input_history_points, Time_h, Time_input, Number_of_time_steps_per_interval);
-        Sciantix_history[6] = dTime_h * 3600;
+        if (Sciantix_options[11] == 3)
+        {
+            Sciantix_history[6] = std::min(un_l3::Model::nominalTimeStep(), Time_end_s - Time_s);
+            dTime_h = Sciantix_history[6] / 3600.0;
+        }
+        else
+        {
+            dTime_h = TimeStepCalculation(Input_history_points, Time_h, Time_input, Number_of_time_steps_per_interval);
+            Sciantix_history[6] = dTime_h * 3600;
+        }
 
         if (Time_h < Time_end_h)
         {
             Time_step_number++;
-            Time_h += dTime_h;
             Time_s += Sciantix_history[6];
+            if (Sciantix_options[11] == 3)
+                Time_h = Time_s >= Time_end_s ? Time_end_h : Time_s / 3600.0;
+            else
+                Time_h += dTime_h;
         }
         else
             break;

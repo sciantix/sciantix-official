@@ -132,7 +132,9 @@ IntraGranularDiagnostics advanceIntraGranular(Solver& solver, State& s,const Par
     const double swept=4.0*M_PI*std::pow(rd_old+rb_old,2)*delta_r;
     const double raw=o.bulk_dislocation_capture ? p.capture_scale*s.dislocation.number_density*swept : 0.0;
     const double fraction=std::max(0.0,std::min(raw,1.0));
+    d["captured_bubbles"]=0.0;
     if(fraction>0.0 && s.bulk.number_density>0.0) {
+        d["captured_bubbles"]=fraction*s.bulk.number_density;
         const double gas=std::max(s.averages[1],0.0),vacancies=std::max(s.bulk.vacancies,0.0);
         s.averages[1]=(1.0-fraction)*gas;s.averages[2]=std::max(s.averages[2],0.0)+fraction*gas;
         s.bulk.vacancies=(1.0-fraction)*vacancies;s.dislocation.vacancies=std::max(s.dislocation.vacancies,0.0)+fraction*vacancies;
