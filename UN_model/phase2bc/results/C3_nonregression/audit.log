@@ -1,0 +1,34 @@
+Running: /home/destro/sciantix-official/UN_model/phase2bc/results/C3_nonregression/snapshot/build/sciantix.x /home/destro/sciantix-official/UN_model/phase2bc/results/C3_nonregression/snapshot/regression/analytics/test_Baker1977_1273K_porosityevolution/
+{
+  "standard_all_counts": {
+    "total": 109,
+    "passed": 109,
+    "failed": 0
+  },
+  "supplemental_counts": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1
+  },
+  "supplemental_wall_seconds": 0.03198834500290104,
+  "strict_named_checks_passed": 108,
+  "legacy_un": {
+    "argv": [
+      "/home/destro/sciantix-official/.venv/bin/python",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_nonregression/snapshot/regression/un_notebook8/run_un_notebook8.py",
+      "--exe",
+      "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_nonregression/snapshot/build/sciantix.x",
+      "--strict",
+      "--no-plot"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.8032219220003753,
+    "counts": {
+      "PASS": 91
+    },
+    "scope": "notebook-8 legacy; 35% tolerance; not L3 regression",
+    "reference_generator_path_exists": false
+  },
+  "gold_unchanged": true,
+  "numpy_version": "2.4.4"
+}

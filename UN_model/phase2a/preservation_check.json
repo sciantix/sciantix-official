@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "files_checked": 3853,
+  "changed_existing_files": [
+    "CMakeLists.txt"
+  ],
+  "missing_existing_files": [],
+  "staging_unchanged": true,
+  "head_unchanged": true,
+  "all_phase1_reference_baseline_and_gold_files_unchanged": true
+}

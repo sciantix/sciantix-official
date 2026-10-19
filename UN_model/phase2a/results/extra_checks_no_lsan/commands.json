@@ -1,0 +1,127 @@
+[
+  {
+    "name": "swapped_trapping_bindings",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/swapped_trapping_bindings",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/swapped_trapping_bindings/output.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0015657340009056497
+  },
+  {
+    "name": "swapped_source_bindings",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/swapped_source_bindings",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/swapped_source_bindings/output.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.001799421999749029
+  },
+  {
+    "name": "lost_dislocation_modes",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/lost_dislocation_modes",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/lost_dislocation_modes/output.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0019692710011440795
+  },
+  {
+    "name": "sanitize_configure",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/cmake",
+      "-S",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot",
+      "-B",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build",
+      "-DSCIANTIX_UN_L3_TESTS=ON",
+      "-DCMAKE_BUILD_TYPE=Debug",
+      "-DCMAKE_CXX_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer"
+    ],
+    "returncode": 0,
+    "wall_seconds": 1.9198928219993832
+  },
+  {
+    "name": "sanitize_build",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/cmake",
+      "--build",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build",
+      "--target",
+      "un_l3_state_test",
+      "un_l3_solver_fixture",
+      "-j",
+      "2"
+    ],
+    "returncode": 0,
+    "wall_seconds": 1.9616949270020996
+  },
+  {
+    "name": "sanitize_state",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/ctest",
+      "--test-dir",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.010863329000130761
+  },
+  {
+    "name": "AP3p2_900K_sanitized",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/fixtures/AP3p2_900K",
+      "prefix",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/AP3p2_900K_sanitized.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.004850683999393368
+  },
+  {
+    "name": "AP3p4_1600K_sanitized",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/fixtures/AP3p4_1600K",
+      "prefix",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/AP3p4_1600K_sanitized.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.005179340001632227
+  },
+  {
+    "name": "AP3p4_1800K_sanitized",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/fixtures/AP3p4_1800K",
+      "prefix",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/AP3p4_1800K_sanitized.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.006159452001156751
+  },
+  {
+    "name": "ANP6_1600K_sanitized",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/sanitized_build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/fixtures/ANP6_1600K",
+      "replay",
+      "state",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks_no_lsan/ANP6_1600K_sanitized.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.15018465400135028
+  }
+]

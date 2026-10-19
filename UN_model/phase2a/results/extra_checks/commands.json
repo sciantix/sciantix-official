@@ -1,0 +1,79 @@
+[
+  {
+    "name": "swapped_trapping_bindings",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/swapped_trapping_bindings",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/swapped_trapping_bindings/output.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.001916369001264684
+  },
+  {
+    "name": "swapped_source_bindings",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/swapped_source_bindings",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/swapped_source_bindings/output.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0015206389980448876
+  },
+  {
+    "name": "lost_dislocation_modes",
+    "argv": [
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot/build/un_l3_solver_fixture.x",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/lost_dislocation_modes",
+      "single",
+      "direct",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/lost_dislocation_modes/output.bin"
+    ],
+    "returncode": 0,
+    "wall_seconds": 0.0024759919979260303
+  },
+  {
+    "name": "sanitize_configure",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/cmake",
+      "-S",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/release/snapshot",
+      "-B",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/sanitized_build",
+      "-DSCIANTIX_UN_L3_TESTS=ON",
+      "-DCMAKE_BUILD_TYPE=Debug",
+      "-DCMAKE_CXX_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer"
+    ],
+    "returncode": 0,
+    "wall_seconds": 2.045338129999436
+  },
+  {
+    "name": "sanitize_build",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/cmake",
+      "--build",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/sanitized_build",
+      "--target",
+      "un_l3_state_test",
+      "un_l3_solver_fixture",
+      "-j",
+      "2"
+    ],
+    "returncode": 0,
+    "wall_seconds": 2.051597657999082
+  },
+  {
+    "name": "sanitize_state",
+    "argv": [
+      "/tmp/sciantix-un-l3-phase1-tools/cmake/data/bin/ctest",
+      "--test-dir",
+      "/home/destro/sciantix-official/UN_model/phase2a/results/extra_checks/sanitized_build",
+      "--output-on-failure"
+    ],
+    "returncode": 8,
+    "wall_seconds": 0.014875860000756802
+  }
+]

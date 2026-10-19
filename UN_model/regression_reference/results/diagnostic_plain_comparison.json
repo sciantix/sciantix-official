@@ -1,0 +1,10 @@
+{
+  "exact_float64_equality": {
+    "AP3p4_1800K": true,
+    "AP3p4_1600K": true,
+    "AP3p2_900K": true,
+    "ANP6_1600K": true
+  },
+  "independent_process": true,
+  "plain_solver": true
+}

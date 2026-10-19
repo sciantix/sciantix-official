@@ -1,0 +1,54 @@
+{
+  "name": "B_COMPLETE",
+  "status": "pass",
+  "tests_passed": [
+    {
+      "file": "UN_model/phase2bc/results/B1_transport/results.json",
+      "sha256": "2fd34e201cae4d2940d2387683f7b812c81d47f5640930578541f40e55222035",
+      "values": 60240
+    },
+    {
+      "file": "UN_model/phase2bc/results/B2_seed/results.json",
+      "sha256": "6ca13f5579e16810b8f182b257b4dc14c1f3fa482b6030358639cddd2d233c05",
+      "values": 24
+    },
+    {
+      "file": "UN_model/phase2bc/results/B2_vacancy/results.json",
+      "sha256": "d6389e02ddb8151fbd1c5408cd0a93b6d78d8bd248ccdb3bc38fbb0765786713",
+      "values": 12032
+    },
+    {
+      "file": "UN_model/phase2bc/results/B3_intragranular_cached/results.json",
+      "sha256": "360dee295245bdd0e80db056c75841cb8b150d930789afdda8fff1170e26520c",
+      "values": 2999952
+    },
+    {
+      "file": "UN_model/phase2bc/results/B3_intragranular_chain/results.json",
+      "sha256": "8b5363712ebe490446f3345f52c5a2d3fa3148f4e0d35a9e8fe76ae84fdd85fd",
+      "values": 2999952
+    },
+    {
+      "file": "UN_model/phase2bc/results/B4_solver_state_recheck/results.json",
+      "sha256": "2b59fd5bb64a7dbcc2f79e192113de7030c8ad13bbce2710457186630caeb24c",
+      "values": 5829810
+    }
+  ],
+  "source_sha256": {
+    "CMakeLists.txt": "358410b838abe95a4925c36e87e67555eba2fa607dba10b25fd4625ba1f0d7b8",
+    "include/models/UNModel.h": "cea75f9c516c9c3d2cd85780a9bfe63cb434fc1efef9465c6d2d2bd7d7affa22",
+    "include/models/UNParameters.h": "2632c81ed963e1875ce2f45612ba70bf14364aa650f20576fe78c37cf61b0941",
+    "include/models/UNTransport.h": "bb26f9eb700940cdd910dbd272d6f5f182ed756fad55e36c4d6674f34332a64e",
+    "include/models/UNBubblePhysics.h": "e8e87a0b4f267ed0d6214073bc86aa4c8c04c031cf9dac8b4f8b9391d0258530",
+    "include/models/UNIntraGranular.h": "e4bfd579a624be0bdcebe8bd8d15563a4556740dfc75119ab9be7ade71890940",
+    "include/models/UNState.h": "dba22f0870931d288cc40e23eebca873862e84303ba6a18be91b89dbe4a9e8ef",
+    "include/models/UNLookupTables.h": "57697e7b8344405fcb0ccada2318905acdb21ea772b765993be091a5c9b41314",
+    "src/models/UNIntraGranular.C": "8b159016d34aaf16d87e29767c09cf992eaf7d9709b0b7bfda745ba219ddb14b",
+    "src/models/UNTransport.C": "a9787fce66c8733bb50084e2bfc8dac39304e87df99cff538383b98c0f8b52dd",
+    "src/models/UNBubblePhysics.C": "1b36804265e97f4bd9051f28853888d88c85aef960b26f4a846487bd0f54b9ba",
+    "UN_model/phase2bc/checkpoint.py": "c932bae29cbc9e7b6567a2a65a63e2c0a582139ef871ec66386c4fe3d013a7bd",
+    "UN_model/phase2bc/run_components.py": "880ddde5f1118daa6ad632c328aaf43f8033d45d31d8d3de22eb9d52c6b1f8f6",
+    "UN_model/phase2bc/component_driver.cpp": "54b1a714513ec715f355ae7a1eb515c2196bae9c9745d108280ae4cf9e606586"
+  },
+  "head": "8f5bfc7e123b0241507c5d1e587a28d20e4dcb24",
+  "note": "Local documented checkpoint; no Git commit, no staged user files included."
+}

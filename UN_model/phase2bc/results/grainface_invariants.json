@@ -1,0 +1,53 @@
+{
+  "status": "pass",
+  "checks": {
+    "C2_grainface/AP3p4_1800K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 2.220446049250313e-16,
+      "first_saturated_step_zero_based": 538,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface/AP3p4_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface/AP3p2_900K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface/ANP6_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 3.3306690738754696e-16,
+      "first_saturated_step_zero_based": 735,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/AP3p4_1800K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 2.220446049250313e-16,
+      "first_saturated_step_zero_based": 538,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/AP3p4_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/AP3p2_900K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 0.0,
+      "first_saturated_step_zero_based": null,
+      "saturation_flags_identical_to_reference": true
+    },
+    "C2_grainface_chain/ANP6_1600K": {
+      "gas_balance_max_normalized": 0.0,
+      "saturated_coverage_max_absolute_error": 3.3306690738754696e-16,
+      "first_saturated_step_zero_based": 735,
+      "saturation_flags_identical_to_reference": true
+    }
+  }
+}

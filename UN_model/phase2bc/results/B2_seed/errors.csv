@@ -1,0 +1,13 @@
+case,field,count,failures,max_absolute_error,max_normalized_error,max_step,first_failure
+AP3p2_900K,vacancies_per_bubble,2,0,0.0,0.0,0,
+AP3p2_900K,radius,2,0,0.0,0.0,0,
+AP3p2_900K,pressure_ratio,2,0,5.551115123125783e-17,1.6653345369377348e-16,0,
+AP3p4_1600K,vacancies_per_bubble,2,0,0.0,0.0,0,
+AP3p4_1600K,radius,2,0,0.0,0.0,0,
+AP3p4_1600K,pressure_ratio,2,0,5.551115123125783e-17,1.6653345369377348e-16,0,
+AP3p4_1800K,vacancies_per_bubble,2,0,0.0,0.0,0,
+AP3p4_1800K,radius,2,0,0.0,0.0,0,
+AP3p4_1800K,pressure_ratio,2,0,0.0,0.0,0,
+ANP6_1600K,vacancies_per_bubble,2,0,0.0,0.0,0,
+ANP6_1600K,radius,2,0,0.0,0.0,0,
+ANP6_1600K,pressure_ratio,2,0,5.551115123125783e-17,1.6653345369377348e-16,0,

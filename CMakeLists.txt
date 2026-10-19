@@ -75,3 +75,20 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
 include(CPack)
+
+# Optional UN L3 numerical/state tests. The historical executable and its
+# solver implementation keep their existing configuration and entry points.
+option(SCIANTIX_UN_L3_TESTS "Build the UN L3 fixture replay and state tests" OFF)
+if(SCIANTIX_UN_L3_TESTS)
+    add_library(un_l3_exchange_test_objects OBJECT
+        src/classes/Solver.C src/models/UNIntraGranular.C
+        src/models/UNTransport.C src/models/UNBubblePhysics.C)
+    set_property(TARGET un_l3_exchange_test_objects PROPERTY CXX_STANDARD 11)
+    add_executable(un_l3_solver_fixture
+        UN_model/phase2a/solver_fixture.cpp $<TARGET_OBJECTS:un_l3_exchange_test_objects>)
+    set_property(TARGET un_l3_solver_fixture PROPERTY CXX_STANDARD 11)
+    add_executable(un_l3_state_test
+        UN_model/phase2a/state_test.cpp $<TARGET_OBJECTS:un_l3_exchange_test_objects>)
+    set_property(TARGET un_l3_state_test PROPERTY CXX_STANDARD 11)
+    add_test(NAME un_l3_state_contract COMMAND un_l3_state_test)
+endif()

@@ -1,0 +1,907 @@
+{
+  "component": "grainface_chain",
+  "status": "pass",
+  "values": 60240,
+  "metrics": [
+    {
+      "case": "AP3p2_900K",
+      "field": "q_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "q_rel",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "qv_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "Ngf_areal",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "Ngf_vol",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "ng_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "nv_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "V_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "R_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "A_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "Fc",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "p_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "p_gf_eq",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "zeta_gf",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "dnv_gf_dt",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "dA_gf_dt",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "dNgf_dt",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "dq_gf_in_step",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "dq_rel_step",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p2_900K",
+      "field": "gf_saturated",
+      "count": 605,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "q_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "q_rel",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "qv_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 446676598784.0,
+      "max_normalized_error": 1.5243403990668385e-15,
+      "max_step": 546,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "Ngf_areal",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.001953125,
+      "max_normalized_error": 4.457019525787402e-16,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "Ngf_vol",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 640.0,
+      "max_normalized_error": 5.841904632840064e-16,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "ng_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 2.7939677238464355e-09,
+      "max_normalized_error": 6.66292544707716e-16,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "nv_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 5.364418029785156e-07,
+      "max_normalized_error": 2.013302190178598e-15,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "V_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.6550960459577808e-35,
+      "max_normalized_error": 2.0331309186450058e-15,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "R_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.3234889800848443e-22,
+      "max_normalized_error": 7.066003779386456e-16,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "A_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.0097419586828951e-28,
+      "max_normalized_error": 1.2469137438919288e-15,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "Fc",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 3.3306690738754696e-16,
+      "max_normalized_error": 9.367857784427666e-16,
+      "max_step": 546,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "p_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.6763806343078613e-08,
+      "max_normalized_error": 1.4165755890945851e-15,
+      "max_step": 548,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "p_gf_eq",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 7.450580596923828e-09,
+      "max_normalized_error": 6.297798701701004e-16,
+      "max_step": 546,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "zeta_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.1102230246251565e-16,
+      "max_normalized_error": 1.2147738738255663e-15,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "dnv_gf_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 6.707523425575346e-11,
+      "max_normalized_error": 2.98313654183331e-13,
+      "max_step": 549,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "dA_gf_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 5.843993675000019e-33,
+      "max_normalized_error": 2.1043479171654005e-13,
+      "max_step": 545,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "dNgf_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 1.832377165555954e-07,
+      "max_normalized_error": 1.8705591641985724e-13,
+      "max_step": 548,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "dq_gf_in_step",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "dq_rel_step",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1600K",
+      "field": "gf_saturated",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "q_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "q_rel",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "qv_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "Ngf_areal",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "Ngf_vol",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "ng_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "nv_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "V_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "R_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "A_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "Fc",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "p_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "p_gf_eq",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "zeta_gf",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "dnv_gf_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "dA_gf_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "dNgf_dt",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "dq_gf_in_step",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "dq_rel_step",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "AP3p4_1800K",
+      "field": "gf_saturated",
+      "count": 550,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "q_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "q_rel",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "qv_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "Ngf_areal",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "Ngf_vol",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "ng_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "nv_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "V_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "R_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "A_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "Fc",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "p_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "p_gf_eq",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "zeta_gf",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "dnv_gf_dt",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "dA_gf_dt",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "dNgf_dt",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "dq_gf_in_step",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "dq_rel_step",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    },
+    {
+      "case": "ANP6_1600K",
+      "field": "gf_saturated",
+      "count": 1307,
+      "failures": 0,
+      "max_absolute_error": 0.0,
+      "max_normalized_error": 0.0,
+      "max_step": 0,
+      "first_failure": null
+    }
+  ],
+  "reference_sha256": {
+    "AP3p2_900K": {
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p2_900K/manifest.json": "c5353635b8f447568ae3a3700d9684f38c2384c1b9bce6efc99ad0730ef2f057",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p2_900K/trace.jsonl.gz": "01ef57197f616b70ddbaa3e224da9ba157efc974fbd17989d9dbf134107698a0",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p2_900K/modes.npz": "423717f9248f74b4ca580949bb17d7f09e3b30d840aa0144250176042a501460"
+    },
+    "AP3p4_1600K": {
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p4_1600K/manifest.json": "801f9924fe4d07b60bcf67b4055f2c02c7b3f49dbebad8541a02f33cbc56220d",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p4_1600K/trace.jsonl.gz": "5afd0f44b996ef0470b2d410eb0b32d72170823150a80b0fc89b5e6f6dfa1079",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p4_1600K/modes.npz": "f081588f459795e0f3335941634bb12fd0d7ad93f5ea3bb71bd06ee8428c8791"
+    },
+    "AP3p4_1800K": {
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p4_1800K/manifest.json": "c02d9dd36bd7e50a7c2137be5595dd4e6811b980c3a9fa11e6cb37966f026483",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p4_1800K/trace.jsonl.gz": "c972bcc1e1503a8209a78d92f13ef6f660f7e9186df142334ea1576f67ede886",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/AP3p4_1800K/modes.npz": "e70a733442cbd5d00bce92896a9795af180c0d875481d9a1cd5c618a065e6b25"
+    },
+    "ANP6_1600K": {
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/ANP6_1600K/manifest.json": "b03a133b7a92ac9c00d958967f2103ef2eadf755a7d1ac895d6ed9c98f40aedc",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/ANP6_1600K/trace.jsonl.gz": "983d6f3493638e246cac4111469c8801ba22ce53f566216cd4972156c36d8581",
+      "/home/destro/sciantix-official/UN_model/regression_reference/results/full/ANP6_1600K/modes.npz": "8704d9ed06cf9d5afc1457a47e696975ced2cc6357f1d2e0b302ae04980036a4"
+    }
+  },
+  "build_command": [
+    "g++",
+    "-std=c++11",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-Wall",
+    "-Wextra",
+    "-I/home/destro/sciantix-official/include/classes",
+    "-I/home/destro/sciantix-official/include/models",
+    "-I/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized",
+    "/home/destro/sciantix-official/UN_model/phase2bc/component_driver.cpp",
+    "/home/destro/sciantix-official/src/classes/Solver.C",
+    "/home/destro/sciantix-official/src/models/UNIntraGranular.C",
+    "/home/destro/sciantix-official/src/models/UNTransport.C",
+    "/home/destro/sciantix-official/src/models/UNBubblePhysics.C",
+    "/home/destro/sciantix-official/src/models/UNGrainFace.C",
+    "-o",
+    "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/component_driver.x"
+  ],
+  "build_seconds": 7.5793012869980885,
+  "commands": [
+    {
+      "case": "AP3p2_900K",
+      "argv": [
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/component_driver.x",
+        "grainface_chain",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p2_900K/parameters.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p2_900K/input.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p2_900K/output.bin"
+      ],
+      "wall_seconds": 0.01741397400110145
+    },
+    {
+      "case": "AP3p4_1600K",
+      "argv": [
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/component_driver.x",
+        "grainface_chain",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p4_1600K/parameters.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p4_1600K/input.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p4_1600K/output.bin"
+      ],
+      "wall_seconds": 0.011116613997728564
+    },
+    {
+      "case": "AP3p4_1800K",
+      "argv": [
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/component_driver.x",
+        "grainface_chain",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p4_1800K/parameters.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p4_1800K/input.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/AP3p4_1800K/output.bin"
+      ],
+      "wall_seconds": 0.011476035000669071
+    },
+    {
+      "case": "ANP6_1600K",
+      "argv": [
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/component_driver.x",
+        "grainface_chain",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/ANP6_1600K/parameters.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/ANP6_1600K/input.txt",
+        "/home/destro/sciantix-official/UN_model/phase2bc/results/C3_gf_sanitized/ANP6_1600K/output.bin"
+      ],
+      "wall_seconds": 0.018755182998575037
+    }
+  ],
+  "sanitizers": true,
+  "ASAN_OPTIONS": "detect_leaks=0",
+  "source_sha256": {
+    "src/classes/Solver.C": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+    "src/models/UNIntraGranular.C": "8b159016d34aaf16d87e29767c09cf992eaf7d9709b0b7bfda745ba219ddb14b",
+    "src/models/UNTransport.C": "a9787fce66c8733bb50084e2bfc8dac39304e87df99cff538383b98c0f8b52dd",
+    "src/models/UNBubblePhysics.C": "1b36804265e97f4bd9051f28853888d88c85aef960b26f4a846487bd0f54b9ba",
+    "src/models/UNGrainFace.C": "80736dff571170f4e9548537d6941ccb37c8fbb3abcb3e70cd250591a9ba1f1f"
+  },
+  "runner_sha256": "83e4078f7ab6bb709cdb2c953e31359f84ed68ad07566c40f3fff828e9fc7028"
+}

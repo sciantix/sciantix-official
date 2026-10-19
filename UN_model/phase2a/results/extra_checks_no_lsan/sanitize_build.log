@@ -1,0 +1,10 @@
+[ 25%] Building CXX object CMakeFiles/un_l3_exchange_test_objects.dir/src/classes/Solver.C.o
+[ 50%] Building CXX object CMakeFiles/un_l3_exchange_test_objects.dir/src/models/UNIntraGranular.C.o
+[ 50%] Built target un_l3_exchange_test_objects
+[ 75%] Building CXX object CMakeFiles/un_l3_state_test.dir/UN_model/phase2a/state_test.cpp.o
+[100%] Linking CXX executable un_l3_state_test.x
+[100%] Built target un_l3_state_test
+[ 50%] Built target un_l3_exchange_test_objects
+[ 75%] Building CXX object CMakeFiles/un_l3_solver_fixture.dir/UN_model/phase2a/solver_fixture.cpp.o
+[100%] Linking CXX executable un_l3_solver_fixture.x
+[100%] Built target un_l3_solver_fixture

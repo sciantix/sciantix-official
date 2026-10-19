@@ -1,0 +1,5 @@
+case,field,count,failures,max_absolute_error,max_normalized_error,max_step,first_failure
+AP3p2_900K,nv1,605,0,0.0,0.0,0,
+AP3p4_1600K,nv1,550,0,0.0,0.0,0,
+AP3p4_1800K,nv1,550,0,0.0,0.0,0,
+ANP6_1600K,nv1,1307,0,0.0,0.0,0,

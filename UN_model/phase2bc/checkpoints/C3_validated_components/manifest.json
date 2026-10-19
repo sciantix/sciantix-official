@@ -1,0 +1,66 @@
+{
+  "name": "C3_validated_components",
+  "status": "pass",
+  "tests_passed": [
+    {
+      "file": "UN_model/phase2bc/results/C1_limited/results.json",
+      "sha256": "2b210c72178bcb280432a7c42d007a6d95fc19a68a38990d96f4f702d9b527fa",
+      "values": 3012
+    },
+    {
+      "file": "UN_model/phase2bc/results/C1_3x3/results.json",
+      "sha256": "4e829be816f38b602497f616eaf4b284a797d823b7205f813bdd045a6988af88",
+      "values": 9036
+    },
+    {
+      "file": "UN_model/phase2bc/results/C2_initial/results.json",
+      "sha256": "8155ce7a018f9fd8265a3dbd938ecfec8d8e9baabef844ffb05cd4c1d3dbb4f1",
+      "values": 80
+    },
+    {
+      "file": "UN_model/phase2bc/results/C2_grainface/results.json",
+      "sha256": "f8a14ff58fb0b3ad9817976e6e81757d90b09a136dba50a6f6f6e923948a65ff",
+      "values": 60240
+    },
+    {
+      "file": "UN_model/phase2bc/results/C2_grainface_chain/results.json",
+      "sha256": "159015dd88f9caee9610e0ee3408ece4dd540f3a4df2165c8c809de9faaa1113",
+      "values": 60240
+    },
+    {
+      "file": "UN_model/phase2bc/results/C3_ig_sanitized/results.json",
+      "sha256": "526ce2727a89bd768797858f7d5f4d7e94c3f97100f73a987f3b482d3bd2ea4c",
+      "values": 2999952
+    },
+    {
+      "file": "UN_model/phase2bc/results/C3_gf_sanitized/results.json",
+      "sha256": "23425bf372ed3463ee77c7bbdbff2e3f3f0a371b5283610f62a35de7adeebaf8",
+      "values": 60240
+    },
+    {
+      "file": "UN_model/phase2bc/results/grainface_invariants.json",
+      "sha256": "17b65e82e73433710977e202063c388a1db9d653ed5791b73fe331d2ab983ec2",
+      "values": null
+    }
+  ],
+  "source_sha256": {
+    "CMakeLists.txt": "358410b838abe95a4925c36e87e67555eba2fa607dba10b25fd4625ba1f0d7b8",
+    "include/models/UNModel.h": "cea75f9c516c9c3d2cd85780a9bfe63cb434fc1efef9465c6d2d2bd7d7affa22",
+    "include/models/UNGrainFace.h": "34ad09f816212a07a325df381545dfa43473706110dabd15eb3f83afc087b2f4",
+    "include/models/UNParameters.h": "1fa881c310dcfceba4aef5c60af4ca06cf94e898927c357538e0699cc3854c33",
+    "include/models/UNTransport.h": "bb26f9eb700940cdd910dbd272d6f5f182ed756fad55e36c4d6674f34332a64e",
+    "include/models/UNBubblePhysics.h": "e8e87a0b4f267ed0d6214073bc86aa4c8c04c031cf9dac8b4f8b9391d0258530",
+    "include/models/UNIntraGranular.h": "e4bfd579a624be0bdcebe8bd8d15563a4556740dfc75119ab9be7ade71890940",
+    "include/models/UNState.h": "6396f842bf2d1bf5d8b0ae37c95ff36326035309b2082008d1fa54a0cc8c95b5",
+    "include/models/UNLookupTables.h": "57697e7b8344405fcb0ccada2318905acdb21ea772b765993be091a5c9b41314",
+    "src/models/UNIntraGranular.C": "8b159016d34aaf16d87e29767c09cf992eaf7d9709b0b7bfda745ba219ddb14b",
+    "src/models/UNTransport.C": "a9787fce66c8733bb50084e2bfc8dac39304e87df99cff538383b98c0f8b52dd",
+    "src/models/UNGrainFace.C": "80736dff571170f4e9548537d6941ccb37c8fbb3abcb3e70cd250591a9ba1f1f",
+    "src/models/UNBubblePhysics.C": "1b36804265e97f4bd9051f28853888d88c85aef960b26f4a846487bd0f54b9ba",
+    "UN_model/phase2bc/checkpoint.py": "c932bae29cbc9e7b6567a2a65a63e2c0a582139ef871ec66386c4fe3d013a7bd",
+    "UN_model/phase2bc/run_components.py": "83e4078f7ab6bb709cdb2c953e31359f84ed68ad07566c40f3fff828e9fc7028",
+    "UN_model/phase2bc/component_driver.cpp": "40bdca17a32d3666374e4823e7dd4ffd73b837cfd69990bd405a0eed289c4f5a"
+  },
+  "head": "8f5bfc7e123b0241507c5d1e587a28d20e4dcb24",
+  "note": "Local documented checkpoint; no Git commit, no staged user files included."
+}
