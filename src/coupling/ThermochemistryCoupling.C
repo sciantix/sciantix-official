@@ -106,14 +106,14 @@ namespace ThermochemistryCoupling
                 output_data.components.clear();
 
                 const bool case_success      = OCUtilsCoupling::runOpenCalphadCaseOCASI(database_path,
-                                                                                        temperature,
-                                                                                        pressure,
-                                                                                        components,
-                                                                                        valid_elements,
-                                                                                        solver,
-                                                                                        location,
-                                                                                        oxygen_potential,
-                                                                                        output_data);
+                                                                                   temperature,
+                                                                                   pressure,
+                                                                                   components,
+                                                                                   valid_elements,
+                                                                                   solver,
+                                                                                   location,
+                                                                                   oxygen_potential,
+                                                                                   output_data);
                 const bool has_usable_output = !output_data.solution_phases.empty();
 
                 if (case_success && has_usable_output)
