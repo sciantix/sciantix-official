@@ -25,7 +25,7 @@ import merope
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RUN_FILES = os.path.join(HERE, "..", "sciantix-official/utilities/HBFF/mmm_inputs", "run_*.txt")  # every run file of the folder is processed
+RUN_FILES = os.path.join(HERE, "..", "../sciantix-official/utilities/HBFF/mmm_inputs", "run_*.txt")  # every run file of the folder is processed
 
 ###### Matrix ######
 # The RVE is dimensionless, nevertheless dimensions of objects within the RVE should stay consistent through each other: lengths are in um, as the radii of the run file. The side of the cube, the repulsion distance and the mesh size are fixed.

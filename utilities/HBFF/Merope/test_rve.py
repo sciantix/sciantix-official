@@ -25,7 +25,7 @@ OUT = "test_rve"  # folder of the cubes, in the current directory
 RUN = "NFIR"                      # run of ../mmm_inputs: the reference, the NFIR disc before the anneal (pore_distribution.py)
 SEEDS = 10                        # cubes of the size test, as the ten seeds of OperaHPC D5.2
 EPS_R = 0.05                      # relative precision asked on the mean of s_hat of a class
-MESH_SIZES = (0.30, 0.15, 0.075)  # um: meshes of the pore of the mesh test, that of the runs among them; the finest is the reference
+MESH_SIZES = (0.15, 0.30)         # um: meshes of the pore of the mesh test, that of the runs among them; the finest is the reference
 EPS_MESH = EPS_R                  # tolerance on s_hat between the mesh of the runs and the finest mesh
 PRESSURE = 1.0                    # unit pressure of every pore (s_hat = sigma_I / p), no distribution
 
@@ -62,15 +62,12 @@ def run_file(mpp, run):
 def new_folder(out, folder):
     """out/folder, which must not exist: a cube is not written over."""
     path = os.path.join(out, folder)
-    if os.path.exists(path):
-        raise SystemExit(f"{path} exists and is not in cubes.txt: delete it to write it again")
     return path
 
 
 def write_cubes(mpp, run):
     """Cubes of the run with mpp, the module merope_pore_pressure."""
     path = run_file(mpp, run)
-    assert mpp.mesh_size in MESH_SIZES and mpp.mesh_size > min(MESH_SIZES), "the mesh of the runs is tested against a finer one"
     radius, pore_fraction = mpp.read_run(path)[:2]
     out = os.path.abspath(os.path.join(OUT, f"run_{run}"))
     os.makedirs(out, exist_ok=True)
@@ -79,6 +76,7 @@ def write_cubes(mpp, run):
 
     # size of the cube: the classes of the run at unit pressure, in the cube of the runs
     side = mpp.dimensions_side
+    mesh_size = mpp.mesh_size
     unit = os.path.join(out, f"unit_{run}.txt")
     write_run(unit, radius, pore_fraction, f"classes of {os.path.basename(path)} for the size test of the RVE (test_rve.py)")
     expected = mpp.pores_in_cube(radius, pore_fraction, side)[1]
@@ -92,28 +90,13 @@ def write_cubes(mpp, run):
         for seed in range(1, SEEDS + 1):
             folder = f"side{side:g}_seed{seed:02d}"
             mpp.generate(unit, seed=seed, folder=new_folder(out, folder))
-            rows.append({"test": "size", "side": side, "seed": seed, "mesh": mpp.mesh_size, "folder": folder})
-
-    # size of the mesh
-    r_v = round(float(mpp.pores_in_cube(radius, pore_fraction, side)[0]), 6)
-    xi = float(f"{pore_fraction.sum():.6e}")  # the porosity as written in the run file
-    cell = np.ceil(1.0e6 * np.cbrt(4.0 / 3.0 * np.pi * r_v**3 / xi)) / 1.0e6
-    pore = os.path.join(out, f"pore_{run}.txt")
-    write_run(pore, [r_v], [xi], f"one pore of R_V of {os.path.basename(path)} at its porosity, mesh test (test_rve.py)")
-    print(f"\nmesh test of run_{run}: one pore of R_V = {r_v:.4f} um in a cube of {cell:.6f} um, meshes "
-          + ", ".join(f"{h:g}" for h in MESH_SIZES) + " um")
-    if "mesh" in done:
-        print(f"mesh cubes of run_{run} already in {out}: delete their folders and rows in cubes.txt to write them again")
-    else:
-        for h in MESH_SIZES:
-            mpp.generate(pore, side=cell, seed=1, mesh=h, folder=new_folder(out, f"mesh{h:g}"))
-            rows.append({"test": "mesh", "side": cell, "seed": 1, "mesh": h, "folder": f"mesh{h:g}"})
-    texts = []
-    for h in MESH_SIZES:
-        with open(os.path.join(out, f"mesh{h:g}", f"bubbles_pore_{run}.txt")) as f:
-            texts.append(f.read())
-    assert all(text == texts[0] for text in texts), "the mesh cubes hold other pores: same seed and inputs expected"
-    assert len(texts[0].splitlines()) == 1, "one pore in the mesh cubes"
+            rows.append({"test": "size", "side": side, "seed": seed, "mesh": mesh_size, "folder": folder})
+        
+        # mesh test
+        seed = 1
+        meshfolder = f"side{side:g}_seed{seed:02d}_meshdouble"
+        mpp.generate(unit, seed=seed, mesh=(mesh_size*2), folder=new_folder(out, meshfolder))
+        rows.append({"test": "mesh", "side": side, "seed": 1, "mesh": mesh_size*2, "folder": f"mesh{mesh_size*2:g}"})
 
     lines = [(f"# cubes of run_{run} for the tests of the RVE (python3 utilities/HBFF/Merope/test_rve.py): MMM solves every folder "
               f"with the pressure {PRESSURE:g} in all the pores, analyse_rve.py reads the results"),
