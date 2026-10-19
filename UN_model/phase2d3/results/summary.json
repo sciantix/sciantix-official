@@ -1,0 +1,78 @@
+{
+  "status": "pass",
+  "scope": "2D and 3 complete; Phase 4 not started",
+  "passed_checks": [
+    "D1_diagnostic_v3",
+    "D_parameter_audit",
+    "P3_full",
+    "P3_sanitized",
+    "P3_solver_state",
+    "P3_independent_ANP6"
+  ],
+  "values_compared_full": 4637652,
+  "max_normalized_error_full": 1.8091796875e-12,
+  "cases": {
+    "AP3p2_900K": {
+      "steps": 605,
+      "first_saturation_history_row": null,
+      "max_mass_residual_over_generated": 2.5650348980556946e-15,
+      "last_dt_s": 4782.800675923936,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "max_grainface_balance_over_generated": 0.0
+    },
+    "AP3p4_1600K": {
+      "steps": 550,
+      "first_saturation_history_row": null,
+      "max_mass_residual_over_generated": 2.0257198682080884e-15,
+      "last_dt_s": 5329.81879629381,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "max_grainface_balance_over_generated": 0.0
+    },
+    "AP3p4_1800K": {
+      "steps": 550,
+      "first_saturation_history_row": 539,
+      "max_mass_residual_over_generated": 2.4981209441933817e-15,
+      "last_dt_s": 5329.81879629381,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "max_grainface_balance_over_generated": 0.0
+    },
+    "ANP6_1600K": {
+      "steps": 1307,
+      "first_saturation_history_row": 736,
+      "max_mass_residual_over_generated": 3.336146419883731e-15,
+      "last_dt_s": 9198.628416094929,
+      "single_initialization": true,
+      "exact_step_count": true,
+      "max_grainface_balance_over_generated": 0.0
+    }
+  },
+  "historical_standard": {
+    "total": 109,
+    "passed": 109,
+    "failed": 0
+  },
+  "preexisting_supplemental": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1
+  },
+  "legacy_un": {
+    "PASS": 91
+  },
+  "historical_outputs_byte_identical": 110,
+  "protected_file_count": 6741,
+  "modified_existing_files": [
+    "include/classes/Simulation.h",
+    "include/models/UNState.h",
+    "src/MainSCIANTIX.C",
+    "src/classes/Simulation.C",
+    "src/file_manager/Initialization.C",
+    "src/file_manager/InputReading.C",
+    "src/file_manager/Output.C",
+    "src/models/UNIntraGranular.C",
+    "src/operations/UpdateVariables.C"
+  ]
+}

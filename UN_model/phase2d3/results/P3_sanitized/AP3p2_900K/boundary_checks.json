@@ -1,0 +1,1298 @@
+{
+  "steps": 605,
+  "first_saturation_history_row": null,
+  "max_mass_residual_over_generated": 2.5650348980556946e-15,
+  "last_dt_s": 4782.800675923936,
+  "single_initialization": true,
+  "exact_step_count": true,
+  "checks": {
+    "initial": {
+      "time": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "burnup_percent_fima": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "rho_d": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "rho_d_next": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "delta_Nd_rho": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "c": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "mb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "md": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Nb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Nd": {
+        "cpp": 1.435e+19,
+        "python": 1.435e+19,
+        "absolute_error": 0.0
+      },
+      "Vb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Vd": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Rb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Rd": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "nvb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "nvd": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "generated": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "retained": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "retained_ig": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "q_gb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "q_gf": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "q_rel": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_d": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_gf": {
+        "cpp": 4.3893940480471364e-11,
+        "python": 4.3893940480471364e-11,
+        "absolute_error": 0.0
+      },
+      "swelling_ig": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_total_gas": {
+        "cpp": 4.3893940480471364e-11,
+        "python": 4.3893940480471364e-11,
+        "absolute_error": 0.0
+      },
+      "Ngf_areal": {
+        "cpp": 10000000000000.0,
+        "python": 10000000000000.0,
+        "absolute_error": 0.0
+      },
+      "Ngf_vol": {
+        "cpp": 2.5e+18,
+        "python": 2.5e+18,
+        "absolute_error": 0.0
+      },
+      "ng_gf": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "nv_gf": {
+        "cpp": 0.600986119103485,
+        "python": 0.600986119103485,
+        "absolute_error": 0.0
+      },
+      "V_gf": {
+        "cpp": 1.7557576192188547e-29,
+        "python": 1.7557576192188547e-29,
+        "absolute_error": 0.0
+      },
+      "R_gf": {
+        "cpp": 2.4200000000000025e-10,
+        "python": 2.4200000000000025e-10,
+        "absolute_error": 0.0
+      },
+      "A_gf": {
+        "cpp": 1.3517979858360967e-19,
+        "python": 1.3517979858360967e-19,
+        "absolute_error": 0.0
+      },
+      "Fc_gf": {
+        "cpp": 1.3517979858360968e-06,
+        "python": 1.3517979858360968e-06,
+        "absolute_error": 0.0
+      },
+      "p_gf": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_gf_eq": {
+        "cpp": 9173553719.008255,
+        "python": 9173553719.008255,
+        "absolute_error": 0.0
+      },
+      "zeta_gf": {
+        "cpp": 6.007038856931469,
+        "python": 6.007038856931469,
+        "absolute_error": 0.0
+      },
+      "gf_saturated": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_d": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_b_eq": {
+        "cpp": 2220000000000000.0,
+        "python": 2220000000000000.0,
+        "absolute_error": 0.0
+      },
+      "p_d_eq": {
+        "cpp": 2220000000000000.0,
+        "python": 2220000000000000.0,
+        "absolute_error": 0.0
+      },
+      "lambda_d": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "nu_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "phi_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "phi_d": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "f_cap_step": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "cap_raw_step": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "capture_fraction_sum": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "capture_raw_sum": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "capture_bubbles_cumulative": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "max_f_cap_step": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "matrix_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "bulk_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "dislocation_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "qgb_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "grainface_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "release_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "mass_balance_residual": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_d": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_d": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      }
+    },
+    "first": {
+      "time": {
+        "cpp": 10800.0,
+        "python": 10800.0,
+        "absolute_error": 0.0
+      },
+      "burnup_percent_fima": {
+        "cpp": 0.0018198577359563378,
+        "python": 0.0018198577359563378,
+        "absolute_error": 0.0
+      },
+      "rho_d": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "rho_d_next": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "delta_Nd_rho": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "c": {
+        "cpp": 1.845653835776372e+22,
+        "python": 1.845653835776372e+22,
+        "absolute_error": 0.0
+      },
+      "mb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "md": {
+        "cpp": 1.2875300317494684e+23,
+        "python": 1.2875300317494684e+23,
+        "absolute_error": 0.0
+      },
+      "Nb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Nd": {
+        "cpp": 1.4348414269953673e+19,
+        "python": 1.4348414269953673e+19,
+        "absolute_error": 0.0
+      },
+      "Vb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Vd": {
+        "cpp": 1.9255794812752343e-24,
+        "python": 1.9255794812752343e-24,
+        "absolute_error": 0.0
+      },
+      "Rb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "Rd": {
+        "cpp": 7.71775427053076e-09,
+        "python": 7.71775427053076e-09,
+        "absolute_error": 0.0
+      },
+      "nvb": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "nvd": {
+        "cpp": 5.711185528420857e+23,
+        "python": 5.711185528420857e+23,
+        "absolute_error": 0.0
+      },
+      "generated": {
+        "cpp": 1.4950253626093802e+23,
+        "python": 1.4950253626093802e+23,
+        "absolute_error": 0.0
+      },
+      "retained": {
+        "cpp": 1.4950253626093802e+23,
+        "python": 1.4950253626093802e+23,
+        "absolute_error": 0.0
+      },
+      "retained_ig": {
+        "cpp": 1.4720954153271057e+23,
+        "python": 1.4720954153271057e+23,
+        "absolute_error": 0.0
+      },
+      "q_gb": {
+        "cpp": 2.292994728227458e+21,
+        "python": 2.292994728227458e+21,
+        "absolute_error": 0.0
+      },
+      "q_gf": {
+        "cpp": 2.292994728227458e+21,
+        "python": 2.292994728227458e+21,
+        "absolute_error": 0.0
+      },
+      "q_rel": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_d": {
+        "cpp": 2.7629012107059563e-05,
+        "python": 2.7629012107059563e-05,
+        "absolute_error": 0.0
+      },
+      "swelling_gf": {
+        "cpp": 1.9495546004017778e-07,
+        "python": 1.9495546004017778e-07,
+        "absolute_error": 0.0
+      },
+      "swelling_ig": {
+        "cpp": 2.7629012107059563e-05,
+        "python": 2.7629012107059563e-05,
+        "absolute_error": 0.0
+      },
+      "swelling_total_gas": {
+        "cpp": 2.782396756709974e-05,
+        "python": 2.782396756709974e-05,
+        "absolute_error": 0.0
+      },
+      "Ngf_areal": {
+        "cpp": 9919964307930.271,
+        "python": 9919964307930.271,
+        "absolute_error": 0.0
+      },
+      "Ngf_vol": {
+        "cpp": 2.4799910769825674e+18,
+        "python": 2.4799910769825674e+18,
+        "absolute_error": 0.0
+      },
+      "ng_gf": {
+        "cpp": 924.5979751739147,
+        "python": 924.5979751739147,
+        "absolute_error": 0.0
+      },
+      "nv_gf": {
+        "cpp": 0.7026466795279401,
+        "python": 0.7026466795279401,
+        "absolute_error": 0.0
+      },
+      "V_gf": {
+        "cpp": 7.861135543978741e-26,
+        "python": 7.861135543978741e-26,
+        "absolute_error": 0.0
+      },
+      "R_gf": {
+        "cpp": 3.988616427371172e-09,
+        "python": 3.988616427371172e-09,
+        "absolute_error": 0.0
+      },
+      "A_gf": {
+        "cpp": 3.672193945545126e-17,
+        "python": 3.672193945545126e-17,
+        "absolute_error": 0.0
+      },
+      "Fc_gf": {
+        "cpp": 0.0003642803287160529,
+        "python": 0.0003642803287160529,
+        "absolute_error": 0.0
+      },
+      "p_gf": {
+        "cpp": 559682350101.5908,
+        "python": 559682350101.5908,
+        "absolute_error": 0.0
+      },
+      "p_gf_eq": {
+        "cpp": 556583978.5359265,
+        "python": 556583978.5359265,
+        "absolute_error": 0.0
+      },
+      "zeta_gf": {
+        "cpp": 3.2091576736002345,
+        "python": 3.2091576736002345,
+        "absolute_error": 0.0
+      },
+      "gf_saturated": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_d": {
+        "cpp": 95886346.42680871,
+        "python": 95886346.42680871,
+        "absolute_error": 0.0
+      },
+      "p_b_eq": {
+        "cpp": 2220000000000000.0,
+        "python": 2220000000000000.0,
+        "absolute_error": 0.0
+      },
+      "p_d_eq": {
+        "cpp": 287648443.0810114,
+        "python": 287648443.0810114,
+        "absolute_error": 0.0
+      },
+      "lambda_d": {
+        "cpp": 1.0,
+        "python": 1.0,
+        "absolute_error": 0.0
+      },
+      "nu_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "phi_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "phi_d": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "f_cap_step": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "cap_raw_step": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "capture_fraction_sum": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "capture_raw_sum": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "capture_bubbles_cumulative": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "max_f_cap_step": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "matrix_gas_percent": {
+        "cpp": 12.34530116970734,
+        "python": 12.34530116970734,
+        "absolute_error": 0.0
+      },
+      "bulk_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "dislocation_gas_percent": {
+        "cpp": 86.12094911234452,
+        "python": 86.12094911234452,
+        "absolute_error": 0.0
+      },
+      "qgb_gas_percent": {
+        "cpp": 1.5337497179481436,
+        "python": 1.5337497179481436,
+        "absolute_error": 0.0
+      },
+      "grainface_gas_percent": {
+        "cpp": 1.5337497179481436,
+        "python": 1.5337497179481436,
+        "absolute_error": 0.0
+      },
+      "release_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "mass_balance_residual": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_b": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_d": {
+        "cpp": 0.3333456124419346,
+        "python": 0.3333456124419346,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_d": {
+        "cpp": 39803.60073921463,
+        "python": 39803.60073921463,
+        "absolute_error": 0.0
+      }
+    },
+    "third": {
+      "time": {
+        "cpp": 32400.0,
+        "python": 32400.0,
+        "absolute_error": 0.0
+      },
+      "burnup_percent_fima": {
+        "cpp": 0.005459573207869013,
+        "python": 0.005459573207869013,
+        "absolute_error": 0.0
+      },
+      "rho_d": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "rho_d_next": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "delta_Nd_rho": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "c": {
+        "cpp": 2.1727460298839692e+22,
+        "python": 2.1727460298839692e+22,
+        "absolute_error": 0.0
+      },
+      "mb": {
+        "cpp": 5.292126393519653e+19,
+        "python": 5.292126393519653e+19,
+        "absolute_error": 0.0
+      },
+      "md": {
+        "cpp": 4.195310180529441e+23,
+        "python": 4.195310180529441e+23,
+        "absolute_error": 0.0
+      },
+      "Nb": {
+        "cpp": 2.121963971826367e+19,
+        "python": 2.121963971826367e+19,
+        "absolute_error": 0.0
+      },
+      "Nd": {
+        "cpp": 1.4347000047704367e+19,
+        "python": 1.4347000047704367e+19,
+        "absolute_error": 0.0
+      },
+      "Vb": {
+        "cpp": 2.1663976662451354e-28,
+        "python": 2.1663976662451354e-28,
+        "absolute_error": 0.0
+      },
+      "Vd": {
+        "cpp": 3.643237523310994e-24,
+        "python": 3.643237523310994e-24,
+        "absolute_error": 0.0
+      },
+      "Rb": {
+        "cpp": 3.725774133787278e-10,
+        "python": 3.725774133787278e-10,
+        "absolute_error": 0.0
+      },
+      "Rd": {
+        "cpp": 9.545520741582352e-09,
+        "python": 9.545520741582352e-09,
+        "absolute_error": 0.0
+      },
+      "nvb": {
+        "cpp": 3.378801076057341e+18,
+        "python": 3.378801076057341e+18,
+        "absolute_error": 0.0
+      },
+      "nvd": {
+        "cpp": 5.685303120207987e+23,
+        "python": 5.685303120207987e+23,
+        "absolute_error": 0.0
+      },
+      "generated": {
+        "cpp": 4.4850760878281405e+23,
+        "python": 4.4850760878281405e+23,
+        "absolute_error": 0.0
+      },
+      "retained": {
+        "cpp": 4.485076087828139e+23,
+        "python": 4.485076087828139e+23,
+        "absolute_error": 0.0
+      },
+      "retained_ig": {
+        "cpp": 4.41311399615719e+23,
+        "python": 4.41311399615719e+23,
+        "absolute_error": 0.0
+      },
+      "q_gb": {
+        "cpp": 7.196209167094948e+21,
+        "python": 7.196209167094948e+21,
+        "absolute_error": 0.0
+      },
+      "q_gf": {
+        "cpp": 7.196209167094948e+21,
+        "python": 7.196209167094948e+21,
+        "absolute_error": 0.0
+      },
+      "q_rel": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_b": {
+        "cpp": 4.597017796420899e-09,
+        "python": 4.597017796420899e-09,
+        "absolute_error": 0.0
+      },
+      "swelling_d": {
+        "cpp": 5.226952892074117e-05,
+        "python": 5.226952892074117e-05,
+        "absolute_error": 0.0
+      },
+      "swelling_gf": {
+        "cpp": 6.117744481174822e-07,
+        "python": 6.117744481174822e-07,
+        "absolute_error": 0.0
+      },
+      "swelling_ig": {
+        "cpp": 5.2274125938537595e-05,
+        "python": 5.2274125938537595e-05,
+        "absolute_error": 0.0
+      },
+      "swelling_total_gas": {
+        "cpp": 5.288590038665508e-05,
+        "python": 5.288590038665508e-05,
+        "absolute_error": 0.0
+      },
+      "Ngf_areal": {
+        "cpp": 9910780198983.463,
+        "python": 9910780198983.463,
+        "absolute_error": 0.0
+      },
+      "Ngf_vol": {
+        "cpp": 2.4776950497458657e+18,
+        "python": 2.4776950497458657e+18,
+        "absolute_error": 0.0
+      },
+      "ng_gf": {
+        "cpp": 2904.396635830166,
+        "python": 2904.396635830166,
+        "absolute_error": 0.0
+      },
+      "nv_gf": {
+        "cpp": 1.3354845493699683,
+        "python": 1.3354845493699683,
+        "absolute_error": 0.0
+      },
+      "V_gf": {
+        "cpp": 2.469127297082953e-25,
+        "python": 2.469127297082953e-25,
+        "absolute_error": 0.0
+      },
+      "R_gf": {
+        "cpp": 5.841284229751884e-09,
+        "python": 5.841284229751884e-09,
+        "absolute_error": 0.0
+      },
+      "A_gf": {
+        "cpp": 7.875855528881382e-17,
+        "python": 7.875855528881382e-17,
+        "absolute_error": 0.0
+      },
+      "Fc_gf": {
+        "cpp": 0.0007805587302569204,
+        "python": 0.0007805587302569204,
+        "absolute_error": 0.0
+      },
+      "p_gf": {
+        "cpp": 925002121492.4056,
+        "python": 925002121492.4056,
+        "absolute_error": 0.0
+      },
+      "p_gf_eq": {
+        "cpp": 380053411.6612055,
+        "python": 380053411.6612055,
+        "absolute_error": 0.0
+      },
+      "zeta_gf": {
+        "cpp": 2.8285306933491503,
+        "python": 2.8285306933491503,
+        "absolute_error": 0.0
+      },
+      "gf_saturated": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_b": {
+        "cpp": 6661825550.285166,
+        "python": 6661825550.285166,
+        "absolute_error": 0.0
+      },
+      "p_d": {
+        "cpp": 313860110.2116439,
+        "python": 313860110.2116439,
+        "absolute_error": 0.0
+      },
+      "p_b_eq": {
+        "cpp": 5958493242.700553,
+        "python": 5958493242.700553,
+        "absolute_error": 0.0
+      },
+      "p_d_eq": {
+        "cpp": 232569815.73872656,
+        "python": 232569815.73872656,
+        "absolute_error": 0.0
+      },
+      "lambda_d": {
+        "cpp": 1.0000940383390349,
+        "python": 1.0000940383390349,
+        "absolute_error": 0.0
+      },
+      "nu_b": {
+        "cpp": 1331911368040719.0,
+        "python": 1331911368040719.0,
+        "absolute_error": 0.0
+      },
+      "phi_b": {
+        "cpp": 1.406390351893959,
+        "python": 1.406390351893959,
+        "absolute_error": 0.0
+      },
+      "phi_d": {
+        "cpp": 5.240095660626594e-05,
+        "python": 5.240095660626594e-05,
+        "absolute_error": 0.0
+      },
+      "f_cap_step": {
+        "cpp": 1.412253257777866e-05,
+        "python": 1.412253257777866e-05,
+        "absolute_error": 0.0
+      },
+      "cap_raw_step": {
+        "cpp": 1.412253257777866e-05,
+        "python": 1.412253257777866e-05,
+        "absolute_error": 0.0
+      },
+      "capture_fraction_sum": {
+        "cpp": 2.3099934725175432e-05,
+        "python": 2.3099934725175432e-05,
+        "absolute_error": 0.0
+      },
+      "capture_raw_sum": {
+        "cpp": 2.3099934725175432e-05,
+        "python": 2.3099934725175432e-05,
+        "absolute_error": 0.0
+      },
+      "capture_bubbles_cumulative": {
+        "cpp": 404826975560365.75,
+        "python": 404826975560365.75,
+        "absolute_error": 0.0
+      },
+      "max_f_cap_step": {
+        "cpp": 1.412253257777866e-05,
+        "python": 1.412253257777866e-05,
+        "absolute_error": 0.0
+      },
+      "matrix_gas_percent": {
+        "cpp": 4.84439056849112,
+        "python": 4.84439056849112,
+        "absolute_error": 0.0
+      },
+      "bulk_gas_percent": {
+        "cpp": 0.011799412741027365,
+        "python": 0.011799412741027365,
+        "absolute_error": 0.0
+      },
+      "dislocation_gas_percent": {
+        "cpp": 93.53933129283843,
+        "python": 93.53933129283843,
+        "absolute_error": 0.0
+      },
+      "qgb_gas_percent": {
+        "cpp": 1.6044787259294078,
+        "python": 1.6044787259294078,
+        "absolute_error": 0.0
+      },
+      "grainface_gas_percent": {
+        "cpp": 1.6044787259294078,
+        "python": 1.6044787259294078,
+        "absolute_error": 0.0
+      },
+      "release_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "mass_balance_residual": {
+        "cpp": 134217728.0,
+        "python": 134217728.0,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_b": {
+        "cpp": 1.1180386179754807,
+        "python": 1.1180386179754807,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_b": {
+        "cpp": 0.15922989838273355,
+        "python": 0.15922989838273355,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_d": {
+        "cpp": 1.3495307171083646,
+        "python": 1.3495307171083646,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_d": {
+        "cpp": 39627.121358500866,
+        "python": 39627.121358500866,
+        "absolute_error": 0.0
+      }
+    },
+    "last": {
+      "time": {
+        "cpp": 6527982.800675924,
+        "python": 6527982.800675924,
+        "absolute_error": 0.0
+      },
+      "burnup_percent_fima": {
+        "cpp": 1.0999999999999999,
+        "python": 1.0999999999999999,
+        "absolute_error": 0.0
+      },
+      "rho_d": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "rho_d_next": {
+        "cpp": 35000000000000.0,
+        "python": 35000000000000.0,
+        "absolute_error": 0.0
+      },
+      "delta_Nd_rho": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "c": {
+        "cpp": 1.550381789760247e+23,
+        "python": 1.550381789760247e+23,
+        "absolute_error": 0.0
+      },
+      "mb": {
+        "cpp": 6.022637228053777e+25,
+        "python": 6.022637228053777e+25,
+        "absolute_error": 0.0
+      },
+      "md": {
+        "cpp": 2.6254953948312663e+25,
+        "python": 2.6254953948312663e+25,
+        "absolute_error": 0.0
+      },
+      "Nb": {
+        "cpp": 3.073346781120387e+23,
+        "python": 3.073346781120387e+23,
+        "absolute_error": 0.0
+      },
+      "Nd": {
+        "cpp": 1.4141731144590551e+19,
+        "python": 1.4141731144590551e+19,
+        "absolute_error": 0.0
+      },
+      "Vb": {
+        "cpp": 1.8450876094157938e-26,
+        "python": 1.8450876094157938e-26,
+        "absolute_error": 0.0
+      },
+      "Vd": {
+        "cpp": 2.5753161198049237e-22,
+        "python": 2.5753161198049237e-22,
+        "absolute_error": 0.0
+      },
+      "Rb": {
+        "cpp": 1.6392409488249293e-09,
+        "python": 1.6392409488249293e-09,
+        "absolute_error": 0.0
+      },
+      "Rd": {
+        "cpp": 3.9468199277563214e-08,
+        "python": 3.9468199277563214e-08,
+        "absolute_error": 0.0
+      },
+      "nvb": {
+        "cpp": 1.887248834297593e+25,
+        "python": 1.887248834297593e+25,
+        "absolute_error": 0.0
+      },
+      "nvd": {
+        "cpp": 4.827282114407677e+25,
+        "python": 4.827282114407677e+25,
+        "absolute_error": 0.0
+      },
+      "generated": {
+        "cpp": 9.036573938600257e+25,
+        "python": 9.036573938600257e+25,
+        "absolute_error": 0.0
+      },
+      "retained": {
+        "cpp": 9.036573938600259e+25,
+        "python": 9.036573938600259e+25,
+        "absolute_error": 0.0
+      },
+      "retained_ig": {
+        "cpp": 8.663636440782646e+25,
+        "python": 8.663636440782646e+25,
+        "absolute_error": 0.0
+      },
+      "q_gb": {
+        "cpp": 3.7293749781761285e+24,
+        "python": 3.7293749781761285e+24,
+        "absolute_error": 0.0
+      },
+      "q_gf": {
+        "cpp": 3.7293749781761285e+24,
+        "python": 3.7293749781761285e+24,
+        "absolute_error": 0.0
+      },
+      "q_rel": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "swelling_b": {
+        "cpp": 0.00567059406528314,
+        "python": 0.00567059406528314,
+        "absolute_error": 0.0
+      },
+      "swelling_d": {
+        "cpp": 0.003641942817861138,
+        "python": 0.003641942817861138,
+        "absolute_error": 0.0
+      },
+      "swelling_gf": {
+        "cpp": 0.0003170414744060615,
+        "python": 0.0003170414744060615,
+        "absolute_error": 0.0
+      },
+      "swelling_ig": {
+        "cpp": 0.009312536883144278,
+        "python": 0.009312536883144278,
+        "absolute_error": 0.0
+      },
+      "swelling_total_gas": {
+        "cpp": 0.00962957835755034,
+        "python": 0.00962957835755034,
+        "absolute_error": 0.0
+      },
+      "Ngf_areal": {
+        "cpp": 8987394225450.826,
+        "python": 8987394225450.826,
+        "absolute_error": 0.0
+      },
+      "Ngf_vol": {
+        "cpp": 2.2468485563627064e+18,
+        "python": 2.2468485563627064e+18,
+        "absolute_error": 0.0
+      },
+      "ng_gf": {
+        "cpp": 1659824.810005619,
+        "python": 1659824.810005619,
+        "absolute_error": 0.0
+      },
+      "nv_gf": {
+        "cpp": 679.4745852285321,
+        "python": 679.4745852285321,
+        "absolute_error": 0.0
+      },
+      "V_gf": {
+        "cpp": 1.4110495943674175e-22,
+        "python": 1.4110495943674175e-22,
+        "absolute_error": 0.0
+      },
+      "R_gf": {
+        "cpp": 4.847389727258731e-08,
+        "python": 4.847389727258731e-08,
+        "absolute_error": 0.0
+      },
+      "A_gf": {
+        "cpp": 5.423715983612149e-15,
+        "python": 5.423715983612149e-15,
+        "absolute_error": 0.0
+      },
+      "Fc_gf": {
+        "cpp": 0.048745073711601174,
+        "python": 0.048745073711601174,
+        "absolute_error": 0.0
+      },
+      "p_gf": {
+        "cpp": 1038997987392.3766,
+        "python": 1038997987392.3766,
+        "absolute_error": 0.0
+      },
+      "p_gf_eq": {
+        "cpp": 45797844.30197739,
+        "python": 45797844.30197739,
+        "absolute_error": 0.0
+      },
+      "zeta_gf": {
+        "cpp": 0.8087266225158662,
+        "python": 0.8087266225158662,
+        "absolute_error": 0.0
+      },
+      "gf_saturated": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "p_b": {
+        "cpp": 1357323005.8801832,
+        "python": 1357323005.8801832,
+        "absolute_error": 0.0
+      },
+      "p_d": {
+        "cpp": 231331222.03513566,
+        "python": 231331222.03513566,
+        "absolute_error": 0.0
+      },
+      "p_b_eq": {
+        "cpp": 1354285348.710561,
+        "python": 1354285348.710561,
+        "absolute_error": 0.0
+      },
+      "p_d_eq": {
+        "cpp": 56247815.72596397,
+        "python": 56247815.72596397,
+        "absolute_error": 0.0
+      },
+      "lambda_d": {
+        "cpp": 1.0091631896732032,
+        "python": 1.0091631896732032,
+        "absolute_error": 0.0
+      },
+      "nu_b": {
+        "cpp": 7.666714639062726e+16,
+        "python": 7.666714639062726e+16,
+        "absolute_error": 0.0
+      },
+      "phi_b": {
+        "cpp": 0.005129894882501655,
+        "python": 0.005129894882501655,
+        "absolute_error": 0.0
+      },
+      "phi_d": {
+        "cpp": 5.386605385217342e-07,
+        "python": 5.386605385217342e-07,
+        "absolute_error": 0.0
+      },
+      "f_cap_step": {
+        "cpp": 7.315775513346958e-07,
+        "python": 7.315775513346958e-07,
+        "absolute_error": 0.0
+      },
+      "cap_raw_step": {
+        "cpp": 7.315775513346958e-07,
+        "python": 7.315775513346958e-07,
+        "absolute_error": 0.0
+      },
+      "capture_fraction_sum": {
+        "cpp": 0.0038958245813754846,
+        "python": 0.0038958245813754846,
+        "absolute_error": 0.0
+      },
+      "capture_raw_sum": {
+        "cpp": 0.0038958245813754846,
+        "python": 0.0038958245813754846,
+        "absolute_error": 0.0
+      },
+      "capture_bubbles_cumulative": {
+        "cpp": 2.272844686407776e+20,
+        "python": 2.272844686407776e+20,
+        "absolute_error": 0.0
+      },
+      "max_f_cap_step": {
+        "cpp": 1.7866135849743873e-05,
+        "python": 1.7866135849743873e-05,
+        "absolute_error": 0.0
+      },
+      "matrix_gas_percent": {
+        "cpp": 0.17156743255734344,
+        "python": 0.17156743255734344,
+        "absolute_error": 0.0
+      },
+      "bulk_gas_percent": {
+        "cpp": 66.6473518501047,
+        "python": 66.6473518501047,
+        "absolute_error": 0.0
+      },
+      "dislocation_gas_percent": {
+        "cpp": 29.0541018384889,
+        "python": 29.0541018384889,
+        "absolute_error": 0.0
+      },
+      "qgb_gas_percent": {
+        "cpp": 4.126978878849078,
+        "python": 4.126978878849078,
+        "absolute_error": 0.0
+      },
+      "grainface_gas_percent": {
+        "cpp": 4.126978878849078,
+        "python": 4.126978878849078,
+        "absolute_error": 0.0
+      },
+      "release_gas_percent": {
+        "cpp": 0.0,
+        "python": 0.0,
+        "absolute_error": 0.0
+      },
+      "mass_balance_residual": {
+        "cpp": -17179869184.0,
+        "python": -17179869184.0,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_b": {
+        "cpp": 1.0022429964058273,
+        "python": 1.0022429964058273,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_b": {
+        "cpp": 61.40696018721315,
+        "python": 61.40696018721315,
+        "absolute_error": 0.0
+      },
+      "pressure_ratio_d": {
+        "cpp": 4.112714761443674,
+        "python": 4.112714761443674,
+        "absolute_error": 0.0
+      },
+      "vacancies_per_bubble_d": {
+        "cpp": 3413501.547336511,
+        "python": 3413501.547336511,
+        "absolute_error": 0.0
+      }
+    }
+  }
+}
