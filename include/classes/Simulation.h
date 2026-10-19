@@ -24,8 +24,8 @@
 #include "Solver.h"
 #include "System.h"
 #include "UNL3Model.h"
-#include <memory>
 #include <cmath>
+#include <memory>
 #include <vector>
 
 /**
@@ -61,10 +61,10 @@ class Simulation
     std::vector<double> modes_initial_conditions_dislocation_bubbles;
     // END UN AD URANIUMNITRIDE
 
-    Solver solver;
+    Solver                        solver;
     std::unique_ptr<un_l3::Model> un_l3_model;
-    bool un_l3_active = false;
-    double un_l3_history[20] = {};
+    bool                          un_l3_active      = false;
+    double                        un_l3_history[20] = {};
 
     static Simulation* instance;
 
