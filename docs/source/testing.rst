@@ -36,7 +36,7 @@ Please note that:
 
 The reference behind each suite is listed in `Available Test Suites`_.
 
-The folder ``testing/`` is the Python engine that runs and checks all the cases of ``verification/`` and ``validation/``: ``runner.py`` holds the list of groups (``REGISTRY``) and the command line, ``core/generic_runner.py`` runs ``sciantix.x`` on every case of a group, ``core/compare.py`` compares ``output.txt`` with ``output_gold.txt``, ``core/mox_po2_runner.py`` adds the oxygen-potential accuracy criteria, ``core/oc_status.py`` detects OpenCalphad, ``core/report.py`` writes the HTML report, and ``core/plot.py`` and ``core/parser.py`` are shared by the plotting scripts. Its Python dependencies are in ``testing/requirements.txt``. A new group needs an entry in ``REGISTRY`` and in the group lists of ``CMakeLists.txt``.
+The folder ``testing/`` is the Python engine that runs and checks all the cases of ``verification/`` and ``validation/``: ``runner.py`` holds the list of groups (``REGISTRY``) and the command line, ``core/generic_runner.py`` runs ``sciantix.x`` on every case of a group, ``core/compare.py`` compares ``output.txt`` with ``output_gold.txt``, ``core/mox_po2_runner.py`` adds the oxygen-potential accuracy criteria, ``core/oc_status.py`` and ``core/tc_status.py`` detect OpenCalphad and Thermochimica, ``core/report.py`` writes the HTML report, and ``core/plot.py`` and ``core/parser.py`` are shared by the plotting scripts. Its Python dependencies are in ``testing/requirements.txt``. A new group needs an entry in ``REGISTRY`` and in the group lists of ``CMakeLists.txt``.
 
 Running Tests
 -------------
@@ -94,6 +94,7 @@ Available group flags include:
 - ``--jog``
 - ``--oxygenpotential-freshfuel``
 - ``--oxygenpotential-burnup``
+- ``--volatileFPs``
 
 A single case, or the cases whose name contains a given string, can be selected with ``--<group>.<case-substring>``, e.g. ``--baker.1273K``. The runner writes an HTML summary to ``testing/report.html``.
 
@@ -111,6 +112,15 @@ Pass ``--oc`` to assert that OpenCalphad is expected to be available: if it turn
 
     python3 -m testing.runner --oc
 
+Thermochimica-dependent groups
+------------------------------
+
+``volatileFPs`` uses the Thermochimica coupling for the fission-product chemistry at grain boundary (``fission_products.module = THERMOCHIMICA`` in ``input_thermochemistry_settings.txt``, Cs-I-Te database ``CsITe_Clean.dat``). The group is skipped with a warning if Thermochimica is not linked or the database is missing. Pass ``--tc`` to assert that Thermochimica is expected to be available: if it turns out not to be, these groups fail loudly instead of skipping, so the run doesn't go green by accidents.
+
+.. code-block:: bash
+
+    python3 -m testing.runner --tc
+
 Comparison Modes and Updating the Gold Files
 --------------------------------------------
 
@@ -125,7 +135,7 @@ The ``--mode-gold`` argument selects what the runner does:
 
 Updating the gold file means accepting the current output of SCIANTIX as the new baseline. It is only appropriate when a change in the results is intended (e.g. a model has been improved or corrected). In that case the change in each affected case should be understood and explained in the pull request, for validation cases by checking that the comparison with the experimental data has not worsened.
 
-For OpenCalphad-dependent groups, modes ``1``/``3`` are refused if OC is unavailable, so a non-OC build can't overwrite gold values.
+For OpenCalphad- and Thermochimica-dependent groups, modes ``1``/``3`` are refused if the coupling is unavailable, so a build without it can't overwrite gold values.
 
 Test Case Structure
 -------------------
@@ -138,7 +148,7 @@ A case is a directory containing the SCIANTIX input files and the gold file:
 - **input_scaling_factors.txt**: scaling factors on model parameters, if needed.
 - **output_gold.txt**: regression baseline (see above).
 
-Validation cases also hold the experimental data (in the case folder, or in the ``data/`` folder of the group). OpenCalphad-coupled cases add ``input_thermochemistry*.txt`` files. The ``mox-po2`` group is driven by its own script rather than by scanning folders.
+Validation cases also hold the experimental data (in the case folder, or in the ``data/`` folder of the group). OpenCalphad- and Thermochimica-coupled cases add ``input_thermochemistry*.txt`` files. The ``mox-po2`` group is driven by its own script rather than by scanning folders.
 
 Available Test Suites
 ---------------------
@@ -399,3 +409,17 @@ oxygenpotential-freshfuel / -burnup (``--oxygenpotential-freshfuel``, ``--oxygen
 **Test purpose.** The oxygen potential of the code against the measurements (``plot.py`` in each group, ``combined_parity_plot.py`` for the fresh/irradiated and Kato/OC parity figure, 323 cases in total). In contrast to ``mox-po2``, the reference is experimental, not the correlation itself.
 
 **Reference.** Experimental data digitised from the original sources compiled in the NEA/NSC/R(2024)1 review (:ref:`NEA 2025 <ref-nea2025>`). Details in ``validation/oxygenpotential/README.md``.
+
+volatileFPs (``--volatileFPs``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Original problem.** Fission-product release from high-burnup fuel annealed in vacuum in a Knudsen cell up to the complete vaporisation of the sample: BWR UO\ :sub:`2` (65 GWd/t, not oxidised, same pellet, complete vaporisation at about 2800 K) and heterogeneous MOX (IFA-655, 118 MWd/kgHM, complete vaporisation at about 2610 K). The volatile fission products Cs, I and Te are released at different temperatures than Xe because of their chemistry, and above about 2000 K the vaporisation of the matrix releases what is left.
+
+**Modelling in SCIANTIX.**
+
+- *Setup and simplifications:* Three cases. Two in UO\ :sub:`2` with a base irradiation of 53400 h at 800 K: ``test_Colle2005``, followed by the stepwise annealing of Fig. 4 of :ref:`Colle et al. (2006) <ref-colle2006>`, and ``test_Hiernaut2008``, followed by a linear ramp at 30 K/min from 300 K to 2800 K (:ref:`Hiernaut et al. (2008) <ref-hiernaut2008>`). One in MOX, ``test_Colle2023`` (sample MOX2 of :ref:`Colle et al. (2023) <ref-colle2023>`, Pu 16 wt.%, O/M 1.998), with a base irradiation of 28245 h at 973 K up to 118 MWd/kgHM, followed by a linear ramp at 10 K/min from 300 K to 2800 K. The system pressure during annealing is 1e3 Pa (the experiments are in vacuum). Cs, I and Te are created as volatile fission products because they are listed in ``fission_products.elements``, with the ENDF/B-VIII.0 yields of the stable and long-lived isotopes in UO\ :sub:`2` and the yields of Samuelsson et al. in MOX.
+- *Models and options under test:* the Thermochimica coupling of the grain-boundary chemistry (``iThermochimica = 2``, Cs-I-Te database): at each step the Cs, I and Te available at grain boundary are equilibrated, the gas-phase fraction stays at grain boundary, where it can be released, and the rest is reacted. The matrix vaporisation in the Knudsen cell (``matrix.vaporisation = true`` from the start of the annealing): Hertz-Knudsen effusion of the U and Pu oxide vapour species (partial pressures from Olander (1976), oxygen potential from Blackburn for UO\ :sub:`2` and from Kato for MOX), shrinking grain and release of the fission products of the vaporised matrix. The cases carry a second gold file, ``thermochemistry_output_gold.txt``.
+
+**Test purpose.** The fractional release of Xe, Cs, I and Te and the vaporised fraction of the matrix against temperature (``volatileFPs/plot_Colle2005.py``) and the release rates of Cs, I and Te against temperature (``volatileFPs/plot_Hiernaut2008.py``), and the vaporisation rate of the MOX matrix against the release intensity of Nd, a marker of the matrix vaporisation, and the normalised fractional release of Kr, Xe, I, Cs and Te of the MOX (``volatileFPs/plot_Colle2023.py``), compared with the measurements. The matrix vaporises in the Knudsen cell, with the aperture and the sample mass of each experiment (``matrix.vaporisation_orifice_diameter``, ``matrix.vaporisation_sample_mass``). 
+
+**Reference.** Experimental: fractional release of Xe, Cs, I and Te and fractional vaporisation of the matrix (UO, UO\ :sub:`2`) from Fig. 4 of :ref:`Colle et al. (2006) <ref-colle2006>`, in ``test_Colle2005/exp_data``; release rates of Cs-137, I-129 and Te-130 from Fig. 4(b) of :ref:`Hiernaut et al. (2008) <ref-hiernaut2008>`, in ``test_Hiernaut2008/exp_data``; release intensity of Nd(Ox) of the MOX2 sample from Fig. 6 and normalised fractional release of Kr, Xe, I, Cs and Te of MOX2 from Figs. 9, 10, 12, 13 and 14 of :ref:`Colle et al. (2023) <ref-colle2023>`, in ``test_Colle2023/exp_data``.

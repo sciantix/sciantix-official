@@ -12,13 +12,14 @@ python3 -m testing.runner --verification
 python3 -m testing.runner --validation
 python3 -m testing.runner --oc            # Expected to have OpenCalphad linked; 
 										  # any group that can't use it fails loudly
+python3 -m testing.runner --tc            # Same, for the Thermochimica coupling
 										  
 Test groups live under two top-level directories
 - verification/ (to verify a specific model implementation) 
 - validation/   (to validate the model against experimental data)
 
-Every group is attempted on every run; groups that need OpenCalphad/a
-specific CALPHAD database degrade gracefully when it isn't available.
+Every group is attempted on every run; groups that need OpenCalphad or
+Thermochimica/a specific database degrade gracefully when it isn't available.
 """
 
 import sys
@@ -29,6 +30,7 @@ from collections import namedtuple
 from testing.core.generic_runner import run_group
 from testing.core.report import generate_html_report
 from testing.core.oc_status import detect_oc_status
+from testing.core.tc_status import detect_tc_status
 from testing.core import mox_po2_runner
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -40,10 +42,12 @@ SUITE_ROOTS = {
 OCRequirement = namedtuple("OCRequirement", ["kind", "databases", "markers"])
 # kind: "column_degrade" -- still run, excluding `markers` columns from comparison
 #       "skip_group"     -- skip entirely the simulation
+# Same fields as OCRequirement, for groups that need the Thermochimica coupling instead
+TCRequirement = namedtuple("TCRequirement", ["kind", "databases", "markers"])
 
 OXYGEN_POTENTIAL_MARKERS = ("CALPHAD", "Fuel oxygen partial pressure (MPa)", "Fuel oxygen potential (KJ/mol)")
 
-# (cli_name, suite, relpath_under_suite, case_prefix, extra_outputs, oc_requirement)
+# (cli_name, suite, relpath_under_suite, case_prefix, extra_outputs, oc_requirement or tc_requirement)
 REGISTRY = [
     ("mox-po2", "verification", "test_MOX_po2", "T_",
         (), OCRequirement("column_degrade", ("upuo-v21.TDB",), OXYGEN_POTENTIAL_MARKERS)),
@@ -67,6 +71,8 @@ REGISTRY = [
         (), OCRequirement("column_degrade", ("upuo-v21.TDB",), OXYGEN_POTENTIAL_MARKERS)),
     ("oxygenpotential-burnup", "validation", "oxygenpotential/burnup", "test_",
         (), OCRequirement("column_degrade", ("upuo-v21.TDB",), OXYGEN_POTENTIAL_MARKERS)),
+    ("volatileFPs", "validation", "volatileFPs", "test_", ("thermochemistry_output.txt",),
+        TCRequirement("skip_group", ("CsITe_Clean.dat",), ())),
 ]
 
 def cli_dest(cli_name):
@@ -88,6 +94,11 @@ def build_parser():
                          help="Strict mode: OpenCalphad is expected to be linked and every "
                               "required database present; any group that would otherwise "
                               "degrade/skip for lack of OC instead fails loudly")
+
+    parser.add_argument("--tc", action="store_true",
+                         help="Strict mode: Thermochimica is expected to be linked and every "
+                              "required database present; any group that would otherwise "
+                              "skip for lack of Thermochimica instead fails loudly")
 
     parser.add_argument(
         "--mode-gold",
@@ -145,10 +156,14 @@ def main():
     run_everything = not explicit_selection
 
     databases_needed = set(mox_po2_runner.REQUIRED_DATABASES)
-    for _, _, _, _, _, oc_req in REGISTRY:
-        if oc_req is not None:
-            databases_needed.update(oc_req.databases)
+    tc_databases_needed = set()
+    for _, _, _, _, _, req in REGISTRY:
+        if isinstance(req, TCRequirement):
+            tc_databases_needed.update(req.databases)
+        elif req is not None:
+            databases_needed.update(req.databases)
     oc_status = detect_oc_status(databases_needed)
+    tc_status = detect_tc_status(tc_databases_needed)
 
     results = []
     oc_notes = []
@@ -169,14 +184,18 @@ def main():
         skip_is_failure = False
 
         if oc_req is not None:
-            oc_ok = oc_status.available_for(oc_req.databases)
+            uses_tc = isinstance(oc_req, TCRequirement)
+            status = tc_status if uses_tc else oc_status
+            strict = args.tc if uses_tc else args.oc
+            strict_flag = "--tc" if uses_tc else "--oc"
+            oc_ok = status.available_for(oc_req.databases)
             if not oc_ok:
-                reason = oc_status.reason_for(oc_req.databases)
+                reason = status.reason_for(oc_req.databases)
                 if args.mode_gold in (1, 3):
                     skip_reason = f"gold-rewrite refused ({reason})"
-                    skip_is_failure = args.oc
-                elif args.oc:
-                    skip_reason = f"--oc given but {reason}"
+                    skip_is_failure = strict
+                elif strict:
+                    skip_reason = f"{strict_flag} given but {reason}"
                     skip_is_failure = True
                 elif oc_req.kind == "skip_group":
                     skip_reason = f"{reason} -- skipping group"

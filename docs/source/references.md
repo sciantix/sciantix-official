@@ -154,6 +154,15 @@
 (ref-matzke1988)=
 <a href="https://doi.org/10.1016/0022-3115(88)90041-4" target="_blank">Matzke Hj., Ottaviani J., Pellottiero D., Rouault J. (1988). Oxygen potential of high burn-up fast breeder oxide fuel. Journal of Nuclear Materials, 160, 142-146.</a>
 
+(ref-colle2006)=
+<a href="https://doi.org/10.1016/j.jnucmat.2005.09.024" target="_blank">Colle J.Y., Hiernaut J.-P., Papaioannou D., Ronchi C., Sasahara A. (2006). Fission product release in high-burn-up UO2 oxidized to U3O8. Journal of Nuclear Materials, 348, 229-242.</a>
+
+(ref-colle2023)=
+<a href="https://doi.org/10.1016/j.jnucmat.2023.154340" target="_blank">Colle J.-Y., Wiss T., Dieste O., Pöml P., Staicu D., Tverberg T., Bremier S., Konings R.J.M., Rondinella V.V., Sonoda T., Sasahara A., Kitajima S. (2023). Comparative study of fission product release of homogeneous and heterogeneous high-burn up MOX fuel by Knudsen Effusion Mass Spectrometry supported by EPMA, SEM/TEM and thermal diffusivity investigations. Journal of Nuclear Materials, 578, 154340.</a>
+
+(ref-hiernaut2008)=
+<a href="https://doi.org/10.1016/j.jnucmat.2007.03.174" target="_blank">Hiernaut J.-P., Wiss T., Papaioannou D., Konings R.J.M., Rondinella V.V. (2008). Volatile fission product behaviour during thermal annealing of irradiated UO2 fuel oxidised up to U3O8. Journal of Nuclear Materials, 372, 215-225.</a>
+
 (ref-cox1986)=
 <a href="https://inis.iaea.org/search/search.aspx?orig_q=RN:21045512" target="_blank">Cox D.S. et al (1986). Oxidation of UO2 in air and steam with relevance to fission product releases. NUREG/CP-0078, U.S. NRC.</a>
 

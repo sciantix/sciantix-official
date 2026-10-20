@@ -47,11 +47,18 @@ Additional requirements to run the testing suite (not needed to build the code):
    To check that the build succeeded, run `./sciantix.x --version` (from `build/`).
 
    For the optional OpenCalphad thermochemistry coupling (checked out as
-   `../opencalphad-for-sciantix`, next to this repository), build instead,
-   from the repository root, with:
+   `../opencalphad-for-sciantix`, next to this repository), build with:
    ```bash
    ./Allmake.sh --oc
    ```
+
+   For the optional Thermochimica coupling of the fission-product chemistry at grain boundary
+   (checked out as `../thermochimica-for-sciantix`, next to this repository),
+   build with:
+   ```bash
+   ./Allmake.sh --tc        # or ./Allmake.sh --oc --tc
+   ```
+
 
 > **Shortcut:** `./Allmake.sh` runs exactly these CMake steps from the repository root, and `./Allclean.sh` removes `build/`, `obj/`, compiled binaries and Python caches.
 
@@ -101,12 +108,18 @@ python3 -m testing.runner -j $(nproc)
 ```
 > **Shortcut:** `./runTesting.sh` performs a clean rebuild (`Allclean.sh` + `Allmake.sh`) and then runs the testing runner.
 
-Some groups use the OpenCalphad coupling; they're attempted on every run and degrade gracefully if it isn't built. 
-To require OpenCalphad instead, build with it and pass `--oc` to the runner, so any of these groups that still can't use it fails loudly instead of degrading:
+Some groups use the OpenCalphad / Thermochimica coupling; they're attempted on every run and degrade gracefully if it isn't built. 
+To require them instead, build with it and pass `--oc`/`--tc` to the runner, so any of these groups that still can't use it fails loudly instead of degrading:
 ```bash
 ./Allmake.sh --oc
 python3 -m testing.runner --oc
 ```
+
+```bash
+./Allmake.sh --tc
+python3 -m testing.runner --tc
+```
+
 > **Shortcut:** `./runTesting.sh --oc` performs both steps after a clean rebuild.
 
 # Documentation
