@@ -1,0 +1,22 @@
+# Thermochemistry settings
+# Fission-product chemistry at grain boundary with Thermochimica (Cs-I-Te database)
+output.phase_sublattice_composition = true
+
+fission_products.module = THERMOCHIMICA
+fission_products.database = CsITe_Clean.dat
+fission_products.elements = Cs, I, Te
+fission_products.locations = at grain boundary
+
+matrix.module = NO
+matrix.database = upuo-v21
+matrix.elements = U, Pu, O
+matrix.locations = matrix
+
+# Matrix vaporisation in the Knudsen cell, from the start of the annealing (h)
+matrix.vaporisation = true
+matrix.vaporisation_start_time = 28245.001
+
+# Knudsen cell: Colle et al. (2023): tungsten cell, effusion aperture 0.5 mm in diameter, length < 0.2 mm; MOX2 sample 8.6 mg
+matrix.vaporisation_orifice_diameter = 0.5e-3
+matrix.vaporisation_sample_mass = 8.6e-6
+matrix.vaporisation_clausing_factor = 1.0
