@@ -1,0 +1,12 @@
+{
+  "case": "LHS_095",
+  "N": 160,
+  "dt_s": 3600.0,
+  "end_s": 14400000.0,
+  "steps": 4000,
+  "source": "UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted/LHS_095/cpp_N160_dt3600/cpp",
+  "output_sha256": "d66421d6369406aa782c7463250a7ee4d64232db2debf282b338bed9f7d34a6c",
+  "reused": false,
+  "solver_seconds": 0.021640076000000112,
+  "new_process_seconds": 0.04699801000242587
+}

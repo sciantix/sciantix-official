@@ -1,0 +1,66 @@
+{
+  "case": "UN_AP3p4_1800K_S2",
+  "parameter_fingerprint": [
+    2.8109916689626407e-17,
+    6e-06,
+    0.0,
+    0.030592234522181343,
+    1.9795182602625162e-05,
+    7.697502726736031e-06,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p4_1800K_S2/cache/UN_AP3p4_1800K_S2_N40_hourly.npz",
+  "hourly_sha256": "1faaaf5b4ab582ca95d779f6cb0a0a40bffb601da96b22d220cdf0cb17431824",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p4_1800K_S2/cache/UN_AP3p4_1800K_S2_high_converged.npz",
+  "high_sha256": "820ae4cd5e0dba366b04709d78ad8bb69bfb613edef7f3aa30d52991b7c89cd3",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 0.9510860989976209,
+    "max_mean_increment_over_N320_spatial": 0.001755101306267048,
+    "max_tail_energy_relative_increment": 3.139056972254668e-05
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      1.545648495183791e-14,
+      0.0,
+      1.56140820432032e-14
+    ],
+    "direct_gap_normalized": [
+      3.1710351183434193e-12,
+      0.0,
+      3.2004364126438717e-12
+    ],
+    "modal_direct_gap_normalized": [
+      3.3185141271909625e-12,
+      0.0,
+      3.349142260604317e-12
+    ],
+    "seconds": 0.12480980099644512,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 2.134079727999051,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

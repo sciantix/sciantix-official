@@ -1,0 +1,63 @@
+{
+  "case": "LHS_089",
+  "N": 10240,
+  "file": "LHS_089_high_converged.npz",
+  "criteria": {
+    "mean_increment_over_N320_spatial": 0.01,
+    "relative_increment_of_squared_tail_L2": 0.01
+  },
+  "records": [
+    {
+      "N": 320,
+      "seconds": 0.10407913599919993,
+      "max_mean_increment_over_N320_spatial": null,
+      "max_tail_energy_relative_increment": null
+    },
+    {
+      "N": 640,
+      "seconds": 0.10188438100158237,
+      "max_mean_increment_over_N320_spatial": null,
+      "max_tail_energy_relative_increment": null
+    },
+    {
+      "N": 1280,
+      "seconds": 0.25190741699771024,
+      "max_mean_increment_over_N320_spatial": 0.3264191356456508,
+      "max_tail_energy_relative_increment": 0.31938554628492727
+    },
+    {
+      "N": 2560,
+      "seconds": 0.4276891150075244,
+      "max_mean_increment_over_N320_spatial": 0.12676664456281878,
+      "max_tail_energy_relative_increment": 0.112435213596115
+    },
+    {
+      "N": 5120,
+      "seconds": 0.8430127310130047,
+      "max_mean_increment_over_N320_spatial": 0.04265412291597175,
+      "max_tail_energy_relative_increment": 0.027568962827686196
+    },
+    {
+      "N": 10240,
+      "seconds": 1.8302251610002713,
+      "max_mean_increment_over_N320_spatial": 0.009917226760231098,
+      "max_tail_energy_relative_increment": 0.00317796141896345
+    }
+  ],
+  "seconds": 3.5606287900009193,
+  "observations_hours": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    24,
+    100,
+    500,
+    1000,
+    2000,
+    4000
+  ],
+  "retained_modes": "identical prefix by independent modal equations; no truncation error on retained coefficient",
+  "limitation": "successive doubling evidence; not a rigorous infinite-tail bound"
+}

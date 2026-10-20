@@ -1,0 +1,26 @@
+{
+  "case": "LHS_059",
+  "N": 40,
+  "dt_s": 450.0,
+  "end_s": 14400000.0,
+  "steps": 32000,
+  "reused_from_4B": false,
+  "source": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_059/dt_450/cpp",
+  "output_sha256": "ea20f9c03240d6e3d51a3dc08ca0abdf90f349c0d6b1b86d00027dc709422956",
+  "solver_seconds": 0.04475704599999366,
+  "new_process_seconds": 0.060289421991910785,
+  "parameter_fingerprint": [
+    4.934133779838107e-18,
+    6e-06,
+    1.5350676352034567,
+    0.10175597789974629,
+    4.388312854419057e-05,
+    2.8497686128515977e-05,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "status": "completed",
+  "cases": 160,
+  "candidate_N": 40,
+  "candidate_dt_s": 3600,
+  "main_end_s": 14400000.0,
+  "source_cases_sha256": "c712646f5a592632ede9a042fa47021a4dd7ea1a82f6422b368ec14fe5859014",
+  "source_combinations_sha256": "b7243810e688e386374446aeddc662451977f3484f3656e5d70de32629571b2e",
+  "temporal_hourly_observations": 1920480,
+  "lossless_wide_hourly_rows": 640160,
+  "critical_cases": [
+    "LHS_041",
+    "LHS_042",
+    "LHS_055",
+    "LHS_095",
+    "LHS_112",
+    "UN_ANP6_1600K_S8",
+    "UN_AP3p2_900K_S3",
+    "UN_AP3p2_900K_S4",
+    "UN_AP3p4_1800K_S4"
+  ],
+  "rapid_cases": [
+    "LHS_055",
+    "LHS_090",
+    "UN_ANP6_1600K_S4"
+  ],
+  "new_cpp_4000h_runs": 18,
+  "new_short_or_bridge_cpp_runs": 12,
+  "unique_existing_main_cpp_reused": 178,
+  "no_new_samples": true,
+  "baseline_analysis_seconds": 56.74586934396939,
+  "targeted_component_timings_note": "pilot export was retried with cached raw outputs; original component timings retained",
+  "collection_seconds": 21.37977951799985,
+  "elapsed_budget_seconds": 706.6180903911591,
+  "max_reference_form_gap_normalized": 3.6388759615537466e-10,
+  "full_hourly_long_CSV_local": "temporal_errors_hourly.csv.gz",
+  "compact_ZIP_full_hourly_data": "temporal_hourly_lossless.csv",
+  "relative_rule": "abs(analytic)>max(1,20*estimated reference uncertainty); otherwise no ratio, absolute kept",
+  "reference_normalizations": "temporal candidate original N40 history maximum; spatial/total candidate high-N scale; refinement comparisons common candidate high-N scale",
+  "no_acceptance_thresholds_1pct_or_3pct": true,
+  "no_continuous_maximum_claim": true,
+  "no_candidate_subhour_interpolation": true
+}

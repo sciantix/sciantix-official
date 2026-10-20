@@ -1,0 +1,7 @@
+Candidate(label='M7_v14_fixed_rank1', f_n=1.3218754498879861e-06, K_d=310150.5887936536, rho_d=30000000000000.0, fission_rate=7.723213170326295e+19, Dv_scale=1.0, Dv_D1_scale=0.20259337191395227, Dv_D2_scale=0.5741584772985322, Dg_scale=1.0, b_scale=1.0, gb_scale=5.557479785740895, gd_scale=1.0, coalescence_d_scale=1.810406011139075, capture_scale=0.06520556458659213, D2_xe_scale=1.0, Dg_D1_scale=0.5995127837129107, Dg_D3_scale=1.2414173915978597, b_bulk_scale=0.06249108119902641, b_dislocation_scale=0.2093531837412065, gd_bubble_scale=9.648025826928448, gd_line_scale=3.3970468410787054, gd_line_alpha=0.10240225540297634)
+rho_scale = 1.6347699288442505
+M7_v14_capture_only_fixed_rank1 AP3p2_900K 1355 0.48
+M7_v14_capture_only_fixed_rank1 AP3p4_1600K 1601 0.98
+M7_v14_capture_only_fixed_rank1 AP3p4_1800K 1601 0.95
+M7_v14_capture_only_fixed_rank1 ANP6_1600K 3940 2.23
+CSV /home/destro/sciantix-official/UN_model/VERIFICATION/coefficient_histories_2026-10-20/UN_coefficients_histories.csv 38608 9f23335d31861edd597d393a55c8909373769157287f1b0c560dde62c22fd2a0

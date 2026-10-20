@@ -1,0 +1,10 @@
+{
+  "case": "LHS_090",
+  "status": "completed",
+  "tau_fast_N40_s": 0.4598543622294767,
+  "short_end_s": 9.197087244589534,
+  "new_cpp_runs": 4,
+  "new_solver_seconds": 0.22484038099929776,
+  "wall_seconds": 0.3063085640023928,
+  "candidate_subhour_values_invented": false
+}

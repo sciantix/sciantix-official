@@ -1,0 +1,13 @@
+{
+  "case": "UN_ANP6_1600K_S8",
+  "status": "completed",
+  "new_cpp_runs": 2,
+  "reused_cpp_runs": 3,
+  "new_high_observations": 38,
+  "high_N_max": 5120,
+  "wall_seconds": 7.90464358299505,
+  "high_reference_original_seconds": 6.473944384008064,
+  "low_reference_original_seconds": 0.5234911979932804,
+  "new_solver_seconds": 0.03303560099999821,
+  "new_process_seconds": 0.07579911200446077
+}

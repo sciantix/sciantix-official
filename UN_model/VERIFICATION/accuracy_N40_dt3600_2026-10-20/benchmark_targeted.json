@@ -1,0 +1,10 @@
+{
+  "case": "LHS_041",
+  "wall_seconds": 0.2885333570011426,
+  "selected_cases": 9,
+  "estimated_selected_wall_upper_s": 171.8610758818395,
+  "additional_fast_diagnostics_budget_estimate_s": 120,
+  "remaining_budget_s": 4978.401081085205,
+  "note": "Original reference/process timings retained when cached; first pilot export interrupted by heterogeneous CSV metadata fields, adapter fixed without rerunning C++.",
+  "cost_check_pass": true
+}

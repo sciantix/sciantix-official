@@ -1,0 +1,66 @@
+{
+  "case": "UN_ANP6_1600K_S4",
+  "parameter_fingerprint": [
+    1.4017765731852965e-18,
+    6e-06,
+    0.003620912853791033,
+    0.0014679514493712723,
+    1.647063381009212e-05,
+    5.342486260367914e-06,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S4/cache/UN_ANP6_1600K_S4_N40_hourly.npz",
+  "hourly_sha256": "98354dc8673c7375647b884dba4c489c777f6c8343642a631d0d7b51f5e9c97b",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S4/cache/UN_ANP6_1600K_S4_high_converged.npz",
+  "high_sha256": "d0a1c9b5d150514ba059bbf653bc8873b0cde09e573406c3cf20b2a22925af86",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 0.9235476789908716,
+    "max_mean_increment_over_N320_spatial": 0.001848761157053885,
+    "max_tail_energy_relative_increment": 3.5505019282478574e-05
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      3.1086176443719224e-14,
+      3.1038200205512947e-14,
+      3.205107532011672e-14
+    ],
+    "direct_gap_normalized": [
+      2.463510708438103e-13,
+      2.561857664631198e-13,
+      2.301967919752513e-13
+    ],
+    "modal_direct_gap_normalized": [
+      4.78200404611071e-13,
+      4.879003963302693e-13,
+      4.67709512203444e-13
+    ],
+    "seconds": 0.16193907900014892,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 2.3380158290092368,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

@@ -1,0 +1,10 @@
+{
+  "base": "configuration.json",
+  "pointwise_precision_screen": "max(100 eps*population history scale,20*direct-vs-semigroup absolute gap,20*split gap*scale,20*independent BE point gap)",
+  "BE_gap_guard": 1e-08,
+  "reconstruction_guard": 5e-14,
+  "no_plots": true,
+  "spatial_campaign": "960 analytical configurations; no unnecessary spatial C++ runs",
+  "max_new_campaign_seconds": 5400,
+  "budget_includes": "elapsed time from first benchmark guard through campaign, with 60-120 s orderly-stop reserve"
+}

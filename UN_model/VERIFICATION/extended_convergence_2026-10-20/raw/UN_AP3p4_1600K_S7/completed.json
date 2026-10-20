@@ -1,0 +1,31 @@
+{
+  "case": "UN_AP3p4_1600K_S7",
+  "group": "UN_history",
+  "status": "completed",
+  "main_temporal_runs": 5,
+  "spatial_analytic_configurations": 6,
+  "extra_temporal_refinements": 1,
+  "finest_dt_s": 112.5,
+  "refinement_reasons": [
+    {
+      "dt_s": 112.5,
+      "unresolved_fixed_time_sequences": 1,
+      "remaining_budget_s": 4599.3508014678955,
+      "reasons": [
+        "unresolved_transient_or_preasymptotic"
+      ]
+    }
+  ],
+  "remaining_anomaly_rows": 0,
+  "anomaly_categories": {},
+  "main_unclear_sequences_before_refinement": 1,
+  "reference_N": 5120,
+  "reference_acquire_seconds": 2.134516642006929,
+  "reference_reused_4B": false,
+  "cpp_reused_4B": 0,
+  "solver_seconds_new": 0.336606702999946,
+  "cpp_process_seconds_new": 0.41396716999588534,
+  "max_BE_gap_normalized": 9.989772707645962e-12,
+  "wall_seconds": 4.443490171994199,
+  "completed_epoch": 1792492581.8994792
+}

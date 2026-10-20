@@ -1,0 +1,2 @@
+case,population,hour,t_s,coarse_dt_s,fine_dt_s,coarse_signed_error,fine_signed_error,coarse_absolute_error,fine_absolute_error,p_log2_errors,status,precision_screen_absolute,tau_fast_N40_s,fine_dt_over_tau_fast,pair_role,extra_halvings,classification_scope
+LHS_031,md,4000,14400000,225.0,112.5,-29628127248384.0,-17594299973632.0,29628127248384.0,17594299973632.0,0.7518593239260897,precision_limit,17924106485760.0,0.9080547888855772,123.89120279632816,refinement,1,"finest tested adjacent pair, not universal method order"

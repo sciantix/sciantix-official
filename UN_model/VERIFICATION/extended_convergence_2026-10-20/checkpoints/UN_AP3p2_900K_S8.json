@@ -1,0 +1,39 @@
+{
+  "case": "UN_AP3p2_900K_S8",
+  "group": "UN_history",
+  "status": "completed",
+  "main_temporal_runs": 5,
+  "spatial_analytic_configurations": 6,
+  "extra_temporal_refinements": 2,
+  "finest_dt_s": 56.25,
+  "refinement_reasons": [
+    {
+      "dt_s": 112.5,
+      "unresolved_fixed_time_sequences": 1,
+      "remaining_budget_s": 4651.362564563751,
+      "reasons": [
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 56.25,
+      "unresolved_fixed_time_sequences": 1,
+      "remaining_budget_s": 4650.8398950099945,
+      "reasons": [
+        "unresolved_transient_or_preasymptotic"
+      ]
+    }
+  ],
+  "remaining_anomaly_rows": 0,
+  "anomaly_categories": {},
+  "main_unclear_sequences_before_refinement": 1,
+  "reference_N": 5120,
+  "reference_acquire_seconds": 2.1401515010074945,
+  "reference_reused_4B": false,
+  "cpp_reused_4B": 0,
+  "solver_seconds_new": 0.6856864170000625,
+  "cpp_process_seconds_new": 0.787611685009324,
+  "max_BE_gap_normalized": 1.4821957547732912e-11,
+  "wall_seconds": 5.144461606992991,
+  "completed_epoch": 1792492530.5920358
+}

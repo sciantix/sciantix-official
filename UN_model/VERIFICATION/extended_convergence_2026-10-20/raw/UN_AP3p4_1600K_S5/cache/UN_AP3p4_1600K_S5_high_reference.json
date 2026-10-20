@@ -1,0 +1,57 @@
+{
+  "case": "UN_AP3p4_1600K_S5",
+  "N": 5120,
+  "file": "UN_AP3p4_1600K_S5_high_converged.npz",
+  "criteria": {
+    "mean_increment_over_N320_spatial": 0.01,
+    "relative_increment_of_squared_tail_L2": 0.01
+  },
+  "records": [
+    {
+      "N": 320,
+      "seconds": 0.0881536020024214,
+      "max_mean_increment_over_N320_spatial": null,
+      "max_tail_energy_relative_increment": null
+    },
+    {
+      "N": 640,
+      "seconds": 0.10666951700113714,
+      "max_mean_increment_over_N320_spatial": null,
+      "max_tail_energy_relative_increment": null
+    },
+    {
+      "N": 1280,
+      "seconds": 0.2054001359938411,
+      "max_mean_increment_over_N320_spatial": 0.11635005185988961,
+      "max_tail_energy_relative_increment": 0.033784695699370024
+    },
+    {
+      "N": 2560,
+      "seconds": 0.43074607600283343,
+      "max_mean_increment_over_N320_spatial": 0.014536011110841095,
+      "max_tail_energy_relative_increment": 0.0010870218291624098
+    },
+    {
+      "N": 5120,
+      "seconds": 0.9036542709945934,
+      "max_mean_increment_over_N320_spatial": 0.0018207347327430729,
+      "max_tail_energy_relative_increment": 3.4245961281664574e-05
+    }
+  ],
+  "seconds": 1.7361557239928516,
+  "observations_hours": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    24,
+    100,
+    500,
+    1000,
+    2000,
+    4000
+  ],
+  "retained_modes": "identical prefix by independent modal equations; no truncation error on retained coefficient",
+  "limitation": "successive doubling evidence; not a rigorous infinite-tail bound"
+}

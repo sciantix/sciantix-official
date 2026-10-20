@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "inventory_files": 9838,
+  "deleted_hourly_CSV_rows_preserved_in_ZIP": 640160,
+  "duplicate_coefficient_rows_checked": 35596,
+  "final_archives_CRC_checked": 2,
+  "original_commit_reachable_from_backup_branch": true,
+  "seconds": 33.25552538099873,
+  "scientific_arrays_reproducible": "Frozen cases, source/initials, actual C++ inputs, original solver/helper scripts, per-run manifests and all convergence criteria retained",
+  "remaining_earlier_references": "phase4b/, regression_reference/, notebooks/ and all older phases are outside deletion scope"
+}

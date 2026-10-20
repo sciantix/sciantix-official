@@ -1,0 +1,113 @@
+{
+  "status": "completed",
+  "requested_cases": 160,
+  "completed_cases": 160,
+  "missing_cases": [],
+  "lhs_cases": 128,
+  "history_cases": 32,
+  "main_temporal_configurations": 800,
+  "spatial_analytic_configurations": 960,
+  "additional_temporal_refinements": 81,
+  "total_temporal_cpp_configurations": 881,
+  "cpp_4B_reuses": 0,
+  "reference_4B_reuses": 0,
+  "cpp_solver_seconds_new": 85.65064270167244,
+  "cpp_process_seconds_new": 98.60380716017971,
+  "sum_case_wall_seconds": 851.5067966510105,
+  "reference_acquire_seconds": 498.3550904311269,
+  "budget_limit_seconds": 5400,
+  "elapsed_since_first_benchmark_guard_s": 1095.8561165332794,
+  "max_BE_implementation_gap_normalized": 2.7571159482727036e-10,
+  "reference_N_counts": {
+    "5120": 111,
+    "10240": 39,
+    "20480": 10
+  },
+  "finest_fixed_time_order_status_counts": {
+    "first_order_observed": 4631,
+    "precision_limit": 89,
+    "inactive_population": 80
+  },
+  "population_assessment_counts": {
+    "first_order_on_all_numerically_resolvable_times": 472,
+    "inactive_population": 8
+  },
+  "csv_row_counts": {
+    "temporal_errors.csv": 29073,
+    "temporal_orders.csv": 23793,
+    "spatial_errors.csv": 31680,
+    "spatial_orders.csv": 52800,
+    "implementation_checks.csv": 881,
+    "decomposition_N40.csv": 29073,
+    "temporal_hourly_summary.csv": 2643
+  },
+  "primary_main_temporal_rows": 26400,
+  "first_order_screening_interval": [
+    0.9,
+    1.1
+  ],
+  "fixed_observation_hours": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    24,
+    100,
+    500,
+    1000,
+    2000,
+    4000
+  ],
+  "raw_temporal_observations_per_run": 4001,
+  "compact_bundle_scope": "fixed physical observations plus hourly maxima, all cases; full raw hourly means/modes/errors kept separately",
+  "undefined_relative_errors": "blank when abs(analytic)<=max(1,20*estimated reference uncertainty); no division by zero",
+  "temporal_errors": "C++ production BE minus same-N scipy.linalg.expm semigroup; absolute errors define p at fixed physical t",
+  "spatial_errors": "analytical N minus analytical converged high-N; no temporal contamination",
+  "modal_norm": "Parseval L2 on dimensionless unit sphere; physical L2 multiplies by R^(3/2)",
+  "raw_modal_errors": "raw/<case>/modal_and_mean_errors_dt*.npz: all 4001 hourly times, 3 populations and 40 modes",
+  "normalization": "history max of each population; modal L2 own history scale; instantaneous relative ratios separate",
+  "no_plots": true,
+  "no_thesis_text": true,
+  "no_final_N_dt_decision": true,
+  "seed": 20261020,
+  "source_common": [
+    1.7995675661038836e+19,
+    0,
+    0
+  ],
+  "initial_common": [
+    0,
+    0,
+    0
+  ],
+  "R": 6e-06,
+  "coefficients_constant_per_case": true,
+  "frozen_cases_sha256": "c712646f5a592632ede9a042fa47021a4dd7ea1a82f6422b368ec14fe5859014",
+  "solver_sha256": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+  "source_branch": "development/nitride",
+  "head": "444979d91a5c1d8ae542de35c159fefe49e035cc",
+  "real_states_outside_bounds": [],
+  "complete_history_states_outside_TableB1_count": 0,
+  "validated_dependencies_sha256": {
+    "UN_model/VERIFICATION/phase4b/resumed/reference.py": "e2ca94fb978b9f9afcc1f19e54e70fd857f86910e7d28e52bd3c191989ac226d",
+    "UN_model/VERIFICATION/phase4b/resumed/analyze.py": "0929ab3a3e1dc596976f4fc0717ca745e507f23b26e1b29c94c1090f493b982c",
+    "UN_model/VERIFICATION/phase4b/common.py": "dffc97fb7d39db0363069e9e2328947a725b7a03c733f053ff9c2a31a6b631f9",
+    "UN_model/VERIFICATION/analytic.py": "72b3c5a645873b2c8cef01b11e051f1176bb499dce8177e655b216875be05c48",
+    "UN_model/VERIFICATION/solver_harness.cpp": "dcd2f206110fbfe020a0c9b1aacc8c709ec96838cb3c7f5fdc9b97ff0ce33aad",
+    "UN_model/VERIFICATION/run_verification.py": "f7e29b21adcf7857006ca391af13bdbb7f12ea23d0f69715a2d0a356a641ac79"
+  },
+  "collection_seconds": 2.036632533010561,
+  "targeted_extension": {
+    "cases": [
+      "UN_AP3p4_1600K_S2",
+      "UN_AP3p4_1600K_S3"
+    ],
+    "extra_dt_s": 3.515625,
+    "steps": 4096000,
+    "reason": "Two md sequences at 2 h remain preasymptotic (p=0.8894/0.8800) after five halvings; one more halving is supported by the unchanged harness (<5 million steps) and remaining 90-minute budget.",
+    "tolerances_and_fixed_times": "unchanged; first-order screen remains [0.9,1.1]",
+    "first_pass_preserved": "deliverables/ and all original per-case tables remain unchanged"
+  },
+  "first_pass_tables_preserved": "deliverables/"
+}

@@ -1,0 +1,13 @@
+{
+  "case": "UN_AP3p4_1800K_S4",
+  "status": "completed",
+  "new_cpp_runs": 2,
+  "reused_cpp_runs": 3,
+  "new_high_observations": 22,
+  "high_N_max": 5120,
+  "wall_seconds": 5.48214352800278,
+  "high_reference_original_seconds": 4.205305705007049,
+  "low_reference_original_seconds": 0.48149229399859905,
+  "new_solver_seconds": 0.03225079599999876,
+  "new_process_seconds": 0.07439541500934865
+}

@@ -1,0 +1,12 @@
+{
+  "case": "LHS_041",
+  "N": 80,
+  "dt_s": 3600.0,
+  "end_s": 14400000.0,
+  "steps": 4000,
+  "source": "UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted/LHS_041/cpp_N80_dt3600/cpp",
+  "output_sha256": "4419930877b8faa38a4ea35e0631e8cadd77a44dbf7f822f781b94291cd2fec7",
+  "reused": false,
+  "solver_seconds": 0.010270571999999405,
+  "new_process_seconds": 0.025438699012738653
+}

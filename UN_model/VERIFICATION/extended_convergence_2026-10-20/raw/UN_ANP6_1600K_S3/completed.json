@@ -1,0 +1,64 @@
+{
+  "case": "UN_ANP6_1600K_S3",
+  "group": "UN_history",
+  "status": "completed",
+  "main_temporal_runs": 5,
+  "spatial_analytic_configurations": 6,
+  "extra_temporal_refinements": 5,
+  "finest_dt_s": 7.03125,
+  "refinement_reasons": [
+    {
+      "dt_s": 112.5,
+      "unresolved_fixed_time_sequences": 5,
+      "remaining_budget_s": 4543.38312625885,
+      "reasons": [
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 56.25,
+      "unresolved_fixed_time_sequences": 5,
+      "remaining_budget_s": 4542.711203575134,
+      "reasons": [
+        "cancellation_or_error_competition",
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 28.125,
+      "unresolved_fixed_time_sequences": 3,
+      "remaining_budget_s": 4541.987161159515,
+      "reasons": [
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 14.0625,
+      "unresolved_fixed_time_sequences": 2,
+      "remaining_budget_s": 4540.962503910065,
+      "reasons": [
+        "preasymptotic_not_yet_first_order"
+      ]
+    },
+    {
+      "dt_s": 7.03125,
+      "unresolved_fixed_time_sequences": 1,
+      "remaining_budget_s": 4538.718271493912,
+      "reasons": [
+        "preasymptotic_not_yet_first_order"
+      ]
+    }
+  ],
+  "remaining_anomaly_rows": 0,
+  "anomaly_categories": {},
+  "main_unclear_sequences_before_refinement": 5,
+  "reference_N": 5120,
+  "reference_acquire_seconds": 2.1348022159945685,
+  "reference_reused_4B": false,
+  "cpp_reused_4B": 0,
+  "solver_seconds_new": 5.491974864049034,
+  "cpp_process_seconds_new": 5.7916342050157255,
+  "max_BE_gap_normalized": 1.3501399932967867e-10,
+  "wall_seconds": 11.039246301006642,
+  "completed_epoch": 1792492645.0669672
+}

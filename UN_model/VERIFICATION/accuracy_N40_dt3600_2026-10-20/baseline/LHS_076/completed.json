@@ -1,0 +1,38 @@
+{
+  "case": "LHS_076",
+  "group": "LHS",
+  "status": "completed",
+  "new_cpp_runs": 0,
+  "reference_manifest": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_076/reference_manifest.json",
+  "cpp": {
+    "case": "LHS_076",
+    "N": 40,
+    "dt_s": 3600.0,
+    "source": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_076/dt_3600/cpp",
+    "output_sha256": "570c0303ccfc9887b7882da1b4b8dd3b5d0abfa571041d017086dae33c9c82c0",
+    "reused": true,
+    "solver_seconds": 0.006857824000000123,
+    "new_process_seconds": 0.0,
+    "original_process_seconds": 0.018617404988617636
+  },
+  "reference_N": 5120,
+  "temporal_scale": [
+    1.63696432314875e+23,
+    2.3139760733770372e+26,
+    1.8521973330544576e+25
+  ],
+  "highN_scale": [
+    1.6392708327065026e+23,
+    2.3172405604479664e+26,
+    1.854831236072325e+25
+  ],
+  "reference_uncertainty_estimate": [
+    983413293056.0,
+    1393149951868928.0,
+    103830834380800.0
+  ],
+  "max_reference_form_gap_normalized": 6.020589270120466e-12,
+  "wall_seconds": 0.3800933839956997,
+  "full_hourly_gzip_bytes": 661814,
+  "wide_csv_bytes": 611130
+}

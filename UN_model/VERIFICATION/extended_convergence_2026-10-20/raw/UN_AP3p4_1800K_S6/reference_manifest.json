@@ -1,0 +1,66 @@
+{
+  "case": "UN_AP3p4_1800K_S6",
+  "parameter_fingerprint": [
+    2.8109916689626407e-17,
+    6e-06,
+    0.014956426507662208,
+    0.02908240514158143,
+    1.401827960229395e-05,
+    4.978195761888241e-06,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p4_1800K_S6/cache/UN_AP3p4_1800K_S6_N40_hourly.npz",
+  "hourly_sha256": "407cd3f69cfa946b09dc22f2bfa19d51d0cd262fa7144c6fda2eca60742ffe21",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p4_1800K_S6/cache/UN_AP3p4_1800K_S6_high_converged.npz",
+  "high_sha256": "f7ac6b566a9d3e2c788337ca8c7177bcdf44089b7d6fd89da65b2f2e446931d6",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 1.074287238996476,
+    "max_mean_increment_over_N320_spatial": 0.001771834050464845,
+    "max_tail_energy_relative_increment": 3.210607882596102e-05
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      7.890445335996053e-15,
+      8.193764294735447e-15,
+      7.934570176657686e-15
+    ],
+    "direct_gap_normalized": [
+      2.3265888509184668e-12,
+      2.3565266111659143e-12,
+      2.3469078657305318e-12
+    ],
+    "modal_direct_gap_normalized": [
+      3.130854877185242e-12,
+      3.1577175590962457e-12,
+      3.1766859602696545e-12
+    ],
+    "seconds": 0.14872236100200098,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 2.3495183939958224,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

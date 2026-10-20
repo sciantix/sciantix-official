@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "archive": "/home/destro/sciantix-verification-backup-20261020/verification_essential_files.tar.gz",
+  "archive_bytes": 81869376,
+  "archive_sha256": "3db43b6915ccbfc10cf20af4019e2a6e7818fc20b1a645f82e49c63862aa38b1",
+  "kept_files_backed_up_and_rechecked": 6478,
+  "kept_uncompressed_bytes": 196624254,
+  "backup_scope": "all retained pre-cleanup files in the three directories, including final archives, tables, scripts, inputs, manifests and reports",
+  "original_full_commit_backup_branch": "backup/un-verification-before-cleanup-20261020"
+}

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted.py", line 192, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted.py", line 181, in main
+    assert json.loads((HERE/'benchmark_targeted.json').read_text())['cost_check_pass']
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/destro/sciantix-official/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/benchmark_targeted.json'

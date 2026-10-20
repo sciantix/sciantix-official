@@ -1,0 +1,1 @@
+TARGETED LHS_041 {'case': 'LHS_041', 'status': 'completed', 'new_cpp_runs': 2, 'reused_cpp_runs': 3, 'new_high_observations': 25, 'high_N_max': 10240, 'wall_seconds': 0.2866766289953375, 'high_reference_original_seconds': 8.721112240993534, 'low_reference_original_seconds': 0.4791772559983656, 'new_solver_seconds': 0.03182714999999815, 'new_process_seconds': 0.06087142300384585}

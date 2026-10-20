@@ -1,0 +1,13 @@
+{
+  "case": "LHS_055",
+  "status": "completed",
+  "new_cpp_runs": 2,
+  "reused_cpp_runs": 3,
+  "new_high_observations": 29,
+  "high_N_max": 5120,
+  "wall_seconds": 6.478955041005975,
+  "high_reference_original_seconds": 5.057541747009964,
+  "low_reference_original_seconds": 0.4953405309934169,
+  "new_solver_seconds": 0.034080545999999004,
+  "new_process_seconds": 0.07472379799582995
+}

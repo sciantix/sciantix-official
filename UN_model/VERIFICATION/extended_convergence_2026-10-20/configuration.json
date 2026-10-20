@@ -1,0 +1,96 @@
+{
+  "seed": 20261020,
+  "scipy": "1.16.2",
+  "numpy": "2.4.4",
+  "bounds": {
+    "D": [
+      6.86e-20,
+      2.814e-16
+    ],
+    "gb": [
+      0.0,
+      2.042
+    ],
+    "gd": [
+      7.23e-05,
+      0.3086
+    ],
+    "bb": [
+      1.024e-06,
+      0.0002049
+    ],
+    "bd": [
+      3.79e-07,
+      0.0002049
+    ]
+  },
+  "coordinate_mapping": {
+    "D": "log",
+    "gb": "linear",
+    "gd": "log",
+    "bb": "log",
+    "bd": "log"
+  },
+  "R_m": 6e-06,
+  "source_common": [
+    1.7995675661038836e+19,
+    0.0,
+    0.0
+  ],
+  "initial_common": [
+    0,
+    0,
+    0
+  ],
+  "coefficients": "constant throughout each IVP",
+  "end_s": 14400000,
+  "temporal_N": 40,
+  "dt_s": [
+    3600,
+    1800,
+    900,
+    450,
+    225
+  ],
+  "spatial_N": [
+    10,
+    20,
+    40,
+    80,
+    160,
+    320
+  ],
+  "fixed_hours": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    24,
+    100,
+    500,
+    1000,
+    2000,
+    4000
+  ],
+  "temporal_storage_hours": 1,
+  "relative_errors": "absolute analytical value > max(1,20*reference_uncertainty)",
+  "order_assessment": {
+    "clearly_first_order_interval": [
+      0.9,
+      1.1
+    ],
+    "precision_screen": "max(100 eps*history scale,20*pointwise direct-vs-semigroup gap,20*split gap*scale)",
+    "max_extra_halvings": 5,
+    "smallest_possible_dt_s": 7.03125,
+    "note": "screening criteria, not application accuracy targets; all raw p values preserved"
+  },
+  "spatial_reference_protocol": "unchanged 4B doubling checks <=1% on mean increment / N320 error and relative tail-energy increment",
+  "budget_seconds": 5400,
+  "LHS_stratification_verified": true,
+  "cases_sha256": "c712646f5a592632ede9a042fa47021a4dd7ea1a82f6422b368ec14fe5859014",
+  "combinations_csv_sha256": "b7243810e688e386374446aeddc662451977f3484f3656e5d70de32629571b2e",
+  "complete_history_rows": 3012,
+  "real_states_outside_bounds": [],
+  "initial_history_semantics": "first after_exchange coefficients belong to state t=0; last coefficients are those actually used in last interval, not recomputed at end"
+}

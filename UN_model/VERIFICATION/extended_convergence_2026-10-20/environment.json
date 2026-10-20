@@ -1,0 +1,16 @@
+{
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "numpy": "2.4.4",
+  "scipy": "1.16.2",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "source_files_sha256": {
+    "src/classes/Solver.C": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+    "include/classes/Solver.h": "8265c4d58948128ca9c5b1baff083b935580d2aa9bf0461f318b4183649e9c70",
+    "UN_model/VERIFICATION/solver_harness.cpp": "dcd2f206110fbfe020a0c9b1aacc8c709ec96838cb3c7f5fdc9b97ff0ce33aad"
+  },
+  "file_date_context": "2026-10-20 Europe/Rome; execution timing measured with monotonic/epoch clocks",
+  "sampling_rng": "numpy.random.default_rng PCG64, seed 20261020",
+  "compiled_method": "production SCIANTIX Solver::SpectralDiffusion3equationsExchange linked unchanged"
+}

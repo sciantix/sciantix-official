@@ -1,0 +1,33 @@
+{
+  "cases": [
+    "LHS_041",
+    "LHS_042",
+    "LHS_055",
+    "LHS_095",
+    "LHS_112",
+    "UN_ANP6_1600K_S8",
+    "UN_AP3p2_900K_S3",
+    "UN_AP3p2_900K_S4",
+    "UN_AP3p4_1800K_S4"
+  ],
+  "selection": "Union of maxima by group/population/error kind, normalized and instantaneous relative; no 1%/3% pass/fail thresholds",
+  "initial_common_sampling": "temporal all4001; spatial/total common11",
+  "case_count": 9,
+  "new_cpp_planned_per_case": [
+    {
+      "N": 80,
+      "dt_s": 3600
+    },
+    {
+      "N": 160,
+      "dt_s": 3600
+    }
+  ],
+  "reused_N40_dt_s": [
+    3600,
+    1800,
+    900
+  ],
+  "rapid_selection": "selected cases with 3600/tau_fast_N40>=20; short windows 20tau plus one resolved first-hour diagnostic",
+  "stop_at_N": 160
+}

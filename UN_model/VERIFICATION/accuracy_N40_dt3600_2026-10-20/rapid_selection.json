@@ -1,0 +1,8 @@
+{
+  "cases": [
+    "LHS_055",
+    "LHS_090",
+    "UN_ANP6_1600K_S4"
+  ],
+  "reason": "worst temporal instantaneous relative error in each fast group plus fastest spectral timescale; all drawn from the frozen 160"
+}

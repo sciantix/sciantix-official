@@ -1,0 +1,10 @@
+{
+  "case": "UN_ANP6_1600K_S4",
+  "status": "completed",
+  "tau_fast_N40_s": 174.96005695458587,
+  "short_end_s": 3499.2011390917173,
+  "new_cpp_runs": 4,
+  "new_solver_seconds": 0.002702850999999998,
+  "wall_seconds": 0.08923055899504106,
+  "candidate_subhour_values_invented": false
+}

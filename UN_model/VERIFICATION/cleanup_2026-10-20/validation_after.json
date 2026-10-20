@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "kept_preexisting_files_byte_identical": 6478,
+  "deleted_paths_absent_and_ignored": 3360,
+  "retained_files_accidentally_ignored": 0,
+  "all_original_python_scripts_retained": 19,
+  "retained_cpp_input_files": 911,
+  "frozen_cases": 160,
+  "LHS_seed_and_latent_coordinates_rechecked": true,
+  "order_checks": {
+    "temporal": {
+      "rows": 23793,
+      "defined_orders_rechecked": 21060
+    },
+    "spatial": {
+      "rows": 52800,
+      "defined_orders_rechecked": 47200
+    }
+  },
+  "compact_archive_CRC_checks": 2,
+  "build": {
+    "seconds": 1.219515702992794,
+    "command": [
+      "g++",
+      "-std=c++11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-I/home/destro/sciantix-official/include/classes",
+      "/home/destro/sciantix-official/UN_model/VERIFICATION/solver_harness.cpp",
+      "/home/destro/sciantix-official/src/classes/Solver.C",
+      "-o",
+      "/tmp/sciantix-cleanup-smoke-r6eeipw9/build/solver_harness.x"
+    ],
+    "solver_sha256": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+    "harness_sha256": "dcd2f206110fbfe020a0c9b1aacc8c709ec96838cb3c7f5fdc9b97ff0ce33aad",
+    "binary_sha256": "45afd05e541d3e744973f07535501b7b1c4589ae87ecbeb5f6dc7cea9616ce2e"
+  },
+  "smoke_tests": [
+    {
+      "case": "LHS_001",
+      "N": 40,
+      "steps": 3,
+      "last_partial_step_s": 123,
+      "max_modal_BE_gap_normalized": 4.0306284689381524e-16,
+      "max_mean_reconstruction_gap": 4.597349116418981e-16
+    },
+    {
+      "case": "LHS_001",
+      "N": 160,
+      "steps": 3,
+      "last_partial_step_s": 123,
+      "max_modal_BE_gap_normalized": 4.018642868170472e-16,
+      "max_mean_reconstruction_gap": 7.461891965399881e-16
+    },
+    {
+      "case": "UN_AP3p2_900K_S1",
+      "N": 40,
+      "steps": 3,
+      "last_partial_step_s": 123,
+      "max_modal_BE_gap_normalized": 2.983007679979275e-16,
+      "max_mean_reconstruction_gap": 8.874783418790806e-16
+    },
+    {
+      "case": "UN_AP3p2_900K_S1",
+      "N": 160,
+      "steps": 3,
+      "last_partial_step_s": 123,
+      "max_modal_BE_gap_normalized": 2.981578350036208e-16,
+      "max_mean_reconstruction_gap": 1.412358550081817e-15
+    }
+  ],
+  "smoke_artifacts_outside_repository": "/tmp/sciantix-cleanup-smoke-r6eeipw9",
+  "complete_campaign_repeated": false,
+  "original_production_solver_and_analytical_helpers_byte_identical": true,
+  "old_commit_backup_branch": "backup/un-verification-before-cleanup-20261020",
+  "old_commit": "b5b098c01afe362df99dd99a8d3bb635a49b1fa0",
+  "origin_tracking_reference_unchanged": "444979d91a5c1d8ae542de35c159fefe49e035cc",
+  "no_push_or_GC": true
+}

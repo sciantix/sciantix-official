@@ -1,0 +1,2 @@
+case,population,hour,t_s,coarse_dt_s,fine_dt_s,coarse_signed_error,fine_signed_error,coarse_absolute_error,fine_absolute_error,p_log2_errors,status,precision_screen_absolute,tau_fast_N40_s,fine_dt_over_tau_fast,pair_role,extra_halvings,classification_scope
+UN_AP3p4_1600K_S2,md,2,7200,14.0625,7.03125,-7287831638573056.0,-3934158283866112.0,7287831638573056.0,3934158283866112.0,0.8894346277369085,preasymptotic_not_yet_first_order,350469331353600.0,476.36635513176793,0.01476017339229401,refinement,5,"finest tested adjacent pair, not universal method order"

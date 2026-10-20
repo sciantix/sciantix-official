@@ -1,0 +1,18 @@
+{
+  "seconds": 1.2086215390008874,
+  "command": [
+    "g++",
+    "-std=c++11",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-I/home/destro/sciantix-official/include/classes",
+    "/home/destro/sciantix-official/UN_model/VERIFICATION/solver_harness.cpp",
+    "/home/destro/sciantix-official/src/classes/Solver.C",
+    "-o",
+    "/home/destro/sciantix-official/UN_model/VERIFICATION/extended_convergence_2026-10-20/build/solver_harness.x"
+  ],
+  "solver_sha256": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+  "harness_sha256": "dcd2f206110fbfe020a0c9b1aacc8c709ec96838cb3c7f5fdc9b97ff0ce33aad",
+  "binary_sha256": "45afd05e541d3e744973f07535501b7b1c4589ae87ecbeb5f6dc7cea9616ce2e"
+}

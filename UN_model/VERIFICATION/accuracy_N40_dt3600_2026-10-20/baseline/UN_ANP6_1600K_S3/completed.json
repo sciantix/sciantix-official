@@ -1,0 +1,38 @@
+{
+  "case": "UN_ANP6_1600K_S3",
+  "group": "UN_history",
+  "status": "completed",
+  "new_cpp_runs": 0,
+  "reference_manifest": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S3/reference_manifest.json",
+  "cpp": {
+    "case": "UN_ANP6_1600K_S3",
+    "N": 40,
+    "dt_s": 3600.0,
+    "source": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S3/dt_3600/cpp",
+    "output_sha256": "0d3be5c85797aa483298c1dadf86b8d0cf5305fab0f286ab75c728311127fe3e",
+    "reused": true,
+    "solver_seconds": 0.005360860999999882,
+    "new_process_seconds": 0.0,
+    "original_process_seconds": 0.013565498011303134
+  },
+  "reference_N": 5120,
+  "temporal_scale": [
+    1.2216019223690593e+24,
+    7.395524840871058e+21,
+    2.269407470138666e+26
+  ],
+  "highN_scale": [
+    1.2217447212305496e+24,
+    7.396392083600732e+21,
+    2.269674866905372e+26
+  ],
+  "reference_uncertainty_estimate": [
+    195957882880.0,
+    1194328064.0,
+    36867999268864.0
+  ],
+  "max_reference_form_gap_normalized": 1.6245649912578845e-13,
+  "wall_seconds": 0.33605567800987046,
+  "full_hourly_gzip_bytes": 667604,
+  "wide_csv_bytes": 646651
+}

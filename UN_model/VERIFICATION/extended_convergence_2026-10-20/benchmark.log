@@ -1,0 +1,21 @@
+HIGH_REF LHS_013 {'N': 320, 'seconds': 0.09413313400000334, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF LHS_013 {'N': 640, 'seconds': 0.11127610399853438, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF LHS_013 {'N': 1280, 'seconds': 0.22083907900378108, 'max_mean_increment_over_N320_spatial': 0.3270494071830666, 'max_tail_energy_relative_increment': 0.3206224254597331}
+HIGH_REF LHS_013 {'N': 2560, 'seconds': 0.3954159279965097, 'max_mean_increment_over_N320_spatial': 0.12803835904552263, 'max_tail_energy_relative_increment': 0.11469217844136695}
+HIGH_REF LHS_013 {'N': 5120, 'seconds': 0.8566322950064205, 'max_mean_increment_over_N320_spatial': 0.04399155406535953, 'max_tail_energy_relative_increment': 0.029296934361312955}
+HIGH_REF LHS_013 {'N': 10240, 'seconds': 1.7905950249987654, 'max_mean_increment_over_N320_spatial': 0.010521365810197376, 'max_tail_energy_relative_increment': 0.0035732627942319764}
+HIGH_REF LHS_013 {'N': 20480, 'seconds': 3.6299364250007784, 'max_mean_increment_over_N320_spatial': 0.0017376517645546733, 'max_tail_energy_relative_increment': 0.00020343072529056824}
+COMPLETED LHS_013 wall 9.346 extra 0 Nref 20480 remaining 5391
+HIGH_REF LHS_078 {'N': 320, 'seconds': 0.11895329199614935, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF LHS_078 {'N': 640, 'seconds': 0.12107225200452376, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF LHS_078 {'N': 1280, 'seconds': 0.2556523469975218, 'max_mean_increment_over_N320_spatial': 0.11747558212322462, 'max_tail_energy_relative_increment': 0.03456789573552403}
+HIGH_REF LHS_078 {'N': 2560, 'seconds': 0.5639203339960659, 'max_mean_increment_over_N320_spatial': 0.014717554670853422, 'max_tail_energy_relative_increment': 0.0011194587931311062}
+HIGH_REF LHS_078 {'N': 5120, 'seconds': 1.1597174870112212, 'max_mean_increment_over_N320_spatial': 0.0018448301285066552, 'max_tail_energy_relative_increment': 3.532681710050854e-05}
+COMPLETED LHS_078 wall 4.111 extra 0 Nref 5120 remaining 5386
+HIGH_REF UN_AP3p2_900K_S1 {'N': 320, 'seconds': 0.07531426999776158, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF UN_AP3p2_900K_S1 {'N': 640, 'seconds': 0.07870820901007392, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF UN_AP3p2_900K_S1 {'N': 1280, 'seconds': 0.2047378569986904, 'max_mean_increment_over_N320_spatial': 0.11388648696512128, 'max_tail_energy_relative_increment': 0.032101948959502156}
+HIGH_REF UN_AP3p2_900K_S1 {'N': 2560, 'seconds': 0.38954573999217246, 'max_mean_increment_over_N320_spatial': 0.014142824257919231, 'max_tail_energy_relative_increment': 0.0010184791439358139}
+HIGH_REF UN_AP3p2_900K_S1 {'N': 5120, 'seconds': 0.8448415279999608, 'max_mean_increment_over_N320_spatial': 0.0017686915847540214, 'max_tail_energy_relative_increment': 3.197167665449505e-05}
+COMPLETED UN_AP3p2_900K_S1 wall 4.607 extra 3 Nref 5120 remaining 5381
+benchmark completed seconds 18.06845181999961

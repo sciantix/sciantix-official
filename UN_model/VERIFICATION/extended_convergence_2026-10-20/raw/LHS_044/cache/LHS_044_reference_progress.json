@@ -1,0 +1,32 @@
+[
+  {
+    "N": 320,
+    "seconds": 0.12646485900040716,
+    "max_mean_increment_over_N320_spatial": null,
+    "max_tail_energy_relative_increment": null
+  },
+  {
+    "N": 640,
+    "seconds": 0.1154065969894873,
+    "max_mean_increment_over_N320_spatial": null,
+    "max_tail_energy_relative_increment": null
+  },
+  {
+    "N": 1280,
+    "seconds": 0.2537860770098632,
+    "max_mean_increment_over_N320_spatial": 0.12427429122816917,
+    "max_tail_energy_relative_increment": 0.03949021485763652
+  },
+  {
+    "N": 2560,
+    "seconds": 0.5385982799925841,
+    "max_mean_increment_over_N320_spatial": 0.01584051924490428,
+    "max_tail_energy_relative_increment": 0.001331214973771231
+  },
+  {
+    "N": 5120,
+    "seconds": 1.0866288030083524,
+    "max_mean_increment_over_N320_spatial": 0.001994812683570328,
+    "max_tail_energy_relative_increment": 4.2453192573983224e-05
+  }
+]

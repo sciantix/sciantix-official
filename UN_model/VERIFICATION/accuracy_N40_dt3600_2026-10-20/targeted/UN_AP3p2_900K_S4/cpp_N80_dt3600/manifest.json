@@ -1,0 +1,12 @@
+{
+  "case": "UN_AP3p2_900K_S4",
+  "N": 80,
+  "dt_s": 3600.0,
+  "end_s": 14400000.0,
+  "steps": 4000,
+  "source": "UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted/UN_AP3p2_900K_S4/cpp_N80_dt3600/cpp",
+  "output_sha256": "3314d601a35e38d583573bf497f6f42f16419d645da873b3c8ffb14e177a5036",
+  "reused": false,
+  "solver_seconds": 0.011261732000000156,
+  "new_process_seconds": 0.027754656999604777
+}

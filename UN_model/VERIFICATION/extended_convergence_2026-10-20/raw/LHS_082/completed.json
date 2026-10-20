@@ -1,0 +1,22 @@
+{
+  "case": "LHS_082",
+  "group": "LHS",
+  "status": "completed",
+  "main_temporal_runs": 5,
+  "spatial_analytic_configurations": 6,
+  "extra_temporal_refinements": 0,
+  "finest_dt_s": 225.0,
+  "refinement_reasons": [],
+  "remaining_anomaly_rows": 0,
+  "anomaly_categories": {},
+  "main_unclear_sequences_before_refinement": 0,
+  "reference_N": 5120,
+  "reference_acquire_seconds": 2.361023479999858,
+  "reference_reused_4B": false,
+  "cpp_reused_4B": 0,
+  "solver_seconds_new": 0.16911380199992593,
+  "cpp_process_seconds_new": 0.22838766398490407,
+  "max_BE_gap_normalized": 2.0827088641617597e-12,
+  "wall_seconds": 4.073710090000532,
+  "completed_epoch": 1792492249.0266929
+}

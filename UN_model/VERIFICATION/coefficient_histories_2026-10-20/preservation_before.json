@@ -1,0 +1,12 @@
+{
+  "branch": "development/nitride",
+  "head": "444979d91a5c1d8ae542de35c159fefe49e035cc",
+  "index_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "unstaged": "",
+  "files": {
+    "UN_model/notebooks/BaseRizk2025.ipynb": "4115a35aadd5096ae7b0412bc30a8fac4a639cd279feacd0f223f1765cb21af3",
+    "UN_model/optuna/M7_v14/fixed_parameter_plots/M7_v14_fixed_model_plots.ipynb": "61f0817aaa35947447721b5141a6580c877e132b2631fd29a3911f6953a84def",
+    "UN_model/optuna/M7_v14/UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py": "d35402eb9b40013e05dea73d56f4f01efa37ae57e1f3c8be86d58438396d5bbf",
+    "UN_model/notebooks/finalRizkUN_L3_solver_unificato.ipynb": "e29d798d3685edb827a43933b3dc4400087f1aff488ee4080650c1430e1c59ff"
+  }
+}

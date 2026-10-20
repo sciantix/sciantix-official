@@ -1,0 +1,13 @@
+{
+  "archive": "accuracy_N40_dt3600_compact.zip",
+  "bytes": 39661273,
+  "sha256": "8ea974b53084a62e211df20aab69c07f24816f305293bca97b6787431fcfb8c9",
+  "entries": 44,
+  "all_archive_crc_and_sha256_checked": true,
+  "all_4001_hours_included": true,
+  "lossless_hourly_format": "temporal_hourly_lossless.csv + normalization_scales.csv + README formulas",
+  "duplicated_long_gzip_omitted": true,
+  "large_binary_arrays_excluded": true,
+  "elapsed_budget_seconds": 1192.5414581298828,
+  "validation_and_packaging_seconds": 71.79273400999955
+}

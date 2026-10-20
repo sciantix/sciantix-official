@@ -1,0 +1,66 @@
+{
+  "case": "LHS_125",
+  "parameter_fingerprint": [
+    1.679914338499537e-18,
+    6e-06,
+    1.648199700599209,
+    0.20082001128168092,
+    2.3330622132846617e-06,
+    6.474880649869764e-05,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_125/cache/LHS_125_N40_hourly.npz",
+  "hourly_sha256": "bd7c2c5220724a3cc5b14c323ffa5145c4ffbdbd3be95edbf14dfff9ce4f4dd1",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_125/cache/LHS_125_high_converged.npz",
+  "high_sha256": "9929c4883a1da1006cd9a3bcc85e69498f9cfa7d4a1a3d57c4008ef59e44256f",
+  "N_high": 10240,
+  "high_convergence": {
+    "N": 10240,
+    "seconds": 1.9955239289993187,
+    "max_mean_increment_over_N320_spatial": 0.0032429566433494084,
+    "max_tail_energy_relative_increment": 0.00033376950233556256
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      4.7602012723704495e-14,
+      4.922653170920423e-14,
+      4.795834517210488e-14
+    ],
+    "direct_gap_normalized": [
+      2.8503518949657913e-10,
+      2.9359176843405067e-10,
+      2.847587569811994e-10
+    ],
+    "modal_direct_gap_normalized": [
+      3.6435529272195333e-10,
+      3.752876452689818e-10,
+      3.640564085314675e-10
+    ],
+    "seconds": 0.19139611200080253,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 4.275648350987467,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

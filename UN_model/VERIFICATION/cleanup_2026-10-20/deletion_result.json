@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "removed_files": 3360,
+  "removed_worktree_bytes": 8003819491,
+  "retained_files": 6478,
+  "retained_bytes": 196624254,
+  "retained_files_byte_identical": true,
+  "removal_reversible_while_backup_branch_exists": true,
+  "no_Git_GC_or_remote_operations": true,
+  "reason_counts": {
+    "rebuildable_executable": 2,
+    "deterministic_solver_or_expm_array_reproducible_from_retained_inputs": 3019,
+    "full_hourly_information_preserved_in_validated_compact_ZIP": 322,
+    "rebuildable_font_cache": 1,
+    "exact_series_duplicate_of_retained_complete_coefficients_CSV": 16
+  }
+}

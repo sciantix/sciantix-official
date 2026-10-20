@@ -1,0 +1,11 @@
+{
+  "cases": [
+    "UN_AP3p4_1600K_S2",
+    "UN_AP3p4_1600K_S3"
+  ],
+  "extra_dt_s": 3.515625,
+  "steps": 4096000,
+  "reason": "Two md sequences at 2 h remain preasymptotic (p=0.8894/0.8800) after five halvings; one more halving is supported by the unchanged harness (<5 million steps) and remaining 90-minute budget.",
+  "tolerances_and_fixed_times": "unchanged; first-order screen remains [0.9,1.1]",
+  "first_pass_preserved": "deliverables/ and all original per-case tables remain unchanged"
+}

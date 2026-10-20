@@ -1,0 +1,23 @@
+BaseRizk2025_uncalibrated AP3p2_900K 1814 1.27
+BaseRizk2025_uncalibrated AP3p4_1600K 1649 1.13
+BaseRizk2025_uncalibrated AP3p4_1800K 1649 1.14
+BaseRizk2025_uncalibrated ANP6_1600K 3921 2.72
+M7_no_phi_nominal AP3p2_900K 1814 1.08
+M7_no_phi_nominal AP3p4_1600K 1649 0.91
+M7_no_phi_nominal AP3p4_1800K 1649 0.72
+M7_no_phi_nominal ANP6_1600K 3921 2.22
+M7_full_nominal AP3p2_900K 1814 1.08
+M7_full_nominal AP3p4_1600K 1649 0.99
+M7_full_nominal AP3p4_1800K 1649 0.96
+M7_full_nominal ANP6_1600K 3921 2.21
+Traceback (most recent call last):
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/coefficient_histories_2026-10-20/extract.py", line 165, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/coefficient_histories_2026-10-20/extract.py", line 135, in main
+    fixed=notebook_module(FIXED,[2,3],'extracted_fixed_m7_v14')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/coefficient_histories_2026-10-20/extract.py", line 47, in notebook_module
+    exec(compile(ast.fix_missing_locations(tree),f'{path}:cell{i}','exec'),m.__dict__)
+  File "/home/destro/sciantix-official/UN_model/optuna/M7_v14/fixed_parameter_plots/M7_v14_fixed_model_plots.ipynb:cell2", line 161, in <module>
+NameError: name 'dataclass' is not defined

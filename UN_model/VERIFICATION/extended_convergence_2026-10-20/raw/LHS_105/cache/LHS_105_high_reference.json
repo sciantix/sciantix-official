@@ -1,0 +1,57 @@
+{
+  "case": "LHS_105",
+  "N": 5120,
+  "file": "LHS_105_high_converged.npz",
+  "criteria": {
+    "mean_increment_over_N320_spatial": 0.01,
+    "relative_increment_of_squared_tail_L2": 0.01
+  },
+  "records": [
+    {
+      "N": 320,
+      "seconds": 0.10251825700106565,
+      "max_mean_increment_over_N320_spatial": null,
+      "max_tail_energy_relative_increment": null
+    },
+    {
+      "N": 640,
+      "seconds": 0.11430238200409804,
+      "max_mean_increment_over_N320_spatial": null,
+      "max_tail_energy_relative_increment": null
+    },
+    {
+      "N": 1280,
+      "seconds": 0.2797427070036065,
+      "max_mean_increment_over_N320_spatial": 0.12188026265661941,
+      "max_tail_energy_relative_increment": 0.037720931022384836
+    },
+    {
+      "N": 2560,
+      "seconds": 0.5004296480037738,
+      "max_mean_increment_over_N320_spatial": 0.015438902843549044,
+      "max_tail_energy_relative_increment": 0.0012533431407411814
+    },
+    {
+      "N": 5120,
+      "seconds": 1.0423023920011474,
+      "max_mean_increment_over_N320_spatial": 0.0019409540457671,
+      "max_tail_energy_relative_increment": 3.9816970380701824e-05
+    }
+  ],
+  "seconds": 2.0407176300068386,
+  "observations_hours": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    24,
+    100,
+    500,
+    1000,
+    2000,
+    4000
+  ],
+  "retained_modes": "identical prefix by independent modal equations; no truncation error on retained coefficient",
+  "limitation": "successive doubling evidence; not a rigorous infinite-tail bound"
+}

@@ -1,0 +1,26 @@
+{
+  "case": "UN_AP3p4_1800K_S4",
+  "N": 40,
+  "dt_s": 900.0,
+  "end_s": 14400000.0,
+  "steps": 16000,
+  "reused_from_4B": false,
+  "source": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p4_1800K_S4/dt_900/cpp",
+  "output_sha256": "d1ec097015162ed83f5ad1ce60d874e115b5004e5ea5696e208d2e01e06b2671",
+  "solver_seconds": 0.021558737999995848,
+  "new_process_seconds": 0.03577199000574183,
+  "parameter_fingerprint": [
+    2.8109916689626407e-17,
+    6e-06,
+    0.0005620628437193834,
+    0.02955211512567774,
+    1.6785493043374604e-05,
+    5.2220057056098646e-06,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

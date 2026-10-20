@@ -1,0 +1,13 @@
+{
+  "case": "UN_AP3p2_900K_S4",
+  "status": "completed",
+  "new_cpp_runs": 2,
+  "reused_cpp_runs": 3,
+  "new_high_observations": 25,
+  "high_N_max": 5120,
+  "wall_seconds": 5.34968550800113,
+  "high_reference_original_seconds": 4.085708473998238,
+  "low_reference_original_seconds": 0.4514553639892256,
+  "new_solver_seconds": 0.033762618000000966,
+  "new_process_seconds": 0.07544796100410167
+}

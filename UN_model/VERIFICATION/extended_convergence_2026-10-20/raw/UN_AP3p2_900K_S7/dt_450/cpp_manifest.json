@@ -1,0 +1,26 @@
+{
+  "case": "UN_AP3p2_900K_S7",
+  "N": 40,
+  "dt_s": 450.0,
+  "end_s": 14400000.0,
+  "steps": 32000,
+  "reused_from_4B": false,
+  "source": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p2_900K_S7/dt_450/cpp",
+  "output_sha256": "f1292bdeb33d13c2baa397743b74520bb8734128f8365113a721c824d68e36c9",
+  "solver_seconds": 0.04207142599999391,
+  "new_process_seconds": 0.05714388300839346,
+  "parameter_fingerprint": [
+    6.859556060984681e-19,
+    6e-06,
+    0.003643679346383712,
+    0.0007333456283908866,
+    1.243867926447738e-05,
+    4.332537164647747e-06,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

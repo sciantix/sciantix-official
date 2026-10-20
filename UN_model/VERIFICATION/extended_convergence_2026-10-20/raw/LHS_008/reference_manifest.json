@@ -1,0 +1,66 @@
+{
+  "case": "LHS_008",
+  "parameter_fingerprint": [
+    4.206113211468226e-18,
+    6e-06,
+    1.4505546597336,
+    0.012979384828736854,
+    9.62588924244908e-06,
+    0.00016754631323240862,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_008/cache/LHS_008_N40_hourly.npz",
+  "hourly_sha256": "eb9012cc57ec272fe1dc545f83814630cfe600dcbf34083cdb6bf62c7ed5e14b",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_008/cache/LHS_008_high_converged.npz",
+  "high_sha256": "366c500b3db51e94f6344773ed39ba89cec0aa95780d723abc40a217014a4b0e",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 0.9853016610140912,
+    "max_mean_increment_over_N320_spatial": 0.009812595930326743,
+    "max_tail_energy_relative_increment": 0.001403915046976119
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      9.406081240505228e-14,
+      9.4675838690167e-14,
+      9.402670412343474e-14
+    ],
+    "direct_gap_normalized": [
+      2.1405069622316994e-11,
+      2.1558039121005434e-11,
+      2.1429054851384306e-11
+    ],
+    "modal_direct_gap_normalized": [
+      9.618662813007212e-11,
+      9.689137430262341e-11,
+      9.615597012643425e-11
+    ],
+    "seconds": 0.16509527499147225,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 2.2660566400008975,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

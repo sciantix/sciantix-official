@@ -1,0 +1,10 @@
+{
+  "cases": [
+    "LHS_001",
+    "UN_AP3p2_900K_S1"
+  ],
+  "wall_seconds": 0.6903193359903526,
+  "estimated_160_case_wall_s": 55.17165735946037,
+  "new_cpp_runs": 0,
+  "note": "pilot cases are reused in full analysis; targeted high-N cost benchmark follows selection"
+}

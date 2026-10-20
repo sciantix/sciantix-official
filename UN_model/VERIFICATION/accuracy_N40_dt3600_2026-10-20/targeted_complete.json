@@ -1,0 +1,7 @@
+{
+  "status": "completed",
+  "critical_cases": 9,
+  "rapid_cases": 3,
+  "wall_seconds": 66.2230651990103,
+  "no_cpp_beyond_N160": true
+}

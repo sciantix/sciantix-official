@@ -1,0 +1,12 @@
+{
+  "case": "LHS_090",
+  "N": 40,
+  "dt_s": 0.045985436222947665,
+  "end_s": 9.197087244589534,
+  "steps": 201,
+  "source": "UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/rapid/LHS_090/tau10/cpp",
+  "output_sha256": "8454cc4892bcbf1ada7e19e7fe1189245f37c480413ed720d09f3336bb0420e5",
+  "reused": false,
+  "solver_seconds": 0.00037415299999999974,
+  "new_process_seconds": 0.0026319239987060428
+}

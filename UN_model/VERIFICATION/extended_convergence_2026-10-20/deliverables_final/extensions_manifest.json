@@ -1,0 +1,8 @@
+{
+  "case_tables": {
+    "UN_AP3p4_1600K_S2": "extensions/UN_AP3p4_1600K_S2",
+    "UN_AP3p4_1600K_S3": "extensions/UN_AP3p4_1600K_S3"
+  },
+  "protocol": "targeted_extension_protocol.json",
+  "extra_runs": 2
+}

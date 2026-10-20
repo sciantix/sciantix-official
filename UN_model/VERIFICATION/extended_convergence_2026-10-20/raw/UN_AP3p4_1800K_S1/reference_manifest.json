@@ -1,0 +1,66 @@
+{
+  "case": "UN_AP3p4_1800K_S1",
+  "parameter_fingerprint": [
+    2.8109916689626407e-17,
+    6e-06,
+    0.0,
+    0.030822553087070093,
+    1.9795182602625162e-05,
+    1.9795182602625162e-05,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p4_1800K_S1/cache/UN_AP3p4_1800K_S1_N40_hourly.npz",
+  "hourly_sha256": "6fce16d37e0af514f3ce577f8c91b189eb8719e57c5a36a8e6341c78d9a8a08d",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_AP3p4_1800K_S1/cache/UN_AP3p4_1800K_S1_high_converged.npz",
+  "high_sha256": "a5d547c306acfe390885a918f2a2d1fb395da61ca6b7f7eb68a8b29e5e65f10e",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 0.9516963899950497,
+    "max_mean_increment_over_N320_spatial": 0.001754546128242826,
+    "max_tail_energy_relative_increment": 3.136697806239087e-05
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      5.4047212080116025e-15,
+      0.0,
+      5.5104126008263325e-15
+    ],
+    "direct_gap_normalized": [
+      1.645123434974986e-12,
+      0.0,
+      1.6508547868240302e-12
+    ],
+    "modal_direct_gap_normalized": [
+      1.853546129595416e-12,
+      0.0,
+      1.860525520055501e-12
+    ],
+    "seconds": 0.12886621098732576,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 2.123571827993146,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

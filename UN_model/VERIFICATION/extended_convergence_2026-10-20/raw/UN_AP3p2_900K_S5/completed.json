@@ -1,0 +1,57 @@
+{
+  "case": "UN_AP3p2_900K_S5",
+  "group": "UN_history",
+  "status": "completed",
+  "main_temporal_runs": 5,
+  "spatial_analytic_configurations": 6,
+  "extra_temporal_refinements": 4,
+  "finest_dt_s": 14.0625,
+  "refinement_reasons": [
+    {
+      "dt_s": 112.5,
+      "unresolved_fixed_time_sequences": 4,
+      "remaining_budget_s": 4678.41214966774,
+      "reasons": [
+        "cancellation_or_error_competition",
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 56.25,
+      "unresolved_fixed_time_sequences": 3,
+      "remaining_budget_s": 4677.8823981285095,
+      "reasons": [
+        "cancellation_or_error_competition",
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 28.125,
+      "unresolved_fixed_time_sequences": 3,
+      "remaining_budget_s": 4677.187999486923,
+      "reasons": [
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 14.0625,
+      "unresolved_fixed_time_sequences": 1,
+      "remaining_budget_s": 4676.156344175339,
+      "reasons": [
+        "preasymptotic_not_yet_first_order"
+      ]
+    }
+  ],
+  "remaining_anomaly_rows": 0,
+  "anomaly_categories": {},
+  "main_unclear_sequences_before_refinement": 4,
+  "reference_N": 5120,
+  "reference_acquire_seconds": 2.0642562689899933,
+  "reference_reused_4B": false,
+  "cpp_reused_4B": 0,
+  "solver_seconds_new": 2.6515786229981377,
+  "cpp_process_seconds_new": 2.8282622209953843,
+  "max_BE_gap_normalized": 6.80609272195078e-11,
+  "wall_seconds": 7.83401939200121,
+  "completed_epoch": 1792492506.3058076
+}

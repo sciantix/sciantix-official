@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted.py", line 192, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted.py", line 174, in main
+    r=critical_case(byname[names[0]])
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/targeted.py", line 100, in critical_case
+    table(folder/'refinement_maxima.csv',comparison);table(folder/'refinement_errors.csv',hist);table(folder/'costs.csv',costs)
+                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/core.py", line 26, in table
+    w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+                                                                 ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/csv.py", line 167, in writerows
+    return self.writer.writerows(map(self._dict_to_list, rowdicts))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/csv.py", line 159, in _dict_to_list
+    raise ValueError("dict contains fields not in fieldnames: "
+ValueError: dict contains fields not in fieldnames: 'end_s', 'steps'

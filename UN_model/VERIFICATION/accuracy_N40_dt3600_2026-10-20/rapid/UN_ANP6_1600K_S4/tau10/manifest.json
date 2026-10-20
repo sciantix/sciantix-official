@@ -1,0 +1,12 @@
+{
+  "case": "UN_ANP6_1600K_S4",
+  "N": 40,
+  "dt_s": 17.496005695458585,
+  "end_s": 3499.2011390917173,
+  "steps": 200,
+  "source": "UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/rapid/UN_ANP6_1600K_S4/tau10/cpp",
+  "output_sha256": "59904ae3401017fef035cdb4f9558b9c4a21cbe627ef8e2f1dd0163a35abef55",
+  "reused": false,
+  "solver_seconds": 0.0004393889999999995,
+  "new_process_seconds": 0.0026989339967258275
+}

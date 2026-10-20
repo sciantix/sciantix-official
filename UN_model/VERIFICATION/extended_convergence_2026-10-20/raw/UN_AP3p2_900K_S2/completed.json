@@ -1,0 +1,48 @@
+{
+  "case": "UN_AP3p2_900K_S2",
+  "group": "UN_history",
+  "status": "completed",
+  "main_temporal_runs": 5,
+  "spatial_analytic_configurations": 6,
+  "extra_temporal_refinements": 3,
+  "finest_dt_s": 28.125,
+  "refinement_reasons": [
+    {
+      "dt_s": 112.5,
+      "unresolved_fixed_time_sequences": 4,
+      "remaining_budget_s": 4695.359757423401,
+      "reasons": [
+        "cancellation_or_error_competition",
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 56.25,
+      "unresolved_fixed_time_sequences": 2,
+      "remaining_budget_s": 4695.007557630539,
+      "reasons": [
+        "unresolved_transient_or_preasymptotic"
+      ]
+    },
+    {
+      "dt_s": 28.125,
+      "unresolved_fixed_time_sequences": 2,
+      "remaining_budget_s": 4694.471873283386,
+      "reasons": [
+        "preasymptotic_not_yet_first_order"
+      ]
+    }
+  ],
+  "remaining_anomaly_rows": 0,
+  "anomaly_categories": {},
+  "main_unclear_sequences_before_refinement": 4,
+  "reference_N": 5120,
+  "reference_acquire_seconds": 1.817908739001723,
+  "reference_reused_4B": false,
+  "cpp_reused_4B": 0,
+  "solver_seconds_new": 1.2668802310009635,
+  "cpp_process_seconds_new": 1.4025770650041522,
+  "max_BE_gap_normalized": 7.633549456718855e-11,
+  "wall_seconds": 4.679904256001464,
+  "completed_epoch": 1792492487.1196406
+}

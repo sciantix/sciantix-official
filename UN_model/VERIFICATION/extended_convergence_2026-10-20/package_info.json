@@ -1,0 +1,11 @@
+{
+  "file": "extended_convergence_160_compact.zip",
+  "bytes": 7942139,
+  "sha256": "5d0580526b1550c9cc026d07a138855156c05279596c25a636989644750e16f8",
+  "compact_bundle_files": 29,
+  "contains_large_raw_binaries": false,
+  "external_raw_files": 8455,
+  "external_raw_bytes": 7233841666,
+  "elapsed_since_budget_start_seconds": 1229.5823616981506,
+  "validation_and_packaging_seconds": 87.21427315298934
+}

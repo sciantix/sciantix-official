@@ -1,0 +1,22 @@
+{
+  "case": "UN_AP3p4_1800K_S4",
+  "group": "UN_history",
+  "status": "completed",
+  "main_temporal_runs": 5,
+  "spatial_analytic_configurations": 6,
+  "extra_temporal_refinements": 0,
+  "finest_dt_s": 225.0,
+  "refinement_reasons": [],
+  "remaining_anomaly_rows": 0,
+  "anomaly_categories": {},
+  "main_unclear_sequences_before_refinement": 0,
+  "reference_N": 5120,
+  "reference_acquire_seconds": 2.421797087008599,
+  "reference_reused_4B": false,
+  "cpp_reused_4B": 0,
+  "solver_seconds_new": 0.17037085200006064,
+  "cpp_process_seconds_new": 0.23050258299917914,
+  "max_BE_gap_normalized": 2.730586182392706e-12,
+  "wall_seconds": 4.238521869003307,
+  "completed_epoch": 1792492600.531545
+}

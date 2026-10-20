@@ -1,0 +1,10 @@
+{
+  "raw_existing_root": "UN_model/VERIFICATION/extended_convergence_2026-10-20",
+  "raw_new_root": "UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20",
+  "cases_sha256": "c712646f5a592632ede9a042fa47021a4dd7ea1a82f6422b368ec14fe5859014",
+  "combinations_sha256": "b7243810e688e386374446aeddc662451977f3484f3656e5d70de32629571b2e",
+  "source_solver_sha256": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+  "existing_file_snapshot_sha256": "86d83a22e2dd6e0ca22292b87fbeef4c74be78257ce60cbb09302b0c6f6c384f",
+  "old_results_not_embedded": true,
+  "new_binary_files_not_embedded": true
+}

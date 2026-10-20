@@ -1,0 +1,19 @@
+{
+  "status": "completed",
+  "cases": [
+    "LHS_013",
+    "LHS_078",
+    "UN_AP3p2_900K_S1"
+  ],
+  "completed_cases_including_all_five_dt_and_spatial_reference": 3,
+  "wall_seconds": 18.06845181999961,
+  "case_wall_seconds": [
+    9.346005412997329,
+    4.111268783002743,
+    4.6070187839941354
+  ],
+  "estimated_160_cases_mean_s": 963.4289589330244,
+  "estimated_160_cases_at_slowest_benchmark_s": 1495.3608660795726,
+  "compile_seconds": 1.2086215390008874,
+  "includes": "reference, main C++, necessary extra refinements, CSV and raw I/O; three pilot cases reused by main run"
+}

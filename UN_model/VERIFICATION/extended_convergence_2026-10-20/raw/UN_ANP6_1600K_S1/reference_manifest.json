@@ -1,0 +1,66 @@
+{
+  "case": "UN_ANP6_1600K_S1",
+  "parameter_fingerprint": [
+    1.4017765731852965e-18,
+    6e-06,
+    0.0,
+    0.0015370494804475786,
+    2.0488132955150955e-05,
+    2.0488132955150955e-05,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S1/cache/UN_ANP6_1600K_S1_N40_hourly.npz",
+  "hourly_sha256": "f0c510c4c4497a9fe5a19058846c912048f73f71e6e0c2b2ec264855436ef927",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S1/cache/UN_ANP6_1600K_S1_high_converged.npz",
+  "high_sha256": "f9fe7369d1256e78ced668f93df268848c93a04177cb9051bc9927d4049f2120",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 0.8442557870002929,
+    "max_mean_increment_over_N320_spatial": 0.001761001076713637,
+    "max_tail_energy_relative_increment": 3.164206661499368e-05
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      6.574909684569789e-14,
+      0.0,
+      6.629475218457615e-14
+    ],
+    "direct_gap_normalized": [
+      1.845588683388011e-14,
+      0.0,
+      1.8424348001668805e-14
+    ],
+    "modal_direct_gap_normalized": [
+      1.0759656442544076e-13,
+      0.0,
+      1.0805570314931959e-13
+    ],
+    "seconds": 0.11803965100261848,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 1.845338935003383,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

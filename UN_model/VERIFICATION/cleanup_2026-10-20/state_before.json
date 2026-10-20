@@ -1,0 +1,10 @@
+{
+  "branch": "development/nitride",
+  "head": "b5b098c01afe362df99dd99a8d3bb635a49b1fa0",
+  "parent": "444979d91a5c1d8ae542de35c159fefe49e035cc",
+  "origin": "444979d91a5c1d8ae542de35c159fefe49e035cc",
+  "staged_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "unstaged": "",
+  "status": "",
+  "git_objects_before": "count: 255\nsize: 3.44 MiB\nin-pack: 59795\npacks: 7\nsize-pack: 9.68 GiB\nprune-packable: 0\ngarbage: 1\nsize-garbage: 621 bytes\n"
+}

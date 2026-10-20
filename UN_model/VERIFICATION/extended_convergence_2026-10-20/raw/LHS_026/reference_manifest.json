@@ -1,0 +1,66 @@
+{
+  "case": "LHS_026",
+  "parameter_fingerprint": [
+    1.0756526675413109e-17,
+    6e-06,
+    0.1548077478660032,
+    0.030919049017194604,
+    1.2220566657489674e-05,
+    1.2256388000993956e-06,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_026/cache/LHS_026_N40_hourly.npz",
+  "hourly_sha256": "a4a62a3a139f7f2a663cdb03fe5d039a83c3f6582c273d83d8f35cf1203339fa",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/LHS_026/cache/LHS_026_high_converged.npz",
+  "high_sha256": "972e63222a2a446be3d36168a3f41eaba9efe2dfff0e330c0244939940eb0d81",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 1.0037612890009768,
+    "max_mean_increment_over_N320_spatial": 0.0022897739909973213,
+    "max_tail_energy_relative_increment": 5.848111955160902e-05
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      4.443577466333073e-14,
+      4.4767848380518345e-14,
+      4.6020912112644695e-14
+    ],
+    "direct_gap_normalized": [
+      3.7110696450911365e-13,
+      2.147673431118259e-13,
+      1.2244477973862026e-12
+    ],
+    "modal_direct_gap_normalized": [
+      1.0634423871361677e-11,
+      1.0602269642327855e-11,
+      1.1936682866601464e-11
+    ],
+    "seconds": 0.1622686229966348,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 2.2885671440017177,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}

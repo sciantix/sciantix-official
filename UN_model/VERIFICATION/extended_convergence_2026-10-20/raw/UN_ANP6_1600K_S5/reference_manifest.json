@@ -1,0 +1,66 @@
+{
+  "case": "UN_ANP6_1600K_S5",
+  "parameter_fingerprint": [
+    1.4017765731852965e-18,
+    6e-06,
+    0.010203585742936545,
+    0.001465482899251947,
+    1.616765331306806e-05,
+    5.317381956815043e-06,
+    1.7995675661038836e+19,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "hourly_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S5/cache/UN_ANP6_1600K_S5_N40_hourly.npz",
+  "hourly_sha256": "cb4bc828cb862c540d63245f3420c3355ef5972736244d62ef09352593c341ea",
+  "high_file": "UN_model/VERIFICATION/extended_convergence_2026-10-20/raw/UN_ANP6_1600K_S5/cache/UN_ANP6_1600K_S5_high_converged.npz",
+  "high_sha256": "2a842f6b62499c460f2b91f8481dc08cbe6e07cf520545c62de93642c7375480",
+  "N_high": 5120,
+  "high_convergence": {
+    "N": 5120,
+    "seconds": 1.016218407996348,
+    "max_mean_increment_over_N320_spatial": 0.0020050642147701964,
+    "max_tail_energy_relative_increment": 4.2965760511758996e-05
+  },
+  "hourly_validation": {
+    "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+    "direct_check_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "split_gap_normalized": [
+      7.172531129381555e-14,
+      7.213168347615202e-14,
+      7.154655504500924e-14
+    ],
+    "direct_gap_normalized": [
+      1.1105056817559718e-13,
+      1.1807029753358962e-13,
+      6.991785297894399e-14
+    ],
+    "modal_direct_gap_normalized": [
+      5.733431668390286e-13,
+      5.787526223393375e-13,
+      5.671078336973018e-13
+    ],
+    "seconds": 0.1433622120093787,
+    "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+    "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+    "roundoff_warning_threshold": 1e-08
+  },
+  "reused_from_4B": false,
+  "acquire_seconds": 2.194376753002871,
+  "legacy_metadata_note": "hourly_validation.case_sha256 is the unchanged 4B helper dependency; actual inputs bound by parameter_fingerprint"
+}
