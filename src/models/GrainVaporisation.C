@@ -53,7 +53,7 @@ using namespace GrainVaporisationDetail;
 void Simulation::GrainVaporisation()
 {
     // Matrix vaporisation of (U,Pu)O2, e.g. during annealing in a Knudsen cell.
-    // Switched on in input_thermochemistry_settings.txt (matrix.vaporisation = true) 
+    // Switched on in input_thermochemistry_settings.txt (matrix.vaporisation = true)
     // from matrix.vaporisation_start_time (h) on.
     if (thermochemistry_settings == nullptr || !thermochemistry_settings->matrix_vaporisation)
         return;
@@ -121,7 +121,7 @@ void Simulation::GrainVaporisation()
                                                 {sciantix_variable["U236"].getFinalValue(), 236.04557},
                                                 {sciantix_variable["U237"].getFinalValue(), 237.04873},
                                                 {sciantix_variable["U238"].getFinalValue(), 238.05079}},
-                                               238.02891);
+                                              238.02891);
     const double molar_mass_Pu = meanMolarMass({{sciantix_variable["Pu238"].getFinalValue(), 238.04956},
                                                 {sciantix_variable["Pu239"].getFinalValue(), 239.05216},
                                                 {sciantix_variable["Pu240"].getFinalValue(), 240.05381},
@@ -172,8 +172,8 @@ void Simulation::GrainVaporisation()
     const double surface_to_volume_sample = 3.0 / grain_radius_old * porosity;  // (1/m)
 
     // Knudsen cell: the vapour leaves the cell through an orifice of area A_o and Clausing factor C. Evaporation from
-    // the sample surface A_s and effusion through the orifice act in series: the cell pressure is p A_s / (A_s + C A_o) 
-    // and the sample loses J A_s C A_o / (A_s + C A_o). Per unit volume of the sample, V = sample mass / fuel density. 
+    // the sample surface A_s and effusion through the orifice act in series: the cell pressure is p A_s / (A_s + C A_o)
+    // and the sample loses J A_s C A_o / (A_s + C A_o). Per unit volume of the sample, V = sample mass / fuel density.
     // Without orifice the matrix vaporises freely from the grain surface.
     double       surface_to_volume = surface_to_volume_sample;
     const double orifice_diameter  = thermochemistry_settings->matrix_vaporisation_orifice_diameter;
@@ -252,7 +252,7 @@ void Simulation::GrainVaporisation()
     const double ig_fraction   = fully_vaporised ? 1.0 : 1.0 - std::pow(grain_radius_new / grain_radius_old, 3.0);
     const double bubble_height = (1.0 - std::cos(fuel.getSemidihedralAngle())) *
                                  sciantix_variable["Intergranular bubble radius"].getFinalValue();
-    double       gb_fraction =
+    double gb_fraction =
         bubble_height > 0.0 ? 1.0 - std::exp(-(grain_radius_old - grain_radius_new) / bubble_height) : 0.0;
     if (fully_vaporised)
         gb_fraction = 1.0;

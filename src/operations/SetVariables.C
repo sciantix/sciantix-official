@@ -56,8 +56,8 @@ void Simulation::setVariables(int                            Sciantix_options[],
              Sciantix_thermochemistry_settings != nullptr && Sciantix_thermochemistry_settings->matrix_vaporisation;
 
     // Iodine and tellurium are simulated only when listed in input_thermochemistry_settings.txt (see setSystem)
-    bool toOutputIodine    = toOutputThermochimica && Sciantix_thermochemistry_settings != nullptr &&
-                             Sciantix_thermochemistry_settings->fission_products.hasElement("I"),
+    bool toOutputIodine = toOutputThermochimica && Sciantix_thermochemistry_settings != nullptr &&
+                          Sciantix_thermochemistry_settings->fission_products.hasElement("I"),
          toOutputTellurium = toOutputThermochimica && Sciantix_thermochemistry_settings != nullptr &&
                              Sciantix_thermochemistry_settings->fission_products.hasElement("Te");
 
