@@ -1,0 +1,47 @@
+# index | category | phase | compound | location | uom | output | density (g/cm3)
+0 | fission_products | gas | I | at grain boundary | (g/m3) | 1
+1 | fission_products | gas | I2 | at grain boundary | (g/m3) | 1
+2 | fission_products | gas | CS | at grain boundary | (g/m3) | 1
+3 | fission_products | gas | CS2 | at grain boundary | (g/m3) | 1
+4 | fission_products | gas | CSI | at grain boundary | (g/m3) | 1
+5 | fission_products | gas | CS2I2 | at grain boundary | (g/m3) | 1
+6 | fission_products | gas | CS2TE | at grain boundary | (g/m3) | 1
+7 | fission_products | gas | CS2TE2 | at grain boundary | (g/m3) | 1
+8 | fission_products | gas | CS2TE3 | at grain boundary | (g/m3) | 1
+9 | fission_products | gas | CSTE | at grain boundary | (g/m3) | 1
+10 | fission_products | gas | CSTE2 | at grain boundary | (g/m3) | 1
+11 | fission_products | gas | TE | at grain boundary | (g/m3) | 1
+12 | fission_products | gas | TE2 | at grain boundary | (g/m3) | 1
+13 | fission_products | gas | TE3 | at grain boundary | (g/m3) | 1
+14 | fission_products | gas | TE4 | at grain boundary | (g/m3) | 1
+15 | fission_products | gas | TE5 | at grain boundary | (g/m3) | 1
+16 | fission_products | gas | TE6 | at grain boundary | (g/m3) | 1
+17 | fission_products | gas | TE7 | at grain boundary | (g/m3) | 1
+18 | fission_products | liquid | LIQUID | at grain boundary | (g/m3) | 1
+19 | fission_products | liquid | CS | at grain boundary | (g/m3) | 1
+20 | fission_products | liquid | CSI | at grain boundary | (g/m3) | 1
+21 | fission_products | liquid | I2 | at grain boundary | (g/m3) | 1
+22 | fission_products | liquid_ionic | LIQUID | at grain boundary | (g/m3) | 1
+23 | fission_products | liquid_ionic | CS+:VA | at grain boundary | (g/m3) | 1
+24 | fission_products | liquid_ionic | CS2TE | at grain boundary | (g/m3) | 1
+25 | fission_products | liquid_ionic | TE | at grain boundary | (g/m3) | 1
+26 | fission_products | condensed | FCC_A1 | at grain boundary | (g/m3) | 1
+27 | fission_products | condensed | I2_S | at grain boundary | (g/m3) | 1
+28 | fission_products | condensed | CS_BCC_A2 | at grain boundary | (g/m3) | 1
+29 | fission_products | condensed | CS_BCC_A2_2 | at grain boundary | (g/m3) | 1
+30 | fission_products | condensed | CS_HCP_A3 | at grain boundary | (g/m3) | 1
+31 | fission_products | condensed | CS_HEX_A8 | at grain boundary | (g/m3) | 1
+32 | fission_products | condensed | CSI_CSI_B2 | at grain boundary | (g/m3) | 1
+33 | fission_products | condensed | CSI3_CSI3 | at grain boundary | (g/m3) | 1
+34 | fission_products | condensed | CSI4_CSI4 | at grain boundary | (g/m3) | 1
+35 | fission_products | condensed | CS2TE | at grain boundary | (g/m3) | 1
+36 | fission_products | condensed | CS2TE_B | at grain boundary | (g/m3) | 1
+37 | fission_products | condensed | CSTE | at grain boundary | (g/m3) | 1
+38 | fission_products | condensed | CSTE_B | at grain boundary | (g/m3) | 1
+39 | fission_products | condensed | CS2TE3 | at grain boundary | (g/m3) | 1
+40 | fission_products | condensed | CS2TE5 | at grain boundary | (g/m3) | 1
+41 | fission_products | condensed | CS5TE3 | at grain boundary | (g/m3) | 1
+42 | fission_products | condensed | CSTE4 | at grain boundary | (g/m3) | 1
+43 | matrix | vapour | UO | matrix | (mol/m3) | 1
+44 | matrix | vapour | UO2 | matrix | (mol/m3) | 1
+45 | matrix | vapour | UO3 | matrix | (mol/m3) | 1
