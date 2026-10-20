@@ -1,0 +1,14 @@
+{
+  "case": "E5_maxD_strong_trapping_weak_resolution",
+  "stage": "spatial",
+  "N": 160,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/spatial/E5_maxD_strong_trapping_weak_resolution/N160_dt225/cpp",
+  "reused": false,
+  "output_sha256": "212b8b85f15a5982853001ba85bab19ff43aedaa61051e80a6ba1bfaa4e7f9e3",
+  "solver_seconds_original": 0.3251825140000264,
+  "new_process_seconds": 0.37806035099492874,
+  "acquire_seconds": 0.4104062319966033
+}

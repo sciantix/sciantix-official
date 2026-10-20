@@ -1,0 +1,14 @@
+{
+  "case": "E4_maxD_dislocation_strong_mixed_resolution",
+  "stage": "temporal",
+  "N": 40,
+  "dt_s": 900.0,
+  "end_s": 14400000.0,
+  "steps": 16000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/temporal/E4_maxD_dislocation_strong_mixed_resolution/N40_dt900/cpp",
+  "reused": false,
+  "output_sha256": "72694b81e2167cd82d77e0e1a0cbe59f0b44c84ccd71143bf372cba83c94195b",
+  "solver_seconds_original": 0.021818905000004125,
+  "new_process_seconds": 0.03763314500247361,
+  "acquire_seconds": 0.04694307199679315
+}

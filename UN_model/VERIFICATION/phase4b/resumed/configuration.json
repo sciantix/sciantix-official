@@ -1,0 +1,60 @@
+{
+  "frozen_cases_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+  "bounds_sha256": "36327a639ada6c6a0f4b88448a252e9d0c8e3c82a1c30135a7b0192aa1b71ce4",
+  "temporal": {
+    "N": 40,
+    "dt_s": [
+      3600.0,
+      1800.0,
+      900.0,
+      450.0,
+      225.0
+    ],
+    "end_s": 14400000.0,
+    "observations_s": 3600
+  },
+  "spatial": {
+    "N": [
+      10,
+      20,
+      40,
+      80,
+      160,
+      320
+    ],
+    "dt_s": 225.0,
+    "end_s": 14400000.0,
+    "decomposition_hours": [
+      0.0,
+      1.0,
+      2.0,
+      4.0,
+      8.0,
+      24.0,
+      100.0,
+      500.0,
+      1000.0,
+      2000.0,
+      4000.0
+    ]
+  },
+  "decomposition": "Cpp-highN = (Cpp-sameN) + (sameN-highN); signed vectors before norms",
+  "fast": {
+    "selection": "tau_fast(N40)<225 s",
+    "N": [
+      40,
+      320
+    ],
+    "end_tau": 20,
+    "steps_per_tau": [
+      10,
+      20,
+      40,
+      80,
+      160
+    ],
+    "observation_interval_tau": 0.5
+  },
+  "reuse": "matching case/N/dt/end/observations and immutable output SHA256",
+  "no_lhs": true
+}

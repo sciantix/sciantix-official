@@ -1,0 +1,37 @@
+{
+  "status": "completed",
+  "n": 40,
+  "dt_s": 3600.0,
+  "end_s": 86400.0,
+  "compile": {
+    "seconds": 1.1240187500006869,
+    "command": [
+      "g++",
+      "-std=c++11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-I/home/destro/sciantix-official/include/classes",
+      "/home/destro/sciantix-official/UN_model/VERIFICATION/solver_harness.cpp",
+      "/home/destro/sciantix-official/src/classes/Solver.C",
+      "-o",
+      "/home/destro/sciantix-official/UN_model/VERIFICATION/build/solver_harness.x"
+    ],
+    "solver_sha256": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+    "harness_sha256": "dcd2f206110fbfe020a0c9b1aacc8c709ec96838cb3c7f5fdc9b97ff0ce33aad",
+    "binary_sha256": "45afd05e541d3e744973f07535501b7b1c4589ae87ecbeb5f6dc7cea9616ce2e"
+  },
+  "cpp": {
+    "solver_seconds": 2.9970999999999995e-05,
+    "steps": 24,
+    "rows": 25,
+    "mode_initialization_mean": 1,
+    "process_seconds": 0.004648358000849839
+  },
+  "analytic_python_seconds": 0.02847538700007135,
+  "max_mean_error_over_global_scale": 0.001165767046625436,
+  "note": "24 h is only an initial speed trial; BE discretization error is expected, not a regression failure.",
+  "scipy": "1.16.2",
+  "numpy": "2.4.4",
+  "head": "971621968f8f077f51a6c0107732640923291303"
+}

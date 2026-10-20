@@ -1,0 +1,29 @@
+{
+  "status": "cost_gate_stop",
+  "main_campaign_started": false,
+  "completed_cost_benchmarks": 5,
+  "completed_accuracy_prechecks": 2,
+  "case_screened": "E2_maxD_zero_bulk_strong_resolution",
+  "reference_N": 5120,
+  "analytic_N320_seconds": 0.05737561400019331,
+  "naive_cost_without_accuracy_requirement": {
+    "temporal_solver_s": 1.6954335317494338,
+    "temporal_python_without_cache_s": 261.596506660062,
+    "temporal_python_with_exact_reference_cache_s": 52.3193013320124,
+    "spatial_solver_at_225s_s": 13.782233870995398,
+    "spatial_sameN_python_hourly_without_cache_s": 824.0289959791953,
+    "note": "225 s spatial estimate is invalid if temporal contamination fails. High-N reference, extra checks and I/O are additional."
+  },
+  "binding_estimate": {
+    "hour": 1.0,
+    "population": "md",
+    "observed_local_order": 0.9687015312268029,
+    "order_used_for_cost_extrapolation": 0.9687015312268029,
+    "predicted_required_dt_s": 2.677594067762854e-05,
+    "predicted_steps_4000h": 537796231826,
+    "predicted_solver_N320_seconds": 5245440.15899453,
+    "predicted_solver_six_N_seconds": 10326960.31302048
+  },
+  "caution": "Fine-step costs are extrapolated from two measured step sizes, not measured at the predicted tiny dt. One violating case already makes the full requested fixed-step spatial campaign costly.",
+  "decision": "Stop before all 110 main tests and present alternatives"
+}

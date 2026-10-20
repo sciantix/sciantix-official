@@ -1,0 +1,11 @@
+{
+  "status": "completed",
+  "extra_BE_checks": 50,
+  "total_unique_main_BE_checked": 100,
+  "max_other_N_BE_gap": 6.61721014968163e-12,
+  "modal_order_rows": 4800,
+  "audit_seconds": 3.9604339380020974,
+  "hourly_reference_seconds": 12.99445154699788,
+  "highN_reference_seconds": 29.777150503985467,
+  "LHS_samples": 0
+}

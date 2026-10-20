@@ -1,0 +1,28 @@
+{
+  "main_configurations": 110,
+  "temporal_configurations": 50,
+  "spatial_configurations": 60,
+  "main_new_cpp_executions": 94,
+  "main_reused_configurations": 16,
+  "rapid_executions": 60,
+  "rapid_selected_cases": [
+    "E2_maxD_zero_bulk_strong_resolution",
+    "E3_minD_bulk_strong_mixed_resolution",
+    "E4_maxD_dislocation_strong_mixed_resolution",
+    "E5_maxD_strong_trapping_weak_resolution",
+    "E6_minD_strong_trapping_strong_resolution",
+    "R3_AP3p4_1800K"
+  ],
+  "main_new_solver_seconds": 12.30167169499929,
+  "main_new_cpp_process_seconds": 14.643275821013958,
+  "rapid_solver_seconds": 0.47541468899999845,
+  "rapid_process_seconds": 0.6473764650072553,
+  "max_temporal_mean_error_normalized": 0.037540428012270366,
+  "max_BE_implementation_gap_normalized": 6.572870964729003e-12,
+  "max_decomposition_residual_normalized": 0.0,
+  "spatial_temporal_dominant_samples": 204,
+  "analysis_wall_seconds": 23.05239787299797,
+  "LHS": 0,
+  "normalization": "per-population analytical history maximum, floor 1 at/m3; modal L2 separate scales",
+  "limits": "Main grid is hourly; fast transients separate. No universal spatial order or stationary-at-4000h claim."
+}

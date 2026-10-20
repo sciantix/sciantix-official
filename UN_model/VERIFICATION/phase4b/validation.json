@@ -1,0 +1,19 @@
+{
+  "status": "cost_gate_stop",
+  "verification_checks": "pass",
+  "completed_cpp_simulations": 7,
+  "benchmarks": 5,
+  "accuracy_prechecks": 2,
+  "main_temporal_runs": 0,
+  "main_spatial_runs": 0,
+  "fast_transient_runs": 0,
+  "lhs_samples": 0,
+  "protected_files": 9930,
+  "preexisting_staged_4A_unchanged": true,
+  "head_branch_origin_unchanged": true,
+  "all_new_files_inside_phase4b": true,
+  "reference_active_subspace_relative_gap": 6.558701313146989e-16,
+  "full_4A_expm_inactive_bulk_noise_absolute": 17341582.62368105,
+  "E2_reference_stationary_mean_relative_error": 2.2940044638231104e-12,
+  "note": "Phase 4B is not complete; stopped at the explicitly requested cost gate."
+}

@@ -1,0 +1,14 @@
+{
+  "case": "R2_AP3p4_1600K",
+  "stage": "temporal",
+  "N": 40,
+  "dt_s": 450.0,
+  "end_s": 14400000.0,
+  "steps": 32000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/temporal/R2_AP3p4_1600K/N40_dt450/cpp",
+  "reused": false,
+  "output_sha256": "ec64b99b3800194ad532acf0c255b85808f7200e46330ca55ae098fa7921e381",
+  "solver_seconds_original": 0.041406774999993665,
+  "new_process_seconds": 0.05823615199915366,
+  "acquire_seconds": 0.06679065700154752
+}

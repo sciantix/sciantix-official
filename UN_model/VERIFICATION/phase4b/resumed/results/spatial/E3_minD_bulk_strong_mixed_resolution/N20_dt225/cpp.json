@@ -1,0 +1,14 @@
+{
+  "case": "E3_minD_bulk_strong_mixed_resolution",
+  "stage": "spatial",
+  "N": 20,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/spatial/E3_minD_bulk_strong_mixed_resolution/N20_dt225/cpp",
+  "reused": false,
+  "output_sha256": "eaa1ec984b5bf5fd808a4f83b47dec98ff386aee1772984dfa9ca06fdff449a9",
+  "solver_seconds_original": 0.04387248000004291,
+  "new_process_seconds": 0.05588811000052374,
+  "acquire_seconds": 0.061264979995030444
+}

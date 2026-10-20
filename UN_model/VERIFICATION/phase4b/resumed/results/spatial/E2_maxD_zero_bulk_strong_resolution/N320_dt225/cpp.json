@@ -1,0 +1,14 @@
+{
+  "case": "E2_maxD_zero_bulk_strong_resolution",
+  "stage": "spatial",
+  "N": 320,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/results/cost_accuracy_gate/cpp_225.0",
+  "reused": true,
+  "output_sha256": "16f19ac8d170c277a4e647bec03079db6989e08277bc23cf1a86e731171a1d27",
+  "solver_seconds_original": 0.6185309869998761,
+  "new_process_seconds": null,
+  "acquire_seconds": 0.10538703000202077
+}

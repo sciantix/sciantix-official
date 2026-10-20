@@ -1,0 +1,50 @@
+{
+  "status": "pass",
+  "tests": [
+    {
+      "n": 10,
+      "status": "pass",
+      "solver_seconds": 1.069e-06,
+      "steps": 1,
+      "rows": 2,
+      "mode_initialization_mean": 1.0000000000000002,
+      "process_seconds": 0.0016908120014704764
+    },
+    {
+      "n": 20,
+      "status": "pass",
+      "solver_seconds": 1.068e-06,
+      "steps": 1,
+      "rows": 2,
+      "mode_initialization_mean": 1,
+      "process_seconds": 0.0015168149984674528
+    },
+    {
+      "n": 40,
+      "status": "pass",
+      "solver_seconds": 1.652e-06,
+      "steps": 1,
+      "rows": 2,
+      "mode_initialization_mean": 1,
+      "process_seconds": 0.0012372150013106875
+    },
+    {
+      "n": 80,
+      "status": "pass",
+      "solver_seconds": 2.818e-06,
+      "steps": 1,
+      "rows": 2,
+      "mode_initialization_mean": 1.0000000000000002,
+      "process_seconds": 0.0013628300002892502
+    },
+    {
+      "n": 160,
+      "status": "pass",
+      "solver_seconds": 5.149e-06,
+      "steps": 1,
+      "rows": 2,
+      "mode_initialization_mean": 1,
+      "process_seconds": 0.0014109210023889318
+    }
+  ]
+}

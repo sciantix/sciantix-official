@@ -1,0 +1,14 @@
+{
+  "case": "E4_maxD_dislocation_strong_mixed_resolution",
+  "stage": "spatial",
+  "N": 160,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/spatial/E4_maxD_dislocation_strong_mixed_resolution/N160_dt225/cpp",
+  "reused": false,
+  "output_sha256": "0c883c78816d942f6db644de32ce866db9c5639b5ac00a1065f6244ce000fea3",
+  "solver_seconds_original": 0.31246947000015896,
+  "new_process_seconds": 0.36359082000126364,
+  "acquire_seconds": 0.39751964999595657
+}

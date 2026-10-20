@@ -1,0 +1,25 @@
+{
+  "case": "E4_maxD_dislocation_strong_mixed_resolution",
+  "N": 40,
+  "tau_fast_s": 2.314621270185264,
+  "dt_s": 0.014466382938657901,
+  "end_s": 46.29242540370528,
+  "resolution": 160,
+  "steps": 3201,
+  "observations": 41,
+  "solver_seconds": 0.004610131000000022,
+  "process_seconds": 0.006631733005633578,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N40_tau160/cpp",
+  "output_sha256": "c437101a791c3b4f71341a48bd9c84f46123fd0ebcff2aeff41a5b74d8ea57ab",
+  "initial": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_vector": [
+    1.7995675661038836e+19,
+    0.0,
+    0.0
+  ],
+  "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+}

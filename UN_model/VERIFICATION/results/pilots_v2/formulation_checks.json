@@ -1,0 +1,10 @@
+[
+  {
+    "case": "ordinary_L3_1600K",
+    "augmented_vs_shifted_relative": 9.975966086591147e-12
+  },
+  {
+    "case": "stiff_L3_1800K",
+    "augmented_vs_shifted_relative": 7.443363160593811e-11
+  }
+]

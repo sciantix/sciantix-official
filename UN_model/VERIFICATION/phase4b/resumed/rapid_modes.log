@@ -1,0 +1,13 @@
+{
+  "rapid_runs": 60,
+  "modal_error_rows": 32400,
+  "modal_order_rows": 25920,
+  "fastest_mode_finest_order_range": [
+    0.9962464851632724,
+    0.9962633970035566
+  ],
+  "fastest_mode_max_error_finest": 0.0011466387629632004,
+  "normalization": "each retained modal coefficient uses its own analytical maximum in the short window; floor 1",
+  "seconds": 0.7788711590037565,
+  "seconds_including_plot": 2.072913112002425
+}

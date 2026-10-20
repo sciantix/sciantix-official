@@ -1,0 +1,22 @@
+{
+  "figures": [
+    "error_decomposition_E2.png",
+    "error_histories.png",
+    "fast_transient_convergence.png",
+    "high_reference_convergence.png",
+    "spatial_L2_convergence.png",
+    "spatial_mean_convergence.png",
+    "temporal_convergence.png",
+    "temporal_orders.png"
+  ],
+  "png_dpi": 180,
+  "formats": [
+    "PNG",
+    "PDF"
+  ],
+  "seconds": 14.101961414999096,
+  "data": "UN_model/VERIFICATION/phase4b/resumed/analysis_v2",
+  "normalization": "per population; mean and modal L2 scales are separate",
+  "no_zero_on_log_axes": true,
+  "LHS": 0
+}

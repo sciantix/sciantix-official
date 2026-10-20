@@ -1,0 +1,21 @@
+AUDIT_N R1_AP3p2_900K
+AUDIT_N R2_AP3p4_1600K
+AUDIT_N R3_AP3p4_1800K
+AUDIT_N R4_ANP6_1600K
+AUDIT_N E1_minD_weak_trapping_weak_resolution
+AUDIT_N E2_maxD_zero_bulk_strong_resolution
+AUDIT_N E3_minD_bulk_strong_mixed_resolution
+AUDIT_N E4_maxD_dislocation_strong_mixed_resolution
+AUDIT_N E5_maxD_strong_trapping_weak_resolution
+AUDIT_N E6_minD_strong_trapping_strong_resolution
+{
+  "status": "completed",
+  "extra_BE_checks": 50,
+  "total_unique_main_BE_checked": 100,
+  "max_other_N_BE_gap": 6.61721014968163e-12,
+  "modal_order_rows": 4800,
+  "audit_seconds": 3.9604339380020974,
+  "hourly_reference_seconds": 12.99445154699788,
+  "highN_reference_seconds": 29.777150503985467,
+  "LHS_samples": 0
+}

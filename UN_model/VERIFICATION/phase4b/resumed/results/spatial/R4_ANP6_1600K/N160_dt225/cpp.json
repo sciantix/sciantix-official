@@ -1,0 +1,14 @@
+{
+  "case": "R4_ANP6_1600K",
+  "stage": "spatial",
+  "N": 160,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/spatial/R4_ANP6_1600K/N160_dt225/cpp",
+  "reused": false,
+  "output_sha256": "ab3501f43b717b0b45211442bb93d2733c3c1e889ca9f2d960fa2d496706434d",
+  "solver_seconds_original": 0.3233721019998529,
+  "new_process_seconds": 0.37507578000077046,
+  "acquire_seconds": 0.4069150700015598
+}

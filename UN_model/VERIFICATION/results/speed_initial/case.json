@@ -1,0 +1,25 @@
+{
+  "name": "AP3p4_1600K",
+  "D": 1.3705602340796549e-18,
+  "R": 6e-06,
+  "gb": 0.0003691366838061218,
+  "gd": 0.0014480265981793865,
+  "bb": 1.7178041769597167e-05,
+  "bd": 5.310375031628281e-06,
+  "source": [
+    1.7995675661038836e+19,
+    0.0,
+    0.0
+  ],
+  "initial": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "provenance": {
+    "file": "UN_model/regression_reference/results/full/AP3p4_1600K/trace.jsonl.gz",
+    "sha256": "5afd0f44b996ef0470b2d410eb0b32d72170823150a80b0fc89b5e6f6dfa1079",
+    "frozen_step": 100,
+    "restriction": "fixed linear coefficients; nucleation sink/source and microstructure updates excluded"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "case": "E5_maxD_strong_trapping_weak_resolution",
+  "N": 40,
+  "tau_fast_s": 0.4041977153689747,
+  "dt_s": 0.005052471442112184,
+  "end_s": 8.083954307379495,
+  "resolution": 80,
+  "steps": 1601,
+  "observations": 41,
+  "solver_seconds": 0.004456525000000045,
+  "process_seconds": 0.007709069999691565,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N40_tau80/cpp",
+  "output_sha256": "1facf94675c24218d8d772e6b49c91f585f752006d977e600e7ee9f29980138a",
+  "initial": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_vector": [
+    1.7995675661038836e+19,
+    0.0,
+    0.0
+  ],
+  "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+}

@@ -1,0 +1,14 @@
+{
+  "case": "E1_minD_weak_trapping_weak_resolution",
+  "stage": "temporal",
+  "N": 40,
+  "dt_s": 450.0,
+  "end_s": 14400000.0,
+  "steps": 32000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/temporal/E1_minD_weak_trapping_weak_resolution/N40_dt450/cpp",
+  "reused": false,
+  "output_sha256": "6a7d5f4c7b4981a98a4af0227a382f895cb76932e9f3a184fae96f84dea62eab",
+  "solver_seconds_original": 0.04104901299998566,
+  "new_process_seconds": 0.056500250997487456,
+  "acquire_seconds": 0.06564078699739184
+}

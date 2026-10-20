@@ -1,0 +1,14 @@
+{
+  "case": "E2_maxD_zero_bulk_strong_resolution",
+  "stage": "spatial",
+  "N": 40,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/results/benchmark_4000h/E2_maxD_zero_bulk_strong_resolution",
+  "reused": true,
+  "output_sha256": "a722060b44a142d2b970ef96b561673e0771efceffaacf6c8ecc5e6db9dfb83c",
+  "solver_seconds_original": 0.0886518209999452,
+  "new_process_seconds": null,
+  "acquire_seconds": 0.008736723997571971
+}

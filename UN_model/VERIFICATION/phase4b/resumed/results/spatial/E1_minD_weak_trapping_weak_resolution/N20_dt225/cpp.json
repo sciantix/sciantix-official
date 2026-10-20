@@ -1,0 +1,14 @@
+{
+  "case": "E1_minD_weak_trapping_weak_resolution",
+  "stage": "spatial",
+  "N": 20,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/spatial/E1_minD_weak_trapping_weak_resolution/N20_dt225/cpp",
+  "reused": false,
+  "output_sha256": "f8c25f91231f5ba8e5c064dbc8e88e90429ec069b9345089ce16546c1c74c998",
+  "solver_seconds_original": 0.04546570300001574,
+  "new_process_seconds": 0.057211831997847185,
+  "acquire_seconds": 0.0630379849972087
+}

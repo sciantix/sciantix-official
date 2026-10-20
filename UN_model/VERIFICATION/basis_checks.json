@@ -1,0 +1,39 @@
+{
+  "status": "pass",
+  "orthogonality_max_abs_error": 3.3306690738754696e-14,
+  "projection_max_abs_error": 2.7533531010703882e-14,
+  "boundary_max_abs_error": 7.817014187810567e-15,
+  "basis": "phi_n(x)=sin(n*pi*x)/(sqrt(2*pi)*x), phi_n(0)=n*pi/sqrt(2*pi)",
+  "measure": "4*pi*x^2 dx, x=r/R; <phi_n,phi_m>=delta_nm",
+  "source_projection": "q_n=sqrt(8/pi)*(-1)^(n+1)/n",
+  "average_weights": "q_n/(4*pi/3)",
+  "center": "phi_n is even and analytic near x=0, so derivative at center is zero",
+  "nonmobile_boundary": "No separate diffusive boundary condition for mb/md; same L2 basis is used.",
+  "projection_fractions": [
+    {
+      "n": 10,
+      "uniform_mean_fraction": 0.9421458053549655,
+      "uniform_initialization_rescaling": 1.0614068377911392
+    },
+    {
+      "n": 20,
+      "uniform_mean_fraction": 0.9703508949579663,
+      "uniform_initialization_rescaling": 1.0305550344685548
+    },
+    {
+      "n": 40,
+      "uniform_mean_fraction": 0.984990216727289,
+      "uniform_initialization_rescaling": 1.0152385100052894
+    },
+    {
+      "n": 80,
+      "uniform_mean_fraction": 0.9924482076449038,
+      "uniform_initialization_rescaling": 1.0076092558754444
+    },
+    {
+      "n": 160,
+      "uniform_mean_fraction": 0.9962123044531969,
+      "uniform_initialization_rescaling": 1.003802096731662
+    }
+  ]
+}

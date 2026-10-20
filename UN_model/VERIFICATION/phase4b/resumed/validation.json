@@ -1,0 +1,83 @@
+{
+  "status": "completed",
+  "checks": "pass",
+  "main_configurations": 110,
+  "temporal": 50,
+  "spatial": 60,
+  "main_unique_cpp_configurations": 100,
+  "main_new_executions": 94,
+  "main_reused_configurations": 16,
+  "rapid_new_executions": 60,
+  "total_new_cpp_processes": 154,
+  "LHS_samples": 0,
+  "protected_files_unchanged": 10008,
+  "preexisting_staged_files_unchanged": 321,
+  "branch_head_origin_unchanged": true,
+  "no_unstaged_tracked_edits": true,
+  "frozen_cases_bounds_unchanged": true,
+  "BE_checks_unique_main_configurations": 100,
+  "max_BE_modal_gap_normalized": 6.61721014968163e-12,
+  "max_mean_decomposition_residual_normalized": 0.0,
+  "max_L2_squared_identity_relative_residual": 4.229537791230653e-16,
+  "high_reference_checks": [
+    {
+      "case": "R1_AP3p2_900K",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "R2_AP3p4_1600K",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "R3_AP3p4_1800K",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "R4_ANP6_1600K",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "E1_minD_weak_trapping_weak_resolution",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "E2_maxD_zero_bulk_strong_resolution",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "E3_minD_bulk_strong_mixed_resolution",
+      "N_high": 20480,
+      "convergence": "pass"
+    },
+    {
+      "case": "E4_maxD_dislocation_strong_mixed_resolution",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "E5_maxD_strong_trapping_weak_resolution",
+      "N_high": 5120,
+      "convergence": "pass"
+    },
+    {
+      "case": "E6_minD_strong_trapping_strong_resolution",
+      "N_high": 20480,
+      "convergence": "pass"
+    }
+  ],
+  "gzip_CSV_rows": {
+    "temporal_history.csv.gz": 600150,
+    "spatial_retained_modal_decomposition.csv.gz": 207900,
+    "rapid_history.csv.gz": 7380
+  },
+  "main_png_pdf_pairs": 8,
+  "additional_fast_mode_png_pdf_pairs": 1,
+  "validation_seconds": 9.937879635996069,
+  "limits": "Convergence and implementation verification passed; no universal application accuracy target specified."
+}

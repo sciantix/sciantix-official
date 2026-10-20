@@ -1,0 +1,4 @@
+proposed_samples,mean_compute_projection_s,observed_case_envelope_low_s,observed_case_envelope_high_s,basis,status,not_guaranteed
+32,179.61387509434357,131.49592511976277,317.74522339237444,"10 unique C++ grids plus cached same-N and high-N analytical checks per set; excludes I/O, analysis, plots, fast tests",proposal_only_no_sampling,new coefficients or accuracy targets may require finer grids and cost
+128,718.4555003773743,525.9837004790511,1270.9808935694978,"10 unique C++ grids plus cached same-N and high-N analytical checks per set; excludes I/O, analysis, plots, fast tests",proposal_only_no_sampling,new coefficients or accuracy targets may require finer grids and cost
+256,1436.9110007547486,1051.9674009581022,2541.9617871389955,"10 unique C++ grids plus cached same-N and high-N analytical checks per set; excludes I/O, analysis, plots, fast tests",proposal_only_no_sampling,new coefficients or accuracy targets may require finer grids and cost

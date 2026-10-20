@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/phase4b/resumed/analyze.py", line 265, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/phase4b/resumed/analyze.py", line 244, in main
+    tr,to,checks=temporal(cases);sr,so,refs,steady=spatial(cases);fr,fo=fast()
+                 ^^^^^^^^^^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/phase4b/resumed/analyze.py", line 73, in temporal
+    be,bem=discrete_be(case,40,dt)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/destro/sciantix-official/UN_model/VERIFICATION/phase4b/resumed/analyze.py", line 48, in discrete_be
+    b=np.linalg.solve(a,np.broadcast_to(np.asarray(case['source'])*dt/scale,(n,3)))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/destro/sciantix-official/.venv/lib/python3.12/site-packages/numpy/linalg/_linalg.py", line 452, in solve
+    r = gufunc(a, b, signature=signature)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: solve: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (m,m),(m,n)->(m,n) (size 40 is different from 3)

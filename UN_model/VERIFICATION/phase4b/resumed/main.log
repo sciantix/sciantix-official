@@ -1,0 +1,164 @@
+CPP temporal R1_AP3p2_900K 40 3600.0 NEW
+CPP temporal R1_AP3p2_900K 40 1800.0 NEW
+CPP temporal R1_AP3p2_900K 40 900.0 NEW
+CPP temporal R1_AP3p2_900K 40 450.0 NEW
+CPP temporal R1_AP3p2_900K 40 225.0 REUSE
+CPP temporal R2_AP3p4_1600K 40 3600.0 NEW
+CPP temporal R2_AP3p4_1600K 40 1800.0 NEW
+CPP temporal R2_AP3p4_1600K 40 900.0 NEW
+CPP temporal R2_AP3p4_1600K 40 450.0 NEW
+CPP temporal R2_AP3p4_1600K 40 225.0 REUSE
+CPP temporal R3_AP3p4_1800K 40 3600.0 NEW
+CPP temporal R3_AP3p4_1800K 40 1800.0 NEW
+CPP temporal R3_AP3p4_1800K 40 900.0 NEW
+CPP temporal R3_AP3p4_1800K 40 450.0 NEW
+CPP temporal R3_AP3p4_1800K 40 225.0 REUSE
+CPP temporal R4_ANP6_1600K 40 3600.0 NEW
+CPP temporal R4_ANP6_1600K 40 1800.0 NEW
+CPP temporal R4_ANP6_1600K 40 900.0 NEW
+CPP temporal R4_ANP6_1600K 40 450.0 NEW
+CPP temporal R4_ANP6_1600K 40 225.0 NEW
+CPP temporal E1_minD_weak_trapping_weak_resolution 40 3600.0 NEW
+CPP temporal E1_minD_weak_trapping_weak_resolution 40 1800.0 NEW
+CPP temporal E1_minD_weak_trapping_weak_resolution 40 900.0 NEW
+CPP temporal E1_minD_weak_trapping_weak_resolution 40 450.0 NEW
+CPP temporal E1_minD_weak_trapping_weak_resolution 40 225.0 NEW
+CPP temporal E2_maxD_zero_bulk_strong_resolution 40 3600.0 NEW
+CPP temporal E2_maxD_zero_bulk_strong_resolution 40 1800.0 NEW
+CPP temporal E2_maxD_zero_bulk_strong_resolution 40 900.0 NEW
+CPP temporal E2_maxD_zero_bulk_strong_resolution 40 450.0 NEW
+CPP temporal E2_maxD_zero_bulk_strong_resolution 40 225.0 REUSE
+CPP temporal E3_minD_bulk_strong_mixed_resolution 40 3600.0 NEW
+CPP temporal E3_minD_bulk_strong_mixed_resolution 40 1800.0 NEW
+CPP temporal E3_minD_bulk_strong_mixed_resolution 40 900.0 NEW
+CPP temporal E3_minD_bulk_strong_mixed_resolution 40 450.0 NEW
+CPP temporal E3_minD_bulk_strong_mixed_resolution 40 225.0 NEW
+CPP temporal E4_maxD_dislocation_strong_mixed_resolution 40 3600.0 NEW
+CPP temporal E4_maxD_dislocation_strong_mixed_resolution 40 1800.0 NEW
+CPP temporal E4_maxD_dislocation_strong_mixed_resolution 40 900.0 NEW
+CPP temporal E4_maxD_dislocation_strong_mixed_resolution 40 450.0 NEW
+CPP temporal E4_maxD_dislocation_strong_mixed_resolution 40 225.0 NEW
+CPP temporal E5_maxD_strong_trapping_weak_resolution 40 3600.0 NEW
+CPP temporal E5_maxD_strong_trapping_weak_resolution 40 1800.0 NEW
+CPP temporal E5_maxD_strong_trapping_weak_resolution 40 900.0 NEW
+CPP temporal E5_maxD_strong_trapping_weak_resolution 40 450.0 NEW
+CPP temporal E5_maxD_strong_trapping_weak_resolution 40 225.0 REUSE
+CPP temporal E6_minD_strong_trapping_strong_resolution 40 3600.0 NEW
+CPP temporal E6_minD_strong_trapping_strong_resolution 40 1800.0 NEW
+CPP temporal E6_minD_strong_trapping_strong_resolution 40 900.0 NEW
+CPP temporal E6_minD_strong_trapping_strong_resolution 40 450.0 NEW
+CPP temporal E6_minD_strong_trapping_strong_resolution 40 225.0 NEW
+CPP spatial R1_AP3p2_900K 10 225.0 NEW
+CPP spatial R1_AP3p2_900K 20 225.0 NEW
+CPP spatial R1_AP3p2_900K 40 225.0 REUSE
+CPP spatial R1_AP3p2_900K 80 225.0 NEW
+CPP spatial R1_AP3p2_900K 160 225.0 NEW
+CPP spatial R1_AP3p2_900K 320 225.0 NEW
+HIGH_REF R1_AP3p2_900K {'N': 320, 'seconds': 0.08336756100470666, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R1_AP3p2_900K {'N': 640, 'seconds': 0.0883800119991065, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R1_AP3p2_900K {'N': 1280, 'seconds': 0.18956138099747477, 'max_mean_increment_over_N320_spatial': 0.11426258886248986, 'max_tail_energy_relative_increment': 0.032356065139963794}
+HIGH_REF R1_AP3p2_900K {'N': 2560, 'seconds': 0.4376126770002884, 'max_mean_increment_over_N320_spatial': 0.014202472217462845, 'max_tail_energy_relative_increment': 0.0010287277992513523}
+HIGH_REF R1_AP3p2_900K {'N': 5120, 'seconds': 0.9520171850017505, 'max_mean_increment_over_N320_spatial': 0.0017765737708619965, 'max_tail_energy_relative_increment': 3.2310874136746434e-05}
+CPP spatial R2_AP3p4_1600K 10 225.0 NEW
+CPP spatial R2_AP3p4_1600K 20 225.0 NEW
+CPP spatial R2_AP3p4_1600K 40 225.0 REUSE
+CPP spatial R2_AP3p4_1600K 80 225.0 NEW
+CPP spatial R2_AP3p4_1600K 160 225.0 NEW
+CPP spatial R2_AP3p4_1600K 320 225.0 NEW
+HIGH_REF R2_AP3p4_1600K {'N': 320, 'seconds': 0.0772752600023523, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R2_AP3p4_1600K {'N': 640, 'seconds': 0.10964583000168204, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R2_AP3p4_1600K {'N': 1280, 'seconds': 0.20060100000409875, 'max_mean_increment_over_N320_spatial': 0.11395973911481361, 'max_tail_energy_relative_increment': 0.032151018078085014}
+HIGH_REF R2_AP3p4_1600K {'N': 2560, 'seconds': 0.5119137899964699, 'max_mean_increment_over_N320_spatial': 0.014154630976871026, 'max_tail_energy_relative_increment': 0.001020489631409584}
+HIGH_REF R2_AP3p4_1600K {'N': 5120, 'seconds': 0.8595676800032379, 'max_mean_increment_over_N320_spatial': 0.0017702579123743795, 'max_tail_energy_relative_increment': 3.203847752313325e-05}
+CPP spatial R3_AP3p4_1800K 10 225.0 NEW
+CPP spatial R3_AP3p4_1800K 20 225.0 NEW
+CPP spatial R3_AP3p4_1800K 40 225.0 REUSE
+CPP spatial R3_AP3p4_1800K 80 225.0 NEW
+CPP spatial R3_AP3p4_1800K 160 225.0 NEW
+CPP spatial R3_AP3p4_1800K 320 225.0 NEW
+HIGH_REF R3_AP3p4_1800K {'N': 320, 'seconds': 0.0844502200052375, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R3_AP3p4_1800K {'N': 640, 'seconds': 0.10484060699673137, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R3_AP3p4_1800K {'N': 1280, 'seconds': 0.2740911229993799, 'max_mean_increment_over_N320_spatial': 0.1132065032663178, 'max_tail_energy_relative_increment': 0.03164453797091561}
+HIGH_REF R3_AP3p4_1800K {'N': 2560, 'seconds': 0.5505011249988456, 'max_mean_increment_over_N320_spatial': 0.014035623506831671, 'max_tail_energy_relative_increment': 0.0010001734797516462}
+HIGH_REF R3_AP3p4_1800K {'N': 5120, 'seconds': 1.0273298190004425, 'max_mean_increment_over_N320_spatial': 0.0017545465968182212, 'max_tail_energy_relative_increment': 3.136699470192093e-05}
+CPP spatial R4_ANP6_1600K 10 225.0 NEW
+CPP spatial R4_ANP6_1600K 20 225.0 NEW
+CPP spatial R4_ANP6_1600K 40 225.0 REUSE
+CPP spatial R4_ANP6_1600K 80 225.0 NEW
+CPP spatial R4_ANP6_1600K 160 225.0 NEW
+CPP spatial R4_ANP6_1600K 320 225.0 NEW
+HIGH_REF R4_ANP6_1600K {'N': 320, 'seconds': 0.0764805620055995, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R4_ANP6_1600K {'N': 640, 'seconds': 0.1605487870037905, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF R4_ANP6_1600K {'N': 1280, 'seconds': 0.23629282299953047, 'max_mean_increment_over_N320_spatial': 0.1139974620140108, 'max_tail_energy_relative_increment': 0.03217648001688813}
+HIGH_REF R4_ANP6_1600K {'N': 2560, 'seconds': 0.44983521699759876, 'max_mean_increment_over_N320_spatial': 0.01416061036697436, 'max_tail_energy_relative_increment': 0.0010215156432891832}
+HIGH_REF R4_ANP6_1600K {'N': 5120, 'seconds': 1.0008727539971005, 'max_mean_increment_over_N320_spatial': 0.0017710479500094233, 'max_tail_energy_relative_increment': 3.207242795914402e-05}
+CPP spatial E1_minD_weak_trapping_weak_resolution 10 225.0 NEW
+CPP spatial E1_minD_weak_trapping_weak_resolution 20 225.0 NEW
+CPP spatial E1_minD_weak_trapping_weak_resolution 40 225.0 REUSE
+CPP spatial E1_minD_weak_trapping_weak_resolution 80 225.0 NEW
+CPP spatial E1_minD_weak_trapping_weak_resolution 160 225.0 NEW
+CPP spatial E1_minD_weak_trapping_weak_resolution 320 225.0 NEW
+HIGH_REF E1_minD_weak_trapping_weak_resolution {'N': 320, 'seconds': 0.06372831600310747, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E1_minD_weak_trapping_weak_resolution {'N': 640, 'seconds': 0.074488553997071, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E1_minD_weak_trapping_weak_resolution {'N': 1280, 'seconds': 0.15973566799948458, 'max_mean_increment_over_N320_spatial': 0.12074810814992562, 'max_tail_energy_relative_increment': 0.03694617639222662}
+HIGH_REF E1_minD_weak_trapping_weak_resolution {'N': 2560, 'seconds': 0.35596862900274573, 'max_mean_increment_over_N320_spatial': 0.015223629407415626, 'max_tail_energy_relative_increment': 0.0012145717717996385}
+HIGH_REF E1_minD_weak_trapping_weak_resolution {'N': 5120, 'seconds': 0.855863649994717, 'max_mean_increment_over_N320_spatial': 0.0019112904082754152, 'max_tail_energy_relative_increment': 3.846781247475761e-05}
+CPP spatial E2_maxD_zero_bulk_strong_resolution 10 225.0 NEW
+CPP spatial E2_maxD_zero_bulk_strong_resolution 20 225.0 NEW
+CPP spatial E2_maxD_zero_bulk_strong_resolution 40 225.0 REUSE
+CPP spatial E2_maxD_zero_bulk_strong_resolution 80 225.0 NEW
+CPP spatial E2_maxD_zero_bulk_strong_resolution 160 225.0 NEW
+CPP spatial E2_maxD_zero_bulk_strong_resolution 320 225.0 REUSE
+HIGH_REF E2_maxD_zero_bulk_strong_resolution {'N': 320, 'seconds': 0.10116612000274472, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E2_maxD_zero_bulk_strong_resolution {'N': 640, 'seconds': 0.11557629000162706, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E2_maxD_zero_bulk_strong_resolution {'N': 1280, 'seconds': 0.21561857999768108, 'max_mean_increment_over_N320_spatial': 0.11136095801264022, 'max_tail_energy_relative_increment': 0.030420992982084116}
+HIGH_REF E2_maxD_zero_bulk_strong_resolution {'N': 2560, 'seconds': 0.5451880499967956, 'max_mean_increment_over_N320_spatial': 0.01374606600029389, 'max_tail_energy_relative_increment': 0.0009516470811983625}
+HIGH_REF E2_maxD_zero_bulk_strong_resolution {'N': 5120, 'seconds': 1.1175926399955642, 'max_mean_increment_over_N320_spatial': 0.0017164544849646145, 'max_tail_energy_relative_increment': 2.9767680357184448e-05}
+CPP spatial E3_minD_bulk_strong_mixed_resolution 10 225.0 NEW
+CPP spatial E3_minD_bulk_strong_mixed_resolution 20 225.0 NEW
+CPP spatial E3_minD_bulk_strong_mixed_resolution 40 225.0 REUSE
+CPP spatial E3_minD_bulk_strong_mixed_resolution 80 225.0 NEW
+CPP spatial E3_minD_bulk_strong_mixed_resolution 160 225.0 NEW
+CPP spatial E3_minD_bulk_strong_mixed_resolution 320 225.0 NEW
+HIGH_REF E3_minD_bulk_strong_mixed_resolution {'N': 320, 'seconds': 0.09122462999948766, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E3_minD_bulk_strong_mixed_resolution {'N': 640, 'seconds': 0.09633860999747412, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E3_minD_bulk_strong_mixed_resolution {'N': 1280, 'seconds': 0.2161378800010425, 'max_mean_increment_over_N320_spatial': 0.33234176624127126, 'max_tail_energy_relative_increment': 0.331094051913511}
+HIGH_REF E3_minD_bulk_strong_mixed_resolution {'N': 2560, 'seconds': 0.43057935000251746, 'max_mean_increment_over_N320_spatial': 0.13988067055420939, 'max_tail_energy_relative_increment': 0.13681023228015818}
+HIGH_REF E3_minD_bulk_strong_mixed_resolution {'N': 5120, 'seconds': 0.8937612320005428, 'max_mean_increment_over_N320_spatial': 0.06051381665160862, 'max_tail_energy_relative_increment': 0.0549086165286642}
+HIGH_REF E3_minD_bulk_strong_mixed_resolution {'N': 10240, 'seconds': 1.7945262000066577, 'max_mean_increment_over_N320_spatial': 0.02267248640109336, 'max_tail_energy_relative_increment': 0.016090910205973332}
+HIGH_REF E3_minD_bulk_strong_mixed_resolution {'N': 20480, 'seconds': 3.5902712699971744, 'max_mean_increment_over_N320_spatial': 0.005984637944115091, 'max_tail_energy_relative_increment': 0.0023610841271490624}
+CPP spatial E4_maxD_dislocation_strong_mixed_resolution 10 225.0 NEW
+CPP spatial E4_maxD_dislocation_strong_mixed_resolution 20 225.0 NEW
+CPP spatial E4_maxD_dislocation_strong_mixed_resolution 40 225.0 REUSE
+CPP spatial E4_maxD_dislocation_strong_mixed_resolution 80 225.0 NEW
+CPP spatial E4_maxD_dislocation_strong_mixed_resolution 160 225.0 NEW
+CPP spatial E4_maxD_dislocation_strong_mixed_resolution 320 225.0 NEW
+HIGH_REF E4_maxD_dislocation_strong_mixed_resolution {'N': 320, 'seconds': 0.10198014900379349, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E4_maxD_dislocation_strong_mixed_resolution {'N': 640, 'seconds': 0.11315286099852528, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E4_maxD_dislocation_strong_mixed_resolution {'N': 1280, 'seconds': 0.24907620600424707, 'max_mean_increment_over_N320_spatial': 0.11325681329097236, 'max_tail_energy_relative_increment': 0.031678231943599706}
+HIGH_REF E4_maxD_dislocation_strong_mixed_resolution {'N': 2560, 'seconds': 0.5238448949967278, 'max_mean_increment_over_N320_spatial': 0.014043560877180407, 'max_tail_energy_relative_increment': 0.0010015215065622707}
+HIGH_REF E4_maxD_dislocation_strong_mixed_resolution {'N': 5120, 'seconds': 1.037957856002322, 'max_mean_increment_over_N320_spatial': 0.0017555940599688492, 'max_tail_energy_relative_increment': 3.141151987439444e-05}
+CPP spatial E5_maxD_strong_trapping_weak_resolution 10 225.0 NEW
+CPP spatial E5_maxD_strong_trapping_weak_resolution 20 225.0 NEW
+CPP spatial E5_maxD_strong_trapping_weak_resolution 40 225.0 REUSE
+CPP spatial E5_maxD_strong_trapping_weak_resolution 80 225.0 NEW
+CPP spatial E5_maxD_strong_trapping_weak_resolution 160 225.0 NEW
+CPP spatial E5_maxD_strong_trapping_weak_resolution 320 225.0 NEW
+HIGH_REF E5_maxD_strong_trapping_weak_resolution {'N': 320, 'seconds': 0.12221028999920236, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E5_maxD_strong_trapping_weak_resolution {'N': 640, 'seconds': 0.15850946200225735, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E5_maxD_strong_trapping_weak_resolution {'N': 1280, 'seconds': 0.25285178599733626, 'max_mean_increment_over_N320_spatial': 0.12477785385591844, 'max_tail_energy_relative_increment': 0.03986777764178014}
+HIGH_REF E5_maxD_strong_trapping_weak_resolution {'N': 2560, 'seconds': 0.5695688199994038, 'max_mean_increment_over_N320_spatial': 0.01592557863610452, 'max_tail_energy_relative_increment': 0.001348033513323288}
+HIGH_REF E5_maxD_strong_trapping_weak_resolution {'N': 5120, 'seconds': 1.2356304780041683, 'max_mean_increment_over_N320_spatial': 0.002006240771419932, 'max_tail_energy_relative_increment': 4.3024370702545056e-05}
+CPP spatial E6_minD_strong_trapping_strong_resolution 10 225.0 NEW
+CPP spatial E6_minD_strong_trapping_strong_resolution 20 225.0 NEW
+CPP spatial E6_minD_strong_trapping_strong_resolution 40 225.0 REUSE
+CPP spatial E6_minD_strong_trapping_strong_resolution 80 225.0 NEW
+CPP spatial E6_minD_strong_trapping_strong_resolution 160 225.0 NEW
+CPP spatial E6_minD_strong_trapping_strong_resolution 320 225.0 NEW
+HIGH_REF E6_minD_strong_trapping_strong_resolution {'N': 320, 'seconds': 0.09750449199782452, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E6_minD_strong_trapping_strong_resolution {'N': 640, 'seconds': 0.09999226599757094, 'max_mean_increment_over_N320_spatial': None, 'max_tail_energy_relative_increment': None}
+HIGH_REF E6_minD_strong_trapping_strong_resolution {'N': 1280, 'seconds': 0.2395572440000251, 'max_mean_increment_over_N320_spatial': 0.3321094161071789, 'max_tail_energy_relative_increment': 0.330631097577602}
+HIGH_REF E6_minD_strong_trapping_strong_resolution {'N': 2560, 'seconds': 0.42833565000182716, 'max_mean_increment_over_N320_spatial': 0.1393106152853312, 'max_tail_energy_relative_increment': 0.1356991344725211}
+HIGH_REF E6_minD_strong_trapping_strong_resolution {'N': 5120, 'seconds': 0.8448194279990275, 'max_mean_increment_over_N320_spatial': 0.05947869689631307, 'max_tail_energy_relative_increment': 0.05306511857872514}
+HIGH_REF E6_minD_strong_trapping_strong_resolution {'N': 10240, 'seconds': 1.7042143500002567, 'max_mean_increment_over_N320_spatial': 0.021465875267754987, 'max_tail_energy_relative_increment': 0.014466053543040478}
+HIGH_REF E6_minD_strong_trapping_strong_resolution {'N': 20480, 'seconds': 3.7886564700020244, 'max_mean_increment_over_N320_spatial': 0.005324972866677143, 'max_tail_energy_relative_increment': 0.0018804974063204693}

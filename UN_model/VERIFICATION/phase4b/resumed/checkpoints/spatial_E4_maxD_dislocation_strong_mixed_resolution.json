@@ -1,0 +1,68 @@
+{
+  "status": "pass",
+  "N": [
+    10,
+    20,
+    40,
+    80,
+    160,
+    320
+  ],
+  "high_reference": {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 5120,
+    "file": "E4_maxD_dislocation_strong_mixed_resolution_high_converged.npz",
+    "criteria": {
+      "mean_increment_over_N320_spatial": 0.01,
+      "relative_increment_of_squared_tail_L2": 0.01
+    },
+    "records": [
+      {
+        "N": 320,
+        "seconds": 0.10198014900379349,
+        "max_mean_increment_over_N320_spatial": null,
+        "max_tail_energy_relative_increment": null
+      },
+      {
+        "N": 640,
+        "seconds": 0.11315286099852528,
+        "max_mean_increment_over_N320_spatial": null,
+        "max_tail_energy_relative_increment": null
+      },
+      {
+        "N": 1280,
+        "seconds": 0.24907620600424707,
+        "max_mean_increment_over_N320_spatial": 0.11325681329097236,
+        "max_tail_energy_relative_increment": 0.031678231943599706
+      },
+      {
+        "N": 2560,
+        "seconds": 0.5238448949967278,
+        "max_mean_increment_over_N320_spatial": 0.014043560877180407,
+        "max_tail_energy_relative_increment": 0.0010015215065622707
+      },
+      {
+        "N": 5120,
+        "seconds": 1.037957856002322,
+        "max_mean_increment_over_N320_spatial": 0.0017555940599688492,
+        "max_tail_energy_relative_increment": 3.141151987439444e-05
+      }
+    ],
+    "seconds": 2.027431914997578,
+    "observations_hours": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      24,
+      100,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "retained_modes": "identical prefix by independent modal equations; no truncation error on retained coefficient",
+    "limitation": "successive doubling evidence; not a rigorous infinite-tail bound"
+  }
+}

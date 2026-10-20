@@ -1,0 +1,14 @@
+{
+  "case": "R2_AP3p4_1600K",
+  "stage": "spatial",
+  "N": 40,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/results/benchmark_4000h/R2_AP3p4_1600K",
+  "reused": true,
+  "output_sha256": "bec2fda1faa68cd1b126f85fe4b0d1ee70911ee05a0780b62e8f63d34aecbd35",
+  "solver_seconds_original": 0.0889752359999638,
+  "new_process_seconds": null,
+  "acquire_seconds": 0.008307540003443137
+}

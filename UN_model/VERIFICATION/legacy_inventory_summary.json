@@ -1,0 +1,158 @@
+{
+  "phase2a": {
+    "documentation_provenance_or_configuration": {
+      "files": 6,
+      "bytes": 664805
+    },
+    "regenerable_build_or_cache": {
+      "files": 815,
+      "bytes": 20420312
+    },
+    "historical_test_evidence": {
+      "files": 624,
+      "bytes": 88225739
+    },
+    "historical_source_snapshot": {
+      "files": 155,
+      "bytes": 1104790
+    },
+    "snapshot_regression_inputs_outputs_needed_for_existing_checks": {
+      "files": 806,
+      "bytes": 83117448
+    },
+    "reproducible_test_or_runner_code": {
+      "files": 4,
+      "bytes": 28270
+    }
+  },
+  "phase2bc": {
+    "documentation_provenance_or_configuration": {
+      "files": 4,
+      "bytes": 726045
+    },
+    "regenerable_build_or_cache": {
+      "files": 1275,
+      "bytes": 26784907
+    },
+    "reproducible_test_or_runner_code": {
+      "files": 4,
+      "bytes": 25761
+    },
+    "immutable_checkpoint": {
+      "files": 14,
+      "bytes": 206359
+    },
+    "historical_test_evidence": {
+      "files": 456,
+      "bytes": 517690685
+    },
+    "historical_source_snapshot": {
+      "files": 252,
+      "bytes": 1773946
+    },
+    "snapshot_regression_inputs_outputs_needed_for_existing_checks": {
+      "files": 806,
+      "bytes": 83117448
+    }
+  },
+  "phase2d3": {
+    "documentation_provenance_or_configuration": {
+      "files": 5,
+      "bytes": 1128508
+    },
+    "regenerable_build_or_cache": {
+      "files": 2550,
+      "bytes": 231914083
+    },
+    "reproducible_test_or_runner_code": {
+      "files": 4,
+      "bytes": 26776
+    },
+    "immutable_checkpoint": {
+      "files": 6,
+      "bytes": 1196543
+    },
+    "historical_test_evidence": {
+      "files": 292,
+      "bytes": 161480695
+    },
+    "historical_source_snapshot": {
+      "files": 596,
+      "bytes": 4207824
+    },
+    "snapshot_regression_inputs_outputs_needed_for_existing_checks": {
+      "files": 806,
+      "bytes": 83117448
+    }
+  },
+  "baseline_sciantix": {
+    "documentation_provenance_or_configuration": {
+      "files": 5,
+      "bytes": 396264
+    },
+    "regenerable_build_or_cache": {
+      "files": 383,
+      "bytes": 5961206
+    },
+    "reproducible_test_or_runner_code": {
+      "files": 2,
+      "bytes": 11447
+    },
+    "historical_test_evidence": {
+      "files": 17,
+      "bytes": 321145
+    },
+    "historical_source_snapshot": {
+      "files": 73,
+      "bytes": 544635
+    },
+    "snapshot_regression_inputs_outputs_needed_for_existing_checks": {
+      "files": 806,
+      "bytes": 83117448
+    }
+  },
+  "regression_reference": {
+    "documentation_provenance_or_configuration": {
+      "files": 1,
+      "bytes": 8106
+    },
+    "regenerable_build_or_cache": {
+      "files": 3,
+      "bytes": 42399
+    },
+    "reproducible_test_or_runner_code": {
+      "files": 3,
+      "bytes": 24636
+    },
+    "frozen_reference": {
+      "files": 223,
+      "bytes": 62430405
+    }
+  },
+  "local_merge_2026-10-19": {
+    "documentation_provenance_or_configuration": {
+      "files": 8,
+      "bytes": 1348958
+    },
+    "regenerable_build_or_cache": {
+      "files": 1230,
+      "bytes": 20421965
+    },
+    "historical_test_evidence": {
+      "files": 168,
+      "bytes": 114365871
+    },
+    "historical_source_snapshot": {
+      "files": 258,
+      "bytes": 1815954
+    },
+    "snapshot_regression_inputs_outputs_needed_for_existing_checks": {
+      "files": 806,
+      "bytes": 83117448
+    },
+    "reproducible_test_or_runner_code": {
+      "files": 1,
+      "bytes": 5940
+    }
+  }
+}

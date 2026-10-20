@@ -1,0 +1,14 @@
+{
+  "case": "E3_minD_bulk_strong_mixed_resolution",
+  "stage": "temporal",
+  "N": 40,
+  "dt_s": 900.0,
+  "end_s": 14400000.0,
+  "steps": 16000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/temporal/E3_minD_bulk_strong_mixed_resolution/N40_dt900/cpp",
+  "reused": false,
+  "output_sha256": "2b3c911f3fd502e7cd0b33bb9c915e0edc1806523e4a8726fdd534c58e882635",
+  "solver_seconds_original": 0.02055430700000354,
+  "new_process_seconds": 0.035288193001179025,
+  "acquire_seconds": 0.04838247199950274
+}

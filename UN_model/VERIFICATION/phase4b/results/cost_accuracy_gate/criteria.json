@@ -1,0 +1,14 @@
+{
+  "temporal_fraction_of_spatial": 0.05,
+  "reference_fraction_of_spatial": 0.01,
+  "solver_budget_gate_seconds": 3600.0,
+  "safety_step_limit_existing_harness": 5000000,
+  "observations_hours": [
+    1.0,
+    24.0,
+    100.0,
+    1000.0,
+    4000.0
+  ],
+  "note": "A one-hour solver-only budget is a conservative autonomous gate, not a user-supplied cost limit."
+}

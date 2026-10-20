@@ -1,0 +1,368 @@
+{
+  "status": "pass",
+  "sets": 10,
+  "reference_N": 40,
+  "solver_sha256": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+  "checks": [
+    {
+      "case": "R1_AP3p2_900K",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        7.538047833430831e-14,
+        7.578261098538552e-14,
+        7.665443234205611e-14
+      ],
+      "direct_gap_normalized": [
+        2.7340069862184365e-14,
+        2.845369408744958e-14,
+        2.8158771064428776e-14
+      ],
+      "modal_direct_gap_normalized": [
+        8.418728739421859e-14,
+        8.34471122749897e-14,
+        8.631110085989694e-14
+      ],
+      "seconds": 0.16624748799949884,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "R2_AP3p4_1600K",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        7.099676346898944e-14,
+        7.016862167967021e-14,
+        7.176994831358745e-14
+      ],
+      "direct_gap_normalized": [
+        2.266884894762792e-13,
+        2.2411508169930253e-13,
+        2.29759104446374e-13
+      ],
+      "modal_direct_gap_normalized": [
+        2.547464398752376e-13,
+        2.525531843393899e-13,
+        2.58845464155531e-13
+      ],
+      "seconds": 0.15515441399475094,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "R3_AP3p4_1800K",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        3.536078917762516e-14,
+        3.5138631331303496e-14,
+        3.605873632467909e-14
+      ],
+      "direct_gap_normalized": [
+        3.1690098164697827e-12,
+        3.1243448976689e-12,
+        3.2098186597214335e-12
+      ],
+      "modal_direct_gap_normalized": [
+        3.863384327011418e-12,
+        3.818883464262253e-12,
+        3.917543193811788e-12
+      ],
+      "seconds": 0.1704919379990315,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "R4_ANP6_1600K",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        5.339793883585549e-15,
+        5.1139214376373385e-15,
+        5.769347156251783e-15
+      ],
+      "direct_gap_normalized": [
+        1.4350696062136164e-14,
+        1.4091694628156223e-14,
+        1.4743887177087888e-14
+      ],
+      "modal_direct_gap_normalized": [
+        8.492554314503704e-14,
+        8.468732171569082e-14,
+        8.637417454779023e-14
+      ],
+      "seconds": 0.16631826999946497,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "E1_minD_weak_trapping_weak_resolution",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        5.2864300990995503e-14,
+        0.0,
+        6.217350160315719e-14
+      ],
+      "direct_gap_normalized": [
+        1.5302823971077644e-14,
+        0.0,
+        1.750783748026821e-14
+      ],
+      "modal_direct_gap_normalized": [
+        5.382017284463173e-14,
+        0.0,
+        6.397545967814383e-14
+      ],
+      "seconds": 0.12639433400181588,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "E2_maxD_zero_bulk_strong_resolution",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        2.1862337710489978e-16,
+        0.0,
+        1.5489602340523496e-16
+      ],
+      "direct_gap_normalized": [
+        6.558701313146993e-16,
+        0.0,
+        4.646880702157049e-16
+      ],
+      "modal_direct_gap_normalized": [
+        5.386019977075962e-16,
+        0.0,
+        6.381848107666392e-16
+      ],
+      "seconds": 0.16733379099605372,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "E3_minD_bulk_strong_mixed_resolution",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        2.421413415594289e-14,
+        2.6115007405409137e-14,
+        2.4127784694013204e-14
+      ],
+      "direct_gap_normalized": [
+        3.648518606324765e-11,
+        3.895955264566341e-11,
+        3.6675592046713815e-11
+      ],
+      "modal_direct_gap_normalized": [
+        1.0760846022659249e-10,
+        1.1490659448177272e-10,
+        1.077282583290058e-10
+      ],
+      "seconds": 0.17409577199578052,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "E4_maxD_dislocation_strong_mixed_resolution",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        3.1686175974871034e-14,
+        0.0,
+        3.724950554313241e-14
+      ],
+      "direct_gap_normalized": [
+        4.226269745211961e-11,
+        0.0,
+        4.998020879605569e-11
+      ],
+      "modal_direct_gap_normalized": [
+        5.5623042465791396e-11,
+        0.0,
+        6.58679659626241e-11
+      ],
+      "seconds": 0.14414761700027157,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "E5_maxD_strong_trapping_weak_resolution",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        3.1773524049767085e-14,
+        3.5229861057361956e-14,
+        2.604808892341103e-14
+      ],
+      "direct_gap_normalized": [
+        1.671073346461973e-11,
+        7.791701678775607e-12,
+        1.3926528151400242e-10
+      ],
+      "modal_direct_gap_normalized": [
+        4.0099626333024905e-10,
+        4.459891699894408e-10,
+        3.7635589694879347e-10
+      ],
+      "seconds": 0.1724747530024615,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    },
+    {
+      "case": "E6_minD_strong_trapping_strong_resolution",
+      "method": "SciPy expm augmented system; exact 1800 s semigroup, longdouble accumulation",
+      "direct_check_hours": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        24,
+        100,
+        500,
+        1000,
+        2000,
+        4000
+      ],
+      "split_gap_normalized": [
+        2.6015372157352554e-14,
+        2.5887535955035073e-14,
+        2.628439190834843e-14
+      ],
+      "direct_gap_normalized": [
+        7.193759397919755e-11,
+        7.193696697866704e-11,
+        7.213026935761923e-11
+      ],
+      "modal_direct_gap_normalized": [
+        2.7309427979962824e-10,
+        2.7317873234564135e-10,
+        2.73242815542233e-10
+      ],
+      "seconds": 0.21943316200486152,
+      "case_sha256": "66842a55c0db154a6ee5b4d8bc2321084070d12979195425c2c798b4ba989616",
+      "normalization": "maximum over history of each analytical population, floor 1 at/m3",
+      "roundoff_warning_threshold": 1e-08
+    }
+  ]
+}

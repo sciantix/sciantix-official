@@ -1,0 +1,14 @@
+{
+  "case": "R1_AP3p2_900K",
+  "stage": "spatial",
+  "N": 160,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/spatial/R1_AP3p2_900K/N160_dt225/cpp",
+  "reused": false,
+  "output_sha256": "510af667183584fd720e3279691192079dbaee341ca342707810fef512a1c3ae",
+  "solver_seconds_original": 0.31338166700008285,
+  "new_process_seconds": 0.35882735299674096,
+  "acquire_seconds": 0.40221342199947685
+}

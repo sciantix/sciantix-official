@@ -1,0 +1,25 @@
+{
+  "case": "E6_minD_strong_trapping_strong_resolution",
+  "N": 320,
+  "tau_fast_s": 0.42503804289498825,
+  "dt_s": 0.04250380428949883,
+  "end_s": 8.500760857899765,
+  "resolution": 10,
+  "steps": 200,
+  "observations": 41,
+  "solver_seconds": 0.0020576499999999955,
+  "process_seconds": 0.004546074000245426,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N320_tau10/cpp",
+  "output_sha256": "96e1ac70f27af742065f01615b70fc3525aa20a7be2f845a79206651e5027660",
+  "initial": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_vector": [
+    1.7995675661038836e+19,
+    0.0,
+    0.0
+  ],
+  "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+}

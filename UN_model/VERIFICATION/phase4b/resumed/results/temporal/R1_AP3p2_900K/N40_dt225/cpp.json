@@ -1,0 +1,14 @@
+{
+  "case": "R1_AP3p2_900K",
+  "stage": "temporal",
+  "N": 40,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/results/benchmark_4000h/R1_AP3p2_900K",
+  "reused": true,
+  "output_sha256": "f9f316aaba8cf169ae85852793c1b690844d437ea7369b9f3818ca22832931d9",
+  "solver_seconds_original": 0.0796556869999408,
+  "new_process_seconds": null,
+  "acquire_seconds": 0.015667500003473833
+}

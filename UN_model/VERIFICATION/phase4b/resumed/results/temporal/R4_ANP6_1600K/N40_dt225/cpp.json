@@ -1,0 +1,14 @@
+{
+  "case": "R4_ANP6_1600K",
+  "stage": "temporal",
+  "N": 40,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/temporal/R4_ANP6_1600K/N40_dt225/cpp",
+  "reused": false,
+  "output_sha256": "293821a42796d33463a1c9eb289ff50ca5ef5392e5c9231e3b96662457a26563",
+  "solver_seconds_original": 0.08469069699991667,
+  "new_process_seconds": 0.10176455700275255,
+  "acquire_seconds": 0.11155367199535249
+}

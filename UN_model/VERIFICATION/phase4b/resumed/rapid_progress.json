@@ -1,0 +1,1502 @@
+[
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 40,
+    "tau_fast_s": 23.60884333358333,
+    "dt_s": 2.360884333358333,
+    "end_s": 472.17686667166663,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.000297769,
+    "process_seconds": 0.0025318719999631867,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N40_tau10/cpp",
+    "output_sha256": "52a536cb79f7383689b89067b8a0e121521822e3e521d2860f3934cfa37d3d63",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 40,
+    "tau_fast_s": 23.60884333358333,
+    "dt_s": 1.1804421666791665,
+    "end_s": 472.17686667166663,
+    "resolution": 20,
+    "steps": 401,
+    "observations": 41,
+    "solver_seconds": 0.0005361470000000011,
+    "process_seconds": 0.0022520179991261102,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N40_tau20/cpp",
+    "output_sha256": "680731f2b72e51feb478fa9ef886e73a0a079a179d7787e688733be4c8134d97",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 40,
+    "tau_fast_s": 23.60884333358333,
+    "dt_s": 0.5902210833395832,
+    "end_s": 472.17686667166663,
+    "resolution": 40,
+    "steps": 800,
+    "observations": 41,
+    "solver_seconds": 0.0011031219999999941,
+    "process_seconds": 0.003100337999057956,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N40_tau40/cpp",
+    "output_sha256": "83848dbb896e12f65763327eb3aeca116a6f863e24c4de67828f56fad1bddf17",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 40,
+    "tau_fast_s": 23.60884333358333,
+    "dt_s": 0.2951105416697916,
+    "end_s": 472.17686667166663,
+    "resolution": 80,
+    "steps": 1601,
+    "observations": 41,
+    "solver_seconds": 0.002272657999999993,
+    "process_seconds": 0.0042410949972691014,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N40_tau80/cpp",
+    "output_sha256": "25c370cdd945e83918b608a1d1d5343e6f6b7e7a0995ee440bc622e399ae6942",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 40,
+    "tau_fast_s": 23.60884333358333,
+    "dt_s": 0.1475552708348958,
+    "end_s": 472.17686667166663,
+    "resolution": 160,
+    "steps": 3200,
+    "observations": 41,
+    "solver_seconds": 0.004714423000000033,
+    "process_seconds": 0.0070101400051498786,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N40_tau160/cpp",
+    "output_sha256": "c025274e207289036ee18d34119588693123d82ab70410e757d0089f1381a1ac",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 320,
+    "tau_fast_s": 1.220750974153972,
+    "dt_s": 0.1220750974153972,
+    "end_s": 24.41501948307944,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.0021455150000000045,
+    "process_seconds": 0.005195819998334628,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N320_tau10/cpp",
+    "output_sha256": "bbd8990cdfa451b5ffdd4d72a046460884dbd2adc75e201a3942a23ff744458f",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 320,
+    "tau_fast_s": 1.220750974153972,
+    "dt_s": 0.0610375487076986,
+    "end_s": 24.41501948307944,
+    "resolution": 20,
+    "steps": 400,
+    "observations": 41,
+    "solver_seconds": 0.004275924000000005,
+    "process_seconds": 0.00713808699947549,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N320_tau20/cpp",
+    "output_sha256": "77f7dd4733245c8a2766ab3a8b2b2c18724fa32ac3566abf3e1b51258c915f92",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 320,
+    "tau_fast_s": 1.220750974153972,
+    "dt_s": 0.0305187743538493,
+    "end_s": 24.41501948307944,
+    "resolution": 40,
+    "steps": 801,
+    "observations": 41,
+    "solver_seconds": 0.00952962999999997,
+    "process_seconds": 0.013238501000159886,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N320_tau40/cpp",
+    "output_sha256": "fc7191a41d113862b6bf08f1da91aaacfb732ed54241fb5f3e7ebaaad1715e83",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 320,
+    "tau_fast_s": 1.220750974153972,
+    "dt_s": 0.01525938717692465,
+    "end_s": 24.41501948307944,
+    "resolution": 80,
+    "steps": 1600,
+    "observations": 41,
+    "solver_seconds": 0.017594768999999975,
+    "process_seconds": 0.020862104000116233,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N320_tau80/cpp",
+    "output_sha256": "61b1f8d3ef445daa735fd1fb17a2a8dc32dafc62bfc9380ac209478b04edf905",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "R3_AP3p4_1800K",
+    "N": 320,
+    "tau_fast_s": 1.220750974153972,
+    "dt_s": 0.007629693588462325,
+    "end_s": 24.41501948307944,
+    "resolution": 160,
+    "steps": 3200,
+    "observations": 41,
+    "solver_seconds": 0.03395312899999941,
+    "process_seconds": 0.03701823300070828,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/R3_AP3p4_1800K/N320_tau160/cpp",
+    "output_sha256": "31f38a5a413056c832d09e36ee9cc7b6152fe6a5df8e5e4e69ad73782d8096ac",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 8.096623647849293,
+    "dt_s": 0.8096623647849294,
+    "end_s": 161.93247295698586,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.000404883,
+    "process_seconds": 0.0023485579949920066,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N40_tau10/cpp",
+    "output_sha256": "2b2053bd1e6756af455a1b77df38a8efd84001e4851195cde3bff30e6bb42104",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 8.096623647849293,
+    "dt_s": 0.4048311823924647,
+    "end_s": 161.93247295698586,
+    "resolution": 20,
+    "steps": 400,
+    "observations": 41,
+    "solver_seconds": 0.0005435870000000011,
+    "process_seconds": 0.0028433359984774143,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N40_tau20/cpp",
+    "output_sha256": "5fdeaec4aae8918012576d3b5dadcc05fb6171cb0e8542694150aba5093eac36",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 8.096623647849293,
+    "dt_s": 0.20241559119623234,
+    "end_s": 161.93247295698586,
+    "resolution": 40,
+    "steps": 801,
+    "observations": 41,
+    "solver_seconds": 0.0010802619999999952,
+    "process_seconds": 0.0029855780012439936,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N40_tau40/cpp",
+    "output_sha256": "3cffe6d21fb338243aa10a483ba3d03dfd40061e80d00c039567aaef311b6f7f",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 8.096623647849293,
+    "dt_s": 0.10120779559811617,
+    "end_s": 161.93247295698586,
+    "resolution": 80,
+    "steps": 1600,
+    "observations": 41,
+    "solver_seconds": 0.002470761000000002,
+    "process_seconds": 0.004295455000828952,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N40_tau80/cpp",
+    "output_sha256": "250a55b16ef22716fcf24d832acc0db6b6c82127311f9744538479f9cf42845c",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 8.096623647849293,
+    "dt_s": 0.050603897799058085,
+    "end_s": 161.93247295698586,
+    "resolution": 160,
+    "steps": 3200,
+    "observations": 41,
+    "solver_seconds": 0.0043513240000000505,
+    "process_seconds": 0.006249199002922978,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N40_tau160/cpp",
+    "output_sha256": "f195e1977a50c2a5c6f36c6aab5ce90e5ad0e8a076aba4dc02f7186d153edb7c",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.12658280958470072,
+    "dt_s": 0.012658280958470072,
+    "end_s": 2.5316561916940143,
+    "resolution": 10,
+    "steps": 201,
+    "observations": 41,
+    "solver_seconds": 0.0024426790000000006,
+    "process_seconds": 0.005676202999893576,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N320_tau10/cpp",
+    "output_sha256": "23957728b2c22818eb68c1f09d1952cfcce3ac4a941429e9c6d1478ceb42b3d4",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.12658280958470072,
+    "dt_s": 0.006329140479235036,
+    "end_s": 2.5316561916940143,
+    "resolution": 20,
+    "steps": 401,
+    "observations": 41,
+    "solver_seconds": 0.0067082309999999985,
+    "process_seconds": 0.011047887994209304,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N320_tau20/cpp",
+    "output_sha256": "8808784ebaf410c1003fa546ed8ef2d892dce3a38936aa5f8993f9bb28aadbb5",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.12658280958470072,
+    "dt_s": 0.003164570239617518,
+    "end_s": 2.5316561916940143,
+    "resolution": 40,
+    "steps": 800,
+    "observations": 41,
+    "solver_seconds": 0.009645312999999989,
+    "process_seconds": 0.014277784997830167,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N320_tau40/cpp",
+    "output_sha256": "2a5dbb738bd73a273842449ecfbaea4e9ab3d56782e94fdecdf91ecd74d2b982",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.12658280958470072,
+    "dt_s": 0.001582285119808759,
+    "end_s": 2.5316561916940143,
+    "resolution": 80,
+    "steps": 1601,
+    "observations": 41,
+    "solver_seconds": 0.01820419699999991,
+    "process_seconds": 0.02134158000262687,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N320_tau80/cpp",
+    "output_sha256": "42046adaf155ef9fa641e29a900d2fc99a249f475cb8439a404f693befe8df07",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E2_maxD_zero_bulk_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.12658280958470072,
+    "dt_s": 0.0007911425599043795,
+    "end_s": 2.5316561916940143,
+    "resolution": 160,
+    "steps": 3201,
+    "observations": 41,
+    "solver_seconds": 0.03420902200000013,
+    "process_seconds": 0.038413173002481926,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E2_maxD_zero_bulk_strong_resolution/N320_tau160/cpp",
+    "output_sha256": "50aee11bb74ee90e6520c8686697039141807ec9935a03cab2a9b9b4a774eb13",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 0.48969116302669674,
+    "dt_s": 0.048969116302669674,
+    "end_s": 9.793823260533935,
+    "resolution": 10,
+    "steps": 201,
+    "observations": 41,
+    "solver_seconds": 0.00041666000000000093,
+    "process_seconds": 0.0036544090035022236,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N40_tau10/cpp",
+    "output_sha256": "1afd26f65cc5476e18dc865a5ef6f2ad4c068ab26b086f7dfd8bc726be7f9a31",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 0.48969116302669674,
+    "dt_s": 0.024484558151334837,
+    "end_s": 9.793823260533935,
+    "resolution": 20,
+    "steps": 401,
+    "observations": 41,
+    "solver_seconds": 0.0007227879999999984,
+    "process_seconds": 0.003430928998568561,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N40_tau20/cpp",
+    "output_sha256": "74d4bc0a94dc4846d1ce8042b4003697f8571effc6e20161de6fea2847a9ed5b",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 0.48969116302669674,
+    "dt_s": 0.012242279075667419,
+    "end_s": 9.793823260533935,
+    "resolution": 40,
+    "steps": 801,
+    "observations": 41,
+    "solver_seconds": 0.0012635679999999923,
+    "process_seconds": 0.003798160993028432,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N40_tau40/cpp",
+    "output_sha256": "7439e5ce82ccd8489980223e6a689a545017fee9a391a9a4ab4dc773e7acf1d9",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 0.48969116302669674,
+    "dt_s": 0.006121139537833709,
+    "end_s": 9.793823260533935,
+    "resolution": 80,
+    "steps": 1600,
+    "observations": 41,
+    "solver_seconds": 0.00221104799999998,
+    "process_seconds": 0.004530211001110729,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N40_tau80/cpp",
+    "output_sha256": "ac4be36ab42367348a4d7bbc031204858f79599371336f326c4795253271f3b5",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 0.48969116302669674,
+    "dt_s": 0.0030605697689168546,
+    "end_s": 9.793823260533935,
+    "resolution": 160,
+    "steps": 3201,
+    "observations": 41,
+    "solver_seconds": 0.006047376000000068,
+    "process_seconds": 0.009201155000482686,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N40_tau160/cpp",
+    "output_sha256": "56950495da5eb73250e605c284664c58f7f8eac7f414fd62c3965930762d4c80",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.4892369880276749,
+    "dt_s": 0.04892369880276749,
+    "end_s": 9.784739760553498,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.0022902719999999994,
+    "process_seconds": 0.005880958997295238,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N320_tau10/cpp",
+    "output_sha256": "2ff9813ed2dc96865a62e58e5b47f4b4a64149d5116cb898b58b6418b042c270",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.4892369880276749,
+    "dt_s": 0.024461849401383746,
+    "end_s": 9.784739760553498,
+    "resolution": 20,
+    "steps": 401,
+    "observations": 41,
+    "solver_seconds": 0.005761887000000018,
+    "process_seconds": 0.009437319000426214,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N320_tau20/cpp",
+    "output_sha256": "0f93db33e0190e08a20bb9fb512ceeba5b69059d39dd072adecc87001bd328cb",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.4892369880276749,
+    "dt_s": 0.012230924700691873,
+    "end_s": 9.784739760553498,
+    "resolution": 40,
+    "steps": 801,
+    "observations": 41,
+    "solver_seconds": 0.008721162999999968,
+    "process_seconds": 0.01176755600317847,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N320_tau40/cpp",
+    "output_sha256": "c67175cf34a0bb380ebf3817723a1d4ccfa7ffe7e214664efd666b0457a13bb2",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.4892369880276749,
+    "dt_s": 0.006115462350345937,
+    "end_s": 9.784739760553498,
+    "resolution": 80,
+    "steps": 1601,
+    "observations": 41,
+    "solver_seconds": 0.020678480000000315,
+    "process_seconds": 0.02418370800296543,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N320_tau80/cpp",
+    "output_sha256": "55bbd383c32a0c08bf4e0e9c28af89184916a29821292adbecc0db76cf968783",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E3_minD_bulk_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.4892369880276749,
+    "dt_s": 0.0030577311751729683,
+    "end_s": 9.784739760553498,
+    "resolution": 160,
+    "steps": 3200,
+    "observations": 41,
+    "solver_seconds": 0.03487271100000064,
+    "process_seconds": 0.03806083899689838,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N320_tau160/cpp",
+    "output_sha256": "b3274f72c857d8db9bf86a898a5aa78228579b9c82b113707b5eaeb73b8353ae",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 2.314621270185264,
+    "dt_s": 0.23146212701852642,
+    "end_s": 46.29242540370528,
+    "resolution": 10,
+    "steps": 201,
+    "observations": 41,
+    "solver_seconds": 0.00038022200000000016,
+    "process_seconds": 0.002354598997044377,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N40_tau10/cpp",
+    "output_sha256": "a7e7a81588da2a152ab15c2663bff6c5d8ed968626da212c339945ebb2ee64cd",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 2.314621270185264,
+    "dt_s": 0.11573106350926321,
+    "end_s": 46.29242540370528,
+    "resolution": 20,
+    "steps": 400,
+    "observations": 41,
+    "solver_seconds": 0.0006990340000000022,
+    "process_seconds": 0.0026476400016690604,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N40_tau20/cpp",
+    "output_sha256": "e957a789d00d0aed3b61905b49cdc63778ddfe5486d87ac14da4357498697364",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 2.314621270185264,
+    "dt_s": 0.057865531754631605,
+    "end_s": 46.29242540370528,
+    "resolution": 40,
+    "steps": 801,
+    "observations": 41,
+    "solver_seconds": 0.0010555990000000025,
+    "process_seconds": 0.002937661003670655,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N40_tau40/cpp",
+    "output_sha256": "1bc7b703f70f70f3b4e4a6986df0941a8751cd0621d730715fef036ab74e68dc",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 2.314621270185264,
+    "dt_s": 0.028932765877315803,
+    "end_s": 46.29242540370528,
+    "resolution": 80,
+    "steps": 1601,
+    "observations": 41,
+    "solver_seconds": 0.00224306399999998,
+    "process_seconds": 0.004220358998281881,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N40_tau80/cpp",
+    "output_sha256": "305b83b71ebc0ded48984a591df294e00013eaa0ebe4f7de0ba1b26937047058",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 40,
+    "tau_fast_s": 2.314621270185264,
+    "dt_s": 0.014466382938657901,
+    "end_s": 46.29242540370528,
+    "resolution": 160,
+    "steps": 3201,
+    "observations": 41,
+    "solver_seconds": 0.004610131000000022,
+    "process_seconds": 0.006631733005633578,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N40_tau160/cpp",
+    "output_sha256": "c437101a791c3b4f71341a48bd9c84f46123fd0ebcff2aeff41a5b74d8ea57ab",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.1218250182075654,
+    "dt_s": 0.012182501820756541,
+    "end_s": 2.436500364151308,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.002133934000000003,
+    "process_seconds": 0.005058410002675373,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N320_tau10/cpp",
+    "output_sha256": "250b31c5670018645ff9fd8296d8888c0d24a25e909dcd294ec8623d5e795098",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.1218250182075654,
+    "dt_s": 0.0060912509103782705,
+    "end_s": 2.436500364151308,
+    "resolution": 20,
+    "steps": 400,
+    "observations": 41,
+    "solver_seconds": 0.004683128999999997,
+    "process_seconds": 0.008044793998124078,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N320_tau20/cpp",
+    "output_sha256": "81e3dff5e1124d6aeae770bdb708394d0176dbf9a66dc83a87871b25d673d0c8",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.1218250182075654,
+    "dt_s": 0.0030456254551891352,
+    "end_s": 2.436500364151308,
+    "resolution": 40,
+    "steps": 800,
+    "observations": 41,
+    "solver_seconds": 0.00941889600000001,
+    "process_seconds": 0.012711005998426117,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N320_tau40/cpp",
+    "output_sha256": "2d958827f24883072ef05cb4e81bfb596b25e0db3488bdf5b93079df716a02a7",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.1218250182075654,
+    "dt_s": 0.0015228127275945676,
+    "end_s": 2.436500364151308,
+    "resolution": 80,
+    "steps": 1600,
+    "observations": 41,
+    "solver_seconds": 0.01800235,
+    "process_seconds": 0.021355472003051545,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N320_tau80/cpp",
+    "output_sha256": "3d174667ce129bf3ba125eb37654a3b6a1de36a9c57bf7a2c22dd67df2a6571a",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E4_maxD_dislocation_strong_mixed_resolution",
+    "N": 320,
+    "tau_fast_s": 0.1218250182075654,
+    "dt_s": 0.0007614063637972838,
+    "end_s": 2.436500364151308,
+    "resolution": 160,
+    "steps": 3201,
+    "observations": 41,
+    "solver_seconds": 0.03734234999999977,
+    "process_seconds": 0.04232830899854889,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E4_maxD_dislocation_strong_mixed_resolution/N320_tau160/cpp",
+    "output_sha256": "221bf163305de19761efb69b7cd8f3986d1495ab2b2b79cc3d8720b211ab6bd6",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4041977153689747,
+    "dt_s": 0.04041977153689747,
+    "end_s": 8.083954307379495,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.00036985800000000025,
+    "process_seconds": 0.003158323001116514,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N40_tau10/cpp",
+    "output_sha256": "0a896d41240bdcc416500d034b75804121697b5796e3f5d3a01494ef1b7aa0af",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4041977153689747,
+    "dt_s": 0.020209885768448736,
+    "end_s": 8.083954307379495,
+    "resolution": 20,
+    "steps": 400,
+    "observations": 41,
+    "solver_seconds": 0.0007503740000000035,
+    "process_seconds": 0.003337007001391612,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N40_tau20/cpp",
+    "output_sha256": "79209e6b721520f1ec9d0734bf005a5d6ba3ddd7d73f957d2bc7ce41480d2e32",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4041977153689747,
+    "dt_s": 0.010104942884224368,
+    "end_s": 8.083954307379495,
+    "resolution": 40,
+    "steps": 801,
+    "observations": 41,
+    "solver_seconds": 0.001313814999999998,
+    "process_seconds": 0.0038316840000334196,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N40_tau40/cpp",
+    "output_sha256": "c7b2353755e68a48cdc302de7e3874fa1344e8a85e55486d80e7536328603312",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4041977153689747,
+    "dt_s": 0.005052471442112184,
+    "end_s": 8.083954307379495,
+    "resolution": 80,
+    "steps": 1601,
+    "observations": 41,
+    "solver_seconds": 0.004456525000000045,
+    "process_seconds": 0.007709069999691565,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N40_tau80/cpp",
+    "output_sha256": "1facf94675c24218d8d772e6b49c91f585f752006d977e600e7ee9f29980138a",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4041977153689747,
+    "dt_s": 0.002526235721056092,
+    "end_s": 8.083954307379495,
+    "resolution": 160,
+    "steps": 3200,
+    "observations": 41,
+    "solver_seconds": 0.004835418000000133,
+    "process_seconds": 0.007263014995260164,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N40_tau160/cpp",
+    "output_sha256": "6ab4784b166998350cfd3a0633085713ec5dd505d75b256be2e73e446972298b",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 320,
+    "tau_fast_s": 0.097556266568924,
+    "dt_s": 0.0097556266568924,
+    "end_s": 1.95112533137848,
+    "resolution": 10,
+    "steps": 201,
+    "observations": 41,
+    "solver_seconds": 0.0024808350000000015,
+    "process_seconds": 0.005546443004277535,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N320_tau10/cpp",
+    "output_sha256": "c1dcf2b73c1ea050d7a5b69f367bffb41834015356354bbecd41ed955617d68b",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 320,
+    "tau_fast_s": 0.097556266568924,
+    "dt_s": 0.0048778133284462,
+    "end_s": 1.95112533137848,
+    "resolution": 20,
+    "steps": 401,
+    "observations": 41,
+    "solver_seconds": 0.006261779000000007,
+    "process_seconds": 0.010115713004779536,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N320_tau20/cpp",
+    "output_sha256": "18a93ee23368f06d9704f62492b5fb3ba11635fcacd4148e78ab78da253c983e",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 320,
+    "tau_fast_s": 0.097556266568924,
+    "dt_s": 0.0024389066642231,
+    "end_s": 1.95112533137848,
+    "resolution": 40,
+    "steps": 800,
+    "observations": 41,
+    "solver_seconds": 0.011369817000000022,
+    "process_seconds": 0.015562496002530679,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N320_tau40/cpp",
+    "output_sha256": "302601b122efe38441c7d983b3349467282c9adb21edcf248b33cf78211eaff0",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 320,
+    "tau_fast_s": 0.097556266568924,
+    "dt_s": 0.00121945333211155,
+    "end_s": 1.95112533137848,
+    "resolution": 80,
+    "steps": 1601,
+    "observations": 41,
+    "solver_seconds": 0.017148759000000267,
+    "process_seconds": 0.019899339000403415,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N320_tau80/cpp",
+    "output_sha256": "382d75f89f8c46e96c28a6865991590396181b02a49a152440d8375a09acf2d9",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E5_maxD_strong_trapping_weak_resolution",
+    "N": 320,
+    "tau_fast_s": 0.097556266568924,
+    "dt_s": 0.000609726666055775,
+    "end_s": 1.95112533137848,
+    "resolution": 160,
+    "steps": 3200,
+    "observations": 41,
+    "solver_seconds": 0.03134398699999864,
+    "process_seconds": 0.03444430800300324,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E5_maxD_strong_trapping_weak_resolution/N320_tau160/cpp",
+    "output_sha256": "08adc7565513eb9552f4d4715fd4172341ec21d441ce5fec2be0512d2df5f73c",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4253807710047376,
+    "dt_s": 0.04253807710047376,
+    "end_s": 8.507615420094751,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.000330243,
+    "process_seconds": 0.002432189001410734,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N40_tau10/cpp",
+    "output_sha256": "783de3dcb0ecfa01f9c5826c505c91a41b62ae3a74591eb5703f0c2943838405",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4253807710047376,
+    "dt_s": 0.02126903855023688,
+    "end_s": 8.507615420094751,
+    "resolution": 20,
+    "steps": 400,
+    "observations": 41,
+    "solver_seconds": 0.0005407290000000011,
+    "process_seconds": 0.002665532003447879,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N40_tau20/cpp",
+    "output_sha256": "090052fd33ee944eb6099a9bdb444f8106420cd40732a68bdd78ba5334da741c",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4253807710047376,
+    "dt_s": 0.01063451927511844,
+    "end_s": 8.507615420094751,
+    "resolution": 40,
+    "steps": 800,
+    "observations": 41,
+    "solver_seconds": 0.001477372000000002,
+    "process_seconds": 0.0043847299966728315,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N40_tau40/cpp",
+    "output_sha256": "305e45ad1c9bdf6150ba287d3f94b7e4b07738228312fac76c6f0f3f63940b5a",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4253807710047376,
+    "dt_s": 0.00531725963755922,
+    "end_s": 8.507615420094751,
+    "resolution": 80,
+    "steps": 1600,
+    "observations": 41,
+    "solver_seconds": 0.0024456099999999683,
+    "process_seconds": 0.004857009997067507,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N40_tau80/cpp",
+    "output_sha256": "a20233de5b715020ea36395c62dd3270c43356d8a89d63226ef4680ed4bfeb72",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 40,
+    "tau_fast_s": 0.4253807710047376,
+    "dt_s": 0.00265862981877961,
+    "end_s": 8.507615420094751,
+    "resolution": 160,
+    "steps": 3201,
+    "observations": 41,
+    "solver_seconds": 0.0062718010000000065,
+    "process_seconds": 0.00925200000347104,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N40_tau160/cpp",
+    "output_sha256": "e8de4c614dfe75155a3b775556fd8767d1d4a2f1f91d549f0dfa159851bf2e70",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.42503804289498825,
+    "dt_s": 0.04250380428949883,
+    "end_s": 8.500760857899765,
+    "resolution": 10,
+    "steps": 200,
+    "observations": 41,
+    "solver_seconds": 0.0020576499999999955,
+    "process_seconds": 0.004546074000245426,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N320_tau10/cpp",
+    "output_sha256": "96e1ac70f27af742065f01615b70fc3525aa20a7be2f845a79206651e5027660",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.42503804289498825,
+    "dt_s": 0.021251902144749413,
+    "end_s": 8.500760857899765,
+    "resolution": 20,
+    "steps": 400,
+    "observations": 41,
+    "solver_seconds": 0.004429122000000003,
+    "process_seconds": 0.007184465997852385,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N320_tau20/cpp",
+    "output_sha256": "48bcd3581dedf03ce48fb01895a3c2c3a85046e5c3e123545081228b597d872d",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.42503804289498825,
+    "dt_s": 0.010625951072374707,
+    "end_s": 8.500760857899765,
+    "resolution": 40,
+    "steps": 801,
+    "observations": 41,
+    "solver_seconds": 0.008386048999999925,
+    "process_seconds": 0.011491135002870578,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N320_tau40/cpp",
+    "output_sha256": "f46a441fd6832ec085c47bd73bbfee74dfb50cd50e2dbca4a6ad16d265643de9",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.42503804289498825,
+    "dt_s": 0.005312975536187353,
+    "end_s": 8.500760857899765,
+    "resolution": 80,
+    "steps": 1601,
+    "observations": 41,
+    "solver_seconds": 0.01615118300000012,
+    "process_seconds": 0.0193645299950731,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N320_tau80/cpp",
+    "output_sha256": "b9d47c8a2c5fefc38ae1a65928ce18e2e6586fe02514510979de6f0da2e95d38",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  },
+  {
+    "case": "E6_minD_strong_trapping_strong_resolution",
+    "N": 320,
+    "tau_fast_s": 0.42503804289498825,
+    "dt_s": 0.0026564877680936767,
+    "end_s": 8.500760857899765,
+    "resolution": 160,
+    "steps": 3201,
+    "observations": 41,
+    "solver_seconds": 0.032955755999999066,
+    "process_seconds": 0.0360292089972063,
+    "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E6_minD_strong_trapping_strong_resolution/N320_tau160/cpp",
+    "output_sha256": "880608d938012d70db86fb79c1b89e2b99cc284a185c976b435f1d1c38608e47",
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_vector": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+  }
+]

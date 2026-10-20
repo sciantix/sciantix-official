@@ -1,0 +1,103 @@
+{
+  "status": "completed",
+  "main_campaign_started": false,
+  "benchmarks": 5,
+  "compile": {
+    "seconds": 1.4573665330026415,
+    "command": [
+      "g++",
+      "-std=c++11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-I/home/destro/sciantix-official/include/classes",
+      "/home/destro/sciantix-official/UN_model/VERIFICATION/solver_harness.cpp",
+      "/home/destro/sciantix-official/src/classes/Solver.C",
+      "-o",
+      "/home/destro/sciantix-official/UN_model/VERIFICATION/phase4b/build/solver_harness.x"
+    ],
+    "solver_sha256": "925f671fd9fe5f39afb9a84e5ff2ce0cab4089957803ad89d29b45c11283f44d",
+    "harness_sha256": "dcd2f206110fbfe020a0c9b1aacc8c709ec96838cb3c7f5fdc9b97ff0ce33aad",
+    "binary_sha256": "45afd05e541d3e744973f07535501b7b1c4589ae87ecbeb5f6dc7cea9616ce2e"
+  },
+  "rows": [
+    {
+      "case": "R1_AP3p2_900K",
+      "N": 40,
+      "dt_s": 225.0,
+      "end_s": 14400000.0,
+      "steps": 64000,
+      "stored_rows": 4001,
+      "solver_seconds": 0.0796556869999408,
+      "cpp_process_including_IO_seconds": 0.09873813299782341,
+      "python_analysis_seconds": 4.500010166004358,
+      "complete_case_including_IO_seconds": 4.622501156001817,
+      "mean_normalized_error": 1.1740650586136557e-06,
+      "modal_L2_normalized_error": 1.5283383328912688e-06,
+      "output_bytes": 3968992
+    },
+    {
+      "case": "R2_AP3p4_1600K",
+      "N": 40,
+      "dt_s": 225.0,
+      "end_s": 14400000.0,
+      "steps": 64000,
+      "stored_rows": 4001,
+      "solver_seconds": 0.0889752359999638,
+      "cpp_process_including_IO_seconds": 0.10918400999798905,
+      "python_analysis_seconds": 4.448898522998206,
+      "complete_case_including_IO_seconds": 4.574648079003964,
+      "mean_normalized_error": 5.805535643764184e-07,
+      "modal_L2_normalized_error": 9.49949790049899e-07,
+      "output_bytes": 3968992
+    },
+    {
+      "case": "R3_AP3p4_1800K",
+      "N": 40,
+      "dt_s": 225.0,
+      "end_s": 14400000.0,
+      "steps": 64000,
+      "stored_rows": 4001,
+      "solver_seconds": 0.09338076799995777,
+      "cpp_process_including_IO_seconds": 0.11529166999389417,
+      "python_analysis_seconds": 5.382059499002935,
+      "complete_case_including_IO_seconds": 5.5127647390036145,
+      "mean_normalized_error": 5.998689365087232e-07,
+      "modal_L2_normalized_error": 9.669988289821372e-07,
+      "output_bytes": 3968992
+    },
+    {
+      "case": "E2_maxD_zero_bulk_strong_resolution",
+      "N": 40,
+      "dt_s": 225.0,
+      "end_s": 14400000.0,
+      "steps": 64000,
+      "stored_rows": 4001,
+      "solver_seconds": 0.0886518209999452,
+      "cpp_process_including_IO_seconds": 0.11126132700155722,
+      "python_analysis_seconds": 5.579370416999154,
+      "complete_case_including_IO_seconds": 5.699893446006172,
+      "mean_normalized_error": 0.0026817614634768302,
+      "modal_L2_normalized_error": 0.002378621310329608,
+      "output_bytes": 3968992
+    },
+    {
+      "case": "E5_maxD_strong_trapping_weak_resolution",
+      "N": 40,
+      "dt_s": 225.0,
+      "end_s": 14400000.0,
+      "steps": 64000,
+      "stored_rows": 4001,
+      "solver_seconds": 0.08686772200004628,
+      "cpp_process_including_IO_seconds": 0.11300432800635463,
+      "python_analysis_seconds": 6.249312061001547,
+      "complete_case_including_IO_seconds": 6.376312266998866,
+      "mean_normalized_error": 6.360001637397529e-07,
+      "modal_L2_normalized_error": 8.365175170742653e-07,
+      "output_bytes": 3968992
+    }
+  ],
+  "total_wall_seconds": 28.250293504999718,
+  "head": "971621968f8f077f51a6c0107732640923291303",
+  "note": "Five cost trials only. The 110 main tests require a separate cost/accuracy decision."
+}

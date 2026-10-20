@@ -1,0 +1,25 @@
+{
+  "case": "E3_minD_bulk_strong_mixed_resolution",
+  "N": 40,
+  "tau_fast_s": 0.48969116302669674,
+  "dt_s": 0.012242279075667419,
+  "end_s": 9.793823260533935,
+  "resolution": 40,
+  "steps": 801,
+  "observations": 41,
+  "solver_seconds": 0.0012635679999999923,
+  "process_seconds": 0.003798160993028432,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/rapid/E3_minD_bulk_strong_mixed_resolution/N40_tau40/cpp",
+  "output_sha256": "7439e5ce82ccd8489980223e6a689a545017fee9a391a9a4ab4dc773e7acf1d9",
+  "initial": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_vector": [
+    1.7995675661038836e+19,
+    0.0,
+    0.0
+  ],
+  "note": "short forced transient; same frozen coefficients, initial and source, no microstructure"
+}

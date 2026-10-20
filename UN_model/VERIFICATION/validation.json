@@ -1,0 +1,20 @@
+{
+  "status": "pass",
+  "checks": {
+    "source_only_expm_vs_closed_form": 2.163803990681324e-16,
+    "pure_diffusion_expm_vs_closed_form": 1.1453612069186838e-15,
+    "exchange_only_zero_D_mass_balance": 1.0279706264699683e-13,
+    "source_only_zero_D_mass_balance": 2.1033294757033187e-15,
+    "benchmark_discrete_flux_balance": 1.016436591391221e-14,
+    "ordinary_L3_1600K_long_time_vs_parabolic_steady_mean": 1.8360043692814878e-11,
+    "ordinary_L3_1600K_reference_L2_tail_over_N160_tail": 0.000983753151259723,
+    "stiff_L3_1800K_long_time_vs_parabolic_steady_mean": 1.8355912073776902e-11,
+    "stiff_L3_1800K_reference_L2_tail_over_N160_tail": 0.000983753151259723,
+    "pure_diffusion_long_time_vs_parabolic_steady_mean": 1.836578609284756e-11,
+    "pure_diffusion_reference_L2_tail_over_N160_tail": 0.000983753151259723
+  },
+  "protected_files": 7211,
+  "head_branch_origin_and_index_unchanged": true,
+  "all_new_files_inside_VERIFICATION": true,
+  "scope": "Phase 4A pilot verification only; no LHS and no reorganization performed"
+}

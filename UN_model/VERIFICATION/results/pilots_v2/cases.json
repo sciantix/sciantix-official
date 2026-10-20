@@ -1,0 +1,564 @@
+[
+  {
+    "name": "ordinary_L3_1600K",
+    "D": 1.3705602340796549e-18,
+    "R": 6e-06,
+    "gb": 0.0003691366838061218,
+    "gd": 0.0014480265981793865,
+    "bb": 1.7178041769597167e-05,
+    "bd": 5.310375031628281e-06,
+    "source": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "provenance": {
+      "file": "UN_model/regression_reference/results/full/AP3p4_1600K/trace.jsonl.gz",
+      "sha256": "5afd0f44b996ef0470b2d410eb0b32d72170823150a80b0fc89b5e6f6dfa1079",
+      "frozen_step": 100,
+      "restriction": "fixed linear coefficients; nucleation sink/source and microstructure updates excluded"
+    },
+    "temporal_end_s": 172800.0,
+    "characteristics": {
+      "1": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.0018252711898281671,
+            1.4754983122484365e-05,
+            1.2727060337057062e-09
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            547.8637944721743,
+            67773.71357857747,
+            785727397.7780439
+          ]
+        }
+      ],
+      "40": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.0018252711898281671,
+            1.4754983122484365e-05,
+            1.2727060337057062e-09
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            547.8637944721743,
+            67773.71357857747,
+            785727397.7780439
+          ]
+        },
+        {
+          "mode": 40,
+          "decay_rates_s-1": [
+            0.002424171701074933,
+            1.5185179611308051e-05,
+            1.489810021853936e-06
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            412.5120343400499,
+            65853.68270885141,
+            671226.5223961838
+          ]
+        }
+      ],
+      "160": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.0018252711898281671,
+            1.4754983122484365e-05,
+            1.2727060337057062e-09
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            547.8637944721743,
+            67773.71357857747,
+            785727397.7780439
+          ]
+        },
+        {
+          "mode": 160,
+          "decay_rates_s-1": [
+            0.011437511017731387,
+            1.6653880646505224e-05,
+            4.606671150625529e-06
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            87.43160976629586,
+            60046.065011871426,
+            217076.48913993186
+          ]
+        }
+      ]
+    },
+    "spatial_end_s": 25143276728.897404,
+    "spatial_dt_start_s": 6138495.295140968,
+    "sampling_proposal_s": {
+      "early": [
+        5.478637944721743,
+        2739.318972360871
+      ],
+      "intermediate": [
+        547.8637944721743,
+        785727397.7780439
+      ],
+      "long_time": [
+        785727397.7780439,
+        7857273977.780438
+      ]
+    }
+  },
+  {
+    "name": "stiff_L3_1800K",
+    "D": 2.8109916689626407e-17,
+    "R": 6e-06,
+    "gb": 0.00042155637681063517,
+    "gd": 0.029601225251479665,
+    "bb": 1.700137952557469e-05,
+    "bd": 5.249854705955256e-06,
+    "source": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "provenance": {
+      "file": "UN_model/regression_reference/results/full/AP3p4_1800K/trace.jsonl.gz",
+      "sha256": "c972bcc1e1503a8209a78d92f13ef6f660f7e9186df142334ea1576f67ede886",
+      "frozen_step": 100,
+      "restriction": "fixed linear coefficients; nucleation sink/source and microstructure updates excluded"
+    },
+    "temporal_end_s": 21600.0,
+    "characteristics": {
+      "1": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.03003590165631134,
+            1.360191031153034e-09,
+            1.683633928263063e-05
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            33.29349028514593,
+            59395.33429524431,
+            735190849.738437
+          ]
+        }
+      ],
+      "40": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.03003590165631134,
+            1.360191031153034e-09,
+            1.683633928263063e-05
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            33.29349028514593,
+            59395.33429524431,
+            735190849.738437
+          ]
+        },
+        {
+          "mode": 40,
+          "decay_rates_s-1": [
+            0.0423570094421996,
+            1.539918624317235e-06,
+            1.6872722773127478e-05
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            23.608843333583327,
+            59267.257184635346,
+            649384.9637303902
+          ]
+        }
+      ],
+      "160": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.03003590165631134,
+            1.360191031153034e-09,
+            1.683633928263063e-05
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            33.29349028514593,
+            59395.33429524431,
+            735190849.738437
+          ]
+        },
+        {
+          "mode": 160,
+          "decay_rates_s-1": [
+            0.22730972437157365,
+            4.56444305722161e-06,
+            1.6971585094273633e-05
+          ],
+          "zero_eigenvalues": 0,
+          "finite_times_s": [
+            4.399283852745965,
+            58922.015500921545,
+            219084.77933969517
+          ]
+        }
+      ]
+    },
+    "spatial_end_s": 23526107191.629986,
+    "spatial_dt_start_s": 5743678.5135815395,
+    "sampling_proposal_s": {
+      "early": [
+        0.33293490285145927,
+        166.46745142572965
+      ],
+      "intermediate": [
+        33.29349028514593,
+        735190849.738437
+      ],
+      "long_time": [
+        735190849.738437,
+        7351908497.384371
+      ]
+    }
+  },
+  {
+    "name": "pure_diffusion",
+    "D": 2.8109916689626407e-17,
+    "R": 6e-06,
+    "gb": 0.0,
+    "gd": 0.0,
+    "bb": 0.0,
+    "bd": 0.0,
+    "source": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "provenance": {
+      "file": "UN_model/regression_reference/results/full/AP3p4_1800K/trace.jsonl.gz",
+      "sha256": "c972bcc1e1503a8209a78d92f13ef6f660f7e9186df142334ea1576f67ede886",
+      "frozen_step": 100,
+      "restriction": "fixed linear coefficients; nucleation sink/source and microstructure updates excluded"
+    },
+    "temporal_end_s": 64800.0,
+    "characteristics": {
+      "1": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            7.706493263171999e-06,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 2,
+          "finite_times_s": [
+            129760.70514183505
+          ]
+        }
+      ],
+      "40": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            7.706493263171999e-06,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 2,
+          "finite_times_s": [
+            129760.70514183505
+          ]
+        },
+        {
+          "mode": 40,
+          "decay_rates_s-1": [
+            0.0123303892210752,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 2,
+          "finite_times_s": [
+            81.10044071364689
+          ]
+        }
+      ],
+      "160": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            7.706493263171999e-06,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 2,
+          "finite_times_s": [
+            129760.70514183505
+          ]
+        },
+        {
+          "mode": 160,
+          "decay_rates_s-1": [
+            0.1972862275372032,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 2,
+          "finite_times_s": [
+            5.068777544602931
+          ]
+        }
+      ]
+    },
+    "spatial_end_s": 4152342.5645387215,
+    "spatial_dt_start_s": 1013.7555089205863,
+    "sampling_proposal_s": {
+      "early": [
+        1297.6070514183505,
+        648803.5257091753
+      ],
+      "intermediate": [
+        129760.70514183505,
+        129760.70514183505
+      ],
+      "long_time": [
+        129760.70514183505,
+        1297607.0514183505
+      ]
+    }
+  },
+  {
+    "name": "exchange_only",
+    "D": 0.0,
+    "R": 6e-06,
+    "gb": 3.691366838061218e-06,
+    "gd": 1.4480265981793865e-05,
+    "bb": 1.7178041769597167e-05,
+    "bd": 5.310375031628281e-06,
+    "source": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "initial": [
+      1e+23,
+      2e+22,
+      1e+22
+    ],
+    "provenance": {
+      "file": "UN_model/regression_reference/results/full/AP3p4_1600K/trace.jsonl.gz",
+      "sha256": "5afd0f44b996ef0470b2d410eb0b32d72170823150a80b0fc89b5e6f6dfa1079",
+      "frozen_step": 100,
+      "restriction": "fixed linear coefficients; nucleation sink/source and microstructure updates excluded"
+    },
+    "temporal_end_s": 172800.0,
+    "characteristics": {
+      "1": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            6.776263578034403e-21,
+            2.766098030979775e-05,
+            1.2999069311282795e-05
+          ],
+          "zero_eigenvalues": 1,
+          "finite_times_s": [
+            36152.008670704694,
+            76928.58435119125
+          ]
+        }
+      ],
+      "40": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            6.776263578034403e-21,
+            2.766098030979775e-05,
+            1.2999069311282795e-05
+          ],
+          "zero_eigenvalues": 1,
+          "finite_times_s": [
+            36152.008670704694,
+            76928.58435119125
+          ]
+        },
+        {
+          "mode": 40,
+          "decay_rates_s-1": [
+            6.776263578034403e-21,
+            2.766098030979775e-05,
+            1.2999069311282795e-05
+          ],
+          "zero_eigenvalues": 1,
+          "finite_times_s": [
+            36152.008670704694,
+            76928.58435119125
+          ]
+        }
+      ],
+      "160": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            6.776263578034403e-21,
+            2.766098030979775e-05,
+            1.2999069311282795e-05
+          ],
+          "zero_eigenvalues": 1,
+          "finite_times_s": [
+            36152.008670704694,
+            76928.58435119125
+          ]
+        },
+        {
+          "mode": 160,
+          "decay_rates_s-1": [
+            6.776263578034403e-21,
+            2.766098030979775e-05,
+            1.2999069311282795e-05
+          ],
+          "zero_eigenvalues": 1,
+          "finite_times_s": [
+            36152.008670704694,
+            76928.58435119125
+          ]
+        }
+      ]
+    },
+    "spatial_end_s": 2461714.69923812,
+    "spatial_dt_start_s": 601.0045652436817,
+    "sampling_proposal_s": {
+      "early": [
+        361.52008670704697,
+        180760.04335352348
+      ],
+      "intermediate": [
+        36152.008670704694,
+        76928.58435119125
+      ],
+      "long_time": [
+        76928.58435119125,
+        769285.8435119125
+      ]
+    }
+  },
+  {
+    "name": "source_only",
+    "D": 0.0,
+    "R": 6e-06,
+    "gb": 0.0,
+    "gd": 0.0,
+    "bb": 0.0,
+    "bd": 0.0,
+    "source": [
+      1.7995675661038836e+19,
+      0.0,
+      0.0
+    ],
+    "initial": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "provenance": {
+      "file": "UN_model/regression_reference/results/full/AP3p4_1600K/trace.jsonl.gz",
+      "sha256": "5afd0f44b996ef0470b2d410eb0b32d72170823150a80b0fc89b5e6f6dfa1079",
+      "frozen_step": 100,
+      "restriction": "fixed linear coefficients; nucleation sink/source and microstructure updates excluded"
+    },
+    "temporal_end_s": 43200.0,
+    "characteristics": {
+      "1": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 3,
+          "finite_times_s": []
+        }
+      ],
+      "40": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 3,
+          "finite_times_s": []
+        },
+        {
+          "mode": 40,
+          "decay_rates_s-1": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 3,
+          "finite_times_s": []
+        }
+      ],
+      "160": [
+        {
+          "mode": 1,
+          "decay_rates_s-1": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 3,
+          "finite_times_s": []
+        },
+        {
+          "mode": 160,
+          "decay_rates_s-1": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "zero_eigenvalues": 3,
+          "finite_times_s": []
+        }
+      ]
+    },
+    "spatial_end_s": 1778204.975614277,
+    "spatial_dt_start_s": 434.13207412457933,
+    "sampling_proposal_s": {
+      "early": null,
+      "intermediate": [
+        55568.905487946155,
+        55568.905487946155
+      ],
+      "long_time": [
+        55568.905487946155,
+        555689.0548794615
+      ]
+    }
+  }
+]

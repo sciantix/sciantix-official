@@ -1,0 +1,14 @@
+{
+  "case": "E6_minD_strong_trapping_strong_resolution",
+  "stage": "temporal",
+  "N": 40,
+  "dt_s": 450.0,
+  "end_s": 14400000.0,
+  "steps": 32000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/temporal/E6_minD_strong_trapping_strong_resolution/N40_dt450/cpp",
+  "reused": false,
+  "output_sha256": "b4f79cc69e911401741cea2d07c45ee56278c7656573359abe50e5948355b226",
+  "solver_seconds_original": 0.039902129999991674,
+  "new_process_seconds": 0.05627445900609018,
+  "acquire_seconds": 0.06587657599447994
+}

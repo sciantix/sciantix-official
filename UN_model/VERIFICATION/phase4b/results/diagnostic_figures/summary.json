@@ -1,0 +1,22 @@
+{
+  "status": "cost_gate_stop",
+  "benchmark_simulations": 5,
+  "accuracy_precheck_simulations": 2,
+  "main_temporal_simulations": 0,
+  "main_spatial_simulations": 0,
+  "fast_transient_simulations": 0,
+  "lhs_samples": 0,
+  "binding_asymptotic_p1_estimate": {
+    "hour": 1.0,
+    "population": "c",
+    "assumed_asymptotic_order": 1.0,
+    "predicted_dt_s": 3.890044589900408e-05,
+    "predicted_steps": 370175705374,
+    "predicted_N320_solver_days": 41.78865103701352,
+    "predicted_six_N_solver_days": 82.27140672912036
+  },
+  "measured_benchmark_cpp_solver_seconds_total": 0.43753123399985383,
+  "measured_benchmark_python_seconds_total": 26.1596506660062,
+  "measured_benchmark_complete_seconds_total": 26.786119687014434,
+  "note": "Four diagnostic figure pairs, not convergence plots for an unexecuted 110-run campaign."
+}

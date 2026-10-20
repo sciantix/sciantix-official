@@ -1,0 +1,14 @@
+{
+  "case": "E6_minD_strong_trapping_strong_resolution",
+  "stage": "spatial",
+  "N": 80,
+  "dt_s": 225.0,
+  "end_s": 14400000.0,
+  "steps": 64000,
+  "source": "UN_model/VERIFICATION/phase4b/resumed/results/spatial/E6_minD_strong_trapping_strong_resolution/N80_dt225/cpp",
+  "reused": false,
+  "output_sha256": "a9c11f52e5de4965bf9b601cb9ea96f0cead4d0d2b20c584324a5f36c86410ad",
+  "solver_seconds_original": 0.16439382499995064,
+  "new_process_seconds": 0.1934338779974496,
+  "acquire_seconds": 0.2104133160028141
+}
