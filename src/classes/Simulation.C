@@ -57,7 +57,7 @@ void Simulation::execute()
     if (un_l3_active)
     {
         un_l3_model->execute(solver, un_l3_history);
-        return; // All legacy physics updates belong to the other paths.
+        return;  // All legacy physics updates belong to the other paths.
     }
 #if !defined(COUPLING_TU)
     Burnup();

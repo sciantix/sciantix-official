@@ -157,7 +157,7 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     if (un_l3_active)
     {
         un_l3_model->exportVariables(Sciantix_variables);
-        return; // L3 modes remain owned by Simulation, not the legacy buffer.
+        return;  // L3 modes remain owned by Simulation, not the legacy buffer.
     }
     for (int i = 0; i < n_modes; ++i)
     {
