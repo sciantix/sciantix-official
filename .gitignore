@@ -89,3 +89,27 @@ Testing/
 bin/
 out/
 *.png
+
+########################################
+# Rebuildable UN verification intermediates (20 October 2026)
+# Final CSV tables, compact ZIPs, inputs, scripts and metadata remain tracked.
+########################################
+
+/UN_model/VERIFICATION/extended_convergence_2026-10-20/**/*.npz
+/UN_model/VERIFICATION/extended_convergence_2026-10-20/**/*.bin
+/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/**/*.npz
+/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/**/*.bin
+/UN_model/VERIFICATION/coefficient_histories_2026-10-20/**/*.npz
+/UN_model/VERIFICATION/coefficient_histories_2026-10-20/**/*.bin
+
+/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/baseline/*/temporal_errors_hourly.csv.gz
+/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/baseline/*/temporal_hourly_lossless.csv
+/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/deliverables/temporal_errors_hourly.csv.gz
+/UN_model/VERIFICATION/accuracy_N40_dt3600_2026-10-20/deliverables/temporal_hourly_lossless.csv
+/UN_model/VERIFICATION/coefficient_histories_2026-10-20/raw/**/coefficients.csv
+/UN_model/VERIFICATION/coefficient_histories_2026-10-20/matplotlib_cache/
+
+# Fresh reproduction folders are scratch outputs, never replacements of evidence.
+/UN_model/VERIFICATION/reproduce_extended_*/
+/UN_model/VERIFICATION/reproduce_accuracy_*/
+/UN_model/VERIFICATION/reproduce_coefficients_*/
