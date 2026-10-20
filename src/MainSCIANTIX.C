@@ -116,8 +116,8 @@ int main(int argc, char** argv)
         Sciantix_history[3] = InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points);
         if (Sciantix_history[3] < 0.0)
             Sciantix_history[3] = 0.0;
-        Sciantix_history[4]  = Sciantix_history[5];
-        Sciantix_history[5]  = InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
+        Sciantix_history[4] = Sciantix_history[5];
+        Sciantix_history[5] = InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
         if (Sciantix_options[11] == 3)
         {
             // The approved L3 cases have constant histories. Preserve their
@@ -137,7 +137,7 @@ int main(int argc, char** argv)
         if (Sciantix_options[11] == 3)
         {
             Sciantix_history[6] = std::min(un_l3::Model::nominalTimeStep(), Time_end_s - Time_s);
-            dTime_h = Sciantix_history[6] / 3600.0;
+            dTime_h             = Sciantix_history[6] / 3600.0;
         }
         else
         {
