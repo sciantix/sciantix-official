@@ -45,7 +45,6 @@ namespace GrainVaporisationDetail
         double      u_atoms;           // per molecule
         double      pu_atoms;          // per molecule
         double      o_atoms;           // per molecule
-        double      surface_fraction;  // fraction of the metal atoms in the valence state that forms the species
     };
 }  // namespace GrainVaporisationDetail
 
@@ -107,9 +106,10 @@ void Simulation::GrainVaporisation()
         n_pu2                 = ratio_23 * n_pu3;
     }
 
-    // Partial pressures (atm) of the vapour species, Olander (1976), Table 11.1; the oxygen-to-metal
-    // factors use the actual O/M. Metallic U is not considered. O2 effuses with the oxygen partial pressure
-    // from all the surface, which reduces a hyper-stoichiometric fuel towards O/M = 2 in vacuum.
+    // Partial pressures (atm) of the vapour species, Olander (1976), Table 11.1, proportional to the fraction of
+    // the metal atoms in the corresponding valence state; the oxygen-to-metal factors use the actual O/M.
+    // Metallic U is not considered. O2 effuses with the oxygen partial pressure from all the surface, which
+    // reduces a hyper-stoichiometric fuel towards O/M = 2 in vacuum.
     const double K_UO   = std::exp(-49500.0 / temperature + 11.9);
     const double K_UO2  = std::exp(-74000.0 / temperature + 19.9);
     const double K_UO3  = std::exp(-44000.0 / temperature + 11.9);
@@ -129,45 +129,38 @@ void Simulation::GrainVaporisation()
                                                 {sciantix_variable["Pu242"].getFinalValue(), 242.05874}},
                                                239.05216);
 
-    const double                     u_fraction  = 1.0 - q;
-    const double                     pu_fraction = q;
-    const std::vector<VapourSpecies> species     = {
+    const std::vector<VapourSpecies> species = {
         {"UO",
          om * K_UO * n_u2,
          molar_mass_U + molar_mass_Oxygen,
          1.0,
          0.0,
-         1.0,
-         u_fraction > 0.0 ? n_u2 / u_fraction : 0.0},
+         1.0},
         {"UO2",
          om * om * K_UO2 * n_u4,
          molar_mass_U + 2.0 * molar_mass_Oxygen,
          1.0,
          0.0,
-         2.0,
-         u_fraction > 0.0 ? n_u4 / u_fraction : 0.0},
+         2.0},
         {"UO3",
          om * om * om * K_UO3 * n_u6,
          molar_mass_U + 3.0 * molar_mass_Oxygen,
          1.0,
          0.0,
-         3.0,
-         u_fraction > 0.0 ? n_u6 / u_fraction : 0.0},
+         3.0},
         {"PuO",
          om * K_PuO * n_pu2,
          molar_mass_Pu + molar_mass_Oxygen,
          0.0,
          1.0,
-         1.0,
-         pu_fraction > 0.0 ? n_pu2 / pu_fraction : 0.0},
+         1.0},
         {"PuO2",
          om * om * K_PuO2 * n_pu4,
          molar_mass_Pu + 2.0 * molar_mass_Oxygen,
          0.0,
          1.0,
-         2.0,
-         pu_fraction > 0.0 ? n_pu4 / pu_fraction : 0.0},
-        {"O2", std::isfinite(p_o2) ? std::max(0.0, p_o2) : 0.0, 2.0 * molar_mass_Oxygen, 0.0, 0.0, 2.0, 1.0},
+         2.0},
+        {"O2", std::isfinite(p_o2) ? std::max(0.0, p_o2) : 0.0, 2.0 * molar_mass_Oxygen, 0.0, 0.0, 2.0},
     };
 
     for (const auto& vapour : species)
@@ -196,19 +189,19 @@ void Simulation::GrainVaporisation()
 
     for (const auto& vapour : species)
     {
-        if (!(vapour.partial_pressure > 0.0) || !(vapour.surface_fraction > 0.0))
+        if (!(vapour.partial_pressure > 0.0))
             continue;
 
         // Hertz-Knudsen effusion flux (mol/m2/s): J = p / sqrt(2 pi M R T), p in Pa
         const double flux = vapour.partial_pressure * 101325.0 /
                             std::sqrt(2.0 * M_PI * vapour.molar_mass * 1.0e-3 * gas_constant * temperature);
 
-        // Molecules vaporised per unit fuel volume (mol/m3), limited by the available metal and oxygen
-        double vaporised = flux * surface_to_volume * vapour.surface_fraction * time_step;
+        // Molecules vaporised per unit fuel volume (mol/m3), limited by the available metal and oxygen.
+        double vaporised = flux * surface_to_volume * time_step;
         if (vapour.u_atoms > 0.0)
-            vaporised = std::min(vaporised, vapour.surface_fraction * u_content / vapour.u_atoms);
+            vaporised = std::min(vaporised, u_content / vapour.u_atoms);
         if (vapour.pu_atoms > 0.0)
-            vaporised = std::min(vaporised, vapour.surface_fraction * pu_content / vapour.pu_atoms);
+            vaporised = std::min(vaporised, pu_content / vapour.pu_atoms);
         if (vapour.o_atoms > 0.0)
             vaporised = std::min(vaporised, o_content / vapour.o_atoms);
         // In UO2 the oxygen potential (Blackburn) is defined only for O/M > 2: O2 removes at most the excess oxygen

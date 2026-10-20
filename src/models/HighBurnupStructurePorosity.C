@@ -20,6 +20,9 @@ void Simulation::HighBurnupStructurePorosity()
 {
     if (!int(input_variable["iHighBurnupStructurePorosity"].getValue()))
         return;
+    // No HBS porosity model for MOX (the UO2HBS matrix is not defined)
+    if (int(input_variable["iFuelMatrix"].getValue()) == 2)
+        return;
     // Model declaration
     Model model_;
 
