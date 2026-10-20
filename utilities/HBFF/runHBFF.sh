@@ -9,7 +9,7 @@ set -e  # stop on error
 #   2. run the NFIR case of option 4 (regression/hbs_nfir/test_UO2HBS_frag_j19damage) and compare it
 #      with its gold file, through the regression runner
 #   3. check the C++ against its Python transcription (pore_distribution.py)
-#   4. draw the figures of README_HBFFmodel.md (pore EoS, classes, rupture, release), write the inputs
+#   4. draw the figures of the model (pore EoS, classes, rupture, release; used by the paper draft), write the inputs
 #      for MMM, and draw the figures of the case in regression/hbs_nfir/figures/j19damage
 #
 # Options 1, 2, 3 are not run.

@@ -16,7 +16,7 @@
 
 // Fine fragmentation of the high-burnup structure (HBS), iHighBurnupStructureFragmentation = 1, 2, 3, 4
 // (1 Jernkvist, 2 Kulacsy, 3 LEFM: utilities/HBFF/archive/README_options123.md; 4 rupture per pore class:
-// utilities/HBFF/README_HBFFmodel.md).
+// utilities/HBFF/README.md).
 //
 // The model reads the HBS pore state of HighBurnupStructurePorosity (option 2 or 3), T and the hydrostatic pressure
 // of input_history.txt (P_h = -Hydrostatic stress), and returns per step
@@ -437,7 +437,7 @@ void Simulation::HighBurnupStructureFragmentation()
 
         case 4:
         {
-            // Option 4: rupture per pore class, progressive [R] [P] [?] (utilities/HBFF/README_HBFFmodel.md)
+            // Option 4: rupture per pore class, progressive [R] [P] [?] (utilities/HBFF/README.md)
             //  Classes [R] [N]. SCIANTIX carries the mean pore volume V, the mean Xe atoms per pore n and Var(n).
             //  The radius is log-normal on 81 nodes x_i in [-4, 4] with number weights w_i ~ exp(-x_i^2 / 2):
             //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),

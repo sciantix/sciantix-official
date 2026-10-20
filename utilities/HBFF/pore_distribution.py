@@ -3,7 +3,8 @@ HBS pore classes from the SCIANTIX moments, rupture per class, and cases for the
 @ author: E.Cappellari, POLIMI-CEA 2026
 @ date:   October 2026
 
-Python transcription of iHighBurnupStructureFragmentation = 4, the model is described in README_HBFFmodel.md.
+Python transcription of iHighBurnupStructureFragmentation = 4, the model is described in the paper draft
+(HBS_2026/main.tex, Sections 3-4) and its implementation in README.md.
 
 SCIANTIX carries for the HBS pores 
     -   the mean volume V, 
