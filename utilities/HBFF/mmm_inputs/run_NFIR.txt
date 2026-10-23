@@ -1,0 +1,12 @@
+# MMM input, run NFIR (NFIR disc before the anneal, log-normal fit of the measured pores)
+# xi = 0.113799, s = 0.3636 (CV_n = 0.831), eta_bar = 0.1555, P_h / p_bar = 0, a = 2
+# scale: R_V = 0.732 um, T = 903.15 K, p_bar = 160.36 MPa
+# one row per pore class; the porosities sum to xi
+#  radius_um      porosity  pressure_MPa  confinement_MPa
+    0.219081  1.897976e-05     7646.6365           0.0000
+    0.310992  5.299454e-04     1646.8179           0.0000
+    0.436419  5.829722e-03      601.2647           0.0000
+    0.610359  2.524462e-02      281.3251           0.0000
+    0.852447  4.344484e-02      152.0001           0.0000
+    1.191933  2.983604e-02       89.7187           0.0000
+    1.701689  8.894365e-03       54.3264           0.0000
