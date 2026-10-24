@@ -14,6 +14,7 @@ from pathlib import Path
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import to_rgb
 from matplotlib.lines import Line2D
 import numpy as np
 
@@ -25,10 +26,6 @@ MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
 PHASE_SUBLATTICE_OUTPUT_NAME = "phase_sublattice_composition.txt"
 
-# Number of top constituents (by amount) shown in parentheses next to each
-# phase's legend label in the radial phase-fraction plot. Kept short so the
-# legend fits inside the plot area without covering the point-1 markers.
-PHASE_LABEL_TOP_CONSTITUENTS = 3
 PLOTS_DIR = TEST_DIR / "plots"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
 PELLET_RADIUS_M = 2.719e-3
@@ -429,29 +426,6 @@ def parse_radius_mm(case_dir: Path) -> float:
     return float(match.group(1).replace("p", "."))
 
 
-def build_species_color_map(labels: list[str], palette: list[str] = PAPER_PALETTE) -> dict[str, object]:
-    species_names = sorted({label.split(" (", 1)[0] for label in labels})
-    if not species_names:
-        return {}
-
-    return {
-        species: palette[index % len(palette)]
-        for index, species in enumerate(species_names)
-    }
-
-
-def build_label_color_map(labels: list[str], palette: list[str] = PAPER_PALETTE) -> dict[str, object]:
-    unique_labels = sorted(set(labels))
-    if not unique_labels:
-        return {}
-
-    species_color_map = build_species_color_map(unique_labels, palette=palette)
-    return {
-        label: species_color_map[label.split(" (", 1)[0]]
-        for label in unique_labels
-    }
-
-
 def place_pie_wedge_labels(
     axis: plt.Axes,
     wedges: list,
@@ -523,13 +497,6 @@ def place_pie_wedge_labels(
                 text_x + 0.04 * side, text_y - 0.10, value_labels[index],
                 ha=ha, va="top", fontsize=value_fontsize, color="#171717",
             )
-
-
-def assign_distinct_colors(labels: list[str], palette: list[str] = PAPER_PALETTE) -> dict[str, object]:
-    return {
-        label: palette[index % len(palette)]
-        for index, label in enumerate(dict.fromkeys(labels))
-    }
 
 
 def is_jog_column(header: str) -> bool:
@@ -1062,102 +1029,6 @@ def format_phase_sublattice_composition(rows: list[dict[str, object]]) -> str:
     )
 
 
-def top_phase_constituents(rows: list[dict[str, object]], *, top_n: int = PHASE_LABEL_TOP_CONSTITUENTS) -> list[str]:
-    """Names of the top-`top_n` constituents of a phase (by amount), for the legend label."""
-    amounts: dict[str, float] = defaultdict(float)
-    for row in rows:
-        constituent = str(row["constituent"])
-        if constituent in ("<empty>", "VA"):
-            continue
-
-        site_fraction = float(row["site_fraction"])
-        if site_fraction <= 0.0:
-            continue
-
-        amounts[constituent] += float(row["phase_form_units"]) * float(row["sites"]) * site_fraction
-
-    ranked = sorted(amounts.items(), key=lambda item: item[1], reverse=True)
-    return [name for name, _ in ranked[:top_n]]
-
-
-def phase_moles_at_snapshot(
-    case_dir: Path,
-    target_time: float,
-    side: str,
-) -> dict[str, float]:
-    sublattice_file = case_dir / PHASE_SUBLATTICE_OUTPUT_NAME
-    if not sublattice_file.exists():
-        return {}
-
-    rows = [
-        row
-        for row in load_phase_sublattice_rows(sublattice_file)
-        if row["location"] == "at grain boundary"
-    ]
-    if not rows:
-        return {}
-
-    _, snapshot_rows = phase_rows_at_snapshot(rows, target_time, side)
-
-    phase_keys = sorted({
-        (str(row["phase"]), str(row["phase_instance"]))
-        for row in snapshot_rows
-    })
-
-    phase_moles: dict[str, float] = {}
-    for phase, phase_instance in phase_keys:
-        instance_rows = [
-            row for row in snapshot_rows
-            if row["phase"] == phase and row["phase_instance"] == phase_instance
-        ]
-        moles = max((float(row["phase_moles"]) for row in instance_rows), default=0.0)
-        if moles <= 0.0:
-            continue
-
-        base_label = pretty_phase_name(phase)
-        top_constituents = [pretty_constituent(name) for name in top_phase_constituents(instance_rows)]
-        phase_label = f"{base_label} ({', '.join(top_constituents)})" if top_constituents else base_label
-        phase_moles[phase_label] = max(phase_moles.get(phase_label, 0.0), moles)
-
-    return phase_moles
-
-
-def phase_mole_fraction_profile_entries(
-    case_directories: list[Path],
-    target_time: float,
-    side: str,
-    *,
-    min_fraction: float = 1.0e-4,
-    max_entries: int = 12,
-) -> list[tuple[str, np.ndarray]]:
-    phase_moles_by_case = [
-        phase_moles_at_snapshot(case_dir, target_time, side)
-        for case_dir in case_directories
-    ]
-    if not any(phase_moles_by_case):
-        return []
-
-    phase_names = sorted({
-        phase
-        for phase_moles in phase_moles_by_case
-        for phase in phase_moles
-    })
-    candidate_entries: list[tuple[str, np.ndarray, float]] = []
-    for phase in phase_names:
-        fractions = []
-        for phase_moles in phase_moles_by_case:
-            total_moles = sum(phase_moles.values())
-            fractions.append(phase_moles.get(phase, 0.0) / total_moles if total_moles > 0.0 else 0.0)
-
-        values = np.array(fractions, dtype=float)
-        max_fraction = float(np.nanmax(values)) if values.size else 0.0
-        if max_fraction >= min_fraction:
-            candidate_entries.append((phase, values, max_fraction))
-
-    candidate_entries.sort(key=lambda entry: entry[2], reverse=True)
-    return [(phase, values) for phase, values, _ in candidate_entries[:max_entries]]
-
-
 def build_phase_summary_lines(
     ordered_case_directories: list[Path],
     radii_mm_array: np.ndarray,
@@ -1322,7 +1193,57 @@ def build_outer_node_composition_summary_lines(ordered_case_directories: list[Pa
     return lines
 
 
-RADIAL_POINT_REGION_COLORS = ["#2a78d6", "#1baf7a", "#eda100", "#008300"]
+# Alternating neutral bands mark the pellet shell each SCIANTIX node
+# represents. Same style in the Cs and O/M preprocessing figures
+# (csred_lib/ and oxired_lib/examples/PHENIXpins.py).
+RADIAL_POINT_BAND_COLOR = "#ececE8"
+
+# Same phase -> same colour in every JOG figure (JOG stack plots and radial
+# phase-fraction figure). Fixed, so dropping the metallic phases from a
+# figure does not shift the colours of the other phases.
+JOG_PHASE_COLORS = {
+    "Ba3MoO6": "#736F3F",          # olive
+    "BaMoO4": "#BFAE56",           # muted mustard
+    "BaO": "#B29DA6",              # dusty mauve
+    "Cs2MoO4": "#D9AF32",          # muted gold
+    "FCC": "#A66226",              # burnt orange
+    "HCP": "#733426",              # dark terracotta
+    "MoO2": "#737675",             # warm grey
+    "MoPd2": "#9D6953",            # muted clay
+    "Perovskite": "#363726",       # dark olive
+    "liquid metallic": "#785C2D",  # earthy brown
+    "liquid oxide": "#789174",     # sage green
+    "Sigma": "#657D8A",            # dusty blue
+    "other phases": "#8B7966",     # warm taupe
+}
+
+# Radial phase-fraction figure: colour from JOG_PHASE_COLORS, marker = phase,
+# open marker = variant (beta-Cs2MoO4, Cs-rich liquid, ordered HCP), so a
+# phase looks the same at end of irradiation and after cooldown. Small
+# horizontal offsets (R/Ro) keep phases with similar fractions at the same
+# node from hiding each other (e.g. HCP and Ba3MoO6 at point 4).
+RADIAL_OXIDE_DODGE = 0.018
+RADIAL_METALLIC_DODGE = -0.018
+# key: (legend label, colour, marker, filled, x-offset)
+RADIAL_PHASE_STYLE = {
+    "CS2MOO4_S1": (r"$\alpha$-Cs$_2$MoO$_4$ (S1)", JOG_PHASE_COLORS["Cs2MoO4"], "o", True, 0.0),
+    "CS2MOO4_S2": (r"$\beta$-Cs$_2$MoO$_4$ (S2)", JOG_PHASE_COLORS["Cs2MoO4"], "o", False, 0.0),
+    "LIQUID_BA": ("Liquid oxide, Ba-rich", JOG_PHASE_COLORS["liquid oxide"], "s", True, 0.0),
+    "LIQUID_CS": ("Liquid oxide, Cs-rich", JOG_PHASE_COLORS["liquid oxide"], "s", False, 0.0),
+    "BAMOO4": ("BaMoO$_4$", JOG_PHASE_COLORS["BaMoO4"], "^", True, RADIAL_OXIDE_DODGE),
+    "BA3MOO6": ("Ba$_3$MoO$_6$", JOG_PHASE_COLORS["Ba3MoO6"], "v", True, RADIAL_OXIDE_DODGE),
+    "BAO": ("BaO (halite)", JOG_PHASE_COLORS["BaO"], "X", True, RADIAL_OXIDE_DODGE),
+    "MOO2": ("MoO$_2$", JOG_PHASE_COLORS["MoO2"], "*", True, RADIAL_OXIDE_DODGE),
+    "HCP": ("HCP", JOG_PHASE_COLORS["HCP"], "D", True, RADIAL_METALLIC_DODGE),
+    "HCP_ORD": ("HCP (ord.)", JOG_PHASE_COLORS["HCP"], "D", False, RADIAL_METALLIC_DODGE),
+    "FCC": ("FCC", JOG_PHASE_COLORS["FCC"], "P", True, RADIAL_METALLIC_DODGE),
+}
+RADIAL_PHASE_KEY_BY_DB_NAME = {
+    "CS2MOO4_S1": "CS2MOO4_S1", "CS2MOO4_S2": "CS2MOO4_S2", "BAMOO4": "BAMOO4",
+    "BA3MOO6": "BA3MOO6", "HALITE": "BAO", "MOO2": "MOO2",
+    "HCP_A3": "HCP", "HCP_ORD": "HCP_ORD", "FCC_A1": "FCC",
+}
+RADIAL_PROFILE_COLOR = "#363726"  # dark olive
 
 # Central hole radius (Inspyre deliverable 7.3) used by the CSRED/OXIRED Cs
 # and O redistribution preprocessing (see solve_csred_cs_production_scaling_
@@ -1340,149 +1261,167 @@ def preprocessing_radial_edges_over_ro(n_cells: int) -> np.ndarray:
 
 
 def add_radial_point_regions(axis: plt.Axes, n_cells: int, *, show_labels: bool = True) -> None:
-    """Shade the pellet shell each SCIANTIX node represents, using the same
-    mesh edges as the Cs/O redistribution preprocessing, and label it
-    "Point N"."""
+    """Mark the pellet shell each SCIANTIX node represents (alternating grey
+    bands, same mesh edges as the Cs/O redistribution preprocessing) and
+    label it "Point N"."""
     edges = preprocessing_radial_edges_over_ro(n_cells)
     for i in range(n_cells):
-        axis.axvspan(
-            edges[i], edges[i + 1],
-            color=RADIAL_POINT_REGION_COLORS[i % len(RADIAL_POINT_REGION_COLORS)],
-            alpha=0.12, zorder=0, linewidth=0,
-        )
+        if i % 2 == 0:
+            axis.axvspan(edges[i], edges[i + 1], color=RADIAL_POINT_BAND_COLOR, zorder=0, linewidth=0)
         if show_labels:
             axis.text(
                 0.5 * (edges[i] + edges[i + 1]), 0.97,
-                f"Point {i + 1}", ha="center", va="top", fontsize=13, color="#3a3a3a",
+                f"Point {i + 1}", ha="center", va="top", fontsize=15, color="#3a3a3a",
                 transform=axis.get_xaxis_transform(), zorder=1,
             )
-    axis.set_xlim(edges[0], edges[-1])
+    axis.grid(False, axis="x")
 
 
-def plot_radial_phase_mole_fraction_snapshot(
+def radial_phase_key(phase: str, instance_rows: list[dict[str, object]]) -> str:
+    """Key of RADIAL_PHASE_STYLE; the oxide liquids are told apart by their
+    dominant cation (CS+ vs BA+2 on the first sublattice)."""
+    name = phase.strip().upper()
+    if name == "LIQUID":
+        cations = {
+            str(row["constituent"]): float(row["site_fraction"])
+            for row in instance_rows
+            if int(row["sublattice"]) == 1
+        }
+        return "LIQUID_CS" if cations.get("CS+", 0.0) > cations.get("BA+2", 0.0) else "LIQUID_BA"
+    return RADIAL_PHASE_KEY_BY_DB_NAME.get(name, name)
+
+
+def radial_phase_fractions(case_dir: Path, target_time: float, side: str) -> dict[str, float]:
+    """Grain-boundary phase mole fractions at one snapshot, by RADIAL_PHASE_STYLE key."""
+    sublattice_file = case_dir / PHASE_SUBLATTICE_OUTPUT_NAME
+    if not sublattice_file.exists():
+        return {}
+    rows = [
+        row
+        for row in load_phase_sublattice_rows(sublattice_file)
+        if row["location"] == "at grain boundary"
+    ]
+    if not rows:
+        return {}
+    _, snapshot_rows = phase_rows_at_snapshot(rows, target_time, side)
+    instances: dict[tuple[str, str], list[dict[str, object]]] = defaultdict(list)
+    for row in snapshot_rows:
+        instances[(str(row["phase"]), str(row["phase_instance"]))].append(row)
+    moles: dict[str, float] = defaultdict(float)
+    for (phase, _), instance_rows in instances.items():
+        n = max(float(row["phase_moles"]) for row in instance_rows)
+        if n > 0.0:
+            moles[radial_phase_key(phase, instance_rows)] += n
+    total = sum(moles.values())
+    return {key: n / total for key, n in moles.items()} if total > 0.0 else {}
+
+
+def plot_radial_phase_mole_fraction_pre_post(
     case_directories: list[Path],
     radii_m_array: np.ndarray,
     output_profiles: dict[str, np.ndarray],
     reference_time: np.ndarray,
+    reference_fima: np.ndarray,
     saved_paths: list[Path],
-    *,
-    target_time: float,
-    side: str,
-    snapshot_label: str,
-    output_name: str,
 ) -> None:
-    entries = phase_mole_fraction_profile_entries(case_directories, target_time, side)
-    if not entries or TEMPERATURE_LABEL not in output_profiles:
+    """Paper figure: (a) phases at end of irradiation, (b) phases after the
+    final cooldown, (c) temperature at both states, (d) O/M ratio, on a
+    shared R/Ro axis. Same colour + marker for a phase in (a) and (b)."""
+    if TEMPERATURE_LABEL not in output_profiles or "O/M ratio (/)" not in output_profiles:
+        return
+    fima_end = float(np.interp(COOLDOWN_START, reference_time, reference_fima))
+    snapshots = [
+        (COOLDOWN_START, "before", f"(a) End of irradiation ({fima_end:.1f} % FIMA)"),
+        (COOLDOWN_END, "after", "(b) After cooldown to 300 K"),
+    ]
+    fractions = [
+        [radial_phase_fractions(case_dir, target_time, side) for case_dir in case_directories]
+        for target_time, side, _ in snapshots
+    ]
+    if not any(point for snapshot in fractions for point in snapshot):
         return
 
-    snapshot = snapshot_index(reference_time, target_time, side)
     r_over_ro = radii_m_array / PELLET_RADIUS_M
-    temperature = output_profiles[TEMPERATURE_LABEL][:, snapshot]
-    om_ratio = None
-    if "O/M ratio (/)" in output_profiles:
-        om_ratio = output_profiles["O/M ratio (/)"][:, snapshot]
-    elif "Stoichiometry deviation (/)" in output_profiles:
-        om_ratio = 2.0 + output_profiles["Stoichiometry deviation (/)"][:, snapshot]
-
     fig, axes = plt.subplots(
-        2,
-        1,
-        figsize=(10, 7.5),
-        sharex=True,
-        gridspec_kw={"height_ratios": [1.15, 0.85], "hspace": 0.28},
+        4, 1, figsize=(10, 13.5), sharex=True,
+        gridspec_kw={"height_ratios": [3.0, 3.0, 1.45, 1.2], "hspace": 0.24},
     )
-    phase_axis, state_axis = axes
-    add_radial_point_regions(phase_axis, len(r_over_ro), show_labels=True)
-    add_radial_point_regions(state_axis, len(r_over_ro), show_labels=False)
+    for index, axis in enumerate(axes):
+        add_radial_point_regions(axis, len(r_over_ro), show_labels=index == 0)
+        axis.tick_params(labelsize=16)
 
-    marker_cycle = ["o", "s", "D", "^", "v", "P", "X", "<", ">"]
-    color_map = build_label_color_map([phase for phase, _ in entries], palette=PAPER_PALETTE)
-
-    def short_label(phase: str) -> str:
-        # Strip the trailing top-constituents parenthetical (kept only in
-        # the plotted phase key, used for colour grouping): the full
-        # composition at each point is already given in the Results text,
-        # so the legend only needs to identify the phase, not repeat it.
-        return re.sub(r"\s*\([^()]*\)\s*$", "", phase)
-
-    # Marker shape is keyed by the short label too, in order of first
-    # appearance, so every entry sharing a legend row (e.g. several
-    # distinct Liquid compositions) is drawn with the same symbol as well
-    # as the same colour (colour is already species-grouped by
-    # build_label_color_map).
-    marker_map: dict[str, str] = {}
-    for phase, _ in entries:
-        label = short_label(phase)
-        if label not in marker_map:
-            marker_map[label] = marker_cycle[len(marker_map) % len(marker_cycle)]
-
-    for phase, values in entries:
-        plotted_values = np.where(values > 0.0, values, np.nan)
-        label = short_label(phase)
-        phase_axis.plot(
-            r_over_ro,
-            plotted_values,
-            color=color_map[phase],
-            marker=marker_map[label],
-            linestyle=(0, (2.0, 2.5)),
-            linewidth=1.4,
-            markersize=8.0,
-            label=label,
-            zorder=2,
+    present = {key for snapshot in fractions for point in snapshot for key in point}
+    ordered = [key for key in RADIAL_PHASE_STYLE if key in present] + sorted(present - set(RADIAL_PHASE_STYLE))
+    for axis, snapshot, (_, _, title) in zip(axes[:2], fractions, snapshots):
+        for key in ordered:
+            values = np.array([point.get(key, np.nan) for point in snapshot], dtype=float)
+            if np.all(np.isnan(values)):
+                continue
+            label, color, marker, filled, dodge = RADIAL_PHASE_STYLE.get(
+                key, (pretty_phase_name(key), PAPER_PALETTE[8], "h", False, 0.0)
+            )
+            x = r_over_ro + dodge
+            axis.plot(x, values, color=color, linestyle=(0, (2.0, 2.5)), linewidth=1.2, zorder=2)
+            axis.plot(
+                x, values, linestyle="none", marker=marker,
+                markersize=13 if marker == "*" else 10,
+                markerfacecolor=color if filled else "white",
+                markeredgecolor=tuple(0.7 * c for c in to_rgb(color)) if filled else color,
+                markeredgewidth=1.0 if filled else 2.0,
+                label=label, zorder=3,
+            )
+        axis.set_yscale("log")
+        axis.set_ylim(1.0e-3, 4.0)
+        axis.set_ylabel("Phase fraction (-)", fontsize=18)
+        axis.set_title(title, loc="left", fontsize=18)
+        # Legend in the empty band inward of point 1 (R/Ro < ~0.29).
+        axis.legend(
+            loc="center left", bbox_to_anchor=(0.0, 0.47), fontsize=14, frameon=False,
+            handlelength=1.2, handletextpad=0.5, labelspacing=0.45, borderaxespad=0.3,
         )
 
-    phase_axis.set_yscale("log")
-    phase_axis.set_ylabel("Phase fraction")
-    phase_axis.set_ylim(1.0e-3, 1.5)
-    # Legend inside the empty left band (R/Ro < ~0.3, inward of point 1) so
-    # the pre- and post-cooldown figures render at identical sizes.
-    # Deduplicated so phases sharing a short label (and now also a colour
-    # and marker) appear as a single legend row.
-    legend_handles, legend_labels = phase_axis.get_legend_handles_labels()
-    unique_legend = dict(zip(legend_labels, legend_handles))
-    phase_axis.legend(
-        unique_legend.values(),
-        unique_legend.keys(),
-        loc="center left",
-        bbox_to_anchor=(0.005, 0.5),
-        ncol=1,
-        fontsize=11.5,
-        framealpha=0.85,
-        frameon=True,
-        edgecolor="none",
-        facecolor="none",
-        handlelength=1.4,
-        handletextpad=0.5,
-        borderaxespad=0.2,
-        labelspacing=0.4,
-    )
-    phase_axis.set_title(snapshot_label)
+    temperature_axis, om_axis = axes[2], axes[3]
+    pre = snapshot_index(reference_time, COOLDOWN_START, "before")
+    post = snapshot_index(reference_time, COOLDOWN_END, "after")
+    for index, linestyle, text in ((pre, "-", "end of irradiation"), (post, (0, (5.0, 3.0)), "after cooldown")):
+        temperature = output_profiles[TEMPERATURE_LABEL][:, index]
+        temperature_axis.plot(
+            r_over_ro, temperature, color=RADIAL_PROFILE_COLOR, linestyle=linestyle,
+            linewidth=2.0, marker="o", markersize=6,
+        )
+        temperature_axis.annotate(
+            text, (r_over_ro[0], temperature[0]), xytext=(-12, 0), textcoords="offset points",
+            ha="right", va="center", fontsize=14, color="#3a3a3a",
+        )
+    temperature_axis.set_ylabel("T (K)", fontsize=18)
+    temperature_axis.set_ylim(0.0, 2500.0)
+    temperature_axis.set_yticks(np.arange(0.0, 2501.0, 500.0))
+    temperature_axis.set_title("(c) Temperature", loc="left", fontsize=18)
 
-    temperature_color = COLORS[3]
-    om_color = COLORS[2]
-    state_axis.plot(r_over_ro, temperature, color=temperature_color, linewidth=2.8, zorder=2)
-    state_axis.set_ylabel("Temperature (K)", color=temperature_color)
-    # Common, fixed temperature scale for the pre- and post-cooldown
-    # snapshots, so the two figures are directly comparable (the
-    # post-cooldown profile is flat at room temperature).
-    state_axis.set_ylim(200.0, 2400.0)
-    state_axis.set_yticks(np.arange(400.0, 2401.0, 400.0))
-    # No horizontal grid in the temperature panel (vertical grid kept).
-    state_axis.grid(False, axis="y")
-    state_axis.tick_params(axis="y", labelcolor=temperature_color)
-    state_axis.set_xlabel("R/Ro")
-    state_axis.set_xlim(0.0, 1.0)
+    om_pre = output_profiles["O/M ratio (/)"][:, pre]
+    om_post = output_profiles["O/M ratio (/)"][:, post]
+    om_axis.plot(r_over_ro, om_pre, color=RADIAL_PROFILE_COLOR, linewidth=2.0, marker="o", markersize=6)
+    if np.allclose(om_pre, om_post, atol=1.0e-5):
+        om_title = "(d) O/M ratio (unchanged by the cooldown)"
+    else:
+        om_axis.plot(
+            r_over_ro, om_post, color=RADIAL_PROFILE_COLOR, linestyle=(0, (5.0, 3.0)),
+            linewidth=2.0, marker="o", markersize=6,
+        )
+        om_title = "(d) O/M ratio (solid: end of irradiation, dashed: after cooldown)"
+    om_axis.set_ylabel("O/M (-)", fontsize=18)
+    om_axis.set_ylim(1.98, 2.005)
+    om_axis.set_yticks([1.98, 1.99, 2.00])
+    om_axis.set_title(om_title, loc="left", fontsize=18)
+    om_axis.set_xlabel("R/Ro (-)", fontsize=18)
+    om_axis.set_xlim(0.0, 1.0)
 
-    if om_ratio is not None:
-        om_axis = state_axis.twinx()
-        om_axis.grid(False)
-        om_axis.plot(r_over_ro, om_ratio, color=om_color, linewidth=2.8)
-        om_axis.set_ylabel("O/M ratio (-)", color=om_color)
-        om_axis.set_ylim(1.975, 2.01)
-        om_axis.set_yticks(np.arange(1.975, 2.01, 0.01))
-        om_axis.tick_params(axis="y", labelcolor=om_color)
-
-    save_figure(fig, PLOTS_DIR / output_name, saved_paths)
+    # No tight_layout (save_figure): it would override the panel spacing.
+    output_path = PLOTS_DIR / "radial_phase_mole_fraction_pre_post_cooldown.png"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, bbox_inches="tight")
+    plt.close(fig)
+    saved_paths.append(output_path)
 
 
 def plot_radial_profiles(
@@ -1562,23 +1501,17 @@ def plot_radial_profiles(
     radial_phase_snapshots = list(COOLDOWN_SNAPSHOTS) + [
         ("mid_irradiation", "mid-irradiation", mid_irradiation_time, "before"),
     ]
-    # Only pre-/post-cooldown are shown in the paper (Fig. radial phase mole
-    # fraction); mid-irradiation stays in radial_phase_snapshots for the text
-    # results summary below.
-    for snapshot_slug, snapshot_name, target_time, side in COOLDOWN_SNAPSHOTS:
-        fima_at_snapshot = float(np.interp(target_time, reference_time, reference_fima))
-        snapshot_label = f"{snapshot_name} ({fima_at_snapshot:.1f} at.%)"
-        plot_radial_phase_mole_fraction_snapshot(
-            ordered_case_directories,
-            radii_m_array,
-            output_profiles,
-            reference_time,
-            saved_paths,
-            target_time=target_time,
-            side=side,
-            snapshot_label=snapshot_label,
-            output_name=f"radial_phase_mole_fraction_{snapshot_slug}.png",
-        )
+    # Paper figure (Fig. radial phase mole fraction): pre- and post-cooldown
+    # in one figure; mid-irradiation stays in radial_phase_snapshots for the
+    # text results summary below.
+    plot_radial_phase_mole_fraction_pre_post(
+        ordered_case_directories,
+        radii_m_array,
+        output_profiles,
+        reference_time,
+        reference_fima,
+        saved_paths,
+    )
 
     oxygen_potential_columns = [
         ("Fuel oxygen potential - Kato (KJ/mol)", "Kato's Equation (NEA/NSC/R(2024)1)"),
@@ -1671,7 +1604,7 @@ def plot_radial_profiles(
                 axis.plot(
                     x[order],
                     y[order],
-                    color=RADIAL_POINT_REGION_COLORS[(point_index - 1) % len(RADIAL_POINT_REGION_COLORS)],
+                    color="#eda100",
                     zorder=3,
                     label=f"SCIANTIX {eol_fima:.1f} at.%",
                 )
@@ -1739,7 +1672,7 @@ def plot_radial_profiles(
         # (burnup range, or cooldown window) are stacked and shown in the
         # legend; a phase absent throughout that window is dropped entirely.
         jog_entries: list[tuple[str, np.ndarray, object]] = []
-        jog_colors = assign_distinct_colors([jog_label(column) for column in jog_stack_columns])
+        jog_colors = JOG_PHASE_COLORS
         for index, column_name in enumerate(jog_stack_columns):
             label = jog_label(column_name)
             series = radial_integral_masked_to_full_radius(

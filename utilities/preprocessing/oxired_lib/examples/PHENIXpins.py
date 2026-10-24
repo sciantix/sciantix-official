@@ -643,20 +643,21 @@ def main() -> None:
     regression_root = Path(__file__).resolve().parents[3] / "regression" / "JOG" / "PHENIXpins"
     #copied_histories = copy_radial_input_histories_to_regression(output_root, regression_root)
 
-    # Region colors: one per radial node, so the reader can see which shell
-    # of the pellet (edges[i] to edges[i+1]) each SCIANTIX node represents.
-    REGION_COLORS = ["#2a78d6", "#1baf7a", "#eda100", "#008300"]
+    # Alternating grey bands: the shell of the pellet (edges[i] to edges[i+1])
+    # each SCIANTIX node represents. Same style as the JOG paper figures
+    # (validation/jog/PHENIXpins/plot_JOG.py, RADIAL_POINT_BAND_COLOR).
+    POINT_BAND_COLOR = "#ececE8"
     edges_over_ro = edges / r_outer
     n_regions = len(edges_over_ro) - 1
 
     fig, axis = plt.subplots(1,1, figsize=(8,5))
 
     for i in range(n_regions):
-        axis.axvspan(
-            edges_over_ro[i], edges_over_ro[i + 1],
-            color=REGION_COLORS[i % len(REGION_COLORS)],
-            alpha=0.15, zorder=0, linewidth=0,
-        )
+        if i % 2 == 0:
+            axis.axvspan(
+                edges_over_ro[i], edges_over_ro[i + 1],
+                color=POINT_BAND_COLOR, zorder=0, linewidth=0,
+            )
         axis.text(
             0.5 * (edges_over_ro[i] + edges_over_ro[i + 1]), 0.97,
             f"Point {i + 1}", ha="center", va="top", fontsize=13, color="#3a3a3a",
@@ -704,7 +705,7 @@ def main() -> None:
     plt.tight_layout()
 
     SCRIPT_DIR = Path(__file__).resolve().parent
-    plt.savefig(SCRIPT_DIR.parents[4] / "OverLeaf/JOGSCIANTIX/Images/Oprofile.png")
+    plt.savefig(Path.home() / "OverLeaf/JOGSCIANTIX/Images/Oprofile.png")
 
     fig, axis = plt.subplots(1,1, figsize=(5+4,5))
     axis.plot(
