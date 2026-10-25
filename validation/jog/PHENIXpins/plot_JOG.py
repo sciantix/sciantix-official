@@ -119,7 +119,7 @@ sys.path.insert(0, str(TEST_DIR / "support"))
 from FPs_plot import ATOMIC_PERCENT_COMPOSITION as CAPPIA_ATOMIC_PERCENT_COMPOSITION  # noqa: E402
 
 # Fixed element -> color assignment shared by every JOG composition pie
-# (Cappia reference, SCIANTIX, GERMINAL/Oulfarsi), so the same element always
+# (Hoel-Bacle and Cappia references, SCIANTIX, GERMINAL/Oulfarsi), so the same element always
 # gets the same color regardless of which subset of elements a given pie
 # happens to show. Keep this in sync with the copy in support/FPs_plot.py.
 ELEMENT_COLORS = {
@@ -473,21 +473,30 @@ def place_pie_wedge_labels(
             shift = min(overshoot, top_limit - placed_ys[0])
             placed_ys = [y + shift for y in placed_ys]
 
-        for (theta, index), text_y in zip(side_items, placed_ys):
+        for rank, ((theta, index), text_y) in enumerate(zip(side_items, placed_ys)):
             x, y = math.cos(theta), math.sin(theta)
             text_x = column_x * side
             ha = "left" if side > 0.0 else "right"
-            axis.annotate(
-                "",
-                xy=(pie_radius * x, pie_radius * y),
-                xytext=(text_x, text_y),
-                arrowprops=dict(
-                    arrowstyle="-",
-                    color="#8a8a83",
-                    lw=1.0,
-                    connectionstyle=f"angle,angleA=0,angleB={math.degrees(theta):.1f}",
-                ),
+            # Leader line routed outside the pie: a short radial stub, then
+            # horizontal and vertical segments to the label. The vertical segment
+            # of a lower label sits closer to the pie, so that leader lines of
+            # labels pushed down by the decluttering never cross each other.
+            stub_x, stub_y = 1.08 * pie_radius * x, 1.08 * pie_radius * y
+            elbow_x = side * pie_radius * (1.16 + 0.035 * (len(side_items) - 1 - rank))
+            if abs(text_y - stub_y) < 0.1 * pie_radius:
+                # Label almost level with its wedge: one straight segment, no step.
+                line_x = [pie_radius * x, stub_x, text_x]
+                line_y = [pie_radius * y, stub_y, text_y]
+            else:
+                line_x = [pie_radius * x, stub_x, elbow_x, elbow_x, text_x]
+                line_y = [pie_radius * y, stub_y, stub_y, text_y, text_y]
+            axis.plot(
+                line_x,
+                line_y,
+                color="#8a8a83",
+                lw=1.0,
                 zorder=3,
+                solid_joinstyle="miter",
             )
             axis.text(
                 text_x + 0.04 * side, text_y, f"{elements[index]} ",
@@ -760,12 +769,15 @@ def normalize_atomic_percent(elements: dict[str, float]) -> dict[str, float]:
 def is_outer_node_jog_pie_phase(phase: str, phase_instance: str) -> bool:
     phase_name = phase.strip().upper()
     phase_instance_name = phase_instance.strip().upper()
-    ba_molybdate_phases = {"BAMOO4", "BA2MOO5", "BA3MOO6"}
+    # Molybdates plus the binary oxides MoO2 and BaO (HALITE).
+    oxide_phases = {"BAMOO4", "BA2MOO5", "BA3MOO6", "MOO2"}
     return (
         phase_name.startswith("CS2MOO4")
         or phase_instance_name.startswith("CS2MOO4")
-        or phase_name in ba_molybdate_phases
-        or phase_instance_name in ba_molybdate_phases
+        or phase_name in oxide_phases
+        or phase_instance_name in oxide_phases
+        or phase_name == "HALITE"
+        or phase_instance_name.startswith("HALITE")
         or phase_name == "LIQUID"
         or phase_instance_name.startswith("LIQUID")
         or phase_name == "FCC_A1"
@@ -855,12 +867,22 @@ def add_atomic_percent_pie(
     composition: dict[str, float],
     color_map: dict[str, object],
     title: str,
+    uncertainties: dict[str, float] | None = None,
 ) -> None:
     # Drop essentially-zero entries (e.g. Ba at 0.0 at.% in the GERMINAL
     # composition): a wedge of zero width only clutters the labelling.
+    # Wedges follow the fixed ELEMENT_COLORS order, so the same element sits at
+    # the same place in every pie and side-by-side pies can be compared.
+    element_order = list(ELEMENT_COLORS)
     labels = [
         label
-        for label in sorted(composition, key=composition.get, reverse=True)
+        for label in sorted(
+            composition,
+            key=lambda label: (
+                element_order.index(label) if label in element_order else len(element_order),
+                -composition[label],
+            ),
+        )
         if composition[label] >= 0.05
     ]
     if not labels:
@@ -880,9 +902,11 @@ def add_atomic_percent_pie(
         radius=pie_radius,
     )
 
-    place_pie_wedge_labels(
-        axis, wedges, labels, values, [f"{value:.1f}%" for value in values], pie_radius,
-    )
+    if uncertainties:
+        value_labels = [f"{composition[label]:.0f} ± {uncertainties[label]:.0f}%" for label in labels]
+    else:
+        value_labels = [f"{value:.1f}%" for value in values]
+    place_pie_wedge_labels(axis, wedges, labels, values, value_labels, pie_radius)
 
     axis.set_xlim(-2.1 * pie_radius, 2.1 * pie_radius)
     axis.set_ylim(-1.75 * pie_radius, 1.75 * pie_radius)
@@ -918,7 +942,23 @@ def load_oulfarsi_germinal_element_composition(data_file: Path) -> dict[str, flo
     return composition
 
 
-def plot_cappia_sciantix_germinal_comparison_pies(
+def load_hoelbacle_composition(data_file: Path, dataset: str) -> tuple[dict[str, float], dict[str, float]]:
+    """Mean and standard deviation (at.%) of one dataset of HoelBacle2026_composition.txt."""
+    composition: dict[str, float] = {}
+    uncertainty: dict[str, float] = {}
+    with data_file.open() as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#") or line.startswith("Dataset,"):
+                continue
+            name, element, value_str, std_str = [item.strip() for item in line.split(",")]
+            if name == dataset:
+                composition[element] = float(value_str)
+                uncertainty[element] = float(std_str)
+    return composition, uncertainty
+
+
+def plot_jog_composition_comparison_pies(
     case_directories: list[Path],
     saved_paths: list[Path],
     *,
@@ -927,11 +967,20 @@ def plot_cappia_sciantix_germinal_comparison_pies(
     snapshot_label: str,
     output_name: str,
 ) -> None:
-    """Side-by-side JOG composition pies: Cappia et al. EPMA, SCIANTIX outer
-    radial node, and the GERMINAL-based JOG-NESTOR3 estimate from Oulfarsi
-    et al. (2024). The Cappia panel is drawn from its own composition data
-    (support/FPs_plot.py), not a saved image, so all three pies share the
-    same rendering."""
+    """JOG composition pies. Top row: the SCIANTIX outer radial node between
+    the two Hoel-Bacle EPMA samples of the NESTOR-3 JOG (MA04 left, MA07 right,
+    Cs-Ba-Mo-O only). Bottom row: Cappia et al. EDS of an FFTF JOG and the
+    GERMINAL-based NESTOR-3 estimate of Oulfarsi et al. (2024). The Cappia
+    panel is drawn from its own composition data (support/FPs_plot.py), not a
+    saved image, so all pies share the same rendering."""
+    hoelbacle_file = EXP_DATA_DIR / "HoelBacle2026_composition.txt"
+    hoelbacle_samples = {
+        sample: load_hoelbacle_composition(hoelbacle_file, f"{sample} EPMA")
+        for sample in ("MA04", "MA07")
+    }
+    if not all(composition for composition, _ in hoelbacle_samples.values()):
+        return
+
     cappia_composition = {
         element: value for element, value in CAPPIA_ATOMIC_PERCENT_COMPOSITION if value >= 1.0
     }
@@ -956,32 +1005,48 @@ def plot_cappia_sciantix_germinal_comparison_pies(
 
     color_map = {
         element: element_pie_color(element)
-        for element in set(sciantix_atomic_percent) | set(germinal_composition) | set(cappia_composition)
+        for element in set(sciantix_atomic_percent)
+        | set(germinal_composition)
+        | set(cappia_composition)
+        | set(hoelbacle_samples["MA04"][0])
+        | set(hoelbacle_samples["MA07"][0])
     }
 
-    fig, axes = plt.subplots(1, 3, figsize=(15, 5.5))
+    # Six-column grid: three pies on top, the two bottom pies centred under them.
+    fig = plt.figure(figsize=(13, 9.5))
+    grid = fig.add_gridspec(2, 6)
+    top_axes = [fig.add_subplot(grid[0, 2 * col : 2 * col + 2]) for col in range(3)]
+    bottom_axes = [fig.add_subplot(grid[1, 1:3]), fig.add_subplot(grid[1, 3:5])]
 
+    for axis, sample in ((top_axes[0], "MA04"), (top_axes[2], "MA07")):
+        composition, uncertainty = hoelbacle_samples[sample]
+        add_atomic_percent_pie(
+            axis,
+            composition,
+            color_map,
+            f"EPMA {sample}, NESTOR-3 JOG\nHoël-Bacle, 2026",
+            uncertainties=uncertainty,
+        )
     add_atomic_percent_pie(
-        axes[0],
-        cappia_composition,
-        color_map,
-        "EPMA, FFTF JOG\nCappia et al., 2020",
-    )
-
-    add_atomic_percent_pie(
-        axes[1],
+        top_axes[1],
         sciantix_atomic_percent,
         color_map,
         "SCIANTIX, NESTOR-3 JOG\nThis work, post-cooldown",
     )
     add_atomic_percent_pie(
-        axes[2],
+        bottom_axes[0],
+        cappia_composition,
+        color_map,
+        "EDS, FFTF JOG\nCappia et al., 2020",
+    )
+    add_atomic_percent_pie(
+        bottom_axes[1],
         germinal_composition,
         color_map,
         "GERMINAL, NESTOR-3 JOG\nOulfarsi et al., 2024",
     )
 
-    fig.subplots_adjust(wspace=0.15, left=0.02, right=0.98, top=0.82, bottom=0.05)
+    fig.subplots_adjust(wspace=0.15, hspace=0.25, left=0.02, right=0.98, top=0.92, bottom=0.03)
     save_figure(fig, PLOTS_DIR / output_name, saved_paths)
 
 
@@ -1458,13 +1523,13 @@ def plot_radial_profiles(
     reference_burnup = burnup_from_history(output_histories[0])
     reference_fima = output_histories[0]["FIMA (%)"]
 
-    # Only the post-cooldown pie is used in the paper (Fig. cappia comparison).
+    # Only the post-cooldown pie is used in the paper (Fig. atomic_percent_pie_comparison).
     for snapshot_slug, snapshot_name, target_time, side in COOLDOWN_SNAPSHOTS:
         if snapshot_slug != "post_cooldown":
             continue
         fima_at_snapshot = float(np.interp(target_time, reference_time, reference_fima))
         snapshot_label = f"{snapshot_name} ({fima_at_snapshot:.1f} at.%)"
-        plot_cappia_sciantix_germinal_comparison_pies(
+        plot_jog_composition_comparison_pies(
             ordered_case_directories,
             saved_paths,
             target_time=target_time,
