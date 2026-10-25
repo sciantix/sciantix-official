@@ -1,0 +1,9 @@
+{
+  "label": "G2_D1_Dg16",
+  "f_n": 0.00051,
+  "K_d": 320000.0,
+  "rho_d": 35000000000000.0,
+  "Dv_dislocation_scale": 10.0,
+  "Dg_dislocation_scale": 16.0,
+  "NGF_AREAL_0": 10000000000000.0
+}
