@@ -4,7 +4,9 @@ as in OperaHPC D5.2 (Section 2.2, Fig. 7). Only numpy and matplotlib: it runs wh
 
 Folders of ROOT (test_rve.py writes them, MMM is run in each; its output may also be in a subfolder):
     side<L>_seed<NN>             one cube per seed; several sides L are allowed (EXTRA_SIDES of test_rve.py)
-    side<L>_seed01_<variant>     the pores of side<L>_seed01 with another mesh (meshdouble, wall<h>_bulk<H>)
+    side<L>_seed01_<variant>     the pores of side<L>_seed01 with another mesh (meshdouble, wall<h>_bulk<H>); a variant
+                                 ending in _refinement (or _refinement<k>, _r<k>) is the mesh of its summary refined k
+                                 times in MMM (test-polybubble -r k, k = 1 if not written), e.g. meshdouble_refinement
 each with bubbles_<run>.txt and summary_<run>.txt of Mérope, bubbles_and_stresses_selected.txt and sig_hydro.txt of MMM.
 Folders without the output of MMM are skipped.
 
@@ -22,6 +24,8 @@ The analysis answers four questions, in this order:
  2. Does a cube hold the whole population?      classes expected and placed by Mérope       top of rve_size.txt
  3. How much does the FGR change between seeds? the curves of D5.2 Fig. 7 with their spread rve_fgr.txt, rve_fgr.png
  4. Which side gives the precision asked?       Kanit, on the FGR and on the class means    rve_fgr.txt, rve_size.txt/png
+A mesh refined in MMM has smaller elements but the pore surfaces of its coarse mesh: mesh_test.txt (1b) tells how much of
+the change from the coarse mesh to the mesh of gmsh of the same size the refinement recovers.
 
 Kanit et al., Int. J. Solids Struct. 40 (2003) 3647, in short. A property Z computed on a cube of volume V changes from
 one random cube (seed) to the other: D^2(V), its variance between cubes, decreases with the volume as D^2 ~ V^-alpha.
@@ -71,9 +75,11 @@ EXPERIMENT = None        # optional csv with a header and the columns p_MPa,FGR_
 
 STRESSES, HYDRO = "bubbles_and_stresses_selected.txt", "sig_hydro.txt"
 CASE = re.compile(r"side(?P<side>\d+(?:\.\d+)?)_seed(?P<seed>\d+)(?:_(?P<variant>.+))?$")
+REFINED = re.compile(r"(?:^|_)(?:refinement|refined|refine|r)(?P<levels>\d*)$")  # end of a variant refined in MMM
 LABEL = {"sigma": r"$\sigma_I / p$", "s_hat": r"$\hat s$"}
 SEQ_BLUE, GRID = ("#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281"), "#e1e0d9"
 REFERENCE_LINE, D52_COLOR, EXPERIMENT_COLOR = "#8a8a85", "#c2410c", "#d62728"
+REFINED_COLOR = "#e0a030"  # meshes refined in MMM, hatched
 
 
 # ---- Reading a solved cube --------------------------------------------------------------------------------------------
@@ -127,7 +133,8 @@ def read_summary(folder):
 
 
 def read_cube(folder):
-    """Pores of a solved cube: dict with the folder, side, seed, variant, mesh, classes of the summary, and per pore id,
+    """Pores of a solved cube: dict with the folder, side, seed, variant, mesh (wall and bulk sizes, divided by 2^k for a
+    variant refined k times in MMM, whose geometry keeps the sizes of the summary), classes of the summary, and per pore id,
     radius R, volume V, gap to the nearest pore, sigma and s_hat (None without sig_hydro.txt); None if MMM has not run."""
     case = CASE.match(os.path.basename(folder))
     side = float(case["side"])
@@ -157,12 +164,16 @@ def read_cube(folder):
                          f"({len(row)})")
 
     (wall, bulk), classes = read_summary(folder)
+    refined = REFINED.search(case["variant"] or "")
+    levels = int(refined["levels"] or 1) if refined else 0
+    geometry = (wall, bulk)  # sizes of the mesh of gmsh, which also sets the pore surfaces
+    wall, bulk = wall / 2**levels, bulk / 2**levels  # a uniform refinement of MFEM halves every edge
     p = PREF * table["pressure"]
     sigma = table["sigma_I_max"] / p
     R = np.round(table["radius"], 6)
     gap = nearest_gaps(bubbles[:, 1:4], bubbles[:, 4], side)[[row[i] for i in ids]]
     cube = {"folder": os.path.basename(folder), "side": side, "seed": int(case["seed"]), "variant": case["variant"],
-            "wall": wall, "bulk": bulk, "classes": classes, "id": ids, "R": R, "V": 4.0 / 3.0 * np.pi * R**3,
+            "wall": wall, "bulk": bulk, "refine": levels, "geometry": geometry, "classes": classes, "id": ids, "R": R, "V": 4.0 / 3.0 * np.pi * R**3,
             "gap": gap, "gap_R": gap / R, "sigma": sigma, "s_hat": None}
 
     if not np.isfinite(sigma).all():
@@ -275,11 +286,71 @@ def richardson(h, s):
     return p, s1 - (s2 - s1) * h1**p / (h2**p - h1**p)
 
 
+def same_mesh(a, b):
+    """True if the (wall, bulk) sizes a and b are the same mesh size."""
+    return bool(np.isclose(a[0], b[0], rtol=1e-3) and np.isclose(a[1], b[1], rtol=1e-3))
+
+
+def mesh_name(c):
+    """How the mesh of a cube was made: by gmsh, or refined k times in MMM from the mesh of its summary."""
+    return f"MMM -r {c['refine']}" if c["refine"] else "gmsh"
+
+
+def refinement_lines(refined, gmsh, means, value, ids, used, names, width):
+    """Each mesh refined in MMM against the mesh of gmsh of the same size (target) and its coarse mesh (parent): class
+    means against the target, the share of the change between parent and target that the refinement recovers, and a
+    verdict line per refined mesh."""
+    lines, summaries = [], []
+    for r in refined:
+        what = (f"{r['folder']} (the {r['geometry'][0]:g} um mesh refined {r['refine']}x in MMM, -r {r['refine']}, "
+                f"elements of about {r['wall']:g} um)")
+        parent = next((c for c in gmsh if same_mesh((c["wall"], c["bulk"]), r["geometry"])), None)
+        target = next((c for c in gmsh if same_mesh((c["wall"], c["bulk"]), (r["wall"], r["bulk"]))), None)
+        if target is None:
+            text = f"{what}: no mesh of gmsh at {r['wall']:g} um solved to compare with, only the table above"
+            lines += ["#", f"# {text}"]
+            summaries.append(text)
+            continue
+        m_r, m_t = means[r["folder"]], means[target["folder"]]
+        left = 100.0 * (m_r / m_t - 1.0)
+        pore = np.array([100.0 * (value[r["folder"]][i] / value[target["folder"]][i] - 1.0) for i in ids])
+        lines += ["#", f"# 1b. Refinement in MMM against a finer mesh of gmsh: {what}",
+                  f"#     against {target['folder']} ({target['wall']:g} um from gmsh)",
+                  f"# {'class means against ' + target['folder'] + ' (%)':<{width}s}" + "".join(f"{n:>8s}" for n in names)]
+        recovered = None
+        if parent is not None:
+            m_p = means[parent["folder"]]
+            off = 100.0 * (m_p / m_t - 1.0)
+            recovered = np.full(len(off), np.nan)
+            ok = np.abs(off) > 100 * EPS_MESH  # elsewhere the coarse mesh is already good and the ratio is noise
+            recovered[ok] = 100.0 * (m_r[ok] - m_p[ok]) / (m_t[ok] - m_p[ok])
+            lines.append(f"# {'  ' + parent['folder'] + ' (coarse, gmsh)':<{width}s}" + "".join(f"{x:8.2f}" for x in off))
+        lines.append(f"# {'  ' + r['folder'] + ' (' + mesh_name(r) + ')':<{width}s}" + "".join(f"{x:8.2f}" for x in left))
+        if recovered is not None:
+            lines.append(f"# {'  change recovered by the refinement (%)':<{width}s}"
+                         + "".join(f"{x:8.0f}" if np.isfinite(x) else f"{'-':>8s}" for x in recovered))
+            lines.append(f"#   100: as good as the mesh of gmsh at {target['wall']:g} um, 0: no gain on the coarse mesh "
+                         f"(- : the coarse mesh is already within {100 * EPS_MESH:g} % there)")
+        sel = used if used.any() else np.arange(len(left)) == len(left) - 1  # the classes of the verdict, or all pores
+        worst = np.abs(left[sel]).max()
+        verdict = "equivalent" if worst <= 100 * EPS_MESH else "NOT equivalent"
+        before = (f"the {parent['wall']:g} um mesh of gmsh is off by up to {np.abs(off[sel]).max():.2f} %, "
+                  if parent is not None else "")
+        text = (f"refinement in MMM ({r['folder']}): on the classes of the verdict {before}refined {r['refine']}x in MMM "
+                f"by up to {worst:.2f} % from the {target['wall']:g} um mesh of gmsh (per pore: median |d| "
+                f"{np.median(np.abs(pore)):.2f} %, largest {np.abs(pore).max():.2f} %): {verdict} at {100 * EPS_MESH:g} %")
+        lines.append(f"# {text}")
+        summaries.append(text)
+    return lines, summaries
+
+
 def analyse_mesh(root, cubes, q):
     """Mesh test on side<L>_seed01 and its variants: class means and pores against the reference, the Richardson value
-    when there are three wall sizes at one bulk size, otherwise the finest mesh (then the error of the finest mesh is not
-    measured). Writes mesh_test.txt and mesh_test.png. Returns (status, one line for the verdict); status 1 if the mesh
-    of the runs is more than EPS_MESH from a reference that tells it, on a class used in the verdict."""
+    when there are three wall sizes of gmsh at one bulk size, otherwise the finest mesh of gmsh (then the error of the
+    finest mesh is not measured). A mesh refined in MMM keeps the pore surfaces of its coarse mesh, so it stays out of the
+    Richardson fit: it is compared with its coarse mesh and with the mesh of gmsh of the same size (refinement_lines).
+    Writes mesh_test.txt and mesh_test.png. Returns (status, one line for the verdict); status 1 if the mesh of the runs is
+    more than EPS_MESH from a reference that tells it, on a class used in the verdict."""
     families = {}
     for c in cubes:
         if c["seed"] == 1:
@@ -289,8 +360,12 @@ def analyse_mesh(root, cubes, q):
         print(f"{root}: no mesh variant of a seed01 solved, no mesh test")
         return 0, "# - mesh: not tested (no variant of side<L>_seed01 solved)"
     side = max(families, key=lambda L: len(families[L]))
-    family = sorted(families[side], key=lambda c: (c["wall"], c["bulk"]))
-    finest, runs = family[0], next((c for c in family if c["variant"] is None), None)
+    family = sorted(families[side], key=lambda c: (c["refine"] > 0, c["wall"], c["bulk"]))
+    gmsh, refined = [c for c in family if not c["refine"]], [c for c in family if c["refine"]]
+    if not gmsh:
+        print(f"{root}: only meshes refined in MMM for side{side:g}_seed01, no mesh test")
+        return 0, "# - mesh: not tested (only meshes refined in MMM)"
+    finest, runs = gmsh[0], next((c for c in gmsh if c["variant"] is None), None)
     ids = sorted(set.intersection(*(set(c["id"][np.isfinite(c[q])]) for c in family)))
     value = {c["folder"]: dict(zip(c["id"], c[q])) for c in family}
     R = dict(zip(finest["id"], finest["R"]))
@@ -301,10 +376,10 @@ def analyse_mesh(root, cubes, q):
     means = {c["folder"]: np.array([np.mean([value[c["folder"]][i] for i in ids if R[i] == Rk]) for Rk in radii] +
                                    [np.mean([value[c["folder"]][i] for i in ids])]) for c in family}
 
-    # reference: Richardson on the bulk size with three wall sizes or more, per class and for all the pores
-    reference, how, extrapolated = means[finest["folder"]], f"the finest mesh, {finest['folder']}", False
-    for bulk in sorted({c["bulk"] for c in family}):
-        group = [c for c in family if c["bulk"] == bulk]
+    # reference: Richardson on the bulk size with three wall sizes of gmsh or more, per class and for all the pores
+    reference, how, extrapolated = means[finest["folder"]], f"the finest mesh of gmsh, {finest['folder']}", False
+    for bulk in sorted({c["bulk"] for c in gmsh}):
+        group = [c for c in gmsh if c["bulk"] == bulk]
         if len({c["wall"] for c in group}) >= 3:
             h = np.array([c["wall"] for c in group])
             fits = [richardson(h, np.array([means[c["folder"]][k] for c in group])) for k in range(len(radii) + 1)]
@@ -314,30 +389,36 @@ def analyse_mesh(root, cubes, q):
                        f"order per class {', '.join(f'{fit[0]:.2f}' for fit in fits[:-1])}, all pores {fits[-1][0]:.2f}")
                 break
             print(f"{root}: Richardson at bulk {bulk:g} um not possible (class means not monotone in the wall size)")
-    compared = family if extrapolated else family[1:]
+    coarse = gmsh if extrapolated else gmsh[1:]  # the meshes of gmsh against the reference
+    compared = coarse + refined
     deviation = {c["folder"]: 100.0 * (means[c["folder"]] / reference - 1.0) for c in family}
 
     names = [f"{Rk:.3f}" for Rk in radii] + ["all"]
+    width = 69  # label column of the tables, as the folder, wall, bulk, mesh and w/Rmin columns
     lines = [f"# 1. Is the mesh fine enough? {q} of the {len(ids)} pores of side{side:g}_seed01 with {len(family)} meshes",
              f"# - reference: {how}",
              f"# - tolerance on the class means: {100 * EPS_MESH:g} %",
              f"# - smallest radius {min(radii):.3f} um, smallest gap between two pores "
-             f"{min(gap_R[i] * R[i] for i in ids):.3f} um",
-             "# deviation of the class means from the reference (%), then per pore from the finest mesh: median and "
-             "largest |d| (%)",
-             f"# {'folder':<34s}{'wall':>7s}{'bulk':>7s}{'w/Rmin':>7s}" + "".join(f"{n:>8s}" for n in names)
-             + f"{'med|d|':>8s}{'max|d|':>8s}",
-             f"# {'share of the pore volume (%)':<55s}" + "".join(f"{100 * s:8.1f}" for s in shares) + f"{100.0:8.1f}"]
+             f"{min(gap_R[i] * R[i] for i in ids):.3f} um"]
+    if refined:
+        lines.append("# - mesh MMM -r k: the mesh of the summary refined k times in MMM (every edge halved each time), "
+                     "wall and bulk are its sizes / 2^k; its pore surfaces are those of the coarse mesh")
+    lines += ["# deviation of the class means from the reference (%), then per pore from the finest mesh of gmsh: median "
+              "and largest |d| (%)",
+              f"# {'folder':<38s}{'wall':>7s}{'bulk':>7s}{'mesh':>10s}{'w/Rmin':>7s}" + "".join(f"{n:>8s}" for n in names)
+              + f"{'med|d|':>8s}{'max|d|':>8s}",
+              f"# {'share of the pore volume (%)':<{width}s}" + "".join(f"{100 * s:8.1f}" for s in shares) + f"{100.0:8.1f}"]
     for c in family:
         pore = np.array([100.0 * (value[c["folder"]][i] / value[finest["folder"]][i] - 1.0) for i in ids])
-        lines.append(f"  {c['folder']:<34s}{c['wall']:7g}{c['bulk']:7g}{c['wall'] / min(radii):7.2f}"
+        lines.append(f"  {c['folder']:<38s}{c['wall']:7g}{c['bulk']:7g}{mesh_name(c):>10s}{c['wall'] / min(radii):7.2f}"
                      + "".join(f"{x:8.2f}" for x in deviation[c["folder"]])
                      + f"{np.median(np.abs(pore)):8.2f}{np.abs(pore).max():8.2f}")
 
-    # verdict: against an extrapolated value, or (two wall sizes) the difference between the meshes only
-    status, small = 0, [f"R = {radii[k]:.3g} um ({100 * shares[k]:.1f} % vol) changes by "
-                        f"{max(abs(deviation[c['folder']][k]) for c in compared):.0f} %"
-                        for k in range(len(radii)) if not used[k]]
+    # verdict on the meshes of gmsh: against an extrapolated value, or (two wall sizes) the difference between the meshes
+    status = 0
+    small = [f"R = {radii[k]:.3g} um ({100 * shares[k]:.1f} % vol) changes by "
+             f"{max(abs(deviation[c['folder']][k]) for c in coarse):.0f} %"
+             for k in range(len(radii)) if not used[k]] if coarse else []
     worst = lambda c: np.abs(deviation[c["folder"]][used]).max() if used.any() else 0.0
     if extrapolated:
         if runs is None:
@@ -347,8 +428,8 @@ def analyse_mesh(root, cubes, q):
             summary = (f"the mesh of the runs ({runs['wall']:g} um) is within {worst(runs):.2f} % of the extrapolated "
                        f"value on the classes of the verdict: {'converged' if not status else 'NOT converged'} at "
                        f"{100 * EPS_MESH:g} %")
-    else:
-        following = compared[0]  # the mesh just coarser than the finest
+    elif coarse:
+        following = coarse[0]  # the mesh of gmsh just coarser than the finest
         ratio = following["wall"] / finest["wall"]
         order2 = (f" (it would be {worst(following) / (ratio**2 - 1.0):.2f} % with an order 2)" if ratio > 1.0 else "")
         summary = (f"the classes of the verdict change by at most {worst(following):.2f} % from {following['wall']:g} to "
@@ -356,19 +437,27 @@ def analyse_mesh(root, cubes, q):
                    "(WALL_SIZES of test_rve.py)")
         if runs is not None and runs is not finest:
             status = int(worst(runs) > 100 * EPS_MESH)
+    else:
+        summary = (f"one mesh of gmsh only ({finest['folder']}), not tested: add another wall size (WALL_SIZES of "
+                   "test_rve.py)")
     lines += ["#", f"# {summary}"] + (["# not in the verdict: " + "; ".join(small)] if small else [])
+    extra, refined_summaries = refinement_lines(refined, gmsh, means, value, ids, used, names, width)
+    lines += extra
     with open(os.path.join(root, "mesh_test.txt"), "w") as f:
         f.write("\n".join(lines) + "\n")
 
-    # figure: class means against the reference, then every pore against the finest mesh
+    # figure: class means against the reference, then every pore against the finest mesh of gmsh
     fig, ax = plt.subplots(1, 2, figsize=(14.0, 5.0))
-    width = 0.8 / max(len(compared), 1)
+    width_bar = 0.8 / max(len(compared), 1)
     big = max(abs(deviation[c["folder"]]).max() for c in compared) > 20.0
     for j, c in enumerate(compared):
-        x = np.arange(len(names)) - 0.4 + width * (j + 0.5)
+        x = np.arange(len(names)) - 0.4 + width_bar * (j + 0.5)
         d = deviation[c["folder"]]
-        ax[0].bar(x, d, width=0.9 * width, color=SEQ_BLUE[(1 + 2 * j) % len(SEQ_BLUE)], zorder=2,
-                  label=f"{c['folder']} (wall {c['wall']:g}, bulk {c['bulk']:g} um)")
+        how_made = (f", the {c['geometry'][0]:g} um mesh refined {c['refine']}x in MMM" if c["refine"] else "")
+        ax[0].bar(x, d, width=0.9 * width_bar, zorder=2, hatch="//" if c["refine"] else None,
+                  color=REFINED_COLOR if c["refine"] else SEQ_BLUE[(1 + 2 * j) % len(SEQ_BLUE)],
+                  edgecolor="white" if c["refine"] else None,
+                  label=f"{c['folder']} (wall {c['wall']:g}, bulk {c['bulk']:g} um{how_made})")
         for xk, dk in zip(x, d):
             ax[0].annotate(f"{dk:.1f}", (xk, dk), ha="center", va="bottom" if dk >= 0 else "top", fontsize=7,
                            xytext=(0, 2 if dk >= 0 else -2), textcoords="offset points")
@@ -378,23 +467,26 @@ def analyse_mesh(root, cubes, q):
     ax[0].set(xlabel="radius of the class (um) and its share of the pore volume",
               ylabel="class mean against the reference (%)" + (" (symlog)" if big else ""),
               title="Class means against " + ("the extrapolated value (Richardson)" if extrapolated else
-                                              f"the finest mesh ({finest['wall']:g} um): its own error is not measured"))
+                                              f"the finest mesh of gmsh ({finest['wall']:g} um)\n(its own error is not "
+                                              "measured)"))
+    ax[0].margins(y=0.1)
     others = [c for c in compared if c is not finest]
     x_pore = np.array([gap_R[i] for i in ids])
     for k, c in enumerate(others):
         pore = np.array([100.0 * (value[c["folder"]][i] / value[finest["folder"]][i] - 1.0) for i in ids])
-        marker = "osd^v"[k % 5]
+        marker = "x" if c["refine"] else "osd^v"[k % 5]
         for kr, Rk in enumerate(radii):
             sel = np.array([R[i] == Rk for i in ids])
-            ax[1].scatter(x_pore[sel], pore[sel], s=16, marker=marker, color=class_color(kr, len(radii)), zorder=2,
-                          label=f"R = {Rk:.3g} um" if k == 0 else None)
+            ax[1].scatter(x_pore[sel], pore[sel], s=20 if c["refine"] else 16, marker=marker, zorder=3 if c["refine"] else 2,
+                          color=class_color(kr, len(radii)), label=f"R = {Rk:.3g} um" if k == 0 else None)
         if len(others) > 1:
-            ax[1].scatter([], [], marker=marker, color=REFERENCE_LINE, label=f"{c['folder']} (wall {c['wall']:g} um)")
+            ax[1].scatter([], [], marker=marker, color=REFERENCE_LINE,
+                          label=f"{c['folder']} (wall {c['wall']:g} um, {mesh_name(c)})")
     ax[1].axhspan(-100 * EPS_MESH, 100 * EPS_MESH, color=GRID, lw=0, zorder=0)
     ax[1].axhline(0.0, color=REFERENCE_LINE, lw=0.8)
     ax[1].set(xscale="log", xlabel="gap to the nearest pore / radius of the pore",
-              ylabel=f"{LABEL[q]} against the finest mesh (%)" + (" (symlog)" if big else ""),
-              title=f"Every pore of side{side:g}_seed01: coarser meshes against the finest ({finest['wall']:g} um)")
+              ylabel=f"{LABEL[q]} against the finest mesh of gmsh (%)" + (" (symlog)" if big else ""),
+              title=f"Every pore of side{side:g}_seed01:\nother meshes against the finest mesh of gmsh ({finest['wall']:g} um)")
     for a in ax:
         if big:
             symlog_percent(a)
@@ -405,7 +497,7 @@ def analyse_mesh(root, cubes, q):
     plt.close(fig)
     print("\n".join(lines))
     print(f"wrote mesh_test.txt and mesh_test.png in {root}")
-    return status, f"# - mesh: {summary}"
+    return status, f"# - mesh: {summary}" + "".join(f"\n# - {s}" for s in refined_summaries)
 
 
 # ---- 2. Does a cube hold the whole population? -----------------------------------------------------------------------

@@ -1,0 +1,35 @@
+\frametitle{Pipeline}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[node distance=5mm and 5mm, every node/.style={font=\normalsize},
+  box/.style={draw, rounded corners, align=center, minimum height=11mm, inner sep=4pt, text width=38mm},
+  arr/.style={-{Stealth[length=2mm]}, thick, black!60}]
+\node[box] (run) {\texttt{run\_NFIR.txt}\\ classes $R_k,\xi_k$};
+\node[box, right=of run] (cub) {\texttt{test\_rve.py}\\ cubes of the tests\\ (\texttt{cubes.txt})};
+\node[box, right=of cub] (mer) {M\'erope\\ \texttt{bubbles}, \texttt{summary}, \texttt{.geo}};
+\node[box, right=of mer] (gm) {\texttt{run\_gmsh.sh}\\ P2 mesh, curved\\ elements optimised};
+\node[box, below=of gm] (chk) {\texttt{inverted\_elements.py}\\ $\det J>0$ everywhere};
+\node[box, left=of chk] (mmm) {\texttt{run\_mmm.sh}\\ copies the inputs,\\ skips solved cases};
+\node[box, left=of mmm] (out) {per pore CSV\\ $\langle\sigma_h\rangle$ (\texttt{sig\_hydro})};
+\node[box, left=of out] (ana) {\texttt{plot\_bubbles.py}\\ mesh, population,\\ FGR, RVE size};
+\draw[arr] (run) -- (cub); \draw[arr] (cub) -- (mer); \draw[arr] (mer) -- (gm); \draw[arr] (gm) -- (chk);
+\draw[arr] (chk) -- (mmm); \draw[arr] (mmm) -- (out); \draw[arr] (out) -- (ana);
+\end{tikzpicture}}
+\vspace{6pt}
+
+\begin{columns}[T]
+\column{0.48\linewidth}
+\scriptsize
+\begin{verbatim}
+test_rve_side10/run_NFIR/
+  side10_seed01 ... side10_seed10      size test
+  side10_seed01_meshdouble             mesh test
+  side10_seed01_meshdouble_refinement  refined in MMM
+  cubes.txt  unit_NFIR.txt
+\end{verbatim}
+\column{0.48\linewidth}
+\begin{itemize}
+\item one folder per cube: pore list, summary, mesh, MMM outputs
+\item the folder name tells the analysis what the cube is (side, seed, variant)
+\end{itemize}
+\end{columns}
