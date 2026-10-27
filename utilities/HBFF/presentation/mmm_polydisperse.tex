@@ -190,9 +190,10 @@ One MMM run gives the whole curve, for any $\sigma_R$.
 \scriptsize
 \begin{verbatim}
 test_rve_side10/run_NFIR/
-  side10_seed01 ... side10_seed10      size test
-  side10_seed01_meshdouble             mesh test
-  side10_seed01_meshdouble_refinement  refined in MMM
+  side10_seed01 ... side10_seed10     size test
+  side10_seed01_mesh0.4, _mesh0.5     mesh test
+  side10_seed01_meshdouble (0.6)      mesh test
+  side10_seed01_meshdouble_refinement in MMM
   cubes.txt  unit_NFIR.txt
 \end{verbatim}
 \column{0.48\linewidth}
@@ -206,7 +207,9 @@ test_rve_side10/run_NFIR/
 % ---------------------------------------------------------------------------------------------------------------------
 \begin{frame}{Data analysis}
 \begin{enumerate}
-\item \textbf{Is the mesh fine enough?} Class means of $\hat s$ on a coarser mesh against the finest one, tolerance 2 \%.
+\item \textbf{Is the mesh fine enough?} Class means of $\hat s$ on coarser meshes against the finest one (or its
+      Richardson extrapolation, with three sizes or more), tolerance 2 \%; a mesh refined in MMM against gmsh at the
+      same size.
 \item \textbf{Does a cube hold the whole population?} Pores expected and placed per class: a class with less than one
       pore per cube is missing from every cube, whatever the number of seeds.
 \item \textbf{How much does the FGR change between seeds?} $x_c=p/\sigma_R$ at which every cube releases 10, 25, 50, 75,
@@ -229,9 +232,9 @@ test_rve_side10/run_NFIR/
 \item $D^2$: variance of $Z$ between the cubes
 \item $S^2$: variance of $\hat s$ between single pores
 \item $V=L^3$: volume of the cube
-\item $A$: integral range, the volume over which $\hat s$ is correlated; for independent pores $A=1/$(pore density) [HOW IS CALCULATED?]
+\item $A$: integral range, the volume over which $\hat s$ is correlated; for independent pores $A=1/$(pore density)
 \item $\alpha$: how fast the spread falls with the volume; $\alpha=1$ for independent pores (variance of a mean of $N$
-      values $=S^2/N$) [NON CAPISCO come lo calcoli]
+      values $=S^2/N$)
 \end{itemize}
 \column{0.5\linewidth}
 \footnotesize
@@ -265,7 +268,8 @@ Check of $\alpha=1$: independent pores give $A\times\text{density}=D^2N_k/S^2=1$
 unit pressure in every pore; repulsion 0.3 $\mu$m; $\delta=0.5\ \mu$m.
 \vspace{6pt}
 
-\textbf{Cubes}: 10 cubes of 10 $\mu$m at mesh 0.3 $\mu$m (size test) + seed 1 at 0.6 $\mu$m (mesh test).
+\textbf{Cubes}: 10 cubes of 10 $\mu$m at mesh 0.3 $\mu$m (size test) + seed 1 at 0.4, 0.5, 0.6 $\mu$m and 0.6 $\mu$m
+refined once in MMM (mesh test).
 \vspace{6pt}
 
 \textbf{Planned}: 30 $\mu$m at 0.15 $\mu$m, but on the cluster (should be available now).
@@ -295,17 +299,17 @@ porosity 0.101 against 0.114: the 1.70 $\mu$m class needs a side $\ge13.6\ \mu$m
 % ---------------------------------------------------------------------------------------------------------------------
 \begin{frame}{Result: FGR of the 10 cubes}
 \centering
-\includegraphics[width=0.94\linewidth]{rve_fgr.png}
+\includegraphics[width=\linewidth]{rve_fgr.png}
 % TODO: add the FGR curve of OperaHPC D5.2 (Fig. 7) on the same figure: needs its data (csv), not on this PC [digitalizza da deliverablde opera]
 \vspace{2pt}
 
-\raggedright\small
-\begin{itemize}
-\item $x_c=p/\sigma_R$ at which a cube releases 50 \% of its gas: $0.747\pm0.029$ (mean of the 10 cubes, 95 \%), i.e.\
-      $p\approx205$ MPa with the $\sigma_R=275$ MPa of OperaHPC (to recalibrate)
-\item error of one cube on $x_c$: 7--12 \%, above the 5 \% asked. On the FGR alone the RVE is $\approx18\ \mu$m;
-      14--27 $\mu$m is its 95 \% confidence interval (only 10 cubes)
-\end{itemize}
+% \raggedright\small
+% \begin{itemize}
+% \item $x_c=p/\sigma_R$ at which a cube releases 50 \% of its gas: $0.747\pm0.029$ (mean of the 10 cubes, 95 \%), i.e.\
+%       $p\approx205$ MPa with the $\sigma_R=275$ MPa of OperaHPC (to recalibrate)
+% \item error of one cube on $x_c$: 7--12 \%, above the 5 \% asked. On the FGR alone the RVE is $\approx18\ \mu$m;
+%       14--27 $\mu$m is its 95 \% confidence interval (only 10 cubes)
+% \end{itemize}
 \end{frame}
 
 % ---------------------------------------------------------------------------------------------------------------------
@@ -314,31 +318,69 @@ porosity 0.101 against 0.114: the 1.70 $\mu$m class needs a side $\ge13.6\ \mu$m
 \includegraphics[width=\linewidth]{rve_size.png}
 \vspace{2pt}
 
-\raggedright\small
-\begin{itemize}
-\item \textbf{one 10 $\mu$m cube is not an RVE}: $L_{RVE}\approx27\ \mu$m (21--40), set by the 1.19 $\mu$m class (26 \% of the
-      pore volume), or the mean of 20 cubes of 10 $\mu$m; consistent with the 30 $\mu$m of OPERAHPC
-\item is the $1/V$ scaling right? If the pores of a class act independently, $A\times$density $=1$. Measured 0.56--1.18,
-      close to 1: extrapolating from 10 $\mu$m to $L_{RVE}$ with $\alpha=1$ is reasonable; a second cube side would
-      measure $\alpha$ directly [TBD]
-\item $\hat s$ follows the nearest ligament: it grows when the gap to the nearest pore shrinks
-\end{itemize}
+% \raggedright\small
+% \begin{itemize}
+% \item \textbf{one 10 $\mu$m cube is not an RVE}: $L_{RVE}\approx27\ \mu$m (21--40), set by the 1.19 $\mu$m class (26 \% of the
+%       pore volume), or the mean of 20 cubes of 10 $\mu$m; consistent with the 30 $\mu$m of OPERAHPC
+% \item is the $1/V$ scaling right? If the pores of a class act independently, $A\times$density $=1$. Measured 0.56--1.18,
+%       close to 1: extrapolating from 10 $\mu$m to $L_{RVE}$ with $\alpha=1$ is reasonable; a second cube side would
+%       measure $\alpha$ directly [TBD]
+% \item $\hat s$ follows the nearest ligament: it grows when the gap to the nearest pore shrinks
+% \end{itemize}
 \end{frame}
 
 % ---------------------------------------------------------------------------------------------------------------------
-\begin{frame}{Mesh convergence (seed 1, preliminary)}
+\begin{frame}{Mesh convergence (seed 1)}
 \centering
-\includegraphics[width=0.86\linewidth]{mesh_test.png}
-\vspace{2pt}
+\includegraphics[width=0.84\linewidth]{mesh_test.png}
+\vspace{0pt}
 
 \raggedright\footnotesize
-Same pores of seed 1 meshed at 0.6 and 0.3 $\mu$m. Left: class mean of $\hat s$ on 0.6 $\mu$m minus that on 0.3 $\mu$m,
-in \% of the latter (grey band: $\pm2$ \% tolerance). Right: the same pore by pore, against the gap to the nearest pore.
-\begin{itemize}
-\item the classes $\ge0.85\ \mu$m ($\approx70$ \% of the pore volume) change by $\le1$ \%; the small ones by up to 35 \%
-\item why it is not conclusive: with two meshes the reference (0.3 $\mu$m) is itself not converged.
-\item to redo with the mesh of the final runs: 0.15 $\mu$m
-\end{itemize}
+Same pores of seed 1: gmsh at 0.6, 0.5, 0.4, 0.3 $\mu$m, and the 0.6 $\mu$m mesh refined once in MMM (\code{-r 1},
+hatched). Left: class mean of $\hat s$ against the 0.3 $\mu$m mesh (grey: $\pm2$ \%). Right: pore by pore.
+% \begin{itemize}
+% \item classes $\ge0.61\ \mu$m (94 \% of the pore volume): $\le1.1$ \% from 0.4 to 0.3 $\mu$m. Classes $\le0.44\ \mu$m
+%       (6 \%): $\approx20$ \%, not converged; coarse elements overestimate $\hat s$ on the small pores
+% \item no Richardson: the class means are not monotone in $h$ ($\hat s$ comes from a pointwise maximum). FGR of seed 1:
+%       $x_c(50\,\%)=0.663,\ 0.703,\ 0.721,\ 0.698$ from 0.6 to 0.3 $\mu$m, i.e.\ 3 \% from 0.4 to 0.3, below the
+%       7--12 \% between cubes
+% \item 0.6 $\mu$m refined in MMM $\approx$ gmsh 0.3 $\mu$m within 2.6 \% on every class: the curved pore surfaces of the
+%       coarse mesh are accurate enough, the element size is what matters $\to$ \oo{mesh graded on each pore}
+% \end{itemize}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------------------------------
+\begin{frame}{Cost: finer mesh in gmsh or refinement in MMM?}
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+mesh of seed 1 & tetrahedra & gmsh & MMM run & memory peak \\
+\midrule
+gmsh 0.6 $\mu$m & 39\,301 & 7.5 min & 12 s & 1.5 GB \\
+gmsh 0.5 $\mu$m & 47\,873 & 8.2 min & 12 s & 1.8 GB \\
+gmsh 0.4 $\mu$m & 95\,781 & 3.4 min & 29 s & 3.4 GB \\
+gmsh 0.3 $\mu$m & 222\,053 & 3.5 min & 81 s & 7.5 GB \\
+0.6 $\mu$m refined in MMM (\code{-r 1}) & 314\,408 & 0.6 $\mu$m + 0.5 s & 90 s & 10.7 GB \\
+%gmsh 0.15 $\mu$m & 1\,374\,062 & 6 min$^{*}$ & -- & $\approx47$ GB$^{\dagger}$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+{\scriptsize\raggedright memory: peak of every MPI process summed (4 processes, \code{[End] memory footprint} of the MMM
+log) %, $^{\dagger}$estimated at 34 kB per tetrahedron; gmsh with \code{HighOrderOptimize 2}, $^{*}$without it.
+M\'erope writes the \code{.geo} in seconds at any size.\par}
+\vspace{4pt}
+
+\raggedright\footnotesize
+% \begin{itemize}
+% \item memory $\propto$ number of tetrahedra: $\approx34$ kB each (P2), with or without refinement
+% \item the refinement splits every element in 8, also those gmsh had already shrunk near the small pores: 314 k
+%       tetrahedra against 222 k for gmsh at 0.3 $\mu$m $\to$ +40 \% memory for the same result (within 2.6 \%)
+% \item time: gmsh is set by the optimisation of the curved elements, not by the size (0.6 $\mu$m slower than 0.3
+%       $\mu$m). The refinement saves time only if the coarse mesh is already there: 90 s instead of 3.5 min + 81 s
+% \item 0.15 $\mu$m: gmsh $\approx47$ GB, the 0.3 $\mu$m mesh refined in MMM $\approx60$ GB: neither fits in the 16 GB
+%       of this PC
+% \end{itemize}
 \end{frame}
 
 % ---------------------------------------------------------------------------------------------------------------------
@@ -366,28 +408,14 @@ MMM: {\footnotesize\code{solve: the non linear solver did not converge}}
 
 % ---------------------------------------------------------------------------------------------------------------------
 \begin{frame}{Next steps and points to discuss}
-\begin{columns}[T]
-\column{0.48\linewidth}
-\textbf{Next}
-\begin{enumerate}\small
-\item mesh test at 0.15 $\mu$m on seed 1 (other PC, $\approx40$ GB)
-\item a second side (20 or 30 $\mu$m) to measure $\alpha$ and the bias of the small cube; 30 $\mu$m on the cluster
-      (\code{partition-mesh}: written, not yet tested in a full run)
-\item fix side and mesh, then the LHS runs:
-      $\ln\hat s=c_0+c_1\ln(R/R_V)+\varepsilon$ per run
-\item tables / surrogate of $(c_0,c_1,\sigma_\varepsilon)$ into SCIANTIX
-\end{enumerate}
-\column{0.5\linewidth}
 \textbf{To discuss}
 \begin{itemize}\small
 \item \textbf{$\delta$}: 0.5 $\mu$m in these runs, larger than the 0.3 $\mu$m minimum gap: the search sphere can reach the
       ligament of the neighbour. $\delta\le0.3\ \mu$m?
-\item \textbf{pressure per class} in the LHS runs: the rescaling to zero macroscopic stress is exact only with one
-      pressure; otherwise a second run (unit isotropic strain, no pressure) and a linear combination
-\item \textbf{classes missing in small cubes} (1.70 $\mu$m, 7.8 \% of the pore volume): the side follows the rarest
-      large class
+\item mesh uniform 0.15 $\mu$m, run on the other CCRT
+\item lectures next week i would like to send everything by this week
+
 \end{itemize}
-\end{columns}
 \end{frame}
 
 \end{document}

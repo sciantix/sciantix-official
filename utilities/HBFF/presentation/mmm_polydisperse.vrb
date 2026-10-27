@@ -22,9 +22,10 @@
 \scriptsize
 \begin{verbatim}
 test_rve_side10/run_NFIR/
-  side10_seed01 ... side10_seed10      size test
-  side10_seed01_meshdouble             mesh test
-  side10_seed01_meshdouble_refinement  refined in MMM
+  side10_seed01 ... side10_seed10     size test
+  side10_seed01_mesh0.4, _mesh0.5     mesh test
+  side10_seed01_meshdouble (0.6)      mesh test
+  side10_seed01_meshdouble_refinement in MMM
   cubes.txt  unit_NFIR.txt
 \end{verbatim}
 \column{0.48\linewidth}

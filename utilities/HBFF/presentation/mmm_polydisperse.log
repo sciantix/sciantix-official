@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.3.5)  26 OCT 2026 22:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.3.5)  27 OCT 2026 09:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -809,18 +809,13 @@ Overfull \hbox (0.10065pt too wide) in paragraph at lines 119--119
 ]
 \openout4 = `mmm_polydisperse.vrb'.
 
- (./mmm_polydisperse.vrb
-Overfull \hbox (5.89293pt too wide) in paragraph at lines 29--29
-[]  \T1/lmtt/m/n/7 side10_seed01_meshdouble_refinement  refined in MMM[] 
- []
-
-) [7
+ (./mmm_polydisperse.vrb) [7
 
 ] [8
 
 ]
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <9> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 257.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 260.
  [9
 
 ] [10
@@ -829,29 +824,31 @@ LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <9> not available
 <mmm_polydisperse_figs//rve_fgr.png, id=97, 1084.05pt x 404.712pt>
 File: mmm_polydisperse_figs//rve_fgr.png Graphic file (type png)
 <use mmm_polydisperse_figs//rve_fgr.png>
-Package pdftex.def Info: mmm_polydisperse_figs//rve_fgr.png  used on input line 309.
-(pdftex.def)             Requested size: 374.43924pt x 139.79253pt.
+Package pdftex.def Info: mmm_polydisperse_figs//rve_fgr.png  used on input line 313.
+(pdftex.def)             Requested size: 398.3386pt x 148.7098pt.
  [11
 
  <./mmm_polydisperse_figs//rve_fgr.png>]
 <mmm_polydisperse_figs//rve_size.png, id=105, 1300.86pt x 390.258pt>
 File: mmm_polydisperse_figs//rve_size.png Graphic file (type png)
 <use mmm_polydisperse_figs//rve_size.png>
-Package pdftex.def Info: mmm_polydisperse_figs//rve_size.png  used on input line 326.
+Package pdftex.def Info: mmm_polydisperse_figs//rve_size.png  used on input line 330.
 (pdftex.def)             Requested size: 398.3386pt x 119.50192pt.
  [12
 
  <./mmm_polydisperse_figs//rve_size.png>]
-<mmm_polydisperse_figs//mesh_test.png, id=112, 1011.78pt x 361.35pt>
+<mmm_polydisperse_figs//mesh_test.png, id=112, 1003.5894pt x 330.033pt>
 File: mmm_polydisperse_figs//mesh_test.png Graphic file (type png)
 <use mmm_polydisperse_figs//mesh_test.png>
-Package pdftex.def Info: mmm_polydisperse_figs//mesh_test.png  used on input line 342.
-(pdftex.def)             Requested size: 342.57143pt x 122.3501pt.
+Package pdftex.def Info: mmm_polydisperse_figs//mesh_test.png  used on input line 350.
+(pdftex.def)             Requested size: 334.60295pt x 110.03423pt.
  [13
 
  <./mmm_polydisperse_figs//mesh_test.png>] [14
 
 ] [15
+
+] [16
 
 ]
 \tf@nav=\write6
@@ -868,18 +865,18 @@ Package rerunfilecheck Info: File `mmm_polydisperse.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 25554 strings out of 480247
- 507846 string characters out of 5896152
- 752930 words of memory out of 5000000
- 42906 multiletter control sequences out of 15000+600000
+ 25558 strings out of 480247
+ 507881 string characters out of 5896152
+ 753966 words of memory out of 5000000
+ 42908 multiletter control sequences out of 15000+600000
  565568 words of font info for 103 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  99i,15n,104p,488b,838s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx7.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi9.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmss10.pfb></usr/share/texmf/fonts/type1/public/lm/lmss12.pfb></usr/share/texmf/fonts/type1/public/lm/lmss8.pfb></usr/share/texmf/fonts/type1/public/lm/lmss9.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsso9.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy9.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on mmm_polydisperse.pdf (15 pages, 1022444 bytes).
+Output written on mmm_polydisperse.pdf (16 pages, 1059711 bytes).
 PDF statistics:
- 280 PDF objects out of 1000 (max. 8388607)
- 183 compressed objects within 2 object streams
- 31 named destinations out of 1000 (max. 500000)
+ 285 PDF objects out of 1000 (max. 8388607)
+ 187 compressed objects within 2 object streams
+ 33 named destinations out of 1000 (max. 500000)
  58 words of extra memory for PDF output out of 10000 (max. 10000000)
 

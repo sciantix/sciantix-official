@@ -1407,11 +1407,11 @@ INPUT ./mmm_polydisperse_figs//mesh_test.png
 INPUT mmm_polydisperse_figs//mesh_test.png
 INPUT ./mmm_polydisperse_figs//mesh_test.png
 INPUT ./mmm_polydisperse_figs//mesh_test.png
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmtt8.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/lmmib10.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/lmmib7.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/lmbsy10.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/lmbsy7.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmtt8.tfm
 OUTPUT mmm_polydisperse.nav
 OUTPUT mmm_polydisperse.toc
 OUTPUT mmm_polydisperse.snm
