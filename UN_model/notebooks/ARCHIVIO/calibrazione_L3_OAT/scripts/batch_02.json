@@ -1,0 +1,8 @@
+[
+  {"id":"B2_K085_Dg094","changes":{"K_d":348500,"Dg_dislocation_scale":15.98},"hypothesis":"Kd -15% recupera raggio tramite Nd; Dg -6% compensa quasi lo swelling high-T misurato nel batch 1."},
+  {"id":"B2_K085_fn125","changes":{"K_d":348500,"f_n":0.000525},"hypothesis":"Stessa riduzione Kd con compensazione f_n +25%: confrontare con Dg e misurare la diversa gas partition."},
+  {"id":"B2_K085_Dg094_Dv120","changes":{"K_d":348500,"Dg_dislocation_scale":15.98,"Dv_dislocation_scale":12},"hypothesis":"B2 Kd-Dg più Dv +20%: batch 1 mostra recupero low-T, quasi nessun effetto high-T."},
+  {"id":"B2_K070_Dg088","changes":{"K_d":287000,"Dg_dislocation_scale":14.96},"hypothesis":"Estensione moderata della direzione Kd-Dg per verificare se il guadagno del raggio resta compatibile con swelling e Nd low-T."},
+  {"id":"B2_K085_rho095","changes":{"K_d":348500,"rho_d":33250000000000},"hypothesis":"Compensazione alternativa Kd -15%, rho -5%: ridurre swelling limitando la perdita del raggio e controllare partition."},
+  {"id":"B2_K085_fn110_Dg098","changes":{"K_d":348500,"f_n":0.000462,"Dg_dislocation_scale":16.66},"hypothesis":"Compensazione distribuita e piccola: verificare se due leve deboli conservano AP3.8 meglio della singola leva Dg."}
+]

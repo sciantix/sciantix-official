@@ -1,0 +1,8 @@
+{
+  "id": "B3_K070_Dg0885",
+  "changes": {
+    "K_d": 287000,
+    "Dg_dislocation_scale": 15.045
+  },
+  "hypothesis": "Verso opposto di fine tuning rispetto a B2 K070: recuperare gli ultimi punti ANP6 e misurare il costo AP3.4/estrapolazione."
+}

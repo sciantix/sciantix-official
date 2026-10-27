@@ -1,0 +1,8 @@
+{
+  "id": "B2_K085_Dg094",
+  "changes": {
+    "K_d": 348500,
+    "Dg_dislocation_scale": 15.98
+  },
+  "hypothesis": "Kd -15% recupera raggio tramite Nd; Dg -6% compensa quasi lo swelling high-T misurato nel batch 1."
+}

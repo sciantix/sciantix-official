@@ -1,0 +1,8 @@
+{
+  "id": "B2_K085_fn125",
+  "changes": {
+    "K_d": 348500,
+    "f_n": 0.000525
+  },
+  "hypothesis": "Stessa riduzione Kd con compensazione f_n +25%: confrontare con Dg e misurare la diversa gas partition."
+}

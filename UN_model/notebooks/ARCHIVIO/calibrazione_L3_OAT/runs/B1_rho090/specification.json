@@ -1,0 +1,7 @@
+{
+  "id": "B1_rho090",
+  "changes": {
+    "rho_d": 31500000000000
+  },
+  "hypothesis": "rho -10%: leva accoppiata, verificare Nd e forma high-T prima di compensare."
+}

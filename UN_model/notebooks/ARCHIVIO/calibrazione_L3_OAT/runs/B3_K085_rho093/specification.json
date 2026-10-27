@@ -1,0 +1,8 @@
+{
+  "id": "B3_K085_rho093",
+  "changes": {
+    "K_d": 348500,
+    "rho_d": 32550000000000
+  },
+  "hypothesis": "Raffinare B2 K085 rho095: rho -7% per ridurre il peggioramento high-T AP3.4, conservando parte del miglioramento raggio/ANP6."
+}

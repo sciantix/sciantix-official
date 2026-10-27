@@ -1,0 +1,11 @@
+{
+  "original_hashes_unchanged": true,
+  "source_cells_verbatim": true,
+  "fixed_physics_and_numerics": true,
+  "case_specific_fission_rates_unchanged": true,
+  "batches": 3,
+  "candidates": 20,
+  "candidate_material_points": 2960,
+  "all_passed": true,
+  "max_history_relative_mass_residual": 4.514461420578024e-15
+}

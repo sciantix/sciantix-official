@@ -1,0 +1,27 @@
+{
+  "D_cal": 0.044671896506898415,
+  "parameter_ratios": {
+    "f_n": 1.0,
+    "K_d": 0.85,
+    "rho_d": 1.0,
+    "Dv_dislocation_scale": 1.2,
+    "Dg_dislocation_scale": 0.9400000000000001,
+    "NGF_AREAL_0": 1.0
+  },
+  "max_relative_mass_residual": 1.7110336694699814e-15,
+  "max_partition_sum_error_pp": 1.7053025658242404e-13,
+  "max_gb_split_relative": 0.0,
+  "max_single_size_identity_relative": 3.784779009696817e-15,
+  "invalid_single_size_points": 0,
+  "max_capture_fraction": 0.0003677663605480259,
+  "max_psi_d": 0.4960163018118363,
+  "min_Nd": 6.87973645883836e+18,
+  "nonfinite_required": 0,
+  "negative_required": 0,
+  "max_history_relative_mass_residual": 3.564316483650596e-15,
+  "negative_exchange_steps": 0,
+  "nonfinite_exchange_steps": 0,
+  "max_history_raw_capture": 0.0003677663605480259,
+  "negative_release_increments": 0,
+  "seconds": 102.41320637099852
+}

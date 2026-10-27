@@ -1,0 +1,8 @@
+{
+  "id": "B2_K085_rho095",
+  "changes": {
+    "K_d": 348500,
+    "rho_d": 33250000000000
+  },
+  "hypothesis": "Compensazione alternativa Kd -15%, rho -5%: ridurre swelling limitando la perdita del raggio e controllare partition."
+}

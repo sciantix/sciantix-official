@@ -1,0 +1,77 @@
+Running AP3.2: BU=1.1% FIMA, q'=100 kW/m, d=8.3 mm, Fdot=5.7678e+19 m^-3 s^-1, 37 temperature points
+Running AP3.8: BU=1.1% FIMA, q'=119 kW/m, d=8.3 mm, Fdot=6.8637e+19 m^-3 s^-1, 37 temperature points
+Running AP3.4: BU=1.3% FIMA, q'=130 kW/m, d=8.3 mm, Fdot=7.4982e+19 m^-3 s^-1, 37 temperature points
+Running ANP6: BU=3.2% FIMA, q'=125 kW/m, d=8 mm, Fdot=7.7607e+19 m^-3 s^-1, 37 temperature points
+
+=================================================================================================================================================
+Manual physics candidate: L3_unificato
+Case-specific experimental inputs:
+  AP3.2: BU=1.1% FIMA, q'=100 kW/m, d=8.3 mm, Fdot=5.7678e+19 m^-3 s^-1
+  AP3.8: BU=1.1% FIMA, q'=119 kW/m, d=8.3 mm, Fdot=6.8637e+19 m^-3 s^-1
+  AP3.4: BU=1.3% FIMA, q'=130 kW/m, d=8.3 mm, Fdot=7.4982e+19 m^-3 s^-1
+  ANP6 : BU=3.2% FIMA, q'=125 kW/m, d=8.0 mm, Fdot=7.7607e+19 m^-3 s^-1
+=================================================================================================================================================
+Physics switches:
+  USE_PHI_GAS_RESOLUTION       = False
+  USE_NUCLEATION_MASS_COUPLING = True
+  USE_BULK_DISLOCATION_CAPTURE = True
+Key calibration parameters:
+  f_n                          = 0.00042
+  K_d                          = 410000
+  rho_d                        = 3.5e+13
+  Dv_dislocation_scale         = 10
+  Dg_dislocation_scale         = 17
+
+Selected diagnostics:
+  case  bu [%]   T [K]        Fdot   sw_d [%]   R_d [nm]    N_d [m^-3]   p_d/peq   qgb [%]   FGR [%]
+----------------------------------------------------------------------------------------------------
+ AP3.2    1.10    1200   5.768e+19       1.05       56.7     1.375e+19      1.41       4.1         0
+ AP3.2    1.10    1600   5.768e+19       2.75         80     1.281e+19         1       4.3         0
+ AP3.2    1.10    1800   5.768e+19       10.4        141     8.900e+18         1      5.48         0
+ AP3.8    1.10    1200   6.864e+19       1.03       56.3     1.376e+19      1.43       4.1         0
+ AP3.8    1.10    1600   6.864e+19       2.68       79.3     1.285e+19         1      4.27         0
+ AP3.8    1.10    1800   6.864e+19       9.83        137     9.175e+18         1      5.43         0
+ AP3.4    1.30    1200   7.498e+19       1.08       57.2     1.374e+19      1.39      4.16         0
+ AP3.4    1.30    1600   7.498e+19       2.71       79.6     1.283e+19         1      4.33         0
+ AP3.4    1.30    1800   7.498e+19       10.4        141     8.915e+18         1      5.63     0.159
+  ANP6    3.20    1200   7.761e+19       1.42       62.9     1.355e+19      1.23      4.42         0
+  ANP6    3.20    1600   7.761e+19       3.04       83.1     1.265e+19         1       4.6      2.09
+  ANP6    3.20    1800   7.761e+19       12.2        153     8.102e+18         1      6.35      4.09
+=================================================================================================================================================
+
+CSV written to: RizkUN_L3_unificato/L3_unificato_grid.csv
+Plots written:
+  - RizkUN_L3_unificato/L3_unificato_AP3p2_swelling_T_1.1FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_AP3p8_swelling_T_1.1FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_AP3p4_swelling_T_1.3FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_ANP6_swelling_T_3.2FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_swelling_case_specific_1600K.png
+  - RizkUN_L3_unificato/L3_unificato_AP3p4_RbRd_NbNd_T_1.3FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p2_pressure_T_1.1FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p2_pressure_ratio_T_1.1FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_AP3p2_gas_partition_1.1FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p2_capture_diagnostic_1.1FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p8_pressure_T_1.1FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p8_pressure_ratio_T_1.1FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_AP3p8_gas_partition_1.1FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p8_capture_diagnostic_1.1FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p4_pressure_T_1.3FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p4_pressure_ratio_T_1.3FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_AP3p4_gas_partition_1.3FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p4_capture_diagnostic_1.3FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_ANP6_pressure_T_3.2FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_ANP6_pressure_ratio_T_3.2FIMA.png
+  - RizkUN_L3_unificato/L3_unificato_ANP6_gas_partition_3.2FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_ANP6_capture_diagnostic_3.2FIMA.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p2_diffusivities_T.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p8_diffusivities_T.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_AP3p4_diffusivities_T.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_ANP6_diffusivities_T.png
+  - RizkUN_L3_unificato/diagnostic/L3_unificato_rho_d_surface.png
+{
+  "rows": 148,
+  "columns": 139,
+  "seconds": 82.69092348200138,
+  "all_columns_match": true,
+  "failed_columns": []
+}

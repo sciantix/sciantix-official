@@ -1,0 +1,9 @@
+{
+  "id": "B2_K085_fn110_Dg098",
+  "changes": {
+    "K_d": 348500,
+    "f_n": 0.000462,
+    "Dg_dislocation_scale": 16.66
+  },
+  "hypothesis": "Compensazione distribuita e piccola: verificare se due leve deboli conservano AP3.8 meglio della singola leva Dg."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "B2_K085_Dg094_Dv120",
+  "changes": {
+    "K_d": 348500,
+    "Dg_dislocation_scale": 15.98,
+    "Dv_dislocation_scale": 12
+  },
+  "hypothesis": "B2 Kd-Dg più Dv +20%: batch 1 mostra recupero low-T, quasi nessun effetto high-T."
+}

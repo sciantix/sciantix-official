@@ -1,0 +1,8 @@
+[
+  {"id":"B3_K070_Dg0875","changes":{"K_d":287000,"Dg_dislocation_scale":14.875},"hypothesis":"Ridurre di un ulteriore 0.5% di L3 il Dg del candidato B2 K070: frenare high-T senza perdere il guadagno di raggio."},
+  {"id":"B3_K070_Dg0885","changes":{"K_d":287000,"Dg_dislocation_scale":15.045},"hypothesis":"Verso opposto di fine tuning rispetto a B2 K070: recuperare gli ultimi punti ANP6 e misurare il costo AP3.4/estrapolazione."},
+  {"id":"B3_K080_Dg0923","changes":{"K_d":328000,"Dg_dislocation_scale":15.691},"hypothesis":"Punto intermedio conservativo: Kd -20%, Dg -7.7%, con swelling quasi invariato e guadagno di raggio fra le due compensazioni B2."},
+  {"id":"B3_K085_rho093","changes":{"K_d":348500,"rho_d":32550000000000},"hypothesis":"Raffinare B2 K085 rho095: rho -7% per ridurre il peggioramento high-T AP3.4, conservando parte del miglioramento raggio/ANP6."},
+  {"id":"B3_Dv080","changes":{"Dv_dislocation_scale":8},"hypothesis":"OAT opposto al Dv +20% del batch 1: completare la verifica della debolezza high-T e dell'asimmetria low-T."},
+  {"id":"B3_Ngf120","changes":{"NGF_AREAL_0":12000000000000},"hypothesis":"Controllo diagnostico OAT Ngf +20%, non ottimizzazione: verificare disaccoppiamento intragranulare e influenza su grain-face/FGR."}
+]

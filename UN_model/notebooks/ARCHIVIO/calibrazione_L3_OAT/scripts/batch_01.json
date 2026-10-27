@@ -1,0 +1,10 @@
+[
+  {"id":"B1_fn090","changes":{"f_n":0.000378},"hypothesis":"f_n -10%: verifica recupero raggio e costo in swelling/partition."},
+  {"id":"B1_fn110","changes":{"f_n":0.000462},"hypothesis":"f_n +10%: misura locale opposta; possibile compensatore di Kd ridotto."},
+  {"id":"B1_Kd085","changes":{"K_d":348500},"hypothesis":"Kd -15%: meno bolle, raggio maggiore; verificare variazione swelling high-T."},
+  {"id":"B1_Kd115","changes":{"K_d":471500},"hypothesis":"Kd +15%: direzione opposta e verifica non monotonia swelling."},
+  {"id":"B1_Dg090","changes":{"Dg_dislocation_scale":15.3},"hypothesis":"Dg -10%: può frenare ANP6 high-T ma ridurre il raggio."},
+  {"id":"B1_Dg110","changes":{"Dg_dislocation_scale":18.7},"hypothesis":"Dg +10%: recupero raggio; controllare costo gas partition/swelling."},
+  {"id":"B1_rho090","changes":{"rho_d":31500000000000},"hypothesis":"rho -10%: leva accoppiata, verificare Nd e forma high-T prima di compensare."},
+  {"id":"B1_Dv120","changes":{"Dv_dislocation_scale":12},"hypothesis":"Dv +20%: unico controllo locale attorno a L3, senza ripetere vecchio sweep esteso."}
+]

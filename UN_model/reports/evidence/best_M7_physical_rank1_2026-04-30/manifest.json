@@ -1,0 +1,245 @@
+{
+  "recovery_date": "2026-10-26",
+  "repository_head": "bb6cebe764d04f4d897ce11bdf4869cdafc2cbd0",
+  "method": "Read-only Git retrieval and notebook JSON/AST parsing; no original model code executed.",
+  "files": [
+    {
+      "recovered_path": "original/3UNpython_tests.ipynb",
+      "bytes": 794579,
+      "sha256": "20b5b5e928e0b8c25355f533bdff78a666ca95d09b1837fda8c1e0aa2e58c14b",
+      "kind": "original_git_blob",
+      "git_revision": "3416c92a5015a68495303c16b2d72065e8a451ce",
+      "original_path": "3UNpython_tests.ipynb",
+      "git_blob": "760f2cd99c4a6f4c7e3aad50cae3682c89583924"
+    },
+    {
+      "recovered_path": "physical_cell_1.source.txt",
+      "bytes": 59433,
+      "sha256": "d8fc4313ddf757d9e31dfbfaed30c525f2dce99b4f4e28850def147d7d4245d3",
+      "kind": "verbatim_notebook_source",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "execution_count": 8
+    },
+    {
+      "recovered_path": "physical_cell_1.stdout.txt",
+      "bytes": 9032,
+      "sha256": "922911ca9a03232dd57305764ac7fcc401734a63b0ebd9d5638d3123a05d1bc5",
+      "kind": "concatenated_saved_stream_outputs",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1
+    },
+    {
+      "recovered_path": "original/UN_M7_physical_sweep_outputs/physical_fast_all.csv",
+      "bytes": 37166,
+      "sha256": "48bddbe479f2aabe5c5ad1aa4a6c977f277001d6133d00a67821e120cfb29928",
+      "kind": "original_git_blob",
+      "git_revision": "3416c92a5015a68495303c16b2d72065e8a451ce",
+      "original_path": "UN_M7_physical_sweep_outputs/physical_fast_all.csv",
+      "git_blob": "bd5d24f90ac37dd39a24884cb80d50db1047c693"
+    },
+    {
+      "recovered_path": "original/UN_M7_physical_sweep_outputs/physical_fast_partial.csv",
+      "bytes": 37166,
+      "sha256": "48bddbe479f2aabe5c5ad1aa4a6c977f277001d6133d00a67821e120cfb29928",
+      "kind": "original_git_blob",
+      "git_revision": "3416c92a5015a68495303c16b2d72065e8a451ce",
+      "original_path": "UN_M7_physical_sweep_outputs/physical_fast_partial.csv",
+      "git_blob": "bd5d24f90ac37dd39a24884cb80d50db1047c693"
+    },
+    {
+      "recovered_path": "original/UN_M7_physical_sweep_outputs/physical_final_top.csv",
+      "bytes": 4098,
+      "sha256": "9d007a2b1c811e30f34e5c6c44783a51ea099409c835503f19376c30005ac463",
+      "kind": "original_git_blob",
+      "git_revision": "3416c92a5015a68495303c16b2d72065e8a451ce",
+      "original_path": "UN_M7_physical_sweep_outputs/physical_final_top.csv",
+      "git_blob": "ec94affd5f2922411f9dde0307ccb4c0b4e1a6af"
+    },
+    {
+      "recovered_path": "original/UN_M7_physical_sweep_outputs/physical_sweep_summary.md",
+      "bytes": 2360,
+      "sha256": "7bddb572d137494a4f8e0e03a1fe4e5b3ea6f6f806fd8a99b13fea42ce06a31f",
+      "kind": "original_git_blob",
+      "git_revision": "3416c92a5015a68495303c16b2d72065e8a451ce",
+      "original_path": "UN_M7_physical_sweep_outputs/physical_sweep_summary.md",
+      "git_blob": "3bec6684c90d572605eaf81f50def2cf192f2ebf"
+    },
+    {
+      "recovered_path": "original/UN_M7_global_sensitivity_fullcell/global_fast_all.csv",
+      "bytes": 41502,
+      "sha256": "9f50fbd6a39d1dc47036a5407a416b9adc1ca813e375b48abec696218bc149df",
+      "kind": "original_git_blob",
+      "git_revision": "303595b954bf9e297757ffbdc37c24dad8525808",
+      "original_path": "UN_M7_global_sensitivity_fullcell/global_fast_all.csv",
+      "git_blob": "92fe879128503fa215099964bd4c6c463ce27e97"
+    },
+    {
+      "recovered_path": "original/UN_M7_global_sensitivity_fullcell/global_fast_partial.csv",
+      "bytes": 41502,
+      "sha256": "9f50fbd6a39d1dc47036a5407a416b9adc1ca813e375b48abec696218bc149df",
+      "kind": "original_git_blob",
+      "git_revision": "303595b954bf9e297757ffbdc37c24dad8525808",
+      "original_path": "UN_M7_global_sensitivity_fullcell/global_fast_partial.csv",
+      "git_blob": "92fe879128503fa215099964bd4c6c463ce27e97"
+    },
+    {
+      "recovered_path": "original/UN_M7_global_sensitivity_fullcell/global_final_top.csv",
+      "bytes": 4280,
+      "sha256": "0dae6e52f2ffc24668d45883e64e3bdb701bff2545b438dc51b31b7bd80f7daa",
+      "kind": "original_git_blob",
+      "git_revision": "303595b954bf9e297757ffbdc37c24dad8525808",
+      "original_path": "UN_M7_global_sensitivity_fullcell/global_final_top.csv",
+      "git_blob": "02eeea81a889672747d7c1369d7bb38d9539e386"
+    },
+    {
+      "recovered_path": "original/UN_M7_global_sensitivity_fullcell/global_sensitivity_summary.md",
+      "bytes": 2706,
+      "sha256": "5c452e3e93bbe4c7b7429c75a03288552d56cd57df047798f55e5ee6a027c846",
+      "kind": "original_git_blob",
+      "git_revision": "303595b954bf9e297757ffbdc37c24dad8525808",
+      "original_path": "UN_M7_global_sensitivity_fullcell/global_sensitivity_summary.md",
+      "git_blob": "fadcf5027cc9011ecdf93c075051dc4ca54c128c"
+    },
+    {
+      "recovered_path": "global_cell_5.source.txt",
+      "bytes": 69589,
+      "sha256": "68a9e99756371f340f39bacd211b336911ab3d8afcc43c7dfc16e7004262a0a1",
+      "kind": "verbatim_notebook_source",
+      "notebook": "UN_model/notebooks/ARCHIVIO/UN_Barani_model.ipynb",
+      "cell_index": 5,
+      "git_revision": "303595b954bf9e297757ffbdc37c24dad8525808",
+      "original_git_path": "UN_Barani_model.ipynb"
+    },
+    {
+      "recovered_path": "source_line_map.csv",
+      "bytes": 38903,
+      "sha256": "567de30e6729badc5fdbf6093cae2fdb9cb277aaa25b80bd3224e53c9e8ee55e",
+      "kind": "derived_line_mapping",
+      "notebook": "UN_model/notebooks/ARCHIVIO/UN_Barani_model.ipynb"
+    },
+    {
+      "recovered_path": "experimental_points.csv",
+      "bytes": 5184,
+      "sha256": "8b07d7b4aecd766ff0b4434c737b25b3601151e0f153027c2bda172128dd56b4",
+      "kind": "derived_literal_constants_with_score_usage_flags",
+      "source": "physical_cell_1.source.txt:101-173"
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_swelling_T_1.1FIMA.png",
+      "bytes": 45749,
+      "sha256": "ab6beeac80300f9ae927fd45eb6ae0e6c9272e658be4d41250bb3f68dc45f5f8",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 1,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_swelling_T_1.3FIMA.png",
+      "bytes": 43575,
+      "sha256": "7581b77b5a3b0f19337a0d4c316118d27a174a92cb0966638a2039ed27c4e08d",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 2,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_swelling_T_3.2FIMA.png",
+      "bytes": 44343,
+      "sha256": "585681283fc296f12059c3dbf548dd014d322d2ded21b22db93eee10cb757b54",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 3,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_swelling_vs_burnup_1600K.png",
+      "bytes": 46071,
+      "sha256": "74fbde03c4356f9b955902b860df5023229d8977119d1293fa8bd8eb342195eb",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 4,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_radius_T_1.3FIMA.png",
+      "bytes": 40956,
+      "sha256": "f2829383f7db2a0fbd3419fb01d8ef56f0ff5e6a6482a576443db14965da016a",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 5,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_concentration_T_1.3FIMA.png",
+      "bytes": 49886,
+      "sha256": "a2c89a1b3ed65153eaa0c44d3ff4f06b6dd1486e598146807f255056443c83b8",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 6,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_pressure_T_3.2FIMA.png",
+      "bytes": 64616,
+      "sha256": "63a9e5efbcbc4430fa13f30f7010dc8c58c578c0129aca6a2781afc2ab97b92f",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 7,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_pressure_ratio_T_3.2FIMA.png",
+      "bytes": 42094,
+      "sha256": "187e1554172b93b23464be49004a429b8f7157a7ec5754f659438124fcc56315",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 8,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_gas_partition_1.1FIMA.png",
+      "bytes": 51997,
+      "sha256": "f64011e0a13a2672ff726ff63fd342723464bd5b2062c6f247bfd085e31bc05f",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 9,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_gas_partition_3.2FIMA.png",
+      "bytes": 53414,
+      "sha256": "ff2828ac037cde33dfa40ddb850120dfe8d67f2df68ec7e30ad8c72b4d1f73cd",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 10,
+      "name_inferred_from_plot_order": true
+    },
+    {
+      "recovered_path": "embedded_figures/best_M7_physical_rank1_capture_diagnostic_3.2FIMA.png",
+      "bytes": 44166,
+      "sha256": "3361c9bf0b8d88317a1f97f52f03d3161f5175629544c0a843f7e0842f18a373",
+      "kind": "decoded_original_notebook_output",
+      "notebook": "original/3UNpython_tests.ipynb",
+      "cell_index": 1,
+      "output_index": 11,
+      "name_inferred_from_plot_order": true
+    }
+  ],
+  "physical_source_sha256": "d8fc4313ddf757d9e31dfbfaed30c525f2dce99b4f4e28850def147d7d4245d3",
+  "current_notebook": {
+    "path": "UN_model/notebooks/ARCHIVIO/UN_Barani_model.ipynb",
+    "sha256": "7d17775e925b0d692e828df98a5e484811ee1c5c84aa2e1765ad1fe94d146af2",
+    "git_blob": "644256ce40abba19c2d0a3bb2f93be6fd9da4b79"
+  }
+}
