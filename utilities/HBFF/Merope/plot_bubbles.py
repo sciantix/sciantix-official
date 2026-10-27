@@ -1,14 +1,12 @@
 """
-Size of the RVE of the bubble cubes of test_rve.py, once MMM has solved them, and fission gas release (FGR) of every cube
-as in OperaHPC D5.2 (Section 2.2, Fig. 7). Only numpy and matplotlib: it runs where the results are.
+Size of the RVE of the bubble cubes of test_rve.py and fission gas release (FGR) of every cube as in OperaHPC D5.2 (Section 2.2, Fig. 7).
 
-Folders of ROOT (test_rve.py writes them, MMM is run in each; its output may also be in a subfolder):
-    side<L>_seed<NN>             one cube per seed; several sides L are allowed (EXTRA_SIDES of test_rve.py)
+Folders of ROOT:
+    side<L>_seed<NN>             one cube per seed; several sides L are allowed 
     side<L>_seed01_<variant>     the pores of side<L>_seed01 with another mesh (meshdouble, wall<h>_bulk<H>); a variant
                                  ending in _refinement (or _refinement<k>, _r<k>) is the mesh of its summary refined k
                                  times in MMM (test-polybubble -r k, k = 1 if not written), e.g. meshdouble_refinement
 each with bubbles_<run>.txt and summary_<run>.txt of Mérope, bubbles_and_stresses_selected.txt and sig_hydro.txt of MMM.
-Folders without the output of MMM are skipped.
 
 Stress factor of a pore (MMM runs with the same pressure p in every pore):
     sigma  sigma_I_max / p, the largest first principal stress near the pore, at zero macroscopic strain (MMM)
@@ -346,9 +344,10 @@ def refinement_lines(refined, gmsh, means, value, ids, used, names, width):
 
 def analyse_mesh(root, cubes, q):
     """Mesh test on side<L>_seed01 and its variants: class means and pores against the reference, the Richardson value
-    when there are three wall sizes of gmsh at one bulk size, otherwise the finest mesh of gmsh (then the error of the
-    finest mesh is not measured). A mesh refined in MMM keeps the pore surfaces of its coarse mesh, so it stays out of the
-    Richardson fit: it is compared with its coarse mesh and with the mesh of gmsh of the same size (refinement_lines).
+    when there are three wall sizes of gmsh at one bulk size (or three uniform meshes), otherwise the finest mesh of gmsh
+    (then the error of the finest mesh is not measured). A mesh refined in MMM keeps the pore surfaces of its coarse mesh,
+    so it stays out of the Richardson fit: it is compared with its coarse mesh and with the mesh of gmsh of the same size
+    (refinement_lines).
     Writes mesh_test.txt and mesh_test.png. Returns (status, one line for the verdict); status 1 if the mesh of the runs is
     more than EPS_MESH from a reference that tells it, on a class used in the verdict."""
     families = {}
@@ -376,19 +375,27 @@ def analyse_mesh(root, cubes, q):
     means = {c["folder"]: np.array([np.mean([value[c["folder"]][i] for i in ids if R[i] == Rk]) for Rk in radii] +
                                    [np.mean([value[c["folder"]][i] for i in ids])]) for c in family}
 
-    # reference: Richardson on the bulk size with three wall sizes of gmsh or more, per class and for all the pores
+    # reference: Richardson on three wall sizes of gmsh or more, per class and for all the pores. The meshes of a group
+    # share the bulk size (graded meshes), or are all uniform (wall = bulk, "mesh size h" in the summary)
     reference, how, extrapolated = means[finest["folder"]], f"the finest mesh of gmsh, {finest['folder']}", False
-    for bulk in sorted({c["bulk"] for c in gmsh}):
-        group = [c for c in gmsh if c["bulk"] == bulk]
+    failed = None  # (group, sizes, classes) of the last Richardson fit not possible
+    uniform = lambda c: bool(np.isclose(c["wall"], c["bulk"], rtol=1e-3))
+    groups = [("uniform meshes", [c for c in gmsh if uniform(c)])]
+    groups += [(f"bulk {bulk:g} um", [c for c in gmsh if not uniform(c) and c["bulk"] == bulk])
+               for bulk in sorted({c["bulk"] for c in gmsh if not uniform(c)})]
+    for where, group in groups:
         if len({c["wall"] for c in group}) >= 3:
             h = np.array([c["wall"] for c in group])
             fits = [richardson(h, np.array([means[c["folder"]][k] for c in group])) for k in range(len(radii) + 1)]
             if all(fit is not None for fit in fits):
                 reference, extrapolated = np.array([fit[1] for fit in fits]), True
-                how = (f"Richardson on the wall sizes {', '.join(f'{x:g}' for x in h[:3])} um at bulk {bulk:g} um, observed "
+                how = (f"Richardson on the wall sizes {', '.join(f'{x:g}' for x in h[:3])} um ({where}), observed "
                        f"order per class {', '.join(f'{fit[0]:.2f}' for fit in fits[:-1])}, all pores {fits[-1][0]:.2f}")
                 break
-            print(f"{root}: Richardson at bulk {bulk:g} um not possible (class means not monotone in the wall size)")
+            bad = [n for n, fit in zip([f"{Rk:.3f}" for Rk in radii] + ["all"], fits) if fit is None]
+            failed = (where, len(group), bad)
+            print(f"{root}: Richardson on the {where} not possible for the classes {', '.join(bad)} (class means not "
+                  "monotone in the size, or no order between 0.05 and 8)")
     coarse = gmsh if extrapolated else gmsh[1:]  # the meshes of gmsh against the reference
     compared = coarse + refined
     deviation = {c["folder"]: 100.0 * (means[c["folder"]] / reference - 1.0) for c in family}
@@ -433,13 +440,13 @@ def analyse_mesh(root, cubes, q):
         ratio = following["wall"] / finest["wall"]
         order2 = (f" (it would be {worst(following) / (ratio**2 - 1.0):.2f} % with an order 2)" if ratio > 1.0 else "")
         summary = (f"the classes of the verdict change by at most {worst(following):.2f} % from {following['wall']:g} to "
-                   f"{finest['wall']:g} um; the error of the finest mesh is not measured{order2}: add a third wall size "
-                   "(WALL_SIZES of test_rve.py)")
+                   f"{finest['wall']:g} um; the error of the finest mesh is not measured{order2}: "
+                   + (f"Richardson not possible on the {failed[1]} {failed[0]} (means of the classes {', '.join(failed[2])} "
+                      "not monotone in the size)" if failed else "add a third mesh size of gmsh"))
         if runs is not None and runs is not finest:
             status = int(worst(runs) > 100 * EPS_MESH)
     else:
-        summary = (f"one mesh of gmsh only ({finest['folder']}), not tested: add another wall size (WALL_SIZES of "
-                   "test_rve.py)")
+        summary = f"one mesh of gmsh only ({finest['folder']}), not tested: add another mesh size of gmsh"
     lines += ["#", f"# {summary}"] + (["# not in the verdict: " + "; ".join(small)] if small else [])
     extra, refined_summaries = refinement_lines(refined, gmsh, means, value, ids, used, names, width)
     lines += extra
@@ -450,12 +457,15 @@ def analyse_mesh(root, cubes, q):
     fig, ax = plt.subplots(1, 2, figsize=(14.0, 5.0))
     width_bar = 0.8 / max(len(compared), 1)
     big = max(abs(deviation[c["folder"]]).max() for c in compared) > 20.0
+    shaded = [c for c in compared if not c["refine"]]  # meshes of gmsh, finest first: darkest to lightest blue
+    shade = {c["folder"]: SEQ_BLUE[len(SEQ_BLUE) - 1 - round(k * (len(SEQ_BLUE) - 1) / max(len(shaded) - 1, 1))]
+             for k, c in enumerate(shaded)}
     for j, c in enumerate(compared):
         x = np.arange(len(names)) - 0.4 + width_bar * (j + 0.5)
         d = deviation[c["folder"]]
         how_made = (f", the {c['geometry'][0]:g} um mesh refined {c['refine']}x in MMM" if c["refine"] else "")
         ax[0].bar(x, d, width=0.9 * width_bar, zorder=2, hatch="//" if c["refine"] else None,
-                  color=REFINED_COLOR if c["refine"] else SEQ_BLUE[(1 + 2 * j) % len(SEQ_BLUE)],
+                  color=REFINED_COLOR if c["refine"] else shade[c["folder"]],
                   edgecolor="white" if c["refine"] else None,
                   label=f"{c['folder']} (wall {c['wall']:g}, bulk {c['bulk']:g} um{how_made})")
         for xk, dk in zip(x, d):
@@ -487,13 +497,13 @@ def analyse_mesh(root, cubes, q):
     ax[1].set(xscale="log", xlabel="gap to the nearest pore / radius of the pore",
               ylabel=f"{LABEL[q]} against the finest mesh of gmsh (%)" + (" (symlog)" if big else ""),
               title=f"Every pore of side{side:g}_seed01:\nother meshes against the finest mesh of gmsh ({finest['wall']:g} um)")
-    for a in ax:
+    for a, columns in zip(ax, (1, 2)):  # legends under the axes: long labels on the left, many short ones on the right
         if big:
             symlog_percent(a)
         a.grid(True, color=GRID)
-        a.legend(frameon=False, fontsize=7)
+        a.legend(frameon=False, fontsize=7, loc="upper center", bbox_to_anchor=(0.5, -0.21), ncol=columns)
     fig.tight_layout()
-    fig.savefig(os.path.join(root, "mesh_test.png"), dpi=150)
+    fig.savefig(os.path.join(root, "mesh_test.png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
     print("\n".join(lines))
     print(f"wrote mesh_test.txt and mesh_test.png in {root}")
