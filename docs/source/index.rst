@@ -68,6 +68,7 @@ Next Steps
    input_files
    examples
    testing
+   publications
    references
 
 .. toctree::

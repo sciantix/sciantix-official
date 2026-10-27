@@ -3,8 +3,10 @@
 
 ## SCIANTIX papers
 
+(ref-pizzocri2020)=
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311519313868" target="_blank">Pizzocri D. et al (2020). SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes. Journal of Nuclear Materials, 532, 152042.</a>
 
+(ref-zullo2023)=
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311523005111" target="_blank">Zullo G. et al (2023). The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments. Journal of Nuclear Materials, 587, 154744.</a>
 
 
@@ -88,6 +90,15 @@
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311503004616" target="_blank">White R.J. (2004). The development of grain-face porosity in irradiated oxide fuel. Journal of Nuclear Materials, 325, 61-77.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S0029549324007027" target="_blank">Zullo G. et al (2024). Two-phase modelling for fission gas sweeping in restructuring nuclear oxide fuel. Nuclear Engineering and Design, 429, 113602.</a>
+
+(ref-nicodemo2025)=
+<a href="https://doi.org/10.1016/j.jnucmat.2025.155954" target="_blank">Nicodemo G. et al (2025). Data assimilation for accelerated development of fuel performance codes: Towards automatic implementation of material properties correlations. Journal of Nuclear Materials, 615, 155954.</a>
+
+(ref-nicodemo2026)=
+<a href="https://doi.org/10.1016/j.commatsci.2026.114607" target="_blank">Nicodemo G. et al (2026). Accelerating thermochemistry in MOX fuel modelling via neural-network surrogates of CALPHAD calculations: Integration into SCIANTIX. Computational Materials Science, 269, 114607.</a>
+
+(ref-pizzocri2023)=
+<a href="https://doi.org/10.1016/j.net.2023.04.044" target="_blank">Pizzocri D. et al (2023). A surrogate model for the helium production rate in fast reactor MOX fuels. Nuclear Engineering and Technology, 55(8), 3071-3079.</a>
 
 (ref-massih2018)=
 <a href="https://www.stralsakerhetsmyndigheten.se/en/publications/reports/safety-at-nuclear-power-plants/2018/201825/" target="_blank">Massih A.R. (2018). UO2 Fuel Oxidation and Fission Gas Release, Swedish Radiation Safety Authority (SSM).</a>
@@ -195,6 +206,7 @@
 
 ## Algorithms
 
+(ref-zullo2022c)=
 <a href="https://www.sciencedirect.com/science/article/pii/S1738573321006148" target="_blank">Zullo G. et al (2022). On the use of spectral algorithms for the prediction of short-lived volatile fission product release: Methodology for bounding numerical error. Nuclear Engineering and Technology, 54, 1195-1205.</a>
 
 
