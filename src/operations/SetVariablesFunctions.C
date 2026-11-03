@@ -55,7 +55,8 @@ std::vector<std::string> getInputVariableNames()
                                       "iDensification",
                                       "iReleaseMode",
                                       "iThermochimica",
-                                      "iThermochimicaOuterNode"};
+                                      "iThermochimicaOuterNode",
+                                      "iFMP"};
 
     return names;
 }
@@ -120,7 +121,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
                                                          bool   toOutputThermochimica,
-                                                         bool   toOutputMOX)
+                                                         bool   toOutputMOX,
+                                                         bool   toFMP)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -238,7 +240,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
 #endif
         // METALS
         SciantixVariable(
-            "Mo produced", "(at/m3)", Sciantix_variables[130], Sciantix_variables[130], toOutputThermochimica),
+            "Mo produced", "(at/m3)", Sciantix_variables[130], Sciantix_variables[130], toOutputThermochimica || toFMP),
         SciantixVariable(
             "Mo in solution", "(at/m3)", Sciantix_variables[131], Sciantix_variables[131], toOutputThermochimica),
         SciantixVariable(
@@ -250,25 +252,25 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "Ba reacted", "(at/m3)", Sciantix_variables[135], Sciantix_variables[135], toOutputThermochimica),
         SciantixVariable(
-            "Tc produced", "(at/m3)", Sciantix_variables[136], Sciantix_variables[136], toOutputThermochimica),
+            "Tc produced", "(at/m3)", Sciantix_variables[136], Sciantix_variables[136], toOutputThermochimica || toFMP),
         SciantixVariable(
             "Tc in solution", "(at/m3)", Sciantix_variables[137], Sciantix_variables[137], toOutputThermochimica),
         SciantixVariable(
             "Tc reacted", "(at/m3)", Sciantix_variables[138], Sciantix_variables[138], toOutputThermochimica),
         SciantixVariable(
-            "Ru produced", "(at/m3)", Sciantix_variables[139], Sciantix_variables[139], toOutputThermochimica),
+            "Ru produced", "(at/m3)", Sciantix_variables[139], Sciantix_variables[139], toOutputThermochimica || toFMP),
         SciantixVariable(
             "Ru in solution", "(at/m3)", Sciantix_variables[140], Sciantix_variables[140], toOutputThermochimica),
         SciantixVariable(
             "Ru reacted", "(at/m3)", Sciantix_variables[141], Sciantix_variables[141], toOutputThermochimica),
         SciantixVariable(
-            "Rh produced", "(at/m3)", Sciantix_variables[142], Sciantix_variables[142], toOutputThermochimica),
+            "Rh produced", "(at/m3)", Sciantix_variables[142], Sciantix_variables[142], toOutputThermochimica || toFMP),
         SciantixVariable(
             "Rh in solution", "(at/m3)", Sciantix_variables[143], Sciantix_variables[143], toOutputThermochimica),
         SciantixVariable(
             "Rh reacted", "(at/m3)", Sciantix_variables[144], Sciantix_variables[144], toOutputThermochimica),
         SciantixVariable(
-            "Pd produced", "(at/m3)", Sciantix_variables[145], Sciantix_variables[145], toOutputThermochimica),
+            "Pd produced", "(at/m3)", Sciantix_variables[145], Sciantix_variables[145], toOutputThermochimica || toFMP),
         SciantixVariable(
             "Pd in solution", "(at/m3)", Sciantix_variables[146], Sciantix_variables[146], toOutputThermochimica),
         SciantixVariable(
@@ -550,6 +552,28 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
 
         // Optional
         SciantixVariable("Surface tension", "(N/m)", Sciantix_variables[203], Sciantix_variables[203], 0),
+
+        // EC November 2026: five metal particles (FMP) - FiveMetalParticles.C, output only with iFMP = 1
+        SciantixVariable("FMP in matrix", "(at/m3)", Sciantix_variables[210], Sciantix_variables[210], toFMP),
+        SciantixVariable(
+            "FMP in intragranular particles", "(at/m3)", Sciantix_variables[211], Sciantix_variables[211], toFMP),
+        SciantixVariable("FMP at grain boundary", "(at/m3)", Sciantix_variables[212], Sciantix_variables[212], toFMP),
+        SciantixVariable(
+            "Intragranular FMP concentration", "(FMP/m3)", Sciantix_variables[213], Sciantix_variables[213], toFMP),
+        SciantixVariable(
+            "Intergranular FMP concentration", "(FMP/m3)", Sciantix_variables[214], Sciantix_variables[214], toFMP),
+        SciantixVariable("Intragranular FMP radius", "(m)", Sciantix_variables[215], Sciantix_variables[215], toFMP),
+        SciantixVariable("Intergranular FMP radius", "(m)", Sciantix_variables[216], Sciantix_variables[216], toFMP),
+        // EC November 2026: two-zone FMP model (grain interior and grain-boundary zone) and oxygen balance
+        SciantixVariable(
+            "FMP in grain-boundary zone matrix", "(at/m3)", Sciantix_variables[217], Sciantix_variables[217], toFMP),
+        SciantixVariable(
+            "FMP grain-boundary zone volume fraction", "(/)", Sciantix_variables[218], Sciantix_variables[218], toFMP),
+        SciantixVariable("FMP oxygen in Mo oxides",
+                         "(at/m3)",
+                         Sciantix_variables[219],
+                         Sciantix_variables[219],
+                         toFMP && toOutputThermochimica),
     };
 
     return init_sciantix_variable;

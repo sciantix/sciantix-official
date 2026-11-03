@@ -482,8 +482,13 @@ void Simulation::JOGFormation()
     sciantix_variable["JOG (MoPd2)"].setFinalValue(JOG_MoPd2);
     sciantix_variable["JOG (MoO2)"].setFinalValue(JOG_MoO2);
     sciantix_variable["JOG (Perovskite)"].setFinalValue(JOG_Perovskite);
-    sciantix_variable["Mo in oxide fraction"].setFinalValue(total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles
-                                                                                 : 0.0);
+    // EC November 2026: with the five metal particles (FMP) model, a time step without an OpenCalphad result at the
+    // grain boundary (no Mo in any phase) keeps the fraction of the previous step, which FiveMetalParticles uses;
+    // without FMP the fraction is set to zero as before.
+    double mo_oxide_fraction = total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles : 0.0;
+    if (total_mo_moles <= 0.0 && (int)input_variable["iFMP"].getValue() == 1)
+        mo_oxide_fraction = sciantix_variable["Mo in oxide fraction"].getInitialValue();
+    sciantix_variable["Mo in oxide fraction"].setFinalValue(mo_oxide_fraction);
     sciantix_variable["Mo oxide valence"].setFinalValue(oxide_mo_moles > 0.0 ? oxide_mo_valence_sum / oxide_mo_moles
                                                                              : 0.0);
     sciantix_variable["Ba/Mo in oxide compounds"].setFinalValue(oxide_mo_moles > 0.0 ? oxide_ba_moles / oxide_mo_moles

@@ -72,6 +72,15 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
                     SciantixArray<SciantixVariable>& history_variable,
                     SciantixArray<InputVariable>&    scaling_factors);
 
+// EC November 2026: Mo, Tc, Ru, Rh, Pd in UO2 (LWR yields), five metal particles (FMP) model
+System MetallicFP_in_UO2(const std::string&               element,
+                         SciantixArray<Matrix>&           matrices,
+                         SciantixArray<FissionProducts>&  metallic_fp,
+                         SciantixArray<InputVariable>&    input_variable,
+                         SciantixArray<SciantixVariable>& sciantix_variable,
+                         SciantixArray<SciantixVariable>& history_variable,
+                         SciantixArray<InputVariable>&    scaling_factors);
+
 System Xe_in_MOX(SciantixArray<Matrix>&           matrices,
                  SciantixArray<FissionProducts>&  gas_fp,
                  SciantixArray<InputVariable>&    input_variable,

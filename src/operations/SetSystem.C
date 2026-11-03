@@ -18,6 +18,8 @@
 #include "Simulation.h"
 
 #include <cmath>
+#include <map>
+#include <string>
 
 void Simulation::setSystem()
 {
@@ -37,6 +39,18 @@ void Simulation::setSystem()
             sciantix_system.push(
                 Kr85m_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 #endif
+            // EC November 2026: Mo, Tc, Ru, Rh, Pd in UO2 (LWR yields) for the five metal particles (FMP) model
+            if ((int)input_variable["iFMP"].getValue() == 1)
+            {
+                for (const auto& element : {"Mo", "Tc", "Ru", "Rh", "Pd"})
+                    sciantix_system.push(MetallicFP_in_UO2(element,
+                                                           matrices,
+                                                           metallic_fp,
+                                                           input_variable,
+                                                           sciantix_variable,
+                                                           history_variable,
+                                                           scaling_factors));
+            }
             break;
 
         case 1:
@@ -47,6 +61,18 @@ void Simulation::setSystem()
             sciantix_system.push(
                 Xe_in_UO2HBS(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 #endif
+            // EC November 2026: Mo, Tc, Ru, Rh, Pd in UO2 (LWR yields) for the five metal particles (FMP) model
+            if ((int)input_variable["iFMP"].getValue() == 1)
+            {
+                for (const auto& element : {"Mo", "Tc", "Ru", "Rh", "Pd"})
+                    sciantix_system.push(MetallicFP_in_UO2(element,
+                                                           matrices,
+                                                           metallic_fp,
+                                                           input_variable,
+                                                           sciantix_variable,
+                                                           history_variable,
+                                                           scaling_factors));
+            }
             break;
 
         case 2:
@@ -65,7 +91,23 @@ void Simulation::setSystem()
 #endif
 
             if ((int)input_variable["iThermochimica"].getValue() == 0)
+            {
+                // EC November 2026: the FMP model needs the five metals also without thermochemistry
+                if ((int)input_variable["iFMP"].getValue() == 1)
+                {
+                    sciantix_system.push(Mo_in_MOX(
+                        matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+                    sciantix_system.push(Tc_in_MOX(
+                        matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+                    sciantix_system.push(Rh_in_MOX(
+                        matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+                    sciantix_system.push(Ru_in_MOX(
+                        matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+                    sciantix_system.push(Pd_in_MOX(
+                        matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+                }
                 break;
+            }
 
             sciantix_system.push(
                 Cs_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
@@ -672,6 +714,36 @@ System Rh_in_MOX(SciantixArray<Matrix>&           matrices,
     system_.setYield(0.059);
     system_.setRadiusInLattice(0.15e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
+// EC November 2026: Mo, Tc, Ru, Rh, Pd in UO2, for the five metal particles (FMP) model.
+// Yields for LWR UO2: ENDF/B-VIII.0 cumulative fission yields summed over the stable or long-lived end-of-chain
+// isotopes (Mo 95, 96, 97, 98, 100; Tc 99; Ru 100, 101, 102, 104; Rh 103; Pd 104, 105, 106, 107, 108, 110),
+// weighted with the cycle-average PWR fission fractions 235U 0.564 (thermal), 238U 0.076 (fast, 500 keV),
+// 239Pu 0.304 and 241Pu 0.056 (thermal) of Daya Bay (D. Adey et al., Phys. Rev. Lett. 123 (2019) 111801).
+// Sum 0.567 at/fiss (235U alone: 0.467). The MOX systems keep the fast-reactor yields. [TBC]
+System MetallicFP_in_UO2(const std::string&               element,
+                         SciantixArray<Matrix>&           matrices,
+                         SciantixArray<FissionProducts>&  metallic_fp,
+                         SciantixArray<InputVariable>&    input_variable,
+                         SciantixArray<SciantixVariable>& sciantix_variable,
+                         SciantixArray<SciantixVariable>& history_variable,
+                         SciantixArray<InputVariable>&    scaling_factors)
+{
+    static const std::map<std::string, double> lwr_yield = {
+        {"Mo", 0.2370}, {"Tc", 0.0614}, {"Ru", 0.1442}, {"Rh", 0.0469}, {"Pd", 0.0771}};
+
+    System system_;
+    system_.setName(element + " in UO2");
+    system_.setMetallicFP(metallic_fp[element]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(lwr_yield.at(element));
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
     return system_;

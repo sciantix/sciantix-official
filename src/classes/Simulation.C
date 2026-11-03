@@ -83,6 +83,8 @@ void Simulation::execute()
 
     FissionProductDecay();
 
+    FiveMetalParticles();
+
     IntraGranularBubbleBehavior();
 
     IntragranularDiffusion();

@@ -269,6 +269,7 @@ void InputReading(int    Sciantix_options[],
     Sciantix_options[23] = ReadOneSetting("iDensification", settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", settings, input_check);
     Sciantix_options[25] = ReadOneSetting("iThermochimica", settings, input_check);
+    Sciantix_options[27] = ReadOneSetting("iFMP", settings, input_check);  // EC November 2026: FMP model
 
     {
         const NamedInput& ic = initial_conditions;

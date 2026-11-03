@@ -542,8 +542,8 @@ namespace OCASIAdapter
     // wrapper returns 0 when the element is not part of the selected system.
     int OpenCalphadInterface::getComponentIndex(const std::string& component_name) const
     {
-        const std::string target     = upperCopy(component_name);
-        const auto        element_it = std::find_if(element_names_.begin(),
+        const std::string target = upperCopy(component_name);
+        const auto element_it = std::find_if(element_names_.begin(),
                                              element_names_.end(),
                                              [&target](const std::string& name) { return upperCopy(name) == target; });
 
