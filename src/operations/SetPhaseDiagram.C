@@ -18,6 +18,7 @@
 #include "MainVariables.h"
 #include "OCUtilsCoupling.h"
 #include "Simulation.h"
+#include "StoichiometryDeviation.h"
 #include "ThermochemistrySettings.h"
 
 #include <algorithm>
@@ -181,6 +182,29 @@ void Simulation::SetPhaseDiagram()
 
     using OCSolver = OCUtilsCoupling::OpenCalphadSolveMode;
 
+    // EC November 2026: with the FMP model, OC at the grain boundary receives only the FMP grain-boundary inventory
+    const bool fmp_active = (int)input_variable["iFMP"].getValue() == 1;
+
+    // EC November 2026: FMP oxygen balance (UO2, Kleykamp, standalone). The excess oxygen E = x M + O_ox (M heavy metal, O_ox oxygen in the Mo oxides of the particles) is shared between the fuel and the Mo of the particles, Mo_p. If E < 2 Mo_p the Mo/MoO2 equilibrium buffers the fuel: OC at the grain boundary is solved with the oxygen of the grain-boundary particles, E Mo_gb / Mo_p, and x follows from its oxygen potential (Blackburn Otherwise all the Mo is MoO2 and the fuel takes the rest.
+    double heavy_metal = 0.0, excess_oxygen = 0.0, mo_particles = 0.0, mo_gb = 0.0;
+#if !defined(COUPLING_TU)
+    if (fmp_active && (int)input_variable["iStoichiometryDeviation"].getValue() == 7 &&
+        sciantix_variable["q"].getFinalValue() <= 0.0)
+    {
+        const double fmp_gb    = sciantix_variable["FMP at grain boundary"].getFinalValue();
+        const double fmp_intra = sciantix_variable["FMP in intragranular particles"].getFinalValue();
+        heavy_metal =
+            (sciantix_variable["U content"].getFinalValue() + sciantix_variable["Pu content"].getFinalValue()) *
+            avogadro_number;
+        excess_oxygen = std::max(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 0.0) * heavy_metal +
+                        sciantix_variable["FMP oxygen in Mo oxides"].getInitialValue();
+        mo_gb         = OCUtilsCoupling::fmpInventoryAtGrainBoundary("Mo", sciantix_variable, sciantix_system);
+        mo_particles  = (fmp_gb > 0.0) ? mo_gb * (fmp_gb + fmp_intra) / fmp_gb : 0.0;
+    }
+#endif
+    const bool   closed_oxygen = mo_gb > 0.0 && excess_oxygen > 0.0 && excess_oxygen < 2.0 * mo_particles;
+    const double oxygen_gb     = closed_oxygen ? excess_oxygen * mo_gb / mo_particles / avogadro_number : -1.0;
+
     for (const PhaseDiagramLocation location_case : {PhaseDiagramLocation::Matrix, PhaseDiagramLocation::GrainBoundary})
     {
         const ThermochemistryPhaseSettings* location_settings = nullptr;
@@ -226,7 +250,8 @@ void Simulation::SetPhaseDiagram()
 
         double                      total_input_content = 0.0;
         std::vector<InputComponent> components          = OCUtilsCoupling::buildInputComponents(
-            selected_elements, sciantix_variable, sciantix_system, total_input_content, location);
+            selected_elements, sciantix_variable, sciantix_system, total_input_content, location, fmp_active,
+            oxygen_gb);
 
         if (total_input_content <= 0.0 || components.empty())
         {
@@ -280,7 +305,8 @@ void Simulation::SetPhaseDiagram()
                                                                                    solver,
                                                                                    location,
                                                                                    current_oxygen_potential,
-                                                                                   output_data);
+                                                                                   output_data,
+                                                                                   closed_oxygen);
                 const bool has_usable_output = !output_data.solution_phases.empty();
 
                 if (case_success && has_usable_output)
@@ -342,7 +368,40 @@ void Simulation::SetPhaseDiagram()
                                                                selected_elements,
                                                                total_input_content,
                                                                sciantix_variable,
-                                                               sciantix_system);
+                                                               sciantix_system,
+                                                               fmp_active);
+
+                // EC November 2026: FMP oxygen balance, new stoichiometry of the fuel
+                if (heavy_metal > 0.0 && ((closed_oxygen && solved && output_data.components.count("O")) ||
+                                          (!closed_oxygen && excess_oxygen >= 2.0 * mo_particles)))
+                {
+                    double x = (excess_oxygen - 2.0 * mo_particles) / heavy_metal;  // all the Mo in MoO2
+                    if (closed_oxygen)  // Mo/MoO2 buffer: oxygen potential from OC (O2 at 1 bar), Blackburn (1 atm)
+                    {
+                        const double p_atm = std::exp(2.0 * output_data.components.at("O").chemical_potential_over_rt) *
+                                             reference_oxygen_pressure_bar / reference_oxygen_pressure_atm;
+                        x = std::min(solver.NewtonBlackburn({1.0e-14, current_temperature, p_atm}),
+                                     excess_oxygen / heavy_metal);
+                    }
+                    const double oxygen_oxides = excess_oxygen - x * heavy_metal;
+
+                    sciantix_variable["O content"].addValue(
+                        -(oxygen_oxides - sciantix_variable["FMP oxygen in Mo oxides"].getInitialValue()) /
+                        avogadro_number);
+                    sciantix_variable["FMP oxygen in Mo oxides"].setFinalValue(oxygen_oxides);
+                    sciantix_variable["Stoichiometry deviation"].setFinalValue(x);
+
+                    const double p = reference_oxygen_pressure_atm *
+                                     BlackburnThermochemicalModel(x, current_temperature, sciantix_variable);
+                    const double mu = (p > 0.0) ? gas_constant * 1.0e-3 * current_temperature *
+                                                      std::log(p / reference_oxygen_pressure_atm)
+                                                : 0.0;
+                    for (const std::string suffix : {"", " - Blackburn"})
+                    {
+                        sciantix_variable["Fuel oxygen partial pressure" + suffix].setFinalValue(p);
+                        sciantix_variable["Fuel oxygen potential" + suffix].setFinalValue(mu);
+                    }
+                }
                 break;
         }
     }

@@ -102,11 +102,18 @@ namespace OCUtilsCoupling
                                                                       const std::string&  location,
                                                                       const OCOutputData& output_data,
                                                                       double              content_scaling_factor);
+    // EC November 2026: grain-boundary inventory of a metallic fission product with the FMP model (at/m3)
+    double fmpInventoryAtGrainBoundary(const std::string&               element,
+                                       SciantixArray<SciantixVariable>& sciantix_variable,
+                                       SciantixArray<System>&           sciantix_system);
+
     std::vector<InputComponent> buildInputComponents(const std::set<std::string>&     selected_elements,
                                                      SciantixArray<SciantixVariable>& sciantix_variable,
                                                      SciantixArray<System>&           sciantix_system,
                                                      double&                          total_content,
-                                                     const std::string&               location);
+                                                     const std::string&               location,
+                                                     bool                             fmp_active,
+                                                     double oxygen_content_override);  // EC November 2026
 
     bool runOpenCalphadCaseOCASI(const std::string&                 database_path,
                                  double                             temperature,
@@ -116,7 +123,8 @@ namespace OCUtilsCoupling
                                  OpenCalphadSolveMode               solve_mode,
                                  const std::string&                 location,
                                  double                             oxygen_potential_kj_per_mol_o2,
-                                 OCOutputData&                      output_data);
+                                 OCOutputData&                      output_data,
+                                 bool                               closed_oxygen);  // EC November 2026
 
     bool validateOpenCalphadOutput(const OCOutputData&                output_data,
                                    const std::vector<InputComponent>& input_components,
@@ -134,7 +142,8 @@ namespace OCUtilsCoupling
                                        const std::set<std::string>&              selected_elements,
                                        double                                    content_scaling_factor,
                                        SciantixArray<SciantixVariable>&          sciantix_variable,
-                                       SciantixArray<System>&                    sciantix_system);
+                                       SciantixArray<System>&                    sciantix_system,
+                                       bool                                      fmp_active);
 }  // namespace OCUtilsCoupling
 
 #endif
