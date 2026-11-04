@@ -163,7 +163,8 @@ void Simulation::HighBurnupStructurePorosity()
 
             double N_pore = sciantix_variable["HBS pore density"].getFinalValue();
 
-            reference = ": mechanistic cluster dynamics, Barani et al. JNM 563 (2022) 153627; saturation of the vacancy supply and implicit "
+            reference = ": mechanistic cluster dynamics, Barani et al. JNM 563 (2022) 153627; saturation of the "
+                        "vacancy supply and implicit "
                         "Euler corrections from Zullo (2026)";
 
             // Single-atom trapping rate beta_n: NOT modulated by F_sat.
@@ -456,8 +457,8 @@ void Simulation::HighBurnupStructurePorosity()
             reference = ": Barani et al. (2022) JNM 563, 153627 (linear cluster dynamics); nucleation rate coupled to "
                         "d(alpha_r)/dt from the active formation model (Zullo 2026).";
 
-            double trapping_coeff_HBS = 4.0 * M_PI * D_gb * R_pore *
-                                        (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
+            double trapping_coeff_HBS =
+                4.0 * M_PI * D_gb * R_pore * (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
             double total_trapping_rate_HBS = trapping_coeff_HBS * N_pore;
 
             double coeff_matrix[25];
