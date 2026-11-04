@@ -33,7 +33,6 @@ import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.signal import savgol_filter
 
 # Add the project root to path so we can import regression.core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
@@ -411,22 +410,35 @@ def plot_pore_variance(live):
     save(fig, "plot_pore_variance.png")
 
 
-def smoothed_cv(live):
-    # The implicit-Euler moment solver produces a period-2 alternation in CV near
-    # nucleation onset (consecutive timesteps follow two distinct envelopes). A short
-    # median is insufficient because it locks onto one envelope; a Savitzky-Golay
-    # filter averages across the oscillation and preserves the U-shape of the curve.
-    cv_raw = np.asarray(live["CV"], dtype=float)
-    # The first timesteps after onset hold a handful of pores per m3, all at the seed
-    # value n=2: the moments are not yet statistically meaningful and produce isolated
-    # outliers that the filter window would smear backward as a spurious tick.
-    valid = np.asarray(live["poreDensity"], dtype=float) > 1.0e10
-    cv_clean = np.where(valid, cv_raw, 0.0)
-    n = len(cv_clean)
-    win = min(51, n if n % 2 == 1 else n - 1)
-    cv_smoothed = savgol_filter(cv_clean, window_length=win, polyorder=3, mode="nearest") \
-        if win >= 5 else cv_clean
-    return np.clip(np.where(valid, cv_smoothed, 0.0), 0.0, None)
+CV_WINDOW_BU = 0.5        # (MWd/kgHM) running-mean window for the plotted CV
+CV_MIN_PORE_DENSITY = 1.0e10  # (pores/m3) first nucleation steps excluded
+
+
+def cv_running_mean(live):
+    """
+    CV averaged over a running burnup window of CV_WINDOW_BU. Between ~20 and
+    ~33 MWd/kgHM (N_p < 1e14 m-3, pores below 10 nm, capillary pressure of the
+    order of GPa) the vacancy content of the nanometric clusters switches between
+    zero and a positive value from one time step to the next, and the CV follows.
+    The window (about 17 steps) removes this step-to-step oscillation and leaves
+    the curve unchanged where it is smooth (features on 5-10 MWd/kgHM).
+    The first steps after nucleation (N_p < 1e10 m-3) are excluded: the variance
+    source uses the mean size of the previous step, which is zero before the first
+    nucleus, and gives CV = 1 for one step.
+    """
+    bu = np.asarray(live["burnup"], dtype=float)
+    cv = np.asarray(live["CV"], dtype=float)
+    valid = np.asarray(live["poreDensity"], dtype=float) > CV_MIN_PORE_DENSITY
+    out = np.full_like(cv, np.nan)
+    idx = np.where(valid)[0]
+    if len(idx) == 0:
+        return out
+    step = np.median(np.diff(bu[idx]))
+    w = max(1, int(round(CV_WINDOW_BU / step)) | 1)  # odd number of steps
+    seg = cv[idx]
+    k = np.ones(w)
+    out[idx] = np.convolve(seg, k, "same") / np.convolve(np.ones_like(seg), k, "same")
+    return out
 
 
 DISTRIBUTION_BURNUPS = (40, 65, 110, 150, 200)
@@ -443,7 +455,7 @@ def plot_cv(live):
     distribution is log-normal in R with sigma_ln/3.
     """
     bu = live["burnup"]
-    cv = smoothed_cv(live)
+    cv = cv_running_mean(live)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14.0, 5.5))
 
     ax1.plot(bu, cv, "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL)
@@ -451,7 +463,7 @@ def plot_cv(live):
     for b, c in zip(DISTRIBUTION_BURNUPS, DISTRIBUTION_COLORS):
         i = int(np.argmin(np.abs(bu - b)))
         CV, Np, Rm = cv[i], live["poreDensity"][i], live["poreRadius"][i] * 1e9
-        if CV <= 0 or Np <= 0:
+        if not CV > 0 or Np <= 0:
             continue
         ax1.plot(bu[i], CV, "o", color=c, markersize=8, zorder=3)
         s = np.sqrt(np.log(1.0 + CV**2)) / 3.0

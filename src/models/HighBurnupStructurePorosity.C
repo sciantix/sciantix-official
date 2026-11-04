@@ -17,7 +17,60 @@
 #include "Simulation.h"
 
 #include "Solver.h"
+#include <algorithm>
+#include <cmath>
 #include <iostream>
+
+// Vacancies per mean HBS pore after one time step, by the Speight-Beere flow
+// (Barani 2022, Eq. 14) solved fully implicitly (backward Euler):
+//   n_vp = n_vp0 + dt * 2*pi*rho_P*D/(zeta(psi) kT) * (p_P(n_vp) - p_eq(n_vp)),
+//   p_P  = Z(y) n kT / V_p,  V_p = n*Omega_Xe + n_vp*Omega_vac  (Barani 2022, Eq. 16),
+//   p_eq = 2 gamma / R_p - sigma_h,  y = n*Omega_Xe/V_p (capped at 0.65).
+// For frozen Z, zeta and p_eq the step has the closed form of LimitedGrowth in
+// (n_vp + u), u = n*Omega_Xe/Omega_vac. Z, zeta and p_eq are then iterated to
+// convergence (under-relaxed fixed point), so that they are evaluated with the
+// end-of-step volume. Evaluating them with the start-of-step volume produced a
+// step-to-step oscillation of n_vp for nanometric pores (capillary pressure of GPa).
+// n_vp is kept >= 0. a, b return the last growth and equilibrium coefficients.
+static double ImplicitVacanciesPerPore(double n_vp0, double n_xe, double N_p, double omega_xe,
+                                       double omega_vac, double D_v, double gamma, double sigma_h,
+                                       double kT, double dt, double& a, double& b)
+{
+    a = 0.0;
+    b = 0.0;
+    if (N_p <= 0.0 || n_xe <= 0.0 || dt <= 0.0)
+        return n_vp0;
+
+    const double rho = pow(3.0 / (4.0 * M_PI * N_p), 1.0 / 3.0);
+    const double u   = n_xe * omega_xe / omega_vac;
+
+    auto step = [&](double n_vp) {
+        double V   = n_xe * omega_xe + n_vp * omega_vac;
+        double y   = std::min(0.65, n_xe * omega_xe / V);
+        double Z   = (1.0 + y + y * y - y * y * y) / pow(1.0 - y, 3.0);
+        double R   = 0.620350491 * pow(V, 1.0 / 3.0);
+        double psi = std::min(0.7, R / rho);
+        double zeta = 10.0 * psi * (1.0 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * psi * psi - 9.0 * psi + 5.0);
+        double vfr = 2.0 * M_PI * rho * D_v / zeta;
+        a = vfr * n_xe * Z / omega_vac;
+        b = -vfr * (2.0 * gamma / R - sigma_h) / kT;
+        double x0 = n_vp0 + u + b * dt;
+        return std::max(0.0, 0.5 * (x0 + sqrt(x0 * x0 + 4.0 * a * dt)) - u);
+    };
+
+    double n_vp = step(n_vp0);
+    for (int it = 0; it < 50; ++it)
+    {
+        double next = 0.5 * (n_vp + step(n_vp));
+        if (fabs(next - n_vp) <= 1e-8 * (n_vp + u))
+        {
+            n_vp = next;
+            break;
+        }
+        n_vp = next;
+    }
+    return n_vp;
+}
 
 void Simulation::HighBurnupStructurePorosity()
 {
@@ -80,7 +133,6 @@ void Simulation::HighBurnupStructurePorosity()
             double angle_deg = 4.0 * (1.0 - alpha) + 40.0 * alpha;
             double D_sa      = fuel_.getGrainBoundarySingleAtomDiffusivity();
             double D_gb      = D_sa * sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
-            double c_gb      = sciantix_variable["Xe at grain boundary HBS"].getFinalValue();
             double R_pore    = sciantix_variable["HBS pore radius"].getFinalValue();
 
             // Phenomenological saturation factor F_sat = (1 - xi/xi_sat)^2,
@@ -241,80 +293,33 @@ void Simulation::HighBurnupStructurePorosity()
             double XeHSDiameter =
                 4.45e-10 * (0.8542 - 0.03996 * log(history_variable["Temperature"].getFinalValue() / 231.2));
             double gasVolumeInPore = M_PI / 6.0 * pow(XeHSDiameter, 3.0);
-            double PackingFraction = 0.0;
             double V_pore_old_step = sciantix_variable["HBS pore volume"].getInitialValue();
-
-            if (sciantix_variable["HBS pore volume"].getInitialValue() > 0.0)
-                PackingFraction = gasVolumeInPore * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() /
-                                  sciantix_variable["HBS pore volume"].getInitialValue();
-
-            if (PackingFraction > 0.65)
-                PackingFraction = 0.65;  // Cap for Hard Spheres
-
-            double Z_compr = ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) /
-                              (pow(1.0 - PackingFraction, 3.0)));
 
             sciantix_variable["HBS pore volume"].setInitialValue(
                 sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore +
                 sciantix_variable["Vacancies per HBS pore"].getInitialValue() * fuel_.getSchottkyVolume());
-
-            // HBS pore radius
             sciantix_variable["HBS pore radius"].setInitialValue(
                 0.620350491 * pow(sciantix_variable["HBS pore volume"].getInitialValue(), (1.0 / 3.0)));
 
-            // Vacancy contribution
-            double WignerSeitzCellRadius(0.0), psi(0.0);
-            double equilibrium_pressure(0.0);
-            double volume_flow_rate(0.0), growth_rate(0.0), equilibrium_term(0);
-            double DimensionlessFactor(0.0);
-
-            if (sciantix_variable["HBS pore density"].getFinalValue())
+            // Vacancy absorption (Speight-Beere), implicit in n_vp, Z, zeta and p_eq.
+            // Alpha-weighted tilt correction (Barani 2022, Eq. 7) and saturation
+            // factor (phenomenological closure, exponent 2 not calibrated) on D_gb^v
+            // only. D_gb^SA in the trapping term is not damped.
             {
-                WignerSeitzCellRadius =
-                    pow(3.0 / (4.0 * M_PI * sciantix_variable["HBS pore density"].getFinalValue()), (1.0 / 3.0));
-                psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
-                if (psi > 0.7)
-                    psi = 0.7;  // Guard for cell singularity
-                DimensionlessFactor =
-                    10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0);
-            }
-
-            if (sciantix_variable["HBS pore radius"].getInitialValue())
-                equilibrium_pressure =
-                    2.0 * fuel_.getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() -
-                    history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
-
-            if (DimensionlessFactor)
-            {
-                // Barani 2022 Eq. 7: alpha-weighted tilt-angle correction on the
-                // grain-boundary vacancy diffusivity. angle_deg was computed at
-                // the top of case 2 from the current restructured volume fraction.
-                // saturation_factor (phenomenological closure, exponent 2 not
-                // calibrated) damps D_gb^v only. The single-atom diffusivity
-                // D_gb^SA feeding the trapping term is not damped (same in case 3).
                 double tilt_factor = sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
                 double D_gb_v_eff  = fuel_.getGrainBoundaryVacancyDiffusivity() * tilt_factor * saturation_factor;
-
-                volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * D_gb_v_eff / DimensionlessFactor;
-
-                growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * Z_compr /
-                              fuel_.getSchottkyVolume();
-                equilibrium_term = -volume_flow_rate * equilibrium_pressure /
-                                   (boltzmann_constant * history_variable["Temperature"].getFinalValue());
-
+                double growth_rate(0.0), equilibrium_term(0.0);
+                sciantix_variable["Vacancies per HBS pore"].setFinalValue(ImplicitVacanciesPerPore(
+                    sciantix_variable["Vacancies per HBS pore"].getInitialValue(),
+                    sciantix_variable["Xe atoms per HBS pore"].getFinalValue(),
+                    sciantix_variable["HBS pore density"].getFinalValue(), gasVolumeInPore,
+                    fuel_.getSchottkyVolume(), D_gb_v_eff, fuel_.getSurfaceTension(),
+                    history_variable["Hydrostatic stress"].getFinalValue() * 1e6,
+                    boltzmann_constant * history_variable["Temperature"].getFinalValue(),
+                    physics_variable["Time step"].getFinalValue(), growth_rate, equilibrium_term));
                 parameter.push_back(growth_rate);
                 parameter.push_back(equilibrium_term);
             }
-            else
-            {
-                parameter.push_back(0.0);
-                parameter.push_back(0.0);
-            }
-
-            sciantix_variable["Vacancies per HBS pore"].setFinalValue(
-                solver.LimitedGrowth(sciantix_variable["Vacancies per HBS pore"].getInitialValue(),
-                                     parameter,
-                                     physics_variable["Time step"].getFinalValue()));
 
             // HBS pore volume - update with vacancy contribution:
             // V_p = n_Xe*Omega_Xe + n_vac*Omega_Sch. F_sat acts only on D_gb^v
@@ -339,7 +344,8 @@ void Simulation::HighBurnupStructurePorosity()
 
             sciantix_variable["HBS pore density"].resetValue();
             sciantix_variable["HBS pore density"].setFinalValue(solver.BinaryInteraction(
-                sciantix_variable["HBS pore density"].getInitialValue(), pore_interconnection_rate, V_pore_increment));
+                sciantix_variable["HBS pore density"].getInitialValue(), pore_interconnection_rate,
+                std::max(0.0, V_pore_increment)));  // impingement only on pore growth
 
             // Conservation through coalescence: Xe, vacancies and volume per
             // pore are rescaled by N_before/N_after, conserving total atoms,
@@ -402,7 +408,6 @@ void Simulation::HighBurnupStructurePorosity()
             double angle_deg = 4.0 * (1.0 - alpha) + 40.0 * alpha;
             double D_sa      = fuel_.getGrainBoundarySingleAtomDiffusivity();
             double D_gb      = D_sa * sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
-            double c_gb      = sciantix_variable["Xe at grain boundary HBS"].getFinalValue();
             double R_pore    = sciantix_variable["HBS pore radius"].getFinalValue();
 
             // Phenomenological saturation factor F_sat = (1 - xi/xi_sat)^2, as in
@@ -522,73 +527,33 @@ void Simulation::HighBurnupStructurePorosity()
             double XeHSDiameter =
                 4.45e-10 * (0.8542 - 0.03996 * log(history_variable["Temperature"].getFinalValue() / 231.2));
             double gasVolumeInPore = M_PI / 6.0 * pow(XeHSDiameter, 3.0);
-            double PackingFraction = 0.0;
             double V_pore_old_step = sciantix_variable["HBS pore volume"].getInitialValue();
-
-            if (sciantix_variable["HBS pore volume"].getInitialValue() > 0.0)
-                PackingFraction = gasVolumeInPore * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() /
-                                  sciantix_variable["HBS pore volume"].getInitialValue();
-
-            if (PackingFraction > 0.65)
-                PackingFraction = 0.65;
-
-            double Z_compr = ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) /
-                              (pow(1.0 - PackingFraction, 3.0)));
 
             sciantix_variable["HBS pore volume"].setInitialValue(
                 sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore +
                 sciantix_variable["Vacancies per HBS pore"].getInitialValue() * fuel_.getSchottkyVolume());
-
             sciantix_variable["HBS pore radius"].setInitialValue(
                 0.620350491 * pow(sciantix_variable["HBS pore volume"].getInitialValue(), (1.0 / 3.0)));
 
-            // Vacancy contribution
-            double WignerSeitzCellRadius(0.0), psi(0.0);
-            double equilibrium_pressure(0.0);
-            double volume_flow_rate(0.0), growth_rate(0.0), equilibrium_term(0);
-            double DimensionlessFactor(0.0);
-
-            if (sciantix_variable["HBS pore density"].getFinalValue())
-            {
-                WignerSeitzCellRadius =
-                    pow(3.0 / (4.0 * M_PI * sciantix_variable["HBS pore density"].getFinalValue()), (1.0 / 3.0));
-                psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
-                if (psi > 0.7)
-                    psi = 0.7;
-                DimensionlessFactor =
-                    10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0);
-            }
-
-            if (sciantix_variable["HBS pore radius"].getInitialValue())
-                equilibrium_pressure =
-                    2.0 * fuel_.getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() -
-                    history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
-
-            if (DimensionlessFactor)
+            // Vacancy absorption (Speight-Beere), implicit in n_vp, Z, zeta and p_eq.
+            // Alpha-weighted tilt correction (Barani 2022, Eq. 7) and saturation
+            // factor (phenomenological closure, exponent 2 not calibrated) on D_gb^v
+            // only. D_gb^SA in the trapping term is not damped.
             {
                 double tilt_factor = sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
                 double D_gb_v_eff  = fuel_.getGrainBoundaryVacancyDiffusivity() * tilt_factor * saturation_factor;
-
-                volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * D_gb_v_eff / DimensionlessFactor;
-
-                growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * Z_compr /
-                              fuel_.getSchottkyVolume();
-                equilibrium_term = -volume_flow_rate * equilibrium_pressure /
-                                   (boltzmann_constant * history_variable["Temperature"].getFinalValue());
-
+                double growth_rate(0.0), equilibrium_term(0.0);
+                sciantix_variable["Vacancies per HBS pore"].setFinalValue(ImplicitVacanciesPerPore(
+                    sciantix_variable["Vacancies per HBS pore"].getInitialValue(),
+                    sciantix_variable["Xe atoms per HBS pore"].getFinalValue(),
+                    sciantix_variable["HBS pore density"].getFinalValue(), gasVolumeInPore,
+                    fuel_.getSchottkyVolume(), D_gb_v_eff, fuel_.getSurfaceTension(),
+                    history_variable["Hydrostatic stress"].getFinalValue() * 1e6,
+                    boltzmann_constant * history_variable["Temperature"].getFinalValue(),
+                    physics_variable["Time step"].getFinalValue(), growth_rate, equilibrium_term));
                 parameter.push_back(growth_rate);
                 parameter.push_back(equilibrium_term);
             }
-            else
-            {
-                parameter.push_back(0.0);
-                parameter.push_back(0.0);
-            }
-
-            sciantix_variable["Vacancies per HBS pore"].setFinalValue(
-                solver.LimitedGrowth(sciantix_variable["Vacancies per HBS pore"].getInitialValue(),
-                                     parameter,
-                                     physics_variable["Time step"].getFinalValue()));
 
             sciantix_variable["HBS pore volume"].setFinalValue(
                 sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore +
@@ -610,7 +575,8 @@ void Simulation::HighBurnupStructurePorosity()
 
             sciantix_variable["HBS pore density"].resetValue();
             sciantix_variable["HBS pore density"].setFinalValue(solver.BinaryInteraction(
-                sciantix_variable["HBS pore density"].getInitialValue(), pore_interconnection_rate, V_pore_increment));
+                sciantix_variable["HBS pore density"].getInitialValue(), pore_interconnection_rate,
+                std::max(0.0, V_pore_increment)));  // impingement only on pore growth
 
             // Conservation (atoms and vacancies)
             if (sciantix_variable["HBS pore density"].getFinalValue())
