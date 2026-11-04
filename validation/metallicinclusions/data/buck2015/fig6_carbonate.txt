@@ -1,0 +1,47 @@
+# Buck et al., J. Nucl. Mater. 461 (2015) 236-243, Fig. 6, ATM-109 (carbonate-peroxide dissolution residue).
+# Cumulative number distribution of the particle volume. Approximate digitization (EC November 2026):
+# marker pixels binned every 0.4 in ln V, bin mean of ln V and median of the cumulative fraction.
+# ln_particle_volume_nm3 cumulative_fraction
+-1.338 0.009
+-0.991 0.020
+-0.564 0.032
+-0.216 0.057
+0.258 0.080
+0.579 0.098
+1.006 0.122
+1.438 0.156
+1.785 0.210
+2.191 0.263
+2.610 0.294
+2.993 0.327
+3.333 0.348
+3.732 0.350
+4.273 0.359
+5.402 0.373
+5.830 0.390
+6.226 0.422
+6.573 0.466
+6.992 0.493
+7.468 0.506
+7.782 0.511
+8.213 0.535
+8.604 0.586
+9.013 0.627
+9.415 0.655
+9.811 0.684
+10.164 0.704
+10.497 0.712
+11.081 0.729
+11.391 0.761
+11.753 0.794
+12.153 0.816
+12.602 0.833
+12.992 0.842
+13.420 0.857
+13.784 0.879
+14.183 0.908
+14.632 0.936
+15.079 0.956
+15.290 0.974
+15.711 0.987
+16.886 0.993

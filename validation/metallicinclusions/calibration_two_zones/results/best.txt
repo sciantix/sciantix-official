@@ -1,0 +1,38 @@
+Two-zone FMP calibration, 4096 Sobol points (seed 42) + 5 Nelder-Mead refinements
+
+Nelder-Mead from the best Sobol points (start J4 -> refined J4, evaluations, parameters as factors):
+    #1649: 0.6273 -> 0.5541 (198), k_intra_0 x0.197, B_intra x1.02, k_gb_0 x0.604, B_gb x0.991
+    #216: 0.6795 -> 0.5542 (190), k_intra_0 x0.178, B_intra x1.01, k_gb_0 x0.604, B_gb x0.991
+    #3721: 0.6920 -> 0.5544 (274), k_intra_0 x0.155, B_intra x1, k_gb_0 x0.603, B_gb x0.991
+    #264: 0.6928 -> 0.5541 (276), k_intra_0 x0.197, B_intra x1.02, k_gb_0 x0.604, B_gb x0.991
+    #772: 0.6979 -> 0.5541 (213), k_intra_0 x0.197, B_intra x1.02, k_gb_0 x0.619, B_gb x0.992
+
+Nominal (V. Bellani, common parameters): J4 = 0.8691, J3 = 0.6156
+    k_intra_0  = 4.980333e-15  (x 1 of the nominal value)
+    B_intra    = 2.665765e+08  (x 1 of the nominal value)
+    k_gb_0     = 4.980333e-15  (x 1 of the nominal value)
+    B_gb       = 2.665765e+08  (x 1 of the nominal value)
+    r000: R_intra  13.46 ( 7.58) nm, R_GB  13.50 (14.28) nm, A_intra  3.252 (1.368) %, A_GB  0.446 (7.208) %
+    r030: R_intra  11.99 ( 3.59) nm, R_GB  12.04 (11.95) nm, A_intra  3.572 (0.557) %, A_GB  0.468 (3.623) %
+    r056: R_intra   9.00 ( 3.45) nm, R_GB   9.06 ( 5.58) nm, A_intra  5.889 (3.252) %, A_GB  0.735 (1.757) %
+    r075: R_intra   6.44 ( 3.10) nm, R_GB   6.51 ( 6.68) nm, A_intra  2.559 (2.621) %, A_GB  0.317 (0.718) %
+
+Best Sobol point (#1649): J4 = 0.6273, J3 = 0.6458
+    k_intra_0  = 3.036685e-15  (x 0.6097 of the nominal value)
+    B_intra    = 2.793827e+08  (x 1.048 of the nominal value)
+    k_gb_0     = 4.160531e-15  (x 0.8354 of the nominal value)
+    B_gb       = 2.630846e+08  (x 0.9869 of the nominal value)
+    r000: R_intra  12.19 ( 7.58) nm, R_GB  14.28 (14.28) nm, A_intra  3.411 (1.368) %, A_GB  2.350 (7.208) %
+    r030: R_intra  10.94 ( 3.59) nm, R_GB  12.82 (11.95) nm, A_intra  3.686 (0.557) %, A_GB  2.380 (3.623) %
+    r056: R_intra   8.36 ( 3.45) nm, R_GB   9.81 ( 5.58) nm, A_intra  5.616 (3.252) %, A_GB  3.273 (1.757) %
+    r075: R_intra   5.87 ( 3.10) nm, R_GB   6.90 ( 6.68) nm, A_intra  1.410 (2.621) %, A_GB  0.813 (0.718) %
+
+Refined (best of the refinements): J4 = 0.5541, J3 = 0.5985
+    k_intra_0  = 9.834342e-16  (x 0.1975 of the nominal value)
+    B_intra    = 2.711740e+08  (x 1.017 of the nominal value)
+    k_gb_0     = 3.009503e-15  (x 0.6043 of the nominal value)
+    B_gb       = 2.641409e+08  (x 0.9909 of the nominal value)
+    r000: R_intra   7.58 ( 7.58) nm, R_GB  13.24 (14.28) nm, A_intra  5.241 (1.368) %, A_GB  3.594 (7.208) %
+    r030: R_intra   6.84 ( 3.59) nm, R_GB  11.95 (11.95) nm, A_intra  5.581 (0.557) %, A_GB  3.622 (3.623) %
+    r056: R_intra   5.29 ( 3.45) nm, R_GB   9.26 ( 5.58) nm, A_intra  7.857 (3.252) %, A_GB  4.715 (1.757) %
+    r075: R_intra   3.55 ( 3.10) nm, R_GB   6.21 ( 6.68) nm, A_intra  1.193 (2.621) %, A_GB  0.718 (0.718) %

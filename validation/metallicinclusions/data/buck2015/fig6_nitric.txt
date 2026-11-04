@@ -1,0 +1,44 @@
+# Buck et al., J. Nucl. Mater. 461 (2015) 236-243, Fig. 6, ATM-109 (nitric acid dissolution residue).
+# Cumulative number distribution of the particle volume. Approximate digitization (EC November 2026):
+# marker pixels binned every 0.4 in ln V, bin mean of ln V and median of the cumulative fraction.
+# ln_particle_volume_nm3 cumulative_fraction
+0.298 0.002
+0.463 0.000
+1.505 0.009
+1.731 0.011
+2.136 0.019
+2.735 0.024
+3.008 0.036
+3.387 0.053
+3.805 0.085
+4.197 0.133
+4.601 0.167
+4.993 0.191
+5.419 0.214
+5.806 0.247
+6.219 0.288
+6.591 0.340
+6.975 0.387
+7.400 0.410
+7.796 0.433
+8.188 0.451
+8.586 0.466
+9.032 0.482
+9.405 0.506
+9.786 0.532
+10.215 0.563
+10.611 0.590
+11.013 0.621
+11.362 0.651
+11.804 0.668
+12.218 0.681
+12.606 0.709
+13.006 0.738
+13.405 0.775
+13.807 0.825
+14.163 0.869
+14.590 0.900
+14.981 0.925
+15.434 0.952
+15.811 0.970
+16.162 0.984

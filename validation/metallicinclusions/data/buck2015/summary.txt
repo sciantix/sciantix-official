@@ -1,0 +1,13 @@
+# Buck et al., J. Nucl. Mater. 461 (2015) 236-243 (EC November 2026).
+# ATM-109, Quad Cities I BWR, GE UO2, 3.0% U-235, initial grain size 30 um, specimens maximum burnup 70.80 GWd/MTU.
+# Metallic particles recovered from dissolution residues (no radial information, pellet-averaged population).
+# key value unit
+particle_diameter_min 10 nm
+particle_diameter_max 300 nm
+mean_particle_size_carbonate_peroxide 43 nm
+mean_particle_size_nitric 58 nm
+# Log-normal fits of ln V (V in nm3) of the digitized Fig. 6 (mu, sigma of ln V), this work:
+lnV_mu_carbonate_peroxide 7.07 -
+lnV_sigma_carbonate_peroxide 4.90 -
+lnV_mu_nitric 9.30 -
+lnV_sigma_nitric 3.83 -

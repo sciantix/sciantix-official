@@ -46,11 +46,13 @@ void Simulation::FiveMetalParticles()
     const double T  = history_variable["Temperature"].getFinalValue();  // (K)
     const double kB = boltzmann_constant_eV;                            // (eV/K)
 
-    // Calibrated parameters (V. Bellani, two-parameter calibration on the UO2 LWR cases)
-    const double k_intra_0 = 4.980333299845e-15, k_gb_0 = 4.980333299845e-15;  // growth prefactors (m2/s)
-    const double dG_intra = 1.0, dG_gb = 1.0;                                  // growth activation energies (eV)
-    const double B_intra = 2.665764962509e8, B_gb = 2.665764962509e8;          // CNT barrier coefficients (eV K2)
-    const double nu0_intra = 1.0, nu0_gb = 1.0;                                // nucleation prefactors (1/s)
+    // EC November 2026: parameters calibrated with the two-zone model on the UO2 LWR cases, with free grain-boundary
+    // values (validation/metallicinclusions/calibration_two_zones). Calibration of V. Bellani, common values:
+    // k_0 = 4.980333299845e-15 m2/s, B = 2.665764962509e8 eV K2.
+    const double k_intra_0 = 9.834342e-16, k_gb_0 = 3.009503e-15;  // growth prefactors (m2/s)
+    const double dG_intra = 1.0, dG_gb = 1.0;                       // growth activation energies (eV)
+    const double B_intra = 2.711740e8, B_gb = 2.641409e8;           // CNT barrier coefficients (eV K2)
+    const double nu0_intra = 1.0, nu0_gb = 1.0;                     // nucleation prefactors (1/s)
 
     // EC November 2026: half-width of the grain-boundary zone, equal to TEM grain-boundary regions of the calibration (V. Bellani, thesis, Figs. 5.3-5.16)
     const double delta_gb = 100.0e-9;  // (m)
