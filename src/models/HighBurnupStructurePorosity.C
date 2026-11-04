@@ -163,7 +163,7 @@ void Simulation::HighBurnupStructurePorosity()
 
             double N_pore = sciantix_variable["HBS pore density"].getFinalValue();
 
-            reference = ": mechanistic cluster dynamics, Barani et al. JNM 563 (2022) 153627; percolation and implicit "
+            reference = ": mechanistic cluster dynamics, Barani et al. JNM 563 (2022) 153627; saturation of the vacancy supply and implicit "
                         "Euler corrections from Zullo (2026)";
 
             // Single-atom trapping rate beta_n: NOT modulated by F_sat.
@@ -288,10 +288,9 @@ void Simulation::HighBurnupStructurePorosity()
                 // Barani 2022 Eq. 7: alpha-weighted tilt-angle correction on the
                 // grain-boundary vacancy diffusivity. angle_deg was computed at
                 // the top of case 2 from the current restructured volume fraction.
-                // saturation_factor modulates D_gb^v via percolation, with the t=2
-                // exponent. It is applied here only: the single-atom diffusivity
-                // D_gb^SA feeding the trapping term is left unmodulated in this
-                // case, whereas case 3 modulates it as well.
+                // saturation_factor (phenomenological closure, exponent 2 not
+                // calibrated) damps D_gb^v only. The single-atom diffusivity
+                // D_gb^SA feeding the trapping term is not damped (same in case 3).
                 double tilt_factor = sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
                 double D_gb_v_eff  = fuel_.getGrainBoundaryVacancyDiffusivity() * tilt_factor * saturation_factor;
 
@@ -405,8 +404,8 @@ void Simulation::HighBurnupStructurePorosity()
             double c_gb      = sciantix_variable["Xe at grain boundary HBS"].getFinalValue();
             double R_pore    = sciantix_variable["HBS pore radius"].getFinalValue();
 
-            // Kinetic saturation factor from 3D percolation theory
-            // (Stauffer & Aharony 1994): (1 - xi/xi_sat)^t with t = 2.
+            // Phenomenological saturation factor F_sat = (1 - xi/xi_sat)^2, as in
+            // case 2: applied once, to D_gb^v. Not applied to D_gb^SA / beta_n.
             double       xi_old            = sciantix_variable["HBS porosity"].getInitialValue();
             const double xi_sat            = 0.18;
             double       linear            = std::max(0.0, 1.0 - xi_old / xi_sat);
@@ -457,7 +456,7 @@ void Simulation::HighBurnupStructurePorosity()
             reference = ": Barani et al. (2022) JNM 563, 153627 (linear cluster dynamics); nucleation rate coupled to "
                         "d(alpha_r)/dt from the active formation model (Zullo 2026).";
 
-            double trapping_coeff_HBS = 4.0 * M_PI * (D_gb * saturation_factor) * R_pore *
+            double trapping_coeff_HBS = 4.0 * M_PI * D_gb * R_pore *
                                         (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
             double total_trapping_rate_HBS = trapping_coeff_HBS * N_pore;
 
