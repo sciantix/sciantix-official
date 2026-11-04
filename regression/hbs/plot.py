@@ -546,8 +546,8 @@ def plot_pore_pressure(live):
 
     ax3.set_xlabel(X_LABEL_BU)
     for ax, tag in zip((ax1, ax2, ax3), "abc"):
-        ax.set_xlim(0, 280)
-        ax.legend(loc="upper left")
+        ax.set_xlim(0, 210)  # same range as the other figures; Noirot MOX points at 220 and 270 fall outside
+        ax.legend(loc="upper right" if ax is ax2 else "upper left")
         ax.set_title(f"({tag})", loc="left")
     save(fig, "plot_pore_pressure.png")
 
