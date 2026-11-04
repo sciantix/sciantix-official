@@ -83,18 +83,10 @@ void Simulation::HighBurnupStructurePorosity()
             double c_gb      = sciantix_variable["Xe at grain boundary HBS"].getFinalValue();
             double R_pore    = sciantix_variable["HBS pore radius"].getFinalValue();
 
-            // Two-channel saturation factor (Stauffer & Aharony 1994 form,
-            // (1 - xi/xi_sat)^t with t = 2) applied below to:
-            //   1. D_gb^v in the Speight-Beere vacancy flow (grain-boundary
-            //      percolation: as the solid GB network fragments near xi_sat,
-            //      Schottky-vacancy transport along the GB network shuts down).
-            //   2. The total pore-volume increment dV (mechanical cap: as the
-            //      remaining solid cross-section shrinks, the effective stress
-            //      grows as ~1/(1-xi) and opposes further pore expansion).
-            // F_sat is NOT applied to D_gb^SA / beta_n: single-atom GB hops are
-            // a surface mechanism that does not require bulk backbone connectivity.
-            // The EoS identity V_p = n_Xe*Omega_Xe + n_vac*Omega_Sch is broken
-            // under saturation by design (over-pressurised pores).
+            // Phenomenological saturation factor F_sat = (1 - xi/xi_sat)^2,
+            // applied once, to D_gb^v in the Speight-Beere vacancy flow.
+            // xi_sat is a calibrated parameter. F_sat is NOT applied to
+            // D_gb^SA / beta_n, so gas trapping continues at high porosity.
             double       xi_old            = sciantix_variable["HBS porosity"].getInitialValue();
             const double xi_sat            = 0.18;
             double       linear            = std::max(0.0, 1.0 - xi_old / xi_sat);
@@ -175,11 +167,8 @@ void Simulation::HighBurnupStructurePorosity()
                         "Euler corrections from Zullo (2026)";
 
             // Single-atom trapping rate beta_n: NOT modulated by F_sat.
-            // The percolation factor enters only the vacancy channel
-            // (D_gb^v in Speight-Beere) and the post-hoc dV cap (after the
-            // vacancy update). Coalescence operates on the capped dV so that
-            // N_p(bu) keeps its bell shape and merging slows together with
-            // pore growth as xi -> xi_sat.
+            // The saturation factor enters only the vacancy channel
+            // (D_gb^v in Speight-Beere).
             double trapping_coeff_HBS =
                 4.0 * M_PI * D_gb * R_pore * (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
             double total_trapping_rate_HBS = trapping_coeff_HBS * N_pore;
@@ -327,24 +316,14 @@ void Simulation::HighBurnupStructurePorosity()
                                      parameter,
                                      physics_variable["Time step"].getFinalValue()));
 
-            // HBS pore volume - update with vacancy contribution.
-            // Post-hoc cap on the total increment dV (gas + vac).
-            // V_pore is set to V_old + saturation_factor * dV_uncapped; the
-            // uncapped dV is retained for the coalescence step below so that
-            // BinaryInteraction still sees the physical driving force.
-            // This deliberately breaks the EoS identity V_p = n_Xe*Omega_Xe +
-            // n_vac*Omega_Sch: pores become over-pressurised when xi -> xi_sat,
-            // representing the mechanical constraint on pore expansion.
-            double V_pore_uncapped =
+            // HBS pore volume - update with vacancy contribution:
+            // V_p = n_Xe*Omega_Xe + n_vac*Omega_Sch. F_sat acts only on D_gb^v
+            // above, the pore-volume increment is not capped.
+            sciantix_variable["HBS pore volume"].setFinalValue(
                 sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore +
-                sciantix_variable["Vacancies per HBS pore"].getFinalValue() * fuel_.getSchottkyVolume();
+                sciantix_variable["Vacancies per HBS pore"].getFinalValue() * fuel_.getSchottkyVolume());
 
-            double V_pore_increment_uncapped = V_pore_uncapped - V_pore_old_step;
-            double V_pore_increment_capped   = saturation_factor * V_pore_increment_uncapped;
-
-            sciantix_variable["HBS pore volume"].setFinalValue(V_pore_old_step + V_pore_increment_capped);
-
-            double V_pore_increment = V_pore_increment_capped;
+            double V_pore_increment = sciantix_variable["HBS pore volume"].getFinalValue() - V_pore_old_step;
 
             sciantix_variable["HBS pore radius"].setFinalValue(
                 0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), 1. / 3.));
@@ -362,13 +341,9 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["HBS pore density"].setFinalValue(solver.BinaryInteraction(
                 sciantix_variable["HBS pore density"].getInitialValue(), pore_interconnection_rate, V_pore_increment));
 
-            // Conservation (atoms and vacancies) + capped-volume preservation.
-            // Instead of recomputing V_pore from n_Xe and n_vac
-            // (which would restore the EoS identity and wipe out the cap
-            // applied above), V_pore per pore is rescaled by N_before/N_after
-            // so that the total capped volume Sum(V_p) is conserved through
-            // coalescence. Xe and vacancies per pore are rescaled by the same
-            // factor, conserving total atoms and vacancies.
+            // Conservation through coalescence: Xe, vacancies and volume per
+            // pore are rescaled by N_before/N_after, conserving total atoms,
+            // vacancies and pore volume.
             if (sciantix_variable["HBS pore density"].getFinalValue())
             {
                 double rescale_factor = sciantix_variable["HBS pore density"].getInitialValue() /

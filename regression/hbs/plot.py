@@ -176,6 +176,13 @@ def load_case(case_dir):
     case["swe_igs"] = col("Intragranular gas solution swelling (/)")
     case["swe_igb"] = col("Intragranular gas bubble swelling (/)")
     case["fima"] = col("FIMA (%)")
+    case["time_s"] = col("Time (h)") * 3600.0
+    case["T"] = col("Temperature (K)")
+    case["fission_rate"] = col("Fission rate (fiss / m3 s)")
+    case["sigma_h"] = col("Hydrostatic stress (MPa)")
+    case["n_xe"] = col("Xe atoms per HBS pore (at/pore)")
+    case["n_vac"] = col("Vacancies per HBS pore (vac/pore)")
+    case["poreVolume"] = col("HBS pore volume (m3)")
 
     # Cluster-dynamics moments of the pore size distribution
     M2 = col("Xe atoms per HBS pore - variance (at^2/pore)")
@@ -217,7 +224,10 @@ def plot_pore_density(live, reference):
     exp_spino_98 = load_xy("exp_pore_density_4.txt")
     barani = load_xy("Barani_pore_density.txt")
 
-    fig, ax = new_axes(X_LABEL_BU, r"Pore number density (pores m$^{-3}$)")
+    fig, (ax, ax2) = plt.subplots(1, 2, figsize=(14.0, 5.5))
+    ax.set_xlabel(X_LABEL_BU)
+    ax.set_ylabel(r"Pore number density (pores m$^{-3}$)")
+    ax.set_title("(a)", loc="left")
     ax.plot(exp_cappia[:, 0], exp_cappia[:, 1], "o", color=COLOR_CAPPIA,
             markersize=MARKER_SIZE, label="Cappia et al. 2016")
     ax.plot(exp_spino_67[:, 0], exp_spino_67[:, 1], "s", color=COLOR_SPINO_LIGHT,
@@ -234,7 +244,10 @@ def plot_pore_density(live, reference):
     ax.plot(live["burnup"], live["poreDensity"], "-", color=COLOR_CURRENT,
             linewidth=LINEWIDTH_MODEL, label=LABEL_LIVE)
     ax.set_xlim(0, 210)
-    ax.legend(loc="upper right")
+    ax.set_ylim(0, 1.0e18)  # headroom so the legend clears the peak and the Cappia points
+    ax.legend(loc="upper right", ncol=2, fontsize="small")
+    draw_np_budget(ax2, live)
+    ax2.set_title("(b)", loc="left")
     save(fig, "plot_pore_density.png")
 
 
@@ -398,9 +411,7 @@ def plot_pore_variance(live):
     save(fig, "plot_pore_variance.png")
 
 
-def plot_cv(live):
-    fig, ax = new_axes(X_LABEL_BU, r"Coefficient of variation $\sqrt{B/N_p}\,/\,\bar{n}$ (/)")
-
+def smoothed_cv(live):
     # The implicit-Euler moment solver produces a period-2 alternation in CV near
     # nucleation onset (consecutive timesteps follow two distinct envelopes). A short
     # median is insufficient because it locks onto one envelope; a Savitzky-Golay
@@ -415,12 +426,163 @@ def plot_cv(live):
     win = min(51, n if n % 2 == 1 else n - 1)
     cv_smoothed = savgol_filter(cv_clean, window_length=win, polyorder=3, mode="nearest") \
         if win >= 5 else cv_clean
-    cv_smoothed = np.clip(np.where(valid, cv_smoothed, 0.0), 0.0, None)
+    return np.clip(np.where(valid, cv_smoothed, 0.0), 0.0, None)
 
-    ax.plot(live["burnup"], cv_smoothed, "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL)
+
+DISTRIBUTION_BURNUPS = (40, 65, 110, 150, 200)
+DISTRIBUTION_COLORS = plt.cm.viridis(np.linspace(0.0, 0.9, len(DISTRIBUTION_BURNUPS)))
+
+
+def plot_cv(live):
+    """
+    (a) Coefficient of variation vs burnup, with the burnups of panel (b) marked.
+    (b) Pore radius distributions reconstructed from the first three moments,
+    assuming a log-normal shape (Barani et al. 2022, Sec. 2.1). With mean n_bar
+    and CV = sqrt(B/N_p)/n_bar, sigma_ln^2 = ln(1 + CV^2) in n. Radius follows
+    R = R_p (n/n_bar)^(1/3), the same mapping used for the sigma_R band, so the
+    distribution is log-normal in R with sigma_ln/3.
+    """
+    bu = live["burnup"]
+    cv = smoothed_cv(live)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14.0, 5.5))
+
+    ax1.plot(bu, cv, "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL)
+    r_nm = np.linspace(1.0, 1000.0, 2000)
+    for b, c in zip(DISTRIBUTION_BURNUPS, DISTRIBUTION_COLORS):
+        i = int(np.argmin(np.abs(bu - b)))
+        CV, Np, Rm = cv[i], live["poreDensity"][i], live["poreRadius"][i] * 1e9
+        if CV <= 0 or Np <= 0:
+            continue
+        ax1.plot(bu[i], CV, "o", color=c, markersize=8, zorder=3)
+        s = np.sqrt(np.log(1.0 + CV**2)) / 3.0
+        mu = np.log(Rm) - 0.5 * np.log(1.0 + CV**2) / 3.0
+        g = Np * np.exp(-(np.log(r_nm) - mu)**2 / (2 * s**2)) / (r_nm * s * np.sqrt(2 * np.pi))
+        ax2.plot(r_nm, g, "-", color=c, linewidth=LINEWIDTH_MODEL,
+                 label=rf"{b} MWd kgHM$^{{-1}}$: CV = {CV:.2f}, $R_p$ = {Rm:.0f} nm")
+
+    ax1.set_xlabel(X_LABEL_BU)
+    ax1.set_ylabel(r"Coefficient of variation $\sqrt{B/N_p}\,/\,\bar{n}$ (/)")
+    ax1.set_xlim(0, 210)
+    ax1.set_ylim(0, None)
+    ax1.set_title("(a)", loc="left")
+    ax2.set_xlabel("Pore radius (nm)")
+    ax2.set_ylabel(r"$dN_p/dR$ (pores m$^{-3}$ nm$^{-1}$)")
+    ax2.set_xlim(0, 1000)
+    ax2.set_ylim(0, None)
+    ax2.legend(loc="upper right")
+    ax2.set_title("(b)", loc="left")
+    save(fig, "plot_CV.png")
+
+
+# Constants of the UO2HBS matrix used by the porosity model (SetMatrix.C).
+SURFACE_TENSION = 1.1      # (N/m)
+SCHOTTKY_VOLUME = 4.09e-29  # (m3)
+BOLTZMANN = 1.380649e-23    # (J/K)
+NUCLEATION_PREFACTOR = 8.8e17  # pores m-3 per unit alpha_r (Eq. nu_P)
+
+
+def pore_pressure(live):
+    """
+    Carnahan-Starling pressure in the mean pore, as computed in
+    HighBurnupStructurePorosity.C: hard-sphere Xe diameter of Brearley-MacInnes,
+    packing fraction n_Xe*v_Xe/V_p (capped at 0.65 in the code).
+    Returns (p_gas, p_eq, v_xe) in Pa, Pa, m3.
+    """
+    T, n, V, R = live["T"], live["n_xe"], live["poreVolume"], live["poreRadius"]
+    d = 4.45e-10 * (0.8542 - 0.03996 * np.log(T / 231.2))
+    v_xe = np.pi / 6.0 * d**3
+    ok = V > 0
+    y = np.zeros_like(V)
+    np.divide(n * v_xe, V, out=y, where=ok)
+    y = np.minimum(y, 0.65)
+    Z = (1 + y + y**2 - y**3) / (1 - y)**3
+    p_gas = np.zeros_like(V)
+    np.divide(Z * n * BOLTZMANN * T, V, out=p_gas, where=ok)
+    p_eq = np.zeros_like(V)
+    np.divide(2.0 * SURFACE_TENSION, R, out=p_eq, where=R > 0)
+    p_eq = p_eq - live["sigma_h"] * 1e6
+    return p_gas, p_eq, v_xe
+
+
+def plot_pore_pressure(live):
+    """
+    (a) Mean-pore gas pressure against the equilibrium pressure and the
+    estimates of Noirot et al. 2008 (Table 2, 650 K) and Jernkvist 2019;
+    (b) volume per gas atom in the pore, the EoS-independent quantity measured
+    by Noirot; (c) split of the mean pore volume between gas and vacancies.
+    """
+    p_gas, p_eq, v_xe = pore_pressure(live)
+    bu = live["burnup"]
+    on = live["poreDensity"] > 1.0e15  # skip the first few pores after onset
+    noirot = load_xy("noirot2008_pressure.txt")
+    rim, agg = noirot[noirot[:, 3] == 0], noirot[noirot[:, 3] == 1]
+
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8.0, 14.0), sharex=True)
+    ax1.axhspan(50, 150, color="#bbbbbb", alpha=0.35, label="Jernkvist 2019, 50-150 MPa")
+    ax1.plot(bu[on], p_gas[on] / 1e6, "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL,
+             label=r"$p_P$, Carnahan-Starling, 723 K")
+    ax1.plot(bu[on], p_eq[on] / 1e6, "--", color="k", linewidth=LINEWIDTH_REF,
+             label=r"$p_P^{eq} = 2\gamma_p/R_p - \sigma_h$")
+    ax2.plot(bu[on], live["poreVolume"][on] / live["n_xe"][on] * 1e30, "-", color=COLOR_CURRENT,
+             linewidth=LINEWIDTH_MODEL, label=r"$V_p/n_{Xe}$")
+    for ax, col in ((ax1, 2), (ax2, 1)):
+        ax.plot(rim[:, 0], rim[:, col], "o", color=COLOR_NOIROT, markersize=MARKER_SIZE + 2,
+                label="Noirot et al. 2008, UO$_2$ rim, 650 K")
+        ax.plot(agg[:, 0], agg[:, col], "s", color=COLOR_NOIROT, markerfacecolor="none",
+                markersize=MARKER_SIZE + 2, label="Noirot et al. 2008, peripheral agglomerates, 650 K")
+    ax1.set_ylabel("Pressure (MPa)")
+    ax1.set_ylim(0, None)
+    ax2.set_ylabel(r"Volume per gas atom ($\mathrm{\AA}^3$ at$^{-1}$)")
+    ax2.set_ylim(0, 600)
+
+    ax3.plot(bu[on], live["n_xe"][on] * v_xe[on] * 1e18, "-", color=COLOR_SPINO, linewidth=LINEWIDTH_MODEL,
+             label=r"gas, $n_{Xe}\,\Omega_{Xe}$")
+    ax3.plot(bu[on], live["n_vac"][on] * SCHOTTKY_VOLUME * 1e18, "-", color=COLOR_REFERENCE,
+             linewidth=LINEWIDTH_MODEL, label=r"vacancies, $n_{vp}\,\Omega_{vac}$")
+    ax3.plot(bu[on], live["poreVolume"][on] * 1e18, "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL,
+             label=r"total, $V_p$")
+    ax3.set_ylabel(r"Mean pore volume ($\mu$m$^3$)")
+    ax3.set_ylim(0, None)
+
+    ax3.set_xlabel(X_LABEL_BU)
+    for ax, tag in zip((ax1, ax2, ax3), "abc"):
+        ax.set_xlim(0, 280)
+        ax.legend(loc="upper left")
+        ax.set_title(f"({tag})", loc="left")
+    save(fig, "plot_pore_pressure.png")
+
+
+def np_budget(live):
+    """
+    Cumulative contributions to N_p, reconstructed from the output:
+    nucleation nu_P dt = prefactor * d(alpha_r) (Eq. nu_P), re-solution
+    alpha_n(R_p) N_p dt, coalescence as the remainder of the N_p balance.
+    """
+    t, Np, R, F = live["time_s"], live["poreDensity"], live["poreRadius"], live["fission_rate"]
+    alpha = live["alpha"]
+    dt = np.diff(t, prepend=t[0])
+    d_alpha = np.maximum(np.diff(alpha, prepend=alpha[0]), 0.0)
+    nucleated = np.cumsum(np.where(live["burnup"] > 15.0, NUCLEATION_PREFACTOR * d_alpha, 0.0))
+    a_n = 2e-23 * F * (3e-9 / (3e-9 + R)) * (1e-9 / (1e-9 + R))
+    resolved = np.cumsum(a_n * Np * dt)
+    coalesced = nucleated - resolved - Np
+    return nucleated, resolved, coalesced
+
+
+def draw_np_budget(ax, live):
+    nuc, res, coal = np_budget(live)
+    bu = live["burnup"]
+    ax.plot(bu, nuc, "-", color=COLOR_REFERENCE, linewidth=LINEWIDTH_MODEL, label="nucleated")
+    ax.plot(bu, res, "-", color=COLOR_SPINO, linewidth=LINEWIDTH_MODEL, label="destroyed by re-solution")
+    ax.plot(bu, coal, "-", color=COLOR_BARANI, linewidth=LINEWIDTH_MODEL, label="lost by coalescence")
+    ax.plot(bu, live["poreDensity"], "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL + 0.5,
+            label=r"$N_p$")
+    ax.set_xlabel(X_LABEL_BU)
+    ax.set_ylabel(r"Cumulative pore number density (pores m$^{-3}$)")
     ax.set_xlim(0, 210)
     ax.set_ylim(0, None)
-    save(fig, "plot_CV.png")
+    ax.legend(loc="upper left")
+
 
 
 def plot_xe_inventory(live):
@@ -498,6 +660,7 @@ def main():
     if live["CV"] is not None:
         plot_pore_variance(live)
         plot_cv(live)
+        plot_pore_pressure(live)
     else:
         print("No cluster-dynamics moments in the live case: variance and CV skipped")
 
