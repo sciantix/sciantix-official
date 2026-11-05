@@ -13,18 +13,17 @@
 \graphicspath{{../figures/}{../calibration_two_zones/results/}}
 
 % ---------------------------------------------------------------- colour code
-\definecolor{vb}{RGB}{25,25,25}      % model of V. Bellani, unchanged
-\definecolor{new}{RGB}{0,92,200}     % new or added, EC November 2026
-\definecolor{mod}{RGB}{214,92,0}     % modified with respect to V. Bellani, EC November 2026
-\definecolor{muted}{RGB}{110,110,110}
+% two colours only: black = V. Bellani, blue = new or changed, EC November 2026
+\definecolor{vb}{RGB}{25,25,25}      % model of V. Bellani
+\definecolor{new}{RGB}{0,92,200}     % new or changed, EC November 2026
+\definecolor{muted}{RGB}{110,110,110} % layout only (footline, bullets, captions)
 \definecolor{rule}{RGB}{200,200,200}
 
 \newcommand{\NEW}[1]{\textcolor{new}{#1}}
-\newcommand{\MOD}[1]{\textcolor{mod}{#1}}
-\newcommand{\vbtag}[1]{\text{\scriptsize\textcolor{muted}{[VB #1]}}}
-\newcommand{\newtag}{\text{\scriptsize\textcolor{new}{\textbf{new}}}}
-\newcommand{\modtag}[1]{\text{\scriptsize\textcolor{mod}{\textbf{modified}, [VB #1]}}}
-\newcommand{\was}[1]{{\scriptsize\textcolor{muted}{V.\,Bellani: #1}}}
+\newcommand{\vbtag}[1]{\text{\scriptsize\textcolor{vb}{[VB #1]}}}
+\newcommand{\newtag}{\text{\scriptsize\textcolor{new}{\textbf{EC Nov.\,2026}}}}
+\newcommand{\modtag}[1]{\text{\scriptsize\textcolor{new}{\textbf{EC Nov.\,2026}}, \textcolor{vb}{in place of [VB #1]}}}
+\newcommand{\was}[1]{{\scriptsize\textcolor{vb}{V.\,Bellani: #1}}}
 \newcommand{\swatch}[1]{\tikz[baseline=-0.6ex]\fill[#1] (0,0) rectangle (0.22,0.22);}
 
 % ---------------------------------------------------------------- minimal theme
@@ -37,21 +36,13 @@
 \setbeamercolor{structure}{fg=vb}
 \setbeamertemplate{itemize items}{\textcolor{muted}{\raisebox{0.15ex}{\scriptsize$\bullet$}}}
 \setbeamertemplate{frametitle}{\vspace{0.5em}\insertframetitle\par\vspace{-0.35em}{\color{rule}\rule{\textwidth}{0.4pt}}}
-\setbeamertemplate{footline}{%
-  \hbox to \paperwidth{\hspace{1.2em}\tiny\color{muted}%
-    \swatch{vb} V.\,Bellani (thesis 2026), [VB x.y] = thesis eq.\quad
-    \swatch{new} new, EC November 2026\quad
-    \swatch{mod} modified, EC November 2026%
-    \hfill FMP two-zone model\quad\insertframenumber/\inserttotalframenumber\hspace{1.2em}}\vspace{0.6em}}
 \setlength{\abovedisplayskip}{4pt}
 \setlength{\belowdisplayskip}{4pt}
 \setlength{\abovedisplayshortskip}{2pt}
 \setlength{\belowdisplayshortskip}{2pt}
 
-\title{Five metal particles (FMP) in UO$_2$: two-zone model}
-\subtitle{Model of V.\,Bellani (MSc thesis, Politecnico di Milano, 2026)\\and changes EC November 2026, SCIANTIX 2.5}
+\title{Five metal particles (FMP) in UO$_2$} 
 \author{Elisa Cappellari}
-\date{4 November 2026}
 
 \begin{document}
 
@@ -66,41 +57,37 @@
   {\small\color{muted}\insertdate\par}
   \vspace{2.2em}
   {\small
-  \swatch{vb}\; black: model of V.\,Bellani, unchanged, with the equation number of the thesis [VB x.y]\par\smallskip
-  \swatch{new}\; \NEW{blue: new equation or assumption (EC November 2026)}\par\smallskip
-  \swatch{mod}\; \MOD{orange: modified with respect to V.\,Bellani (EC November 2026)}, the original form in grey\par}
-  \vspace{1.5em}
-  {\scriptsize\color{muted}Code: \texttt{src/models/FiveMetalParticles.C}, \texttt{src/operations/SetPhaseDiagram.C};
-  cases and scripts: \texttt{validation/metallicinclusions/}; local branch \texttt{development/metallicinclusionsv2.5}.}
+  \swatch{vb}\; black: model of V.\,Bellani\par\smallskip
+  \swatch{new}\; \NEW{blue: new or changed equation or assumption (EC November 2026)}\par}
 \end{frame}
 
-% =====================================================================================================
-\begin{frame}{Changes with respect to the model of V.\,Bellani}
-  \scriptsize
-  \renewcommand{\arraystretch}{1.12}
-  \begin{tabular}{@{}p{0.2\textwidth}p{0.33\textwidth}p{0.42\textwidth}@{}}
-    \toprule
-    Item & V.\,Bellani & EC November 2026 \\
-    \midrule
-    Production & lumped yield $y = 0.578$ at/fiss [VB 3.3] & \MOD{sum of the Mo, Tc, Ru, Rh, Pd systems, LWR yields, 0.5666 at/fiss} \\
-    Matrix & one matrix, $C_m$ [VB 3.4] & \NEW{two zones: grain interior and grain-boundary zone ($\delta = 100$ nm), exchange $K_{\mathrm{ex}}$} \\
-    Supersaturation & $S = C_m/C_{\mathrm{eq}}$ for both populations [VB 3.16] & \MOD{$S_k = c_k/C_{\mathrm{eq}}$ of the zone of each population} \\
-    Intragranular sites & $f_d\rho_d/\lambda + f_b N_b$ [VB 3.29] & \MOD{same, times $\phi_1$} \\
-    Nucleation mass limit & both requests reduced by $f_{\mathrm{mass}}$ [VB 4.10] & \MOD{each population limited by the metal of its zone} \\
-    Implicit system & $3\times3$ [VB 4.17] & \MOD{$4\times4$ with the exchange} \\
-    Parameters & common $k_0$, $B$ [VB 6.4, 6.5] & \MOD{free $k_{0}$ and $B$ for each population (new calibration)} \\
-    Radius & from all the inventory [VB 3.49] & \MOD{from the metallic part, $\phi_{\mathrm{met}} = 1 - x_{\mathrm{Mo}} f_{\mathrm{ox}}$} \\
-    OpenCalphad input & --- (all of ``X produced'' at the grain boundary) & \NEW{grain-boundary inventory $x_X C^{\mathrm{GB}}$, Mo oxide fraction $f_{\mathrm{ox}}$} \\
-    Oxygen & not coupled & \NEW{balance fuel / Mo oxides (Mo/MoO$_2$ buffer)} \\
-    $f_{A,\mathrm{GB}}$ & per fuel volume, not in the objective [VB 6.16, Sec.\,6.3] & \MOD{per volume of the grain-boundary zone, in the objective $J_4$} \\
-    Calibration & 2 parameters, $E_{\mathrm{cal}} = 0.614$ [VB 7.3] & \MOD{4 parameters, $J_4 = 0.554$ ($J_3 = 0.598$)} \\
-    Name, switch & 5MP / MFP, \texttt{iCm} & \MOD{FMP, \texttt{iFMP}} \\
-    \bottomrule
-  \end{tabular}
-\end{frame}
+% % =====================================================================================================
+% \begin{frame}{Changes with respect to the model of V.\,Bellani}
+%   \scriptsize
+%   \renewcommand{\arraystretch}{1.12}
+%   \begin{tabular}{@{}p{0.2\textwidth}p{0.33\textwidth}p{0.42\textwidth}@{}}
+%     \toprule
+%     Item & V.\,Bellani & EC November 2026 \\
+%     \midrule
+%     Production & lumped yield $y = 0.578$ at/fiss [VB 3.3] & \NEW{sum of the Mo, Tc, Ru, Rh, Pd systems, LWR yields, 0.5666 at/fiss} \\
+%     Matrix & one matrix, $C_m$ [VB 3.4] & \NEW{two zones: grain interior and grain-boundary zone ($\delta = 100$ nm), exchange $K_{\mathrm{ex}}$} \\
+%     Supersaturation & $S = C_m/C_{\mathrm{eq}}$ for both populations [VB 3.16] & \NEW{$S_k = c_k/C_{\mathrm{eq}}$ of the zone of each population} \\
+%     Intragranular sites & $f_d\rho_d/\lambda + f_b N_b$ [VB 3.29] & \NEW{same, times $\phi_1$} \\
+%     Nucleation mass limit & both requests reduced by $f_{\mathrm{mass}}$ [VB 4.10] & \NEW{each population limited by the metal of its zone} \\
+%     Implicit system & $3\times3$ [VB 4.17] & \NEW{$4\times4$ with the exchange} \\
+%     Parameters & common $k_0$, $B$ [VB 6.4, 6.5] & \NEW{free $k_{0}$ and $B$ for each population (new calibration)} \\
+%     Radius & from all the inventory [VB 3.49] & \NEW{from the metallic part, $\phi_{\mathrm{met}} = 1 - x_{\mathrm{Mo}} f_{\mathrm{ox}}$} \\
+%     OpenCalphad input & --- (all of ``X produced'' at the grain boundary) & \NEW{grain-boundary inventory $x_X C^{\mathrm{GB}}$, Mo oxide fraction $f_{\mathrm{ox}}$} \\
+%     Oxygen & not coupled & \NEW{balance fuel / Mo oxides (Mo/MoO$_2$ buffer)} \\
+%     $f_{A,\mathrm{GB}}$ & per fuel volume, not in the objective [VB 6.16, Sec.\,6.3] & \NEW{per volume of the grain-boundary zone, in the objective $J_4$} \\
+%     Calibration & 2 parameters, $E_{\mathrm{cal}} = 0.614$ [VB 7.3] & \NEW{4 parameters, $J_4 = 0.554$ ($J_3 = 0.598$)} \\
+%     Name, switch & 5MP / MFP, \texttt{iCm} & \NEW{FMP, \texttt{iFMP}} \\
+%     \bottomrule
+%   \end{tabular}
+% \end{frame}
 
-% =====================================================================================================
-\begin{frame}{Two particle populations, two zones}
+% % =====================================================================================================
+\begin{frame}{Two particle populations: two zones}
   \begin{columns}[T]
     \begin{column}{0.47\textwidth}
       \centering
@@ -119,13 +106,13 @@
         % isolated intragranular particles
         \foreach \p in {(0.1,0.2),(-1.4,-0.1),(0.9,-1.4),(-0.4,0.6)} \fill[vb] \p circle (0.06);
         % grain-boundary particles on the boundary
-        \foreach \a in {15,70,130,195,250,310} \fill[mod!85!black] (\a:2.55) circle (0.13);
+        \foreach \a in {15,70,130,195,250,310} \filldraw[fill=vb, draw=white, line width=0.5pt] (\a:2.55) circle (0.13);
         % exchange arrow
         \draw[-{Stealth[length=2.2mm]}, line width=1.2pt, new] (35:1.35) -- (35:2.28);
         \node[new, font=\scriptsize, anchor=west, align=left] at (40:2.6) {$K_{\mathrm{ex}}(c_1-c_2)$};
         % labels
         \node[font=\scriptsize, align=center] at (0,-0.2) {zone 1\\$\phi_1,\ c_1$};
-        \node[new, font=\scriptsize, align=center, anchor=north] at (0,-2.62) {zone 2: $\delta = 100$ nm on each side\\of the boundary (not to scale), $\phi_2,\ c_2$};
+        \node[new, font=\scriptsize, align=center, anchor=north] at (0,-2.62) {zone 2: $\delta = 100$ nm on each side\\of the boundary, $\phi_2,\ c_2$};
         \node[font=\scriptsize, anchor=east] at (-2.65,1.6) {grain boundary};
         \draw[muted] (-2.65,1.6) -- (145:2.55);
       \end{tikzpicture}
@@ -146,13 +133,12 @@
       \medskip
       \textbf{Processes}
       \begin{itemize}\footnotesize
-        \item production \MOD{$\phi_k P$ in each zone}; nucleation (CNT); diffusion-limited growth
+        \item production \NEW{$\phi_k P$ in each zone}; nucleation (CNT); diffusion-limited growth
         \item re-solution, back \NEW{to the zone of the particles}
         \item \NEW{exchange between the zones, $K_{\mathrm{ex}}(c_1 - c_2)$}
       \end{itemize}
       \medskip
-      {\footnotesize V.\,Bellani: one matrix $C_m$ feeds both populations with the same supersaturation
-      (thesis Fig.\,3.1): with common parameters $R_{\mathrm{GB}} = R_{\mathrm{intra}}$ (thesis Tab.\,7.2).}
+      {\footnotesize V.\,Bellani: one matrix $C_m$ feeds both populations with the same supersaturation, with common parameters $R_{\mathrm{GB}} = R_{\mathrm{intra}}$.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -171,9 +157,9 @@
         \node[font=\scriptsize] (p) at (0,1.3) {$y_{\mathrm{5MP}}F$};
         \draw[->] (p) -- (m);
         \draw[->] (-1.8,-0.45) -- node[left, font=\tiny] {$C_m - C_{\mathrm{eq}}$} (-1.8,-1.75);
-        \draw[->, muted] (-1.4,-1.75) -- node[right, font=\tiny] {re-sol.} (-1.4,-0.45);
+        \draw[->] (-1.4,-1.75) -- node[right, font=\tiny] {re-sol.} (-1.4,-0.45);
         \draw[->] (1.8,-0.45) -- node[right, font=\tiny] {$C_m - C_{\mathrm{eq}}$} (1.8,-1.75);
-        \draw[->, muted] (1.4,-1.75) -- node[left, font=\tiny] {re-sol.} (1.4,-0.45);
+        \draw[->] (1.4,-1.75) -- node[left, font=\tiny] {re-sol.} (1.4,-0.45);
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.54\textwidth}
@@ -185,74 +171,70 @@
         \node[box, draw=new, text=new] (m2) at (1.6,0) {zone 2\\$C_{m2}$};
         \node[box] (i) at (-1.6,-2.2) {intragranular\\$C^{\mathrm{intra}}, N_{\mathrm{intra}}$};
         \node[box] (g) at (1.6,-2.2) {grain boundary\\$C^{\mathrm{GB}}, N_{\mathrm{GB}}$};
-        \node[font=\scriptsize, mod] (p1) at (-1.6,1.3) {$\phi_1 P$};
-        \node[font=\scriptsize, mod] (p2) at (1.6,1.3) {$\phi_2 P$};
-        \draw[->, mod] (p1) -- (m1);
-        \draw[->, mod] (p2) -- (m2);
+        \node[font=\scriptsize, new] (p1) at (-1.6,1.3) {$\phi_1 P$};
+        \node[font=\scriptsize, new] (p2) at (1.6,1.3) {$\phi_2 P$};
+        \draw[->, new] (p1) -- (m1);
+        \draw[->, new] (p2) -- (m2);
         \draw[<->, new, line width=1pt] (m1) -- (m2);
         \node[new, font=\tiny] at (0,0.62) {$K_{\mathrm{ex}}(c_1 - c_2)$};
-        \draw[->, mod] (-1.8,-0.45) -- node[left, font=\tiny] {$c_1 - C_{\mathrm{eq}}$} (-1.8,-1.75);
+        \draw[->, new] (-1.8,-0.45) -- node[left, font=\tiny] {$c_1 - C_{\mathrm{eq}}$} (-1.8,-1.75);
         \draw[->, new] (-1.4,-1.75) -- node[right, font=\tiny] {re-sol.} (-1.4,-0.45);
-        \draw[->, mod] (1.8,-0.45) -- node[right, font=\tiny] {$c_2 - C_{\mathrm{eq}}$} (1.8,-1.75);
+        \draw[->, new] (1.8,-0.45) -- node[right, font=\tiny] {$c_2 - C_{\mathrm{eq}}$} (1.8,-1.75);
         \draw[->, new] (1.4,-1.75) -- node[left, font=\tiny] {re-sol.} (1.4,-0.45);
       \end{tikzpicture}
     \end{column}
   \end{columns}
-  \vspace{0.8em}
-  \small Total inventory conserved in both: production is the only net source [VB 3.8].
-  \NEW{With the exchange the two populations see different concentrations, so the grain-boundary parameters can differ
-  from the intragranular ones.}
 \end{frame}
 
 % =====================================================================================================
-\begin{frame}{State variables}
-  \scriptsize
-  \renewcommand{\arraystretch}{1.15}
-  \begin{tabular}{@{}l p{0.36\textwidth} l >{\ttfamily}p{0.33\textwidth}@{}}
-    \toprule
-    Symbol & Meaning & Unit & \normalfont SCIANTIX variable \\
-    \midrule
-    $C_{m1} + C_{m2}$ & metal dissolved in the UO$_2$ matrix [VB Tab.\,3.1, $C_m$] & at/m$^3$ & FMP in matrix \\
-    \NEW{$C_{m2}$} & \NEW{metal dissolved in the grain-boundary zone} & at/m$^3$ & FMP in grain-boundary zone matrix \\
-    $C^{\mathrm{intra}}$ & metal in intragranular particles & at/m$^3$ & FMP in intragranular particles \\
-    $C^{\mathrm{GB}}$ & metal in grain-boundary particles & at/m$^3$ & FMP at grain boundary \\
-    $N_{\mathrm{intra}}$, $N_{\mathrm{GB}}$ & particle number densities (per fuel volume) & FMP/m$^3$ & Intra-/Intergranular FMP concentration \\
-    \MOD{$R_{\mathrm{intra}}$, $R_{\mathrm{GB}}$} & \MOD{mean radii, output} (VB: atoms per particle) & m & Intra-/Intergranular FMP radius \\
-    \NEW{$\phi_2$} & \NEW{volume fraction of the grain-boundary zone} & -- & FMP grain-boundary zone volume fraction \\
-    \NEW{$O_{\mathrm{ox}}$} & \NEW{oxygen in the Mo oxides of the particles} & at/m$^3$ & FMP oxygen in Mo oxides \\
-    \NEW{$f_{\mathrm{ox}}$} & \NEW{fraction of the grain-boundary Mo in oxide phases (OpenCalphad)} & -- & Mo in oxide fraction \\
-    \bottomrule
-  \end{tabular}
-  \vspace{0.8em}
+% \begin{frame}{State variables}
+%   \scriptsize
+%   \renewcommand{\arraystretch}{1.15}
+%   \begin{tabular}{@{}l p{0.36\textwidth} l >{\ttfamily}p{0.33\textwidth}@{}}
+%     \toprule
+%     Symbol & Meaning & Unit & \normalfont SCIANTIX variable \\
+%     \midrule
+%     $C_{m1} + C_{m2}$ & metal dissolved in the UO$_2$ matrix [VB Tab.\,3.1, $C_m$] & at/m$^3$ & FMP in matrix \\
+%     \NEW{$C_{m2}$} & \NEW{metal dissolved in the grain-boundary zone} & at/m$^3$ & FMP in grain-boundary zone matrix \\
+%     $C^{\mathrm{intra}}$ & metal in intragranular particles & at/m$^3$ & FMP in intragranular particles \\
+%     $C^{\mathrm{GB}}$ & metal in grain-boundary particles & at/m$^3$ & FMP at grain boundary \\
+%     $N_{\mathrm{intra}}$, $N_{\mathrm{GB}}$ & particle number densities (per fuel volume) & FMP/m$^3$ & Intra-/Intergranular FMP concentration \\
+%     \NEW{$R_{\mathrm{intra}}$, $R_{\mathrm{GB}}$} & \NEW{mean radii, output} (VB: atoms per particle) & m & Intra-/Intergranular FMP radius \\
+%     \NEW{$\phi_2$} & \NEW{volume fraction of the grain-boundary zone} & -- & FMP grain-boundary zone volume fraction \\
+%     \NEW{$O_{\mathrm{ox}}$} & \NEW{oxygen in the Mo oxides of the particles} & at/m$^3$ & FMP oxygen in Mo oxides \\
+%     \NEW{$f_{\mathrm{ox}}$} & \NEW{fraction of the grain-boundary Mo in oxide phases (OpenCalphad)} & -- & Mo in oxide fraction \\
+%     \bottomrule
+%   \end{tabular}
+%   \vspace{0.8em}
 
-  Inputs from SCIANTIX: temperature $T$, fission rate $F$, burnup $b$, grain radius $a$, intragranular bubble concentration
-  $N_{b}$ (one-way coupling, [VB Sec.\,3.2]). The five metals are one lumped species [VB Sec.\,3.2].
-\end{frame}
+%   Inputs from SCIANTIX: temperature $T$, fission rate $F$, burnup $b$, grain radius $a$, intragranular bubble concentration
+%   $N_{b}$ (one-way coupling, [VB Sec.\,3.2]). The five metals are one lumped species [VB Sec.\,3.2].
+% \end{frame}
 
 % =====================================================================================================
-\begin{frame}{Production and inventory}
+\begin{frame}{Production}
   \small
-  V.\,Bellani: lumped yield from the PRODHEL composition (Angleraud), $x_{\mathrm{5MP}} = 0.289$ [VB 3.2]
+  Lumped yield from the PRODHEL composition:
   \begin{align*}
-    \dot C_{\mathrm{5MP}} &= y_{\mathrm{5MP}} F, \qquad y_{\mathrm{5MP}} = 2 x_{\mathrm{5MP}} = 0.578\ \text{at/fiss} \tag*{\vbtag{3.1, 3.3}}
+    \dot C_{\mathrm{5MP}} &= y_{\mathrm{5MP}} F, \qquad y_{\mathrm{5MP}} = 0.578\ \text{at/fiss} \tag*{\vbtag{3.1, 3.3}}
   \end{align*}
-  \MOD{Now: sum of the five element systems ``X in UO$_2$'' (\texttt{SetSystem.C}), ENDF/B-VIII.0 yields with the fission
+  \NEW{Now: ENDF/B-VIII.0 yields with the fission
   fractions of an LWR cycle}
   \begin{align*}
-    \MOD{\frac{dC_{\mathrm{FMP}}}{dt} = \sum_{X} y_X F,\quad X = \mathrm{Mo, Tc, Ru, Rh, Pd}} \tag*{\modtag{3.1}}
+    \NEW{\frac{dC_{\mathrm{FMP}}}{dt} = \sum_{X} y_X F,\quad X = \mathrm{Mo, Tc, Ru, Rh, Pd}} \tag*{\modtag{3.1}}
   \end{align*}
   \begin{center}\footnotesize
-  \MOD{\begin{tabular}{cccccc}
+  \NEW{\begin{tabular}{cccccc}
     $y_{\mathrm{Mo}}$ & $y_{\mathrm{Tc}}$ & $y_{\mathrm{Ru}}$ & $y_{\mathrm{Rh}}$ & $y_{\mathrm{Pd}}$ & total \\
     0.2370 & 0.0614 & 0.1442 & 0.0469 & 0.0771 & 0.5666 at/fiss
   \end{tabular}}
   \end{center}
-  \begin{align*}
-    \NEW{x_X = \frac{C_X^{\mathrm{prod}}}{\sum_X C_X^{\mathrm{prod}}}}\quad \NEW{\text{(42Mo-11Tc-25Ru-8Rh-14Pd at.\%)}} \tag*{\newtag}\\
-    \sum_X C_X^{\mathrm{prod}} = \MOD{C_{m1} + C_{m2}} + C^{\mathrm{intra}} + C^{\mathrm{GB}} \tag*{\modtag{3.4}}
-  \end{align*}
-  \was{$C_{\mathrm{5MP}} = C_m + C^{\mathrm{intra}} + C^{\mathrm{GB}}$.} The particle composition is the production
-  composition $x_X$ (lumped species).
+  % \begin{align*}
+  %   \NEW{x_X = \frac{C_X^{\mathrm{prod}}}{\sum_X C_X^{\mathrm{prod}}}}\quad \NEW{\text{(42Mo-11Tc-25Ru-8Rh-14Pd at.\%)}} \tag*{\newtag}\\
+  %   \sum_X C_X^{\mathrm{prod}} = \NEW{C_{m1} + C_{m2}} + C^{\mathrm{intra}} + C^{\mathrm{GB}} \tag*{\modtag{3.4}}
+  % \end{align*}
+  % \was{$C_{\mathrm{5MP}} = C_m + C^{\mathrm{intra}} + C^{\mathrm{GB}}$.} The particle composition is the production
+  % composition $x_X$ (lumped species).
 \end{frame}
 
 % =====================================================================================================
@@ -261,16 +243,13 @@
   \NEW{Zone 2 = shell of thickness $\delta$ inside each spherical grain of radius $a$, so that every boundary has a layer
   $\delta$ on both sides; zone 1 = grain interior.}
   \begin{align*}
-    \NEW{\phi_2 = 1 - \left(1 - \frac{\delta}{a}\right)^3 \approx \frac{3\delta}{a}\ (\le 0.999),\qquad \phi_1 = 1 - \phi_2,
+    \NEW{\phi_2 = 1 - \left(1 - \frac{\delta}{a}\right)^3 \approx \frac{3\delta}{a}\,\qquad \phi_1 = 1 - \phi_2,
     \qquad \delta = 100\ \text{nm}} \tag*{\newtag}\\
-    \NEW{P_k = \phi_k\,\Delta C_{\mathrm{prod}}\ \text{(uniform production)},\qquad c_k = \frac{C_{mk}}{\phi_k}\ \text{(local concentration)},\qquad k = 1, 2} \tag*{\newtag}
+    \NEW{P_k = \phi_k\,\Delta C_{\mathrm{prod}}\,\qquad c_k = \frac{C_{mk}}{\phi_k}\,\qquad k = 1, 2}
   \end{align*}
   \begin{itemize}
-    \item \NEW{$\delta$ = half-width of the grain-boundary regions analysed by TEM in the calibration (strips of about
-      200 nm across the boundary, thesis Figs.\,5.3--5.16)}
-    \item calibration cases: $a = 12.3\ \mu$m $\Rightarrow \phi_2 = 0.024$; ATM-109: $a = 15\ \mu$m $\Rightarrow \phi_2 = 0.020$
-    \item \NEW{no new fitted parameter}: $\delta$ comes from the TEM regions, the exchange from diffusion (below)
-  \end{itemize}
+    \item \NEW{$\delta$ = half-width of the grain-boundary regions analysed by TEM in the calibration (thesis Figs.\,5.3--5.16)}
+    \end{itemize}
 \end{frame}
 
 % =====================================================================================================
@@ -288,8 +267,7 @@
   Supersaturation after the production of the time step:
   \begin{align*}
     S &= \frac{C_m^{n} + \Delta C_{\mathrm{prod}}}{C_{\mathrm{eq}}(T)} \tag*{\vbtag{4.2, 4.3}}\\
-    \MOD{S_k} &\MOD{= \frac{C_{mk}^{n} + \phi_k \Delta C_{\mathrm{prod}}}{\phi_k\, C_{\mathrm{eq}}(T)} = \frac{c_k^{*}}{C_{\mathrm{eq}}},\qquad
-      k = 1 \text{ for the intragranular}, \ k = 2 \text{ for the grain-boundary particles}} \tag*{\modtag{3.16, 4.3}}\\
+    \NEW{S_k} &\NEW{= \frac{C_{mk}^{n} + \phi_k \Delta C_{\mathrm{prod}}}{\phi_k\, C_{\mathrm{eq}}(T)} = \frac{c_k^{*}}{C_{\mathrm{eq}}}} \tag*{\modtag{3.16, 4.3}}\\
     \Delta\mu_k &= k_B T \ln S_k \quad (S_k > 1;\ \text{no nucleation for } S_k \le 1) \tag*{\vbtag{3.17}}
   \end{align*}
 \end{frame}
@@ -297,19 +275,14 @@
 % =====================================================================================================
 \begin{frame}{Nucleation: classical nucleation theory}
   \small
-  Heterogeneous nucleation, capillarity approximation, $j = $ intra, GB with \MOD{$S$ of the zone of the population}:
+  Heterogeneous nucleation, capillarity approximation, $j = $ intra, GB with \NEW{$S$ of the zone of the population}:
   \begin{align*}
-    \Delta G_j^{*} &= \frac{B_j}{T^2 (\ln \MOD{S_k})^2}, \qquad B_j = \frac{16\pi\gamma_j^3\Omega_{\mathrm{5MP}}^2\Phi_j}{3k_B^2}
+    \Delta G_j^{*} &= \frac{B_j}{T^2 (\ln \NEW{S_k})^2}, \qquad B_j = \frac{16\pi\gamma_j^3\Omega_{\mathrm{5MP}}^2\Phi_j}{3k_B^2}
       \ \text{(effective, calibrated)} \tag*{\vbtag{3.20, 3.21}}\\
     k_{\mathrm{nucl},j} &= k_{\mathrm{nucl},0,j} \exp\left(-\frac{\Delta G_j^{*}}{k_B T}\right), \qquad k_{\mathrm{nucl},0,j} = 1\ \text{s}^{-1} \tag*{\vbtag{3.22}}\\
     \frac{dN_j}{dt} &= k_{\mathrm{nucl},j} \max\left(N_{\mathrm{site},j} - N_j, 0\right) \tag*{\vbtag{3.9}}
   \end{align*}
-  Backward Euler, $N_j$ never decreases:
-  \begin{align*}
-    N_j^{n+1,*} = \frac{N_j^n + k_{\mathrm{nucl},j} N_{\mathrm{site},j}\Delta t}{1 + k_{\mathrm{nucl},j}\Delta t},
-      \qquad \Delta N_j = \max\left(N_j^{n+1,*} - N_j^n, 0\right) \tag*{\vbtag{4.5, 4.6}}
-  \end{align*}
-  \MOD{$B_{\mathrm{intra}} \ne B_{\mathrm{GB}}$, calibrated separately.} \was{$B_{\mathrm{intra}} = B_{\mathrm{GB}} = B_{\mathrm{ref}} s_B$,
+  \NEW{$B_{\mathrm{intra}} \ne B_{\mathrm{GB}}$, calibrated separately.} \was{$B_{\mathrm{intra}} = B_{\mathrm{GB}} = B_{\mathrm{ref}} s_B$,
   $s_{B,\mathrm{intra}} = s_{B,\mathrm{GB}}$ [VB 6.2, 6.4].}
 \end{frame}
 
@@ -320,19 +293,15 @@
   \begin{align*}
     \rho_d &= A\, b^{n} f_T, \qquad f_T = A_\infty + \frac{1 - A_\infty}{1 + \exp[(T - T_c)/\Delta T]} \tag*{\vbtag{3.23, 3.24}}\\
     &A = 6.545\times10^{12},\ n = 1.151,\ A_\infty = 0.608,\ T_c = 1109\ \text{K},\ \Delta T = 25.8\ \text{K},\ b\ \text{in MWd/kgUO}_2 \tag*{\vbtag{3.25}}\\
-    N_{\mathrm{site,intra}} &= \MOD{\phi_1}\left(f_d\frac{\rho_d}{\lambda} + f_b N_{b,\mathrm{intra}}\right),
+    N_{\mathrm{site,intra}} &= \NEW{\phi_1}\left(f_d\frac{\rho_d}{\lambda} + f_b N_{b,\mathrm{intra}}\right),
       \qquad f_d = 0.67,\ f_b = 0.33,\ \lambda = 15\ \text{nm} \tag*{\modtag{3.29}}
   \end{align*}
-  \MOD{Factor $\phi_1$: the intragranular sites are in zone 1 only.} \was{no factor.}
   \medskip
 
   Grain boundary: the boundary surface, area per unit volume $3/(2a)$ (each boundary shared by two grains), one site every $\lambda^2$
   \begin{align*}
     N_{\mathrm{site,GB}} = \frac{A_{\mathrm{GB}}}{V}\frac{1}{\lambda^2} = \frac{3}{2a\lambda^2} \tag*{\vbtag{3.31--3.33}}
   \end{align*}
-  {\footnotesize End of r000 (54.1 MWd/kgUO$_2$): dislocation sites $2.2\times10^{22}$, bubble sites $1.4\times10^{23}$,
-  $N_{\mathrm{intra}} = 5.8\times10^{21}$; GB sites $5.4\times10^{20}$, $N_{\mathrm{GB}} = 3.2\times10^{19}$ m$^{-3}$
-  (4--6\% of the sites occupied).}
 \end{frame}
 
 % =====================================================================================================
@@ -348,9 +317,9 @@
     f_{\mathrm{mass}} = \frac{C_m^{\mathrm{avail}}}{\Delta C_{\mathrm{nucl,intra}} + \Delta C_{\mathrm{nucl,GB}}},\quad
     \Delta C^{\mathrm{act}}_{\mathrm{nucl},j} = f_{\mathrm{mass}}\Delta C_{\mathrm{nucl},j} \tag*{\vbtag{4.9--4.11}}
   \end{align*}
-  \MOD{Now: each population takes the atoms of its own zone ($k = 1$ for intra, $k = 2$ for GB)}
+  \NEW{Now: each population takes the atoms of its own zone ($k = 1$ for intra, $k = 2$ for GB)}
   \begin{align*}
-    \MOD{\Delta C^{\mathrm{act}}_{\mathrm{nucl},j} = \min\left(n_{\mathrm{nucl},j}\Delta N_j,\ C_{mk}^{n} + \phi_k\Delta C_{\mathrm{prod}}\right)} \tag*{\modtag{4.9--4.11}}\\
+    \NEW{\Delta C^{\mathrm{act}}_{\mathrm{nucl},j} = \min\left(n_{\mathrm{nucl},j}\Delta N_j,\ C_{mk}^{n} + \phi_k\Delta C_{\mathrm{prod}}\right)} \tag*{\modtag{4.9--4.11}}\\
     \Delta N_j^{\mathrm{act}} = \frac{\Delta C^{\mathrm{act}}_{\mathrm{nucl},j}}{n_{\mathrm{nucl},j}}, \qquad
     N_j^{n+1} = N_j^n + \Delta N_j^{\mathrm{act}} \tag*{\vbtag{4.12}}
   \end{align*}
@@ -367,13 +336,13 @@
   evaluated with the state at the beginning of the time step (no iteration on $R \to k \to C$) [VB 4.13].
   \begin{align*}
     J_{\mathrm{prec},j} &= k_j \max\left(C_m - C_{\mathrm{eq}}, 0\right) \tag*{\vbtag{3.37}}\\
-    \MOD{J_{\mathrm{prec,intra}}} &\MOD{= k_{\mathrm{intra}}\,(c_1 - C_{\mathrm{eq}}),\qquad J_{\mathrm{prec,GB}} = k_{\mathrm{GB}}\,(c_2 - C_{\mathrm{eq}})} \tag*{\modtag{3.37}}
+    \NEW{J_{\mathrm{prec,intra}}} &\NEW{= k_{\mathrm{intra}}\,(c_1 - C_{\mathrm{eq}}),\qquad J_{\mathrm{prec,GB}} = k_{\mathrm{GB}}\,(c_2 - C_{\mathrm{eq}})} \tag*{\modtag{3.37}}
   \end{align*}
-  \MOD{each active only if its zone is supersaturated after production and nucleation, $c_k^{*} > C_{\mathrm{eq}}$}
+  \NEW{each active only if its zone is supersaturated after production and nucleation, $c_k^{*} > C_{\mathrm{eq}}$}
   (V.\,Bellani: both active if $C_m^{*} > C_{\mathrm{eq}}$ [VB 4.19]). No thermal dissolution [VB Sec.\,3.5].
   \medskip
 
-  \MOD{$k_{0,\mathrm{intra}} \ne k_{0,\mathrm{GB}}$, calibrated separately: $D_{\mathrm{GB}}/D_{\mathrm{intra}} = 3.06$.}
+  \NEW{$k_{0,\mathrm{intra}} \ne k_{0,\mathrm{GB}}$, calibrated separately: $D_{\mathrm{GB}}/D_{\mathrm{intra}} = 3.06$.}
   \was{common $k_0$, $s_{k0,\mathrm{intra}} = s_{k0,\mathrm{GB}}$ [VB 6.5].}
 \end{frame}
 
@@ -470,12 +439,12 @@
      -k_{\mathrm{intra}}\Delta t & 1 + k_{\mathrm{res}}\Delta t & 0\\ -k_{\mathrm{GB}}\Delta t & 0 & 1 + k_{\mathrm{res}}\Delta t\end{pmatrix}
      \mathbf{C}^{n+1} = \begin{pmatrix} C_m^{*} + (k_{\mathrm{intra}} + k_{\mathrm{GB}})C_{\mathrm{eq}}\Delta t\\ C^{\mathrm{intra},*} - k_{\mathrm{intra}}C_{\mathrm{eq}}\Delta t\\ C^{\mathrm{GB},*} - k_{\mathrm{GB}}C_{\mathrm{eq}}\Delta t\end{pmatrix}
      \tag*{\vbtag{4.17, 4.18}}\]
-  \MOD{Now, after production and nucleation, $\mathbf{C} = (C_{m1}, C_{m2}, C^{\mathrm{intra}}, C^{\mathrm{GB}})$:}
+  \NEW{Now, after production and nucleation, $\mathbf{C} = (C_{m1}, C_{m2}, C^{\mathrm{intra}}, C^{\mathrm{GB}})$:}
   \begin{align*}
-    \MOD{\frac{dC_{m1}}{dt}} &\MOD{= - k_{\mathrm{intra}}(c_1 - C_{\mathrm{eq}}) - K_{\mathrm{ex}}(c_1 - c_2) + k_{\mathrm{res}}C^{\mathrm{intra}}} \tag*{\modtag{3.5}}\\
-    \MOD{\frac{dC_{m2}}{dt}} &\MOD{= - k_{\mathrm{GB}}(c_2 - C_{\mathrm{eq}}) + K_{\mathrm{ex}}(c_1 - c_2) + k_{\mathrm{res}}C^{\mathrm{GB}}} \tag*{\newtag}\\
-    \frac{dC^{\mathrm{intra}}}{dt} &= k_{\mathrm{intra}}(\MOD{c_1} - C_{\mathrm{eq}}) - k_{\mathrm{res}}C^{\mathrm{intra}},\qquad
-    \frac{dC^{\mathrm{GB}}}{dt} = k_{\mathrm{GB}}(\MOD{c_2} - C_{\mathrm{eq}}) - k_{\mathrm{res}}C^{\mathrm{GB}} \tag*{\modtag{3.6, 3.7}}
+    \NEW{\frac{dC_{m1}}{dt}} &\NEW{= - k_{\mathrm{intra}}(c_1 - C_{\mathrm{eq}}) - K_{\mathrm{ex}}(c_1 - c_2) + k_{\mathrm{res}}C^{\mathrm{intra}}} \tag*{\modtag{3.5}}\\
+    \NEW{\frac{dC_{m2}}{dt}} &\NEW{= - k_{\mathrm{GB}}(c_2 - C_{\mathrm{eq}}) + K_{\mathrm{ex}}(c_1 - c_2) + k_{\mathrm{res}}C^{\mathrm{GB}}} \tag*{\newtag}\\
+    \frac{dC^{\mathrm{intra}}}{dt} &= k_{\mathrm{intra}}(\NEW{c_1} - C_{\mathrm{eq}}) - k_{\mathrm{res}}C^{\mathrm{intra}},\qquad
+    \frac{dC^{\mathrm{GB}}}{dt} = k_{\mathrm{GB}}(\NEW{c_2} - C_{\mathrm{eq}}) - k_{\mathrm{res}}C^{\mathrm{GB}} \tag*{\modtag{3.6, 3.7}}
   \end{align*}
   production ($P_k$) and nucleation are applied before, as in [VB 4.2, 4.14].
 \end{frame}
@@ -483,9 +452,9 @@
 % =====================================================================================================
 \begin{frame}{Implicit $4\times4$ system}
   \small
-  \MOD{Backward Euler (\texttt{Solver::Laplace}), $\kappa_1 = k_{\mathrm{intra}}$ if $c_1^{*} > C_{\mathrm{eq}}$ else 0,
+  \NEW{$\kappa_1 = k_{\mathrm{intra}}$ if $c_1^{*} > C_{\mathrm{eq}}$ else 0,
   $\kappa_2 = k_{\mathrm{GB}}$ if $c_2^{*} > C_{\mathrm{eq}}$ else 0 ($^*$ = after production and nucleation):}
-  \[\MOD{\begin{pmatrix}
+  \[\NEW{\begin{pmatrix}
     1 + \frac{(\kappa_1 + K_{\mathrm{ex}})\Delta t}{\phi_1} & -\frac{K_{\mathrm{ex}}\Delta t}{\phi_2} & -k_{\mathrm{res}}\Delta t & 0\\[4pt]
     -\frac{K_{\mathrm{ex}}\Delta t}{\phi_1} & 1 + \frac{(\kappa_2 + K_{\mathrm{ex}})\Delta t}{\phi_2} & 0 & -k_{\mathrm{res}}\Delta t\\[4pt]
     -\frac{\kappa_1\Delta t}{\phi_1} & 0 & 1 + k_{\mathrm{res}}\Delta t & 0\\[4pt]
@@ -497,9 +466,8 @@
   \tag*{\modtag{4.17, 4.18}}\]
   \begin{itemize}
     \item $1/\phi_k$: the fluxes depend on the local concentrations $c_k = C_{mk}/\phi_k$
-    \item every column sums to 1: the total metal is conserved [VB 4.20]; checked on the outputs, inventory $= \sum_X C_X^{\mathrm{prod}}$
-      within $4\times10^{-7}$ (the output precision)
-    \item \MOD{growth switched on per zone} (V.\,Bellani: both on if $C_m^{*} > C_{\mathrm{eq}}$ [VB 4.19]); re-solution always active
+
+    \item \NEW{growth switched on per zone} (V.\,Bellani: both on if $C_m^{*} > C_{\mathrm{eq}}$ [VB 4.19]); re-solution always active
   \end{itemize}
 \end{frame}
 
@@ -514,9 +482,9 @@
   ($V_w$: volumes of the atomic spheres, weights 40Mo:30Ru:10Tc:15Pd:5Rh, [VB Tab.\,3.2]).
   \medskip
 
-  \MOD{Now, only the metallic part of the inventory (with OpenCalphad), $R_j = 0$ while $N_j < 1$ m$^{-3}$:}
+  \NEW{Now, only the metallic part of the inventory (with OpenCalphad), $R_j = 0$ while $N_j < 1$ m$^{-3}$:}
   \begin{align*}
-    \MOD{R_j = \left(\frac{3\,\phi_{\mathrm{met}}\,C^{j}\,\Omega_{\mathrm{5MP}}}{4\pi N_j}\right)^{1/3},\qquad
+    \NEW{R_j = \left(\frac{3\,\phi_{\mathrm{met}}\,C^{j}\,\Omega_{\mathrm{5MP}}}{4\pi N_j}\right)^{1/3},\qquad
     \phi_{\mathrm{met}} = 1 - x_{\mathrm{Mo}}\,f_{\mathrm{ox}}} \tag*{\modtag{3.49}}
   \end{align*}
   \NEW{$\phi_{\mathrm{met}} = 1$ without thermochemistry; $f_{\mathrm{ox}}$ of the previous time step (next slide).}
@@ -524,169 +492,169 @@
 \end{frame}
 
 % =====================================================================================================
-\begin{frame}{Coupling with OpenCalphad at the grain boundary}
-  \small
-  \NEW{With \texttt{iThermochimica}, OpenCalphad at the grain boundary receives the grain-boundary inventory of the model:}
-  \begin{align*}
-    \NEW{n_X^{\mathrm{OC}} = x_X\,C^{\mathrm{GB}},\qquad X = \mathrm{Mo, Tc, Ru, Rh, Pd}} \tag*{\newtag}
-  \end{align*}
-  \MOD{instead of the whole production ``X produced'', which was also counted in the FMP reservoirs (double inventory).}
-  \medskip
+% \begin{frame}{Coupling with OpenCalphad at the grain boundary}
+%   \small
+%   \NEW{With \texttt{iThermochimica}, OpenCalphad at the grain boundary receives the grain-boundary inventory of the model:}
+%   \begin{align*}
+%     \NEW{n_X^{\mathrm{OC}} = x_X\,C^{\mathrm{GB}},\qquad X = \mathrm{Mo, Tc, Ru, Rh, Pd}} \tag*{\newtag}
+%   \end{align*}
+%   \NEW{instead of the whole production ``X produced'', which was also counted in the FMP reservoirs (double inventory).}
+%   \medskip
 
-  \NEW{\texttt{JOGFormation} stores the fraction of this Mo in oxide phases (MoO$_2$, Mo$_4$O$_{11}$, \ldots):}
-  \begin{align*}
-    \NEW{f_{\mathrm{ox}} = \frac{\mathrm{Mo\ in\ oxide\ phases}}{n_{\mathrm{Mo}}^{\mathrm{OC}}},\qquad
-    \phi_{\mathrm{met}} = 1 - x_{\mathrm{Mo}}\,f_{\mathrm{ox}}\ \text{(all the particles)}} \tag*{\newtag}
-  \end{align*}
-  \begin{itemize}
-    \item \NEW{the oxygen potential is uniform in the grain: $f_{\mathrm{ox}}$ of the grain boundary holds for all the particles}
-    \item \NEW{the oxidised Mo stays in the particle inventory (re-solved with it); one time step of lag}
-    \item \NEW{a step where OpenCalphad gives no result keeps the previous $f_{\mathrm{ox}}$}
-    \item database \texttt{BaMoO\_CsMoO\_MoPdRhRuTc\_merged.TDB} (Mo, O, Pd, Rh, Ru, Tc)
-  \end{itemize}
-\end{frame}
-
-% =====================================================================================================
-\begin{frame}{Oxygen balance between the fuel and the Mo oxides}
-  \small
-  \NEW{UO$_{2+x}$ with Kleykamp (1979) (\texttt{iStoichiometryDeviation = 7}, $\Delta x = 0.0013$ per \% FIMA). The excess oxygen $E$
-  is shared between the fuel and the Mo oxides of the particles ($M$ = heavy-metal atoms per unit volume):}
-  \begin{align*}
-    \NEW{E = xM + O_{\mathrm{ox}},\qquad \mathrm{Mo}_p = x_{\mathrm{Mo}}(C^{\mathrm{intra}} + C^{\mathrm{GB}}),\qquad
-    \mathrm{Mo}_{\mathrm{GB}} = x_{\mathrm{Mo}}C^{\mathrm{GB}}} \tag*{\newtag}
-  \end{align*}
-  \NEW{$E < 2\,\mathrm{Mo}_p$ --- Mo/MoO$_2$ buffer: OpenCalphad with the fixed oxygen $E\,\mathrm{Mo}_{\mathrm{GB}}/\mathrm{Mo}_p$ gives $\mu_{\mathrm{O}}$,
-  then $x$ from Blackburn (Newton):}
-  \begin{align*}
-    \NEW{\ln\frac{p_{\mathrm{O_2}}}{1\ \text{atm}} = 2\ln\frac{x(2+x)}{1-x} + 108x^2 - \frac{32700}{T} + 9.92
-    = \frac{2\mu_{\mathrm{O}}}{RT} + \ln\frac{1\ \text{bar}}{1\ \text{atm}},\quad x \le \frac{E}{M},\quad O_{\mathrm{ox}} = E - xM} \tag*{\newtag}
-  \end{align*}
-  \NEW{$E \ge 2\,\mathrm{Mo}_p$ --- all the Mo of the particles is MoO$_2$: $O_{\mathrm{ox}} = 2\,\mathrm{Mo}_p$,
-  $x = (E - 2\,\mathrm{Mo}_p)/M$; OpenCalphad at the oxygen potential of the fuel.}
-  \medskip
-
-  \NEW{Then $x$, $p_{\mathrm{O_2}}$, $\mu_{\mathrm{O_2}}$ of the fuel are updated (Blackburn) and $\Delta O_{\mathrm{ox}}$ is removed from
-  \texttt{O content}.} Without the balance: $x$ from Kleykamp and Mo oxidised without taking oxygen from the fuel.
-  Only the Mo of the particles is an oxygen getter.
-\end{frame}
+%   \NEW{\texttt{JOGFormation} stores the fraction of this Mo in oxide phases (MoO$_2$, Mo$_4$O$_{11}$, \ldots):}
+%   \begin{align*}
+%     \NEW{f_{\mathrm{ox}} = \frac{\mathrm{Mo\ in\ oxide\ phases}}{n_{\mathrm{Mo}}^{\mathrm{OC}}},\qquad
+%     \phi_{\mathrm{met}} = 1 - x_{\mathrm{Mo}}\,f_{\mathrm{ox}}\ \text{(all the particles)}} \tag*{\newtag}
+%   \end{align*}
+%   \begin{itemize}
+%     \item \NEW{the oxygen potential is uniform in the grain: $f_{\mathrm{ox}}$ of the grain boundary holds for all the particles}
+%     \item \NEW{the oxidised Mo stays in the particle inventory (re-solved with it); one time step of lag}
+%     \item \NEW{a step where OpenCalphad gives no result keeps the previous $f_{\mathrm{ox}}$}
+%     \item database \texttt{BaMoO\_CsMoO\_MoPdRhRuTc\_merged.TDB} (Mo, O, Pd, Rh, Ru, Tc)
+%   \end{itemize}
+% \end{frame}
 
 % =====================================================================================================
-\begin{frame}{Sequence in a time step}
-  \small
-  \begin{enumerate}
-    \item production of the five systems (\texttt{FissionProductProduction}, \texttt{FissionProductDecay}) \MOD{[per element]}
-    \item \NEW{$\phi_1$, $\phi_2$ from the grain radius; $P_k = \phi_k\Delta C_{\mathrm{prod}}$}
-    \item $C_{\mathrm{eq}}(T)$; \MOD{$S_k$, $\Delta\mu_k$ per zone}
-    \item nucleation sites ($\MOD{\phi_1}$ for the intragranular ones); $\Delta G^*_j$, $k_{\mathrm{nucl},j}$ with \MOD{$B_j$ per population}
-    \item $\Delta N_j$ (backward Euler), $n_{\mathrm{nucl},j}$, metal of nucleation \MOD{limited by the zone}
-    \item $R_j$, $k_j$ from the state at the beginning of the step (\MOD{$k_{0,j}$ per population}); \NEW{$K_{\mathrm{ex}}$}
-    \item \MOD{$4\times4$ backward-Euler system}: growth, \NEW{exchange}, re-solution
-    \item outputs: $C$'s, $N_j$, \MOD{$R_j$ with $\phi_{\mathrm{met}}$}, \NEW{$\phi_2$}
-    \item \NEW{with thermochemistry: \texttt{SetPhaseDiagram} (OpenCalphad at the grain boundary with $x_X C^{\mathrm{GB}}$ and the
-      oxygen balance), \texttt{JOGFormation} $\to f_{\mathrm{ox}}$ for the next step}
-  \end{enumerate}
-  \medskip
-  {\footnotesize V.\,Bellani: steps 1--10 of thesis Sec.\,4.3 and Fig.\,4.1, routine \texttt{Simulation::MetallicFissionProducts()},
-  switch \texttt{iCm}. \MOD{Now \texttt{FiveMetalParticles()}, switch \texttt{iFMP}.}}
-\end{frame}
+% \begin{frame}{Oxygen balance between the fuel and the Mo oxides}
+%   \small
+%   \NEW{UO$_{2+x}$ with Kleykamp (1979) (\texttt{iStoichiometryDeviation = 7}, $\Delta x = 0.0013$ per \% FIMA). The excess oxygen $E$
+%   is shared between the fuel and the Mo oxides of the particles ($M$ = heavy-metal atoms per unit volume):}
+%   \begin{align*}
+%     \NEW{E = xM + O_{\mathrm{ox}},\qquad \mathrm{Mo}_p = x_{\mathrm{Mo}}(C^{\mathrm{intra}} + C^{\mathrm{GB}}),\qquad
+%     \mathrm{Mo}_{\mathrm{GB}} = x_{\mathrm{Mo}}C^{\mathrm{GB}}} \tag*{\newtag}
+%   \end{align*}
+%   \NEW{$E < 2\,\mathrm{Mo}_p$ --- Mo/MoO$_2$ buffer: OpenCalphad with the fixed oxygen $E\,\mathrm{Mo}_{\mathrm{GB}}/\mathrm{Mo}_p$ gives $\mu_{\mathrm{O}}$,
+%   then $x$ from Blackburn (Newton):}
+%   \begin{align*}
+%     \NEW{\ln\frac{p_{\mathrm{O_2}}}{1\ \text{atm}} = 2\ln\frac{x(2+x)}{1-x} + 108x^2 - \frac{32700}{T} + 9.92
+%     = \frac{2\mu_{\mathrm{O}}}{RT} + \ln\frac{1\ \text{bar}}{1\ \text{atm}},\quad x \le \frac{E}{M},\quad O_{\mathrm{ox}} = E - xM} \tag*{\newtag}
+%   \end{align*}
+%   \NEW{$E \ge 2\,\mathrm{Mo}_p$ --- all the Mo of the particles is MoO$_2$: $O_{\mathrm{ox}} = 2\,\mathrm{Mo}_p$,
+%   $x = (E - 2\,\mathrm{Mo}_p)/M$; OpenCalphad at the oxygen potential of the fuel.}
+%   \medskip
+
+%   \NEW{Then $x$, $p_{\mathrm{O_2}}$, $\mu_{\mathrm{O_2}}$ of the fuel are updated (Blackburn) and $\Delta O_{\mathrm{ox}}$ is removed from
+%   \texttt{O content}.} Without the balance: $x$ from Kleykamp and Mo oxidised without taking oxygen from the fuel.
+%   Only the Mo of the particles is an oxygen getter.
+% \end{frame}
 
 % =====================================================================================================
-\begin{frame}{Parameters}
-  \footnotesize
-  \renewcommand{\arraystretch}{1.12}
-  \begin{tabular}{@{}lll@{}}
-    \toprule
-    Parameter & Value & Origin \\
-    \midrule
-    \MOD{$k_{0,\mathrm{intra}}$} & \MOD{$9.834342\times10^{-16}$ m$^2$/s} & \MOD{calibrated} (VB: $4.980\times10^{-15}$, common [VB 7.2]) \\
-    \MOD{$k_{0,\mathrm{GB}}$} & \MOD{$3.009503\times10^{-15}$ m$^2$/s} & \MOD{calibrated} (VB: $4.980\times10^{-15}$, common) \\
-    \MOD{$B_{\mathrm{intra}}$} & \MOD{$2.711740\times10^{8}$ eV K$^2$} & \MOD{calibrated} (VB: $2.666\times10^{8}$, common [VB 7.2]) \\
-    \MOD{$B_{\mathrm{GB}}$} & \MOD{$2.641409\times10^{8}$ eV K$^2$} & \MOD{calibrated} (VB: $2.666\times10^{8}$, common) \\
-    $\Delta G_{\mathrm{intra}} = \Delta G_{\mathrm{GB}}$ & 1.0 eV & V.\,Bellani [VB 6.9] \\
-    $k_{\mathrm{nucl},0,j}$ & 1.0 s$^{-1}$ & V.\,Bellani [VB 6.9] \\
-    \NEW{$\delta$} & \NEW{100 nm} & \NEW{TEM grain-boundary regions (thesis Figs.\,5.3--5.16)} \\
-    $\Omega_{\mathrm{5MP}}$ & $1.44123\times10^{-29}$ m$^3$/at & [VB 3.52] \\
-    $n_{\min}$, $\lambda$ & 2 at, 15 nm & [VB 3.36, 3.27] \\
-    $f_d$, $f_b$ & 0.67, 0.33 & image analysis [VB 3.30, 5.9] \\
-    $k_{\mathrm{res,ref}}$, $F_{\mathrm{ref}}$ & $3.085\times10^{-6}$ s$^{-1}$, $1.48\times10^{19}$ fiss/(m$^3$ s) & Sakib et al. [VB 3.45, 3.47] \\
-    $x_{\mathrm{eq,ref}}$, $H_{\mathrm{sol}}^{\mathrm{eff}}$, $T_{\mathrm{ref}}$ & $6\times10^{-5}$, 1.14 eV, 2173.15 K & Kleykamp, Brillant et al. [VB 3.11--3.15] \\
-    $A, n, A_\infty, T_c, \Delta T$ & $6.545\times10^{12}$, 1.151, 0.608, 1109 K, 25.8 K & Veshchunov and Shestak [VB 3.25] \\
-    \bottomrule
-  \end{tabular}
-\end{frame}
+% \begin{frame}{Sequence in a time step}
+%   \small
+%   \begin{enumerate}
+%     \item production of the five systems (\texttt{FissionProductProduction}, \texttt{FissionProductDecay}) \NEW{[per element]}
+%     \item \NEW{$\phi_1$, $\phi_2$ from the grain radius; $P_k = \phi_k\Delta C_{\mathrm{prod}}$}
+%     \item $C_{\mathrm{eq}}(T)$; \NEW{$S_k$, $\Delta\mu_k$ per zone}
+%     \item nucleation sites ($\NEW{\phi_1}$ for the intragranular ones); $\Delta G^*_j$, $k_{\mathrm{nucl},j}$ with \NEW{$B_j$ per population}
+%     \item $\Delta N_j$ (backward Euler), $n_{\mathrm{nucl},j}$, metal of nucleation \NEW{limited by the zone}
+%     \item $R_j$, $k_j$ from the state at the beginning of the step (\NEW{$k_{0,j}$ per population}); \NEW{$K_{\mathrm{ex}}$}
+%     \item \NEW{$4\times4$ backward-Euler system}: growth, \NEW{exchange}, re-solution
+%     \item outputs: $C$'s, $N_j$, \NEW{$R_j$ with $\phi_{\mathrm{met}}$}, \NEW{$\phi_2$}
+%     \item \NEW{with thermochemistry: \texttt{SetPhaseDiagram} (OpenCalphad at the grain boundary with $x_X C^{\mathrm{GB}}$ and the
+%       oxygen balance), \texttt{JOGFormation} $\to f_{\mathrm{ox}}$ for the next step}
+%   \end{enumerate}
+%   \medskip
+%   {\footnotesize V.\,Bellani: steps 1--10 of thesis Sec.\,4.3 and Fig.\,4.1, routine \texttt{Simulation::MetallicFissionProducts()},
+%   switch \texttt{iCm}. \NEW{Now \texttt{FiveMetalParticles()}, switch \texttt{iFMP}.}}
+% \end{frame}
 
 % =====================================================================================================
-\begin{frame}{Observables and objective}
-  \small
-  Projected area fraction in a TEM foil of thickness $t_{\mathrm{TEM}}$ (Poisson coverage)
-  \begin{align*}
-    f_{A,j} = 1 - \exp\left(-N_j\pi R_j^2 t_{\mathrm{TEM}}\right) \tag*{\vbtag{6.15, 6.16}}\\
-    \MOD{f_{A,j} = 1 - \exp\left(-\frac{N_j}{\phi_k}\pi R_j^2 t_{\mathrm{TEM}}\right)} \tag*{\modtag{6.16}}
-  \end{align*}
-  \MOD{with the number density in the zone of the population: the TEM grain-boundary images are strips around the boundary
-  (zone 2), the intragranular images the grain interior.} \was{$N_{\mathrm{GB}}$ per fuel volume gives $f_{A,\mathrm{GB}}$ 100--700
-  times below TEM, so it was left out [VB Sec.\,6.3].}\par
-  $t_{\mathrm{TEM}}$ = 50, 50 (nominal), 70, 40 nm at $r/R$ = 0, 0.30, 0.56, 0.75 [VB Sec.\,6.3].
-  \begin{align*}
-    J_3 = E_{\mathrm{cal}} = \frac{1}{12}\sum_{i=1}^{12}\left|\ln\frac{M_i}{E_i}\right|\quad (f_{A,\mathrm{intra}}, R_{\mathrm{intra}}, R_{\mathrm{GB}}) \tag*{\vbtag{6.17, 6.18}}\\
-    \NEW{J_4 = \frac{1}{16}\sum_{i=1}^{16}\left|\ln\frac{M_i}{E_i}\right|\quad (f_{A,\mathrm{intra}}, R_{\mathrm{intra}}, R_{\mathrm{GB}}, f_{A,\mathrm{GB}})} \tag*{\newtag}
-  \end{align*}
-  Model values at the end of the history (54.1 MWd/kgUO$_2$); TEM data of [VB Tab.\,5.2].
-\end{frame}
+% \begin{frame}{Parameters}
+%   \footnotesize
+%   \renewcommand{\arraystretch}{1.12}
+%   \begin{tabular}{@{}lll@{}}
+%     \toprule
+%     Parameter & Value & Origin \\
+%     \midrule
+%     \NEW{$k_{0,\mathrm{intra}}$} & \NEW{$9.834342\times10^{-16}$ m$^2$/s} & \NEW{calibrated} (VB: $4.980\times10^{-15}$, common [VB 7.2]) \\
+%     \NEW{$k_{0,\mathrm{GB}}$} & \NEW{$3.009503\times10^{-15}$ m$^2$/s} & \NEW{calibrated} (VB: $4.980\times10^{-15}$, common) \\
+%     \NEW{$B_{\mathrm{intra}}$} & \NEW{$2.711740\times10^{8}$ eV K$^2$} & \NEW{calibrated} (VB: $2.666\times10^{8}$, common [VB 7.2]) \\
+%     \NEW{$B_{\mathrm{GB}}$} & \NEW{$2.641409\times10^{8}$ eV K$^2$} & \NEW{calibrated} (VB: $2.666\times10^{8}$, common) \\
+%     $\Delta G_{\mathrm{intra}} = \Delta G_{\mathrm{GB}}$ & 1.0 eV & V.\,Bellani [VB 6.9] \\
+%     $k_{\mathrm{nucl},0,j}$ & 1.0 s$^{-1}$ & V.\,Bellani [VB 6.9] \\
+%     \NEW{$\delta$} & \NEW{100 nm} & \NEW{TEM grain-boundary regions (thesis Figs.\,5.3--5.16)} \\
+%     $\Omega_{\mathrm{5MP}}$ & $1.44123\times10^{-29}$ m$^3$/at & [VB 3.52] \\
+%     $n_{\min}$, $\lambda$ & 2 at, 15 nm & [VB 3.36, 3.27] \\
+%     $f_d$, $f_b$ & 0.67, 0.33 & image analysis [VB 3.30, 5.9] \\
+%     $k_{\mathrm{res,ref}}$, $F_{\mathrm{ref}}$ & $3.085\times10^{-6}$ s$^{-1}$, $1.48\times10^{19}$ fiss/(m$^3$ s) & Sakib et al. [VB 3.45, 3.47] \\
+%     $x_{\mathrm{eq,ref}}$, $H_{\mathrm{sol}}^{\mathrm{eff}}$, $T_{\mathrm{ref}}$ & $6\times10^{-5}$, 1.14 eV, 2173.15 K & Kleykamp, Brillant et al. [VB 3.11--3.15] \\
+%     $A, n, A_\infty, T_c, \Delta T$ & $6.545\times10^{12}$, 1.151, 0.608, 1109 K, 25.8 K & Veshchunov and Shestak [VB 3.25] \\
+%     \bottomrule
+%   \end{tabular}
+% \end{frame}
 
 % =====================================================================================================
-\begin{frame}{Calibration}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \small
-      \textbf{V.\,Bellani} [VB Ch.\,6, 7]
-      \begin{itemize}\footnotesize
-        \item screening of 9 scaling factors, then 2 free: $s_k$ (log), $s_B$ (linear), common to the two populations
-        \item 512 Sobol points + 1 reference point, best sampled point (no optimiser) [VB 6.10--6.19]
-        \item $s_k = 4.9803\times10^{-15}$, $s_B = 266.5765$, $E_{\mathrm{cal}} = 0.614$ [VB 7.2, 7.3]
-      \end{itemize}
-      \medskip
-      \textbf{\MOD{Two-zone model}} (\texttt{calibration\_two\_zones/})
-      \begin{itemize}\footnotesize
-        \item \MOD{4 free: $k_{0,\mathrm{intra}}$ ($\times10^{\pm2}$, log), $B_{\mathrm{intra}}$ ($\times0.5$--1.5), $k_{0,\mathrm{GB}}$ ($\times10^{-1}$--$10^{3}$, log),
-          $B_{\mathrm{GB}}$ ($\times0.5$--1.5)}
-        \item \MOD{4096 scrambled Sobol points (seed 42) + 5 Nelder-Mead refinements from the best points: all end at $J_4$ = 0.5541--0.5544}
-        \item copy of the code with the parameters from the environment, no OpenCalphad
-        \item $B$'s and $k_{0,\mathrm{GB}}$ well identified; $k_{0,\mathrm{intra}}$ less ($\times$0.155--0.197 for the same $J_4$)
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \scriptsize
-      \renewcommand{\arraystretch}{1.1}
-      \begin{tabular}{@{}lcc@{}}
-        \toprule
-        & V.\,Bellani & \MOD{two zones} \\
-        \midrule
-        $k_{0,\mathrm{intra}}$ (m$^2$/s) & $4.98\times10^{-15}$ & \MOD{$9.83\times10^{-16}$} \\
-        $B_{\mathrm{intra}}$ (eV K$^2$) & $2.666\times10^{8}$ & \MOD{$2.712\times10^{8}$} \\
-        $k_{0,\mathrm{GB}}$ (m$^2$/s) & $4.98\times10^{-15}$ & \MOD{$3.010\times10^{-15}$} \\
-        $B_{\mathrm{GB}}$ (eV K$^2$) & $2.666\times10^{8}$ & \MOD{$2.641\times10^{8}$} \\
-        \midrule
-        $J_3$ (this model) & 0.616 & 0.598 \\
-        $J_4$ & 0.869 & \textbf{0.554} \\
-        \bottomrule
-      \end{tabular}
-      \par\medskip
-      \textbf{Check, 4 Nov 2026}: the calibration copy is identical to \texttt{src/}, \texttt{include/} except the 4 parameter
-      lines; $J_4 = 0.5541$ recomputed; $\pm5\%$ on each parameter always increases $J_4$:\par\smallskip
-      \begin{tabular}{@{}lcc@{}}
-        \toprule
-        & $\times0.95$ & $\times1.05$ \\
-        \midrule
-        $k_{0,\mathrm{intra}}$ & 0.5596 & 0.5594 \\
-        $B_{\mathrm{intra}}$ & 0.6120 & 0.6356 \\
-        $k_{0,\mathrm{GB}}$ & 0.5629 & 0.5588 \\
-        $B_{\mathrm{GB}}$ & 0.6641 & 0.6782 \\
-        \bottomrule
-      \end{tabular}
-    \end{column}
-  \end{columns}
-\end{frame}
+% \begin{frame}{Observables and objective}
+%   \small
+%   Projected area fraction in a TEM foil of thickness $t_{\mathrm{TEM}}$ (Poisson coverage)
+%   \begin{align*}
+%     f_{A,j} = 1 - \exp\left(-N_j\pi R_j^2 t_{\mathrm{TEM}}\right) \tag*{\vbtag{6.15, 6.16}}\\
+%     \NEW{f_{A,j} = 1 - \exp\left(-\frac{N_j}{\phi_k}\pi R_j^2 t_{\mathrm{TEM}}\right)} \tag*{\modtag{6.16}}
+%   \end{align*}
+%   \NEW{with the number density in the zone of the population: the TEM grain-boundary images are strips around the boundary
+%   (zone 2), the intragranular images the grain interior.} \was{$N_{\mathrm{GB}}$ per fuel volume gives $f_{A,\mathrm{GB}}$ 100--700
+%   times below TEM, so it was left out [VB Sec.\,6.3].}\par
+%   $t_{\mathrm{TEM}}$ = 50, 50 (nominal), 70, 40 nm at $r/R$ = 0, 0.30, 0.56, 0.75 [VB Sec.\,6.3].
+%   \begin{align*}
+%     J_3 = E_{\mathrm{cal}} = \frac{1}{12}\sum_{i=1}^{12}\left|\ln\frac{M_i}{E_i}\right|\quad (f_{A,\mathrm{intra}}, R_{\mathrm{intra}}, R_{\mathrm{GB}}) \tag*{\vbtag{6.17, 6.18}}\\
+%     \NEW{J_4 = \frac{1}{16}\sum_{i=1}^{16}\left|\ln\frac{M_i}{E_i}\right|\quad (f_{A,\mathrm{intra}}, R_{\mathrm{intra}}, R_{\mathrm{GB}}, f_{A,\mathrm{GB}})} \tag*{\newtag}
+%   \end{align*}
+%   Model values at the end of the history (54.1 MWd/kgUO$_2$); TEM data of [VB Tab.\,5.2].
+% \end{frame}
+
+% =====================================================================================================
+% \begin{frame}{Calibration}
+%   \begin{columns}[T]
+%     \begin{column}{0.5\textwidth}
+%       \small
+%       \textbf{V.\,Bellani} [VB Ch.\,6, 7]
+%       \begin{itemize}\footnotesize
+%         \item screening of 9 scaling factors, then 2 free: $s_k$ (log), $s_B$ (linear), common to the two populations
+%         \item 512 Sobol points + 1 reference point, best sampled point (no optimiser) [VB 6.10--6.19]
+%         \item $s_k = 4.9803\times10^{-15}$, $s_B = 266.5765$, $E_{\mathrm{cal}} = 0.614$ [VB 7.2, 7.3]
+%       \end{itemize}
+%       \medskip
+%       \textbf{\NEW{Two-zone model}} (\texttt{calibration\_two\_zones/})
+%       \begin{itemize}\footnotesize
+%         \item \NEW{4 free: $k_{0,\mathrm{intra}}$ ($\times10^{\pm2}$, log), $B_{\mathrm{intra}}$ ($\times0.5$--1.5), $k_{0,\mathrm{GB}}$ ($\times10^{-1}$--$10^{3}$, log),
+%           $B_{\mathrm{GB}}$ ($\times0.5$--1.5)}
+%         \item \NEW{4096 scrambled Sobol points (seed 42) + 5 Nelder-Mead refinements from the best points: all end at $J_4$ = 0.5541--0.5544}
+%         \item copy of the code with the parameters from the environment, no OpenCalphad
+%         \item $B$'s and $k_{0,\mathrm{GB}}$ well identified; $k_{0,\mathrm{intra}}$ less ($\times$0.155--0.197 for the same $J_4$)
+%       \end{itemize}
+%     \end{column}
+%     \begin{column}{0.48\textwidth}
+%       \scriptsize
+%       \renewcommand{\arraystretch}{1.1}
+%       \begin{tabular}{@{}lcc@{}}
+%         \toprule
+%         & V.\,Bellani & \NEW{two zones} \\
+%         \midrule
+%         $k_{0,\mathrm{intra}}$ (m$^2$/s) & $4.98\times10^{-15}$ & \NEW{$9.83\times10^{-16}$} \\
+%         $B_{\mathrm{intra}}$ (eV K$^2$) & $2.666\times10^{8}$ & \NEW{$2.712\times10^{8}$} \\
+%         $k_{0,\mathrm{GB}}$ (m$^2$/s) & $4.98\times10^{-15}$ & \NEW{$3.010\times10^{-15}$} \\
+%         $B_{\mathrm{GB}}$ (eV K$^2$) & $2.666\times10^{8}$ & \NEW{$2.641\times10^{8}$} \\
+%         \midrule
+%         $J_3$ (this model) & 0.616 & 0.598 \\
+%         $J_4$ & 0.869 & \textbf{0.554} \\
+%         \bottomrule
+%       \end{tabular}
+%       \par\medskip
+%       \textbf{Check, 4 Nov 2026}: the calibration copy is identical to \texttt{src/}, \texttt{include/} except the 4 parameter
+%       lines; $J_4 = 0.5541$ recomputed; $\pm5\%$ on each parameter always increases $J_4$:\par\smallskip
+%       \begin{tabular}{@{}lcc@{}}
+%         \toprule
+%         & $\times0.95$ & $\times1.05$ \\
+%         \midrule
+%         $k_{0,\mathrm{intra}}$ & 0.5596 & 0.5594 \\
+%         $B_{\mathrm{intra}}$ & 0.6120 & 0.6356 \\
+%         $k_{0,\mathrm{GB}}$ & 0.5629 & 0.5588 \\
+%         $B_{\mathrm{GB}}$ & 0.6641 & 0.6782 \\
+%         \bottomrule
+%       \end{tabular}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
 
 % =====================================================================================================
 \begin{frame}{Calibration cases: UO$_2$, PWR, 54.1 MWd/kgUO$_2$}
@@ -709,9 +677,7 @@
   \begin{itemize}\footnotesize
     \item same fission rate at the four positions (scaled by $\alpha = 1.132$ to 54.1 MWd/kgUO$_2$ [VB 5.19--5.22]); temperature
       from the ALCYONE profile of the last cycle scaled with the linear power [VB 5.10--5.14]
-    \item settings of the cases: grain radius 12.3 $\mu$m, 4.0\% U-235, no He, no HBS, \texttt{iStoichiometryDeviation = 0},
-      \texttt{iThermochimica = 0} (inputs of V.\,Bellani, \texttt{regression/test\_Cm})
-    \item regression: \texttt{python3 -m testing.runner -{}-metallicinclusions}
+    \item settings of the cases: grain radius 12.3 $\mu$m, 4.0\% U-235, no He, no HBS
   \end{itemize}
 \end{frame}
 
@@ -719,52 +685,8 @@
 \begin{frame}{Calibration cases: results}
   \centering
   \includegraphics[width=0.72\textwidth]{metallicinclusions_UO2_LWR.png}\par
-  \scriptsize
-  \renewcommand{\arraystretch}{1.05}
-  \begin{tabular}{@{}ccccccc@{}}
-    \toprule
-    & $R_{\mathrm{intra}}$ (nm) & $R_{\mathrm{GB}}$ (nm) & $f_{A,\mathrm{intra}}$ (\%) & $f_{A,\mathrm{GB}}$ (\%) & metal & metal in \\
-    $r/R$ & TEM / model & TEM / model & TEM / model & TEM / model & dissolved & GB particles \\
-    \midrule
-    0.00 & 7.58 / 7.58 & 14.28 / 13.24 & 1.37 / 5.24 & 7.21 / 3.59 & 14.2\% & 2.45\% \\
-    0.30 & 3.59 / 6.84 & 11.95 / 11.95 & 0.56 / 5.58 & 3.62 / 3.62 & 17.6\% & 2.23\% \\
-    0.56 & 3.45 / 5.29 & 5.58 / 9.26 & 3.25 / 7.86 & 1.76 / 4.72 & 35.2\% & 1.62\% \\
-    0.75 & 3.10 / 3.55 & 6.68 / 6.21 & 2.62 / 1.19 & 0.72 / 0.72 & 88.8\% & 0.28\% \\
-    \bottomrule
-  \end{tabular}\par\smallskip
-  $J_4 = 0.554$, $J_3 = 0.598$. With the parameters of V.\,Bellani: $R_{\mathrm{intra}} \approx R_{\mathrm{GB}}$ = 13.5, 12.0, 9.0, 6.4 nm,
-  $f_{A,\mathrm{GB}}$ = 0.3--0.7\%, $J_4 = 0.869$.
 \end{frame}
-
-% =====================================================================================================
-\begin{frame}{Calibration: parameters of V.\,Bellani vs calibrated}
-  \centering
-  \includegraphics[width=0.92\textwidth]{calibration_two_zones.png}\par\medskip
-  \begin{itemize}\small
-    \item $R_{\mathrm{GB}}/R_{\mathrm{intra}}$ from 1.00 to 1.75: the faster grain-boundary growth separates the radii;
-      $R_{\mathrm{intra}}$ now 1.0--1.9 times TEM (was 1.8--3.3)
-    \item $f_{A,\mathrm{GB}}$ within a factor 2 at three positions (was 2--16 times too low); too high at $r/R = 0.56$
-    \item $f_{A,\mathrm{intra}}$ worse at $r/R$ = 0--0.30 (4--10 times TEM): smaller but more numerous intragranular particles
-  \end{itemize}
-\end{frame}
-
-% =====================================================================================================
-\begin{frame}{Where the metal goes}
-  \centering
-  \includegraphics[width=0.8\textwidth]{fmp_partition.png}\par
-  \small Top: calibration cases; bottom: ATM-109 rings. Most of the metal precipitates in the intragranular particles above
-  $\sim$1000 K; at $r/R$ = 0.75 (869 K) 89\% stays dissolved. The grain-boundary particles hold 0.2--2.5\%.
-\end{frame}
-
-% =====================================================================================================
-\begin{frame}{Elements: production and particle composition}
-  \centering
-  \includegraphics[width=0.95\textwidth]{fmp_elements.png}\par\medskip
-  \small
-  (a) \MOD{Production of the five systems, LWR yields}: 41.8\% Mo, 10.8\% Tc, 25.5\% Ru, 8.3\% Rh, 13.6\% Pd.
-  (b) Particle composition = production composition; \NEW{with OpenCalphad 32\% of the Mo is oxidised (r000) and the metallic
-  particles are 33Mo-13Tc-29Ru-10Rh-16Pd}. Dissolution residue quoted by Buck et al. (2015, p.\,237): 20Mo-0.5/5Tc-50/60Ru-10Rh-10Pd.
-\end{frame}
+%
 
 % =====================================================================================================
 \begin{frame}{Independent validation: Buck et al. (2015), ATM-109}
@@ -870,7 +792,15 @@
   \end{tabular}
   \end{center}
 \end{frame}
-
+%=====================================================================================================
+\begin{frame}{Elements: production and particle composition}
+  \centering
+  \includegraphics[width=0.95\textwidth]{fmp_elements.png}\par\medskip
+  \small
+  (a) \NEW{Production of the five systems, LWR yields}: 41.8\% Mo, 10.8\% Tc, 25.5\% Ru, 8.3\% Rh, 13.6\% Pd.
+  (b) Particle composition = production composition; \NEW{with OpenCalphad 32\% of the Mo is oxidised (r000) and the metallic
+  particles are 33Mo-13Tc-29Ru-10Rh-16Pd}. Dissolution residue quoted by Buck et al. (2015, p.\,237): 20Mo-0.5/5Tc-50/60Ru-10Rh-10Pd.
+\end{frame}
 % =====================================================================================================
 \begin{frame}{ATM-109: results}
   \centering
@@ -901,7 +831,7 @@
         \midrule
         Buck, carbonate-peroxide & 13 & 50 (43) & 7.07 \\
         Buck, nitric acid & 28 & 62 (58) & 9.30 \\
-        \MOD{SCIANTIX, two zones} & 11 & 12.5 & 6.78 \\
+        \NEW{SCIANTIX, two zones} & 11 & 12.5 & 6.78 \\
         SCIANTIX, VB parameters & 19 & 18.5 & 7.95 \\
         \bottomrule
       \end{tabular}
