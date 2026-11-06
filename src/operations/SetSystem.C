@@ -616,6 +616,8 @@ System Mo_in_MOX(SciantixArray<Matrix>&           matrices,
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    // EC November 2026: metal diffusivity read by the FMP model, Turnbull et al. (1988) as for Xe
+    system_.setFissionProductDiffusivity(1, sciantix_variable, history_variable, scaling_factors, matrices);
     return system_;
 }
 
@@ -746,5 +748,7 @@ System MetallicFP_in_UO2(const std::string&               element,
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    // EC November 2026: metal diffusivity for the FMP growth, Turnbull et al. (1988) as for Xe (no Mo data)
+    system_.setFissionProductDiffusivity(1, sciantix_variable, history_variable, scaling_factors, matrices);
     return system_;
 }

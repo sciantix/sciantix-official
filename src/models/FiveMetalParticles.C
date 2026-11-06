@@ -20,16 +20,18 @@
 
 /**
  * Five metal particles (FMP): nucleation (CNT), growth and irradiation-induced re-solution of the Mo-Tc-Ru-Rh-Pd
- * precipitates, intragranular and at the grain boundary.
+ * precipitates in three zones.
  *
  * EC November 2026, changes with respect to the model of V. Bellani:
- *  - FMP naming, single switch iFMP, calibrated parameters in the code, radii as outputs;
+ *  - FMP naming, single switch iFMP, radii as outputs;
  *  - production from the Mo, Tc, Ru, Rh, Pd systems ("X produced", LWR yields) instead of y = 0.578;
- *  - two zones coupled by diffusion, each with its own dissolved metal: zone 1, the grain interior, with the
- *    intragranular particles; zone 2, the grain-boundary zone (layer of thickness delta_gb on each side of the
- *    boundaries), with the grain-boundary particles;
- *  - Mo oxidation from OpenCalphad applied to all the particles (uniform oxygen potential); the oxygen taken by
- *    the oxides is removed from the fuel in SetPhaseDiagram.
+ *  - three zones: intra1, the grain interior; intra2, the near-boundary zone (delta on each side of the boundaries,
+ *    bubble-free zone of Angleraud 2024), with its own dissolved metal; gb, the particles on the boundary, fed from
+ *    intra2;
+ *  - literature parameters only (no calibration): Turnbull diffusivity, CNT barrier from the interface energy, CNT
+ *    nucleation frequency Z beta*;
+ *  - Mo oxidation from OpenCalphad applied to all the particles; the oxygen taken by the oxides is removed from the
+ *    fuel in SetPhaseDiagram.
  * All concentrations are per unit fuel volume; c = C / phi is the local concentration in a zone.
  */
 void Simulation::FiveMetalParticles()
@@ -44,25 +46,21 @@ void Simulation::FiveMetalParticles()
 
     const double dt = physics_variable["Time step"].getFinalValue();    // (s)
     const double T  = history_variable["Temperature"].getFinalValue();  // (K)
-    const double kB = boltzmann_constant_eV;                            // (eV/K)
+    const double kB = boltzmann_constant;                               // (J/K)
 
-    // EC November 2026: parameters calibrated with the two-zone model on the UO2 LWR cases, with free grain-boundary
-    // values (validation/metallicinclusions/calibration_two_zones). Calibration of V. Bellani, common values:
-    // k_0 = 4.980333299845e-15 m2/s, B = 2.665764962509e8 eV K2.
-    const double k_intra_0 = 9.834342e-16, k_gb_0 = 3.009503e-15;  // growth prefactors (m2/s)
-    const double dG_intra = 1.0, dG_gb = 1.0;                       // growth activation energies (eV)
-    const double B_intra = 2.711740e8, B_gb = 2.641409e8;           // CNT barrier coefficients (eV K2)
-    const double nu0_intra = 1.0, nu0_gb = 1.0;                     // nucleation prefactors (1/s)
+    // EC November 2026: literature values, nothing fitted on the TEM data used for the validation
+    const double gamma  = 1.0;          // metal/UO2 interface energy (J/m2), incoherent interfaces 0.5-1 J/m2 (Porter, Easterling)
+    const double delta  = 100.0e-9;     // near-boundary zone, bubble-free zone of ~100 nm on each side of the boundaries (m) (Angleraud 2024)
+    const double V_eff  = 1.44123e-29;  // atomic volume of the FMP phase (m3/at), atomic radii and hcp packing (V. Bellani)
+    const double n_min  = 2.0;          // minimum nucleus, metallic dimers (at) (Hong et al. 2012)
+    const double lambda = 15e-9;        // spacing of the nucleation sites (m) (V. Bellani)
 
-    // EC November 2026: half-width of the grain-boundary zone, equal to TEM grain-boundary regions of the calibration (V. Bellani, thesis, Figs. 5.3-5.16)
-    const double delta_gb = 100.0e-9;  // (m)
+    // EC November 2026: grain-boundary nucleation on a lens, Phi = (2 + cos)(1 - cos)^2 / 2 with cos = gamma_gb / (2 gamma), gamma_gb = 2 gamma_s cos(theta_b) from the UO2 surface tension and semi-dihedral angle (0.7 J/m2, 50 deg: gamma_gb = 0.90 J/m2)
+    const double cos_gb = std::min(matrices[0].getSurfaceTension() * std::cos(matrices[0].getSemidihedralAngle()) / gamma, 1.0);
+    const double phi_het_gb = 0.5 * (2.0 + cos_gb) * (1.0 - cos_gb) * (1.0 - cos_gb);
 
-    const double V_eff  = 1.44123e-29;  // effective atomic volume of the FMP phase (m3/at)
-    const double n_min  = 2.0;          // minimum nucleus size, metallic dimers (at)
-    const double lambda = 15e-9;        // spacing of the effective nucleation sites (m)
-
-    // Production (EC November 2026: from the per-element systems) and Mo share of the lumped species
-    double production = 0.0, produced_total = 0.0, produced_mo = 0.0;  // (at/m3)
+    // Production (EC November 2026: from the per-element systems), Mo share and metal diffusivity (Mo system: Turnbull et al. 1988)
+    double production = 0.0, produced_total = 0.0, produced_mo = 0.0, D = 0.0;  // (at/m3), (m2/s)
     for (auto& system : sciantix_system)
     {
         if (!system.isMetallicFP() || system.getRestructuredMatrix() != 0)
@@ -71,7 +69,10 @@ void Simulation::FiveMetalParticles()
         production += sciantix_variable[produced].getIncrement();
         produced_total += sciantix_variable[produced].getFinalValue();
         if (system.getFissionProductName() == "Mo")
+        {
             produced_mo = sciantix_variable[produced].getFinalValue();
+            D           = system.getFissionProductDiffusivity();
+        }
     }
     const double mo_fraction = (produced_total > 0.0) ? produced_mo / produced_total : 0.0;
 
@@ -85,52 +86,35 @@ void Simulation::FiveMetalParticles()
     const double k_res = 3.085078e-6 * (history_variable["Fission rate"].getFinalValue() / 1.48e19);  // (1/s)
 
     // State at the beginning of the time step
-    const double C_m2_old    = sciantix_variable["FMP in grain-boundary zone matrix"].getInitialValue();
-    const double C_m1_old    = sciantix_variable["FMP in matrix"].getInitialValue() - C_m2_old;
-    const double C_intra_old = sciantix_variable["FMP in intragranular particles"].getInitialValue();
-    const double C_gb_old    = sciantix_variable["FMP at grain boundary"].getInitialValue();
-    const double N_intra_old = sciantix_variable["Intragranular FMP concentration"].getInitialValue();
-    const double N_gb_old    = sciantix_variable["Intergranular FMP concentration"].getInitialValue();
+    const double C_m2_old = sciantix_variable["FMP in near-boundary zone matrix"].getInitialValue();
+    const double C_m1_old = sciantix_variable["FMP in matrix"].getInitialValue() - C_m2_old;
+    const double C_p1_old = sciantix_variable["FMP in intragranular particles"].getInitialValue();
+    const double C_p2_old = sciantix_variable["FMP in near-boundary particles"].getInitialValue();
+    const double C_gb_old = sciantix_variable["FMP at grain boundary"].getInitialValue();
+    const double N1_old   = std::max(sciantix_variable["Intragranular FMP concentration"].getInitialValue(), 0.0);
+    const double N2_old   = std::max(sciantix_variable["Near-boundary FMP concentration"].getInitialValue(), 0.0);
+    const double Ngb_old  = std::max(sciantix_variable["Intergranular FMP concentration"].getInitialValue(), 0.0);
 
-    // Zone volume fractions: zone 2 is the shell of thickness delta_gb inside each spherical grain of radius a, phi_2 = 1 - (1 - delta_gb/a)^3, limited to 0.999 for grains smaller than the layer
+    // Zone volume fractions: intra2 is the shell of thickness delta inside each spherical grain of radius a, phi_2 = 1 - (1 - delta/a)^3, limited to 0.999 for grains smaller than the layer; uniform production
     const double a     = sciantix_variable["Grain radius"].getFinalValue();
-    const double phi_2 = (a > delta_gb) ? std::min(1.0 - std::pow(1.0 - delta_gb / a, 3.0), 0.999) : 0.999;
+    const double phi_2 = (a > delta) ? std::min(1.0 - std::pow(1.0 - delta / a, 3.0), 0.999) : 0.999;
     const double phi_1 = 1.0 - phi_2;
-    const double P_1   = phi_1 * production;  // uniform production (at/m3)
+    const double P_1   = phi_1 * production;  // (at/m3)
     const double P_2   = phi_2 * production;
 
     // Equilibrium concentration C_eq = x_eq N_U exp[-(H/kB)(1/T - 1/T_ref)]: Mo solubility 0.006 at.% at 1900 degC (Kleykamp), 4/a_UO2^3 cation sites (a_UO2 = 547.5 pm), H = 1.14 eV (DFT solution energy of Mo in UO2)
     const double C_eq_ref = 6.0e-5 * (4.0 / std::pow(547.5e-12, 3.0));  // (at/m3)
-    const double C_eq     = (T > 0.0) ? C_eq_ref * std::exp(-(1.14 / kB) * (1.0 / T - 1.0 / 2173.15)) : C_eq_ref;
+    const double C_eq     = (T > 0.0) ? C_eq_ref * std::exp(-(1.14 / boltzmann_constant_eV) * (1.0 / T - 1.0 / 2173.15))
+                                      : C_eq_ref;
 
-    // Nucleation sites. Intragranular: dislocations and intragranular bubbles of the previous time step, weights 0.67/0.33 from image analysis; EC November 2026: fraction phi_1 in zone 1. Grain boundary: areal density 1/lambda^2 on the boundary area 3/(2a) per unit volume.
+    // Nucleation sites: dislocations (weight 0.67, spacing lambda) in intra1 and intra2, intragranular bubbles (weight 0.33) only in intra1 (EC November 2026: no bubble/precipitate pairs in the bubble-free zone, Angleraud 2024), areal density 1/lambda^2 on the boundary area 3/(2a) per unit volume for gb
     const double burnup = sciantix_variable["Burnup"].getFinalValue();
     const double f_T    = 0.608 + (1.0 - 0.608) / (1.0 + std::exp((T - 1109.0) / 25.8));
-    const double rho_dislocations =
-        (burnup > 0.0 && T > 0.0) ? 6.545e12 * std::pow(burnup, 1.151) * f_T : 0.0;  // (1/m2)
-    const double sites_intra = phi_1 * (0.67 * rho_dislocations / lambda +
-                                        0.33 * sciantix_variable["Intragranular bubble concentration"].getFinalValue());
-    const double sites_gb    = (a > 0.0) ? 3.0 / (2.0 * a) / (lambda * lambda) : 0.0;
-
-    // CNT nucleation frequency nu = nu0 exp(-dG*/kB T), dG* = B / [T^2 ln(S)^2], driving force dmu = kB T ln(S), with the supersaturation S of the zone after the production of the time step (EC November 2026: per zone)
-    struct Nucleation
-    {
-        double dmu = 0.0, dG = 0.0, nu = 0.0;
-    };
-    auto nucleation = [&](double C_local, double B, double nu0)
-    {
-        Nucleation   n;
-        const double S = (C_eq > 0.0) ? C_local / C_eq : 0.0;
-        if (T <= 0.0 || S <= 1.0 || std::log(S) <= 1.0e-12)
-            return n;
-        n.dmu = kB * T * std::log(S);
-        n.dG  = B / (T * T * std::log(S) * std::log(S));
-        if (n.dG / (kB * T) < 700.0)
-            n.nu = nu0 * std::exp(-n.dG / (kB * T));
-        return n;
-    };
-    const Nucleation nucl_intra = nucleation(std::max(C_m1_old + P_1, 0.0) / phi_1, B_intra, nu0_intra);
-    const Nucleation nucl_gb    = nucleation(std::max(C_m2_old + P_2, 0.0) / phi_2, B_gb, nu0_gb);
+    const double sites_disl =
+        (burnup > 0.0 && T > 0.0) ? 0.67 * 6.545e12 * std::pow(burnup, 1.151) * f_T / lambda : 0.0;  // (1/m3)
+    const double sites_1  = phi_1 * sites_disl + 0.33 * sciantix_variable["Intragranular bubble concentration"].getFinalValue();
+    const double sites_2  = phi_2 * sites_disl;
+    const double sites_gb = (a > 0.0) ? 3.0 / (2.0 * a) / (lambda * lambda) : 0.0;
 
     // Particle radius from the metallic part of the inventory
     auto radius = [&](double atoms, double particles)
@@ -139,20 +123,21 @@ void Simulation::FiveMetalParticles()
                             (4.0 * M_PI * std::max(particles, 1e-30)),
                         1.0 / 3.0);
     };
-    const double R_intra_old = radius(C_intra_old, N_intra_old);
-    const double R_gb_old    = radius(C_gb_old, N_gb_old);
+    const double R1_old  = radius(C_p1_old, N1_old);
+    const double R2_old  = radius(C_p2_old, N2_old);
+    const double Rgb_old = radius(C_gb_old, Ngb_old);
 
-    // Diffusion-limited growth, k = D 4 pi N R with D = k_0 exp(-dG / kB T), from the state at the beginning of the time step (no iteration: positive feedback of R on the growth rate)
-    const double D_intra = k_intra_0 * std::exp(-dG_intra / (kB * T));
-    const double D_gb    = k_gb_0 * std::exp(-dG_gb / (kB * T));
-    const double k_intra = D_intra * 4.0 * M_PI * std::max(N_intra_old, 1e-30) * R_intra_old;  // (1/s)
-    const double k_gb    = D_gb * 4.0 * M_PI * std::max(N_gb_old, 1e-30) * R_gb_old;           // (1/s)
+    // Diffusion-limited growth k = 4 pi D N R (Ham), state at the beginning of the time step
+    const double k_1  = 4.0 * M_PI * D * N1_old * R1_old;    // (1/s)
+    const double k_2  = 4.0 * M_PI * D * N2_old * R2_old;    // (1/s)
+    const double k_gb = 4.0 * M_PI * D * Ngb_old * Rgb_old;  // (1/s)
 
-    // [TBC] EC November 2026: exchange between the zones, flux K_ex (c_1 - c_2) per unit volume. Conductance of the grain interior: grain-boundary sink strength of a sphere with internal sinks k_1^2 = 4 pi n_intra R_intra (Brailsford and Bullough), k_GB^2 = k_1^2 F / (1 - F), F = 3 (coth z - 1/z) / z, z = k_1 a, from 15/a^2 without particles to 3 k_1 / a; in series with the half-thickness of zone 2 (interface area 3/a): K_ex = D / (1/k_GB^2 + a delta_gb / 6).
-    double K_ex = 0.0;
+    // Exchange intra1 -> intra2, flux K_12 (c_1 - c_2): grain-boundary sink strength of a sphere with internal sinks k_1^2 = 4 pi n_1 R_1 (Brailsford and Bullough), k_GB^2 = k_1^2 F / (1 - F), F = 3 (coth z - 1/z) / z, z = k_1 a, from 15/a^2 without particles to 3 k_1 / a; in series with the half-thickness of intra2 (interface area 3/a): K_12 = D / (1/k_GB^2 + a delta / 6).
+    // EC November 2026: intra2 -> gb, diffusion from the middle of intra2 to the boundary, K_23 = 6 D / (a delta), in series with the capture by the gb particles, k_23 = K_23 k_gb / (K_23 + k_gb); quasi-steady concentration at the boundary c_b = (K_23 c_2 + k_gb C_eq) / (K_23 + k_gb).
+    double K_12 = 0.0, K_23 = 0.0;
     if (a > 0.0)
     {
-        const double k1_squared   = 4.0 * M_PI * (std::max(N_intra_old, 0.0) / phi_1) * R_intra_old;
+        const double k1_squared   = 4.0 * M_PI * (N1_old / phi_1) * R1_old;
         const double z            = std::sqrt(k1_squared) * a;
         double       k_gb_squared = 15.0 / (a * a);
         if (z > 1.0e-2)
@@ -161,65 +146,88 @@ void Simulation::FiveMetalParticles()
             if (F < 1.0)
                 k_gb_squared = std::max(k1_squared * F / (1.0 - F), k_gb_squared);
         }
-        K_ex = D_intra / (1.0 / k_gb_squared + a * delta_gb / 6.0);
+        K_12 = D / (1.0 / k_gb_squared + a * delta / 6.0);
+        K_23 = 6.0 * D / (a * delta);
     }
+    const double k_23 = (K_23 + k_gb > 0.0) ? K_23 * k_gb / (K_23 + k_gb) : 0.0;
 
-    // Nucleation: implicit dN/dt = S - nu N, N never decreases; each nucleus takes n* = max(n_min, 2 dG*/dmu) atoms from the matrix of its zone, limited by the atoms available there (then dN is reduced at fixed n*)
+    // CNT (Kashchiev), per site: nu = Z beta* exp(-dG*/kB T), dG* = 16 pi gamma^3 Omega^2 Phi / (3 dmu^2), dmu = kB T ln S, n* = max(n_min, 2 dG*/dmu), r* = 2 gamma Omega / dmu, beta* = 4 pi r* D c, Z = [dG*/(3 pi kB T)]^(1/2) / n*; S of the zone after the production of the time step
+    struct Nucleation
+    {
+        double dG = 0.0, n_crit = 2.0, nu = 0.0;
+    };
+    auto nucleation = [&](double c, double phi_het)
+    {
+        Nucleation   n;
+        const double S = (C_eq > 0.0) ? c / C_eq : 0.0;
+        if (T <= 0.0 || S <= 1.0 || std::log(S) <= 1.0e-12)
+            return n;
+        const double dmu = kB * T * std::log(S);                                                       // (J)
+        n.dG             = 16.0 * M_PI * std::pow(gamma, 3.0) * V_eff * V_eff * phi_het / (3.0 * dmu * dmu);  // (J)
+        n.n_crit         = std::max(n_min, 2.0 * n.dG / dmu);
+        const double Z   = std::sqrt(n.dG / (3.0 * M_PI * kB * T)) / n.n_crit;
+        const double beta = 4.0 * M_PI * (2.0 * gamma * V_eff / dmu) * D * c;  // (1/s)
+        if (n.dG / (kB * T) < 700.0)
+            n.nu = Z * beta * std::exp(-n.dG / (kB * T));
+        return n;
+    };
+    const double c_1 = std::max(C_m1_old + P_1, 0.0) / phi_1;
+    const double c_2 = std::max(C_m2_old + P_2, 0.0) / phi_2;
+    const double c_b = (K_23 + k_gb > 0.0) ? (K_23 * c_2 + k_gb * C_eq) / (K_23 + k_gb) : c_2;
+
+    // Nucleation: implicit dN/dt = nu (N_site - N), N never decreases; each nucleus takes n* atoms from the matrix of its zone, limited by the atoms available there (gb first, then intra2, from the metal of intra2)
     auto nucleate = [&](const Nucleation& n, double sites, double N_old, double available, double& mass)
     {
-        const double dN     = std::max((N_old + sites * n.nu * dt) / (1.0 + n.nu * dt) - N_old, 0.0);
-        const double n_crit = (n.dmu > 0.0 && dN > 0.0 && n.dG > 0.0) ? std::max(n_min, 2.0 * n.dG / n.dmu) : n_min;
-        mass                = std::min(n_crit * dN, std::max(available, 0.0));
-        return N_old + mass / n_crit;
+        const double dN = std::max((N_old + sites * n.nu * dt) / (1.0 + n.nu * dt) - N_old, 0.0);
+        mass            = std::min(n.n_crit * dN, std::max(available, 0.0));
+        return N_old + mass / n.n_crit;
     };
-    double       mass_intra = 0.0, mass_gb = 0.0;
-    const double N_intra = nucleate(nucl_intra, sites_intra, N_intra_old, C_m1_old + P_1, mass_intra);
-    const double N_gb    = nucleate(nucl_gb, sites_gb, N_gb_old, C_m2_old + P_2, mass_gb);
+    double       mass_1 = 0.0, mass_2 = 0.0, mass_gb = 0.0;
+    const double N1  = nucleate(nucleation(c_1, 1.0), sites_1, N1_old, C_m1_old + P_1, mass_1);
+    const double Ngb = nucleate(nucleation(c_b, phi_het_gb), sites_gb, Ngb_old, C_m2_old + P_2, mass_gb);
+    const double N2  = nucleate(nucleation(c_2, 1.0), sites_2, N2_old, C_m2_old + P_2 - mass_gb, mass_2);
 
-    // Growth J = k (c - C_eq), switched on in each zone if c > C_eq after production and nucleation; dissolution only by re-solution. Implicit 4x4 balance, X = (C_m1, C_m2, C_intra, C_gb):
-    //   dC_m1/dt    = P_1 - k_intra (c_1 - C_eq) - K_ex (c_1 - c_2) + k_res C_intra
-    //   dC_m2/dt    = P_2 - k_gb (c_2 - C_eq)    + K_ex (c_1 - c_2) + k_res C_gb
-    //   dC_intra/dt = k_intra (c_1 - C_eq) - k_res C_intra
-    //   dC_gb/dt    = k_gb (c_2 - C_eq)    - k_res C_gb
+    // Growth J = k (c - C_eq), switched on in each zone if c > C_eq after production and nucleation; dissolution only by re-solution (back to the zone of the particles). Implicit 5x5 balance, X = (C_m1, C_m2, C_p1, C_p2, C_gb):
+    //   dC_m1/dt = P_1 - k_1 (c_1 - C_eq) - K_12 (c_1 - c_2) + k_res C_p1
+    //   dC_m2/dt = P_2 - (k_2 + k_23) (c_2 - C_eq) + K_12 (c_1 - c_2) + k_res (C_p2 + C_gb)
+    //   dC_p1/dt = k_1 (c_1 - C_eq) - k_res C_p1
+    //   dC_p2/dt = k_2 (c_2 - C_eq) - k_res C_p2
+    //   dC_gb/dt = k_23 (c_2 - C_eq) - k_res C_gb
     // Every column sums to one: the total inventory is conserved.
-    const double k_1 = ((C_m1_old + P_1 - mass_intra) / phi_1 > C_eq) ? k_intra : 0.0;
-    const double k_2 = ((C_m2_old + P_2 - mass_gb) / phi_2 > C_eq) ? k_gb : 0.0;
+    const bool   supersaturated_2 = (C_m2_old + P_2 - mass_gb - mass_2) / phi_2 > C_eq;
+    const double g_1  = ((C_m1_old + P_1 - mass_1) / phi_1 > C_eq) ? k_1 : 0.0;
+    const double g_2  = supersaturated_2 ? k_2 : 0.0;
+    const double g_gb = supersaturated_2 ? k_23 : 0.0;
 
-    double A[16] = {1.0 + (k_1 + K_ex) * dt / phi_1,
-                    -K_ex * dt / phi_2,
-                    -k_res * dt,
-                    0.0,
-                    -K_ex * dt / phi_1,
-                    1.0 + (k_2 + K_ex) * dt / phi_2,
-                    0.0,
-                    -k_res * dt,
-                    -k_1 * dt / phi_1,
-                    0.0,
-                    1.0 + k_res * dt,
-                    0.0,
-                    0.0,
-                    -k_2 * dt / phi_2,
-                    0.0,
-                    1.0 + k_res * dt};
-    double X[4]  = {C_m1_old + P_1 - mass_intra + k_1 * C_eq * dt,
-                    C_m2_old + P_2 - mass_gb + k_2 * C_eq * dt,
-                    C_intra_old + mass_intra - k_1 * C_eq * dt,
-                    C_gb_old + mass_gb - k_2 * C_eq * dt};
-    solver.Laplace(4, A, X);
+    const double a1 = dt / phi_1, a2 = dt / phi_2, r = k_res * dt;
+    double       A[25] = {1.0 + (g_1 + K_12) * a1, -K_12 * a2,                      -r,      0.0,     0.0,
+                          -K_12 * a1,              1.0 + (g_2 + g_gb + K_12) * a2, 0.0,     -r,      -r,
+                          -g_1 * a1,               0.0,                            1.0 + r, 0.0,     0.0,
+                          0.0,                     -g_2 * a2,                      0.0,     1.0 + r, 0.0,
+                          0.0,                     -g_gb * a2,                     0.0,     0.0,     1.0 + r};
+    double       X[5]  = {C_m1_old + P_1 - mass_1 + g_1 * C_eq * dt,
+                          C_m2_old + P_2 - mass_gb - mass_2 + (g_2 + g_gb) * C_eq * dt,
+                          C_p1_old + mass_1 - g_1 * C_eq * dt,
+                          C_p2_old + mass_2 - g_2 * C_eq * dt,
+                          C_gb_old + mass_gb - g_gb * C_eq * dt};
+    solver.Laplace(5, A, X);
 
-    if (!std::isfinite(X[0]) || !std::isfinite(X[1]) || !std::isfinite(X[2]) || !std::isfinite(X[3]))
+    if (!std::all_of(X, X + 5, [](double x) { return std::isfinite(x); }))
         std::cerr << "ERROR FMP: non-finite concentration | T = " << T << " | dt = " << dt << " | P = " << production
-                  << " | C_eq = " << C_eq << " | k_intra = " << k_1 << " | k_gb = " << k_2 << " | K_ex = " << K_ex
-                  << " | k_res = " << k_res << " | N_intra = " << N_intra << " | N_GB = " << N_gb << std::endl;
+                  << " | C_eq = " << C_eq << " | D = " << D << " | k_1 = " << g_1 << " | k_2 = " << g_2
+                  << " | k_23 = " << g_gb << " | K_12 = " << K_12 << " | k_res = " << k_res << std::endl;
 
+    auto radius_out = [&](double atoms, double particles) { return (particles >= 1.0 && atoms > 0.0) ? radius(atoms, particles) : 0.0; };
     sciantix_variable["FMP in matrix"].setFinalValue(X[0] + X[1]);
-    sciantix_variable["FMP in grain-boundary zone matrix"].setFinalValue(X[1]);
+    sciantix_variable["FMP in near-boundary zone matrix"].setFinalValue(X[1]);
     sciantix_variable["FMP in intragranular particles"].setFinalValue(X[2]);
-    sciantix_variable["FMP at grain boundary"].setFinalValue(X[3]);
-    sciantix_variable["Intragranular FMP concentration"].setFinalValue(N_intra);
-    sciantix_variable["Intergranular FMP concentration"].setFinalValue(N_gb);
-    sciantix_variable["FMP grain-boundary zone volume fraction"].setFinalValue(phi_2);
-    sciantix_variable["Intragranular FMP radius"].setFinalValue((N_intra >= 1.0 && X[2] > 0.0) ? radius(X[2], N_intra)
-                                                                                               : 0.0);
-    sciantix_variable["Intergranular FMP radius"].setFinalValue((N_gb >= 1.0 && X[3] > 0.0) ? radius(X[3], N_gb) : 0.0);
+    sciantix_variable["FMP in near-boundary particles"].setFinalValue(X[3]);
+    sciantix_variable["FMP at grain boundary"].setFinalValue(X[4]);
+    sciantix_variable["Intragranular FMP concentration"].setFinalValue(N1);
+    sciantix_variable["Near-boundary FMP concentration"].setFinalValue(N2);
+    sciantix_variable["Intergranular FMP concentration"].setFinalValue(Ngb);
+    sciantix_variable["FMP near-boundary zone volume fraction"].setFinalValue(phi_2);
+    sciantix_variable["Intragranular FMP radius"].setFinalValue(radius_out(X[2], N1));
+    sciantix_variable["Near-boundary FMP radius"].setFinalValue(radius_out(X[3], N2));
+    sciantix_variable["Intergranular FMP radius"].setFinalValue(radius_out(X[4], Ngb));
 }

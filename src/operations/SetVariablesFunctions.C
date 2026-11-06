@@ -564,16 +564,22 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Intergranular FMP concentration", "(FMP/m3)", Sciantix_variables[214], Sciantix_variables[214], toFMP),
         SciantixVariable("Intragranular FMP radius", "(m)", Sciantix_variables[215], Sciantix_variables[215], toFMP),
         SciantixVariable("Intergranular FMP radius", "(m)", Sciantix_variables[216], Sciantix_variables[216], toFMP),
-        // EC November 2026: two-zone FMP model (grain interior and grain-boundary zone) and oxygen balance
+        // EC November 2026: three-zone FMP model (intra1 = grain interior, intra2 = near-boundary zone, gb = grain
+        // boundary; 211/213/215 intra1, 212/214/216 gb) and oxygen balance
         SciantixVariable(
-            "FMP in grain-boundary zone matrix", "(at/m3)", Sciantix_variables[217], Sciantix_variables[217], toFMP),
+            "FMP in near-boundary zone matrix", "(at/m3)", Sciantix_variables[217], Sciantix_variables[217], toFMP),
         SciantixVariable(
-            "FMP grain-boundary zone volume fraction", "(/)", Sciantix_variables[218], Sciantix_variables[218], toFMP),
+            "FMP near-boundary zone volume fraction", "(/)", Sciantix_variables[218], Sciantix_variables[218], toFMP),
         SciantixVariable("FMP oxygen in Mo oxides",
                          "(at/m3)",
                          Sciantix_variables[219],
                          Sciantix_variables[219],
                          toFMP && toOutputThermochimica),
+        SciantixVariable(
+            "FMP in near-boundary particles", "(at/m3)", Sciantix_variables[220], Sciantix_variables[220], toFMP),
+        SciantixVariable(
+            "Near-boundary FMP concentration", "(FMP/m3)", Sciantix_variables[221], Sciantix_variables[221], toFMP),
+        SciantixVariable("Near-boundary FMP radius", "(m)", Sciantix_variables[222], Sciantix_variables[222], toFMP),
     };
 
     return init_sciantix_variable;

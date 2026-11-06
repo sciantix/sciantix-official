@@ -170,8 +170,8 @@ class Simulation
     void FissionProductDecay();
 
     /**
-     * @brief Five metal particles (FMP: Mo, Tc, Ru, Rh, Pd): CNT nucleation and growth of intragranular and
-     * grain-boundary precipitates, irradiation-induced re-solution, Mo oxidation at the grain boundary from OC.
+     * @brief Five metal particles (FMP: Mo, Tc, Ru, Rh, Pd): CNT nucleation and growth of the precipitates in three
+     * zones (grain interior, near-boundary zone, grain boundary), irradiation-induced re-solution, Mo oxidation from OC.
      *
      * @author V. Bellani, E. Cappellari
      */

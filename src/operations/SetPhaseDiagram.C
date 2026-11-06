@@ -192,7 +192,8 @@ void Simulation::SetPhaseDiagram()
         sciantix_variable["q"].getFinalValue() <= 0.0)
     {
         const double fmp_gb    = sciantix_variable["FMP at grain boundary"].getFinalValue();
-        const double fmp_intra = sciantix_variable["FMP in intragranular particles"].getFinalValue();
+        const double fmp_intra = sciantix_variable["FMP in intragranular particles"].getFinalValue() +
+                                 sciantix_variable["FMP in near-boundary particles"].getFinalValue();  // EC November 2026: intra1 + intra2
         heavy_metal =
             (sciantix_variable["U content"].getFinalValue() + sciantix_variable["Pu content"].getFinalValue()) *
             avogadro_number;

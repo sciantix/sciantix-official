@@ -9,25 +9,24 @@ Five metal particles (FMP: Mo, Tc, Ru, Rh, Pd) in UO2 irradiated in LWR conditio
 Run the groups first (python3 -m testing.runner --metallicinclusions [--metallicinclusions-oc --oc]);
 when a case has no output.txt its output_gold.txt is used. Figures are written in figures/:
 
-- metallicinclusions_UO2_LWR.png : calibration cases vs TEM data at four radial positions, 54.1 MWd/kgUO2
-- buck2015_ATM109.png            : independent validation, Buck et al. (2015), ATM-109 BWR fuel, 70.8 GWd/tHM
-- fmp_partition.png              : single inventory, produced metal split into dissolved metal (grain
-                                   interior and grain-boundary zone), intragranular and grain-boundary
-                                   particles, vs burnup
+- metallicinclusions_UO2_LWR.png : validation against the TEM data at four radial positions, 54.1 MWd/kgUO2
+- buck2015_ATM109.png            : validation against Buck et al. (2015), ATM-109 BWR fuel, 70.8 GWd/tHM
+- fmp_partition.png              : single inventory, produced metal split into dissolved metal (intra1, intra2)
+                                   and particles (intra1, intra2, gb), vs burnup
 - fmp_elements.png               : the five elements, produced inventory and end-of-life partition
 - fmp_thermochemistry.png        : OpenCalphad coupling and oxygen balance (oxygen potential, O/M, Mo
                                    oxidation, oxygen taken by the Mo oxides, grain-boundary phases and radius)
 
-Observables of the calibration: mean radius R from the SCIANTIX output (R = (3 n Omega / 4 pi)^(1/3), n atoms
-per particle, Omega = 1.44123e-29 m3), projected area fraction through a TEM foil of thickness t,
-A = 1 - exp(-n pi R^2 t), with n the number density in the zone of the population: N_intra / phi_1 in the
-grain interior and N_GB / phi_2 in the grain-boundary zone (layer of 100 nm on each side of the boundary, the
-TEM grain-boundary regions). J = mean |ln(model/exp)| over A_intra, R_intra, R_GB at the four positions, as in
-the calibration; J4 adds A_GB, which is now computed on the same region as the TEM grain-boundary images.
+Observables: mean radius R from the SCIANTIX output (R = (3 n Omega / 4 pi)^(1/3), n atoms per particle,
+Omega = 1.44123e-29 m3), projected area fraction through a TEM foil of thickness t, A = 1 - exp(-pi t sum n R^2).
+TEM intragranular images: intra1 particles, n = N_1 / phi_1. TEM grain-boundary images (strips of 100 nm on each
+side of the boundary): intra2 and gb particles together on the strip volume phi_2, number-weighted mean radius.
+J = mean |ln(model/exp)| over R and A of the two images at the four positions (16 observables). Nothing is fitted
+on these data: J is a validation metric.
 
 EC November 2026: translated to English, FMP naming, radius read from the new output columns, new figures
-(Buck et al. 2015 validation, inventory partition, elements, thermochemistry), two-zone model (area fractions
-on the zone volumes) and oxygen balance.
+(Buck et al. 2015 validation, inventory partition, elements, thermochemistry), three-zone model and oxygen
+balance, TEM data used for validation only.
 """
 
 import os
@@ -102,20 +101,30 @@ def read_exp(path):
     }
 
 
+POPULATIONS = ("Intragranular", "Near-boundary", "Intergranular")  # intra1, intra2, gb
+
+
+def strip_radius(out):
+    """Number-weighted mean radius of intra2 + gb, the particles of the TEM grain-boundary strips."""
+    n2, ngb = (np.maximum(out.get_all(f"{p} FMP concentration (FMP/m3)"), 0.0) for p in POPULATIONS[1:])
+    r2, rgb = (out.get_all(f"{p} FMP radius (m)") for p in POPULATIONS[1:])
+    return np.divide(n2 * r2 + ngb * rgb, n2 + ngb, out=np.zeros_like(r2), where=n2 + ngb > 0)
+
+
 def model_at_burnup(out, burnup, tem_thickness):
     i = int(np.nanargmin(np.abs(out.get_all("Burnup (MWd/kgUO2)") - burnup)))
     at = lambda var: out.get_all(var)[i]
-    r_intra, r_gb = at("Intragranular FMP radius (m)"), at("Intergranular FMP radius (m)")
-    # local number densities: grain interior (zone 1) and grain-boundary zone (zone 2)
-    phi_gb = at("FMP grain-boundary zone volume fraction (/)")
-    n_intra = max(at("Intragranular FMP concentration (FMP/m3)"), 0.0) / (1.0 - phi_gb)
-    n_gb = max(at("Intergranular FMP concentration (FMP/m3)"), 0.0) / phi_gb
+    n1, n2, ngb = (max(at(f"{p} FMP concentration (FMP/m3)"), 0.0) for p in POPULATIONS)
+    r1, r2, rgb = (at(f"{p} FMP radius (m)") for p in POPULATIONS)
+    phi_2 = at("FMP near-boundary zone volume fraction (/)")
     total = produced_total(out)[i]
     return {
-        "radius_intra": r_intra,
-        "radius_gb": r_gb,
-        "area_intra": -math.expm1(-n_intra * math.pi * r_intra**2 * tem_thickness),
-        "area_gb": -math.expm1(-n_gb * math.pi * r_gb**2 * tem_thickness),
+        "radius_intra": r1,
+        "radius_near": r2,
+        "radius_gb": rgb,
+        "radius_strip": strip_radius(out)[i],
+        "area_intra": -math.expm1(-n1 / (1.0 - phi_2) * math.pi * r1**2 * tem_thickness),
+        "area_strip": -math.expm1(-math.pi * tem_thickness * (n2 * r2**2 + ngb * rgb**2) / phi_2),
         "matrix_fraction": at("FMP in matrix (at/m3)") / total if total > 0 else float("nan"),
         "gb_fraction": at("FMP at grain boundary (at/m3)") / total if total > 0 else float("nan"),
     }
@@ -134,9 +143,9 @@ def save(fig, name):
 
 
 # --------------------------------------------------------------------------------------------------------------
-# 1. Calibration cases vs TEM
+# 1. Validation against the TEM data (V. Bellani, thesis, images of Angleraud 2024)
 # --------------------------------------------------------------------------------------------------------------
-def plot_calibration():
+def plot_validation():
     rows = []
     for name, r_over_R, thickness in POSITIONS:
         out = load_case(os.path.join(GROUP_DIR, f"test_FMP_UO2_{name}"))
@@ -146,24 +155,22 @@ def plot_calibration():
             "inter": read_exp(os.path.join(DATA_DIR, "inter", f"exp_inter_{name}.txt")),
         })
 
-    errors, errors_area_gb = [], []
-    print("Calibration cases (TEM, 54.1 MWd/kgUO2)")
-    print(f"{'case':<6}{'r/R':>6}  {'R_intra exp/mod (nm)':>22}  {'R_GB exp/mod (nm)':>20}  "
-          f"{'A_intra exp/mod (%)':>21}  {'A_GB exp/mod (%)':>20}  {'in matrix':>9}  {'in GB':>6}")
+    errors = []
+    print("Validation, TEM data at 54.1 MWd/kgUO2 (intra = intra1, strip = intra2 + gb within 100 nm of the boundary)")
+    print(f"{'case':<6}{'r/R':>6}  {'R_intra exp/mod (nm)':>22}  {'R_strip exp/mod (nm)':>22}  "
+          f"{'A_intra exp/mod (%)':>21}  {'A_strip exp/mod (%)':>21}  {'R_intra2, R_gb (nm)':>20}  {'dissolved':>9}")
     for row in rows:
         m, ei, eg = row["model"], row["intra"], row["inter"]
-        errors += [log_error(m["area_intra"], ei["area_fraction"]), log_error(m["radius_intra"], ei["radius"]),
-                   log_error(m["radius_gb"], eg["radius"])]
-        errors_area_gb.append(log_error(m["area_gb"], eg["area_fraction"]))
+        errors += [log_error(m["radius_intra"], ei["radius"]), log_error(m["area_intra"], ei["area_fraction"]),
+                   log_error(m["radius_strip"], eg["radius"]), log_error(m["area_strip"], eg["area_fraction"])]
         print(f"{row['name']:<6}{row['r_over_R']:>6.2f}  "
               f"{ei['radius']*1e9:>10.2f} /{m['radius_intra']*1e9:>9.2f}  "
-              f"{eg['radius']*1e9:>9.2f} /{m['radius_gb']*1e9:>8.2f}  "
+              f"{eg['radius']*1e9:>10.2f} /{m['radius_strip']*1e9:>9.2f}  "
               f"{ei['area_fraction']*100:>10.3f} /{m['area_intra']*100:>8.3f}  "
-              f"{eg['area_fraction']*100:>9.3f} /{m['area_gb']*100:>8.3f}  "
-              f"{m['matrix_fraction']*100:>8.1f}%  {m['gb_fraction']*100:>5.2f}%")
-    j3, j4 = np.mean(errors), np.mean(errors + errors_area_gb)
-    print(f"J = mean |ln(model/exp)| over {len(errors)} observables = {j3:.3f}; "
-          f"with A_GB ({len(errors) + len(errors_area_gb)} observables) J4 = {j4:.3f}\n")
+              f"{eg['area_fraction']*100:>10.3f} /{m['area_strip']*100:>8.3f}  "
+              f"{m['radius_near']*1e9:>9.2f}, {m['radius_gb']*1e9:>6.2f}  {m['matrix_fraction']*100:>8.1f}%")
+    j = np.mean(errors)
+    print(f"J = mean |ln(model/exp)| over {len(errors)} observables = {j:.3f} (validation metric, nothing fitted)\n")
 
     x = np.array([row["r_over_R"] for row in rows])
     fig, (ax_r, ax_a) = plt.subplots(1, 2, figsize=(10, 3.9))
@@ -171,26 +178,27 @@ def plot_calibration():
                   fmt="o", color=C[0], capsize=3, label="TEM, intragranular")
     ax_r.errorbar(x + 0.01, [r["inter"]["radius"] * 1e9 for r in rows],
                   yerr=[r["inter"]["std_radius"] * 1e9 for r in rows], fmt="s", color=C[1], capsize=3,
-                  label="TEM, grain boundary")
-    ax_r.plot(x, [r["model"]["radius_intra"] * 1e9 for r in rows], "-", color=C[0], label="SCIANTIX, intragranular")
-    ax_r.plot(x, [r["model"]["radius_gb"] * 1e9 for r in rows], "--", color=C[1], label="SCIANTIX, grain boundary")
-    ax_r.set(xlabel="r/R (-)", ylabel="Mean particle radius (nm)", title="FMP radius at 54.1 MWd/kgUO2 (calibration)")
+                  label="TEM, grain-boundary strip")
+    ax_r.plot(x, [r["model"]["radius_intra"] * 1e9 for r in rows], "-", color=C[0], label="SCIANTIX, intra1")
+    ax_r.plot(x, [r["model"]["radius_strip"] * 1e9 for r in rows], "--", color=C[1], label="SCIANTIX, intra2 + gb")
+    ax_r.plot(x, [r["model"]["radius_near"] * 1e9 for r in rows], ":", color=C[2], lw=1.2, label="SCIANTIX, intra2")
+    ax_r.plot(x, [r["model"]["radius_gb"] * 1e9 for r in rows], ls=LINESTYLES[3], color=C[3], lw=1.2,
+              label="SCIANTIX, gb")
+    ax_r.set(xlabel="r/R (-)", ylabel="Mean particle radius (nm)", title="FMP radius at 54.1 MWd/kgUO2")
     ax_r.set_ylim(bottom=0)
-    ax_r.legend()
+    ax_r.legend(fontsize=7)
 
     ax_a.semilogy(x, [r["intra"]["area_fraction"] * 100 for r in rows], "o", color=C[0], label="TEM, intragranular")
     ax_a.semilogy(x + 0.01, [r["inter"]["area_fraction"] * 100 for r in rows], "s", color=C[1],
-                  label="TEM, grain boundary")
-    ax_a.semilogy(x, [r["model"]["area_intra"] * 100 for r in rows], "-", color=C[0], label="SCIANTIX, intragranular")
-    ax_a.semilogy(x, [r["model"]["area_gb"] * 100 for r in rows], "--", color=C[1],
-                  label="SCIANTIX, grain-boundary zone")
-    ax_a.set(xlabel="r/R (-)", ylabel="Projected area fraction (%)",
-             title="FMP projected area fraction (TEM foil, zone volumes)")
+                  label="TEM, grain-boundary strip")
+    ax_a.semilogy(x, [r["model"]["area_intra"] * 100 for r in rows], "-", color=C[0], label="SCIANTIX, intra1")
+    ax_a.semilogy(x, [r["model"]["area_strip"] * 100 for r in rows], "--", color=C[1], label="SCIANTIX, intra2 + gb")
+    ax_a.set(xlabel="r/R (-)", ylabel="Projected area fraction (%)", title="FMP projected area fraction (TEM foil)")
     ax_a.set_ylim(0.1, 100)
     ax_a.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:g}"))
     ax_a.legend(loc="upper right", ncol=2, fontsize=8)
-    fig.suptitle(f"Calibration cases, two-zone model: J = {j3:.3f} (A_intra, R_intra, R_GB), "
-                 f"J4 = {j4:.3f} (with A_GB)", fontsize=10)
+    fig.suptitle(f"Validation, three-zone model with literature parameters: J = {j:.3f} (16 observables)",
+                 fontsize=10)
     fig.tight_layout()
     save(fig, "metallicinclusions_UO2_LWR.png")
 
@@ -228,12 +236,12 @@ def plot_buck():
     exp = read_buck_summary()
     lnv_exp = {s: np.loadtxt(os.path.join(DATA_DIR, "buck2015", f"fig6_{s}.txt")) for s in ("carbonate", "nitric")}
 
-    # Pellet-averaged population: equal-volume rings, intragranular and grain-boundary particles
+    # Pellet-averaged population: equal-volume rings, intra1, intra2 and gb particles
     populations = []  # (ln V, number density, label)
     for name, r_over_R, out in rings:
-        for kind, rad, conc in (("intra", "Intragranular FMP radius (m)", "Intragranular FMP concentration (FMP/m3)"),
-                                ("GB", "Intergranular FMP radius (m)", "Intergranular FMP concentration (FMP/m3)")):
-            radius, number = out.get_all(rad)[-1], max(out.get_all(conc)[-1], 0.0)
+        for kind in POPULATIONS:
+            radius = out.get_all(f"{kind} FMP radius (m)")[-1]
+            number = max(out.get_all(f"{kind} FMP concentration (FMP/m3)")[-1], 0.0)
             if radius > 0.0 and number > 0.0:
                 populations.append((math.log(sphere_volume_nm3(radius)), number, f"{name} {kind}"))
     lnv = np.array([p[0] for p in populations])
@@ -248,8 +256,9 @@ def plot_buck():
     for name, r_over_R, out in rings:
         total = produced_total(out)[-1]
         print(f"  {name} r/R={r_over_R:.3f} T={out.get_all('Temperature (K)')[0]:.0f} K  "
-              f"d_intra={2e9*out.get_all('Intragranular FMP radius (m)')[-1]:.1f} nm  "
-              f"d_GB={2e9*out.get_all('Intergranular FMP radius (m)')[-1]:.1f} nm  "
+              f"d_intra1={2e9*out.get_all('Intragranular FMP radius (m)')[-1]:.1f} nm  "
+              f"d_intra2={2e9*out.get_all('Near-boundary FMP radius (m)')[-1]:.1f} nm  "
+              f"d_gb={2e9*out.get_all('Intergranular FMP radius (m)')[-1]:.1f} nm  "
               f"matrix={out.get_all('FMP in matrix (at/m3)')[-1]/total*100:.0f}%  "
               f"GB={out.get_all('FMP at grain boundary (at/m3)')[-1]/total*100:.2f}%")
     for s, label in (("carbonate", "carbonate-peroxide"), ("nitric", "nitric")):
@@ -291,10 +300,9 @@ def plot_buck():
     ax.axhspan(exp["mean_particle_size_carbonate_peroxide"], exp["mean_particle_size_nitric"], color="#c9c9c9",
                zorder=0, label="reported mean size, 43-58 nm")
     x = [r for _, r, _ in rings]
-    ax.plot(x, [2e9 * out.get_all("Intragranular FMP radius (m)")[-1] for *_, out in rings], "o-", color=C[0],
-            label="SCIANTIX, intragranular")
-    ax.plot(x, [2e9 * out.get_all("Intergranular FMP radius (m)")[-1] for *_, out in rings], "s", color=C[1],
-            mfc="none", ms=9, mew=1.4, label="SCIANTIX, grain boundary")
+    for k, (kind, label) in enumerate(zip(POPULATIONS, ("intra1", "intra2", "gb"))):
+        ax.plot(x, [2e9 * out.get_all(f"{kind} FMP radius (m)")[-1] for *_, out in rings], MARKERS[k] + "-",
+                color=C[k], mfc="none" if k else C[k], ms=7, mew=1.3, label=f"SCIANTIX, {label}")
     ax.axhline(d_number_mean, color=INK, lw=1.4, ls="--", label=f"SCIANTIX, pellet number-mean ({d_number_mean:.0f} nm)")
     ax.set_yscale("log")
     ax.set(xlim=(0, 1), ylim=(5, 400), xlabel="r/R (-)", ylabel="Particle diameter (nm)",
@@ -311,33 +319,34 @@ def plot_buck():
     t = rings[0][2].get_all("Time (h)") / 8766.0 + 1979.083
     ax.fill_between(t, 0, 1, where=fission <= 0.0, color="#dddddd", transform=ax.get_xaxis_transform(), zorder=0,
                     label="out of the reactor")
-    ax.set(xlabel="Year", ylabel="Intragranular particle diameter (nm)", title="(c) Growth during irradiation")
+    ax.set(xlabel="Year", ylabel="intra1 particle diameter (nm)", title="(c) Growth during irradiation")
     ax.set_ylim(bottom=0)
     ax.legend(fontsize=7)
 
-    fig.suptitle("Independent validation: ATM-109, Quad Cities I BWR (Buck et al. 2015). "
+    fig.suptitle("Validation: ATM-109, Quad Cities I BWR (Buck et al. 2015). "
                  "Power and temperature history assumed (see README)", fontsize=10)
     fig.tight_layout()
     save(fig, "buck2015_ATM109.png")
 
 
 # --------------------------------------------------------------------------------------------------------------
-# 3. Single inventory: matrix / intragranular particles / grain-boundary particles
+# 3. Single inventory: dissolved metal and particles of the three zones
 # --------------------------------------------------------------------------------------------------------------
 def stacked_partition(ax, out, title):
     bu = out.get_all("Burnup (MWd/kgUO2)")
     total = produced_total(out)
     ok = total > 0
-    dissolved_gb = out.get_all("FMP in grain-boundary zone matrix (at/m3)")
-    parts = [out.get_all("FMP in matrix (at/m3)") - dissolved_gb, dissolved_gb,
-             out.get_all("FMP in intragranular particles (at/m3)"), out.get_all("FMP at grain boundary (at/m3)")]
+    dissolved_2 = out.get_all("FMP in near-boundary zone matrix (at/m3)")
+    parts = [out.get_all("FMP in matrix (at/m3)") - dissolved_2, dissolved_2,
+             out.get_all("FMP in intragranular particles (at/m3)"), out.get_all("FMP in near-boundary particles (at/m3)"),
+             out.get_all("FMP at grain boundary (at/m3)")]
     fractions = [np.clip(p[ok] / total[ok], 0, 1) * 100 for p in parts]
-    ax.stackplot(bu[ok], *fractions, colors=[C[0], C[4], C[2], C[1]], edgecolor="white", linewidth=0.6,
-                 labels=["dissolved, grain interior", "dissolved, grain-boundary zone", "intragranular particles",
-                         "grain-boundary particles"])
+    ax.stackplot(bu[ok], *fractions, colors=[C[0], C[4], C[2], C[3], C[1]], edgecolor="white", linewidth=0.6,
+                 labels=["dissolved, intra1", "dissolved, intra2", "intra1 particles", "intra2 particles",
+                         "gb particles"])
     ax.set(xlim=(0, bu[-1]), ylim=(0, 100), title=title)
-    ax.text(0.97, 0.06, f"GB particles {fractions[3][-1]:.2f}%", transform=ax.transAxes, ha="right", fontsize=7.5,
-            color=INK)
+    ax.text(0.97, 0.06, f"intra2 {fractions[3][-1]:.1f}%, gb {fractions[4][-1]:.2f}%", transform=ax.transAxes,
+            ha="right", fontsize=7.5, color=INK)
 
 
 def plot_partition():
@@ -346,7 +355,7 @@ def plot_partition():
     fig, axes = plt.subplots(nrows, 4, figsize=(13, 3.2 * nrows), sharey=True, squeeze=False)
     for k, (name, r_over_R, _) in enumerate(POSITIONS):
         out = load_case(os.path.join(GROUP_DIR, f"test_FMP_UO2_{name}"))
-        stacked_partition(axes[0, k], out, f"Calibration r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
+        stacked_partition(axes[0, k], out, f"TEM case r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
     if nrows == 2:
         for k, ((name, r_over_R), out) in enumerate(zip(BUCK_RINGS, buck)):
             stacked_partition(axes[1, k], out, f"ATM-109 r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
@@ -355,9 +364,9 @@ def plot_partition():
     for ax in axes[-1]:
         ax.set_xlabel("Burnup (MWd/kgUO2)")
     handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.03))
-    fig.suptitle("Single inventory: sum of 'X produced' = dissolved (two zones) + intragranular + grain-boundary "
-                 "particles", fontsize=10)
+    fig.legend(handles, labels, loc="lower center", ncol=5, bbox_to_anchor=(0.5, -0.03))
+    fig.suptitle("Single inventory: sum of 'X produced' = dissolved (intra1, intra2) + particles (intra1, intra2, gb)",
+                 fontsize=10)
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     save(fig, "fmp_partition.png")
 
@@ -463,8 +472,8 @@ def plot_thermochemistry():
         ax_f.plot(bu, oc.get_all("Mo in oxide fraction (/)"), **style)
         ax_o.plot(bu, 100 * np.divide(oxygen_oxides, x_kleykamp * heavy_metal, out=np.zeros_like(x),
                                       where=x_kleykamp * heavy_metal > 0), **style)
-        ax_rgb.plot(bu, oc.get_all("Intergranular FMP radius (m)") * 1e9, **style)
-        ax_rgb.plot(ref.get_all("Burnup (MWd/kgUO2)"), ref.get_all("Intergranular FMP radius (m)") * 1e9, **thin)
+        ax_rgb.plot(bu, strip_radius(oc) * 1e9, **style)
+        ax_rgb.plot(ref.get_all("Burnup (MWd/kgUO2)"), strip_radius(ref) * 1e9, **thin)
         tem = read_exp(os.path.join(DATA_DIR, "inter", f"exp_inter_{name}.txt"))
         ax_rgb.errorbar(BURNUP_EXP + 0.8 * k, tem["radius"] * 1e9, yerr=tem["std_radius"] * 1e9, fmt=MARKERS[k], color=C[k],
                         capsize=3, mfc="white", mew=1.3)
@@ -477,8 +486,8 @@ def plot_thermochemistry():
              title="(c) Mo oxidised, all particles (OpenCalphad)")
     ax_o.set(xlabel="Burnup (MWd/kgUO2)", ylabel="Excess oxygen in Mo oxides (%)", ylim=(-2, 102),
              title="(f) Excess oxygen taken by the Mo of the particles")
-    ax_rgb.set(xlabel="Burnup (MWd/kgUO2)", ylabel="Grain-boundary particle radius (nm)",
-               title="(e) GB radius: OC (thick), no OC (thin), TEM (markers)")
+    ax_rgb.set(xlabel="Burnup (MWd/kgUO2)", ylabel="intra2 + gb mean radius (nm)",
+               title="(e) Strip radius: OC (thick), no OC (thin), TEM (markers)")
     ax_rgb.set_ylim(bottom=0)
     for ax in (ax_mu, ax_x, ax_f, ax_o):
         ax.legend(fontsize=7)
@@ -510,12 +519,13 @@ def plot_thermochemistry():
     for k, name, r_over_R, oc, ref in cases:
         print(f"  {name}: mu_O2 = {oc.get_all('Fuel oxygen potential (KJ/mol)')[-1]:.0f} kJ/mol, "
               f"x = {oc.get_all('Stoichiometry deviation (/)')[-1]:.2e}, f_ox(Mo) = {oc.get_all('Mo in oxide fraction (/)')[-1]:.2f}, "
-              f"R_GB = {oc.get_all('Intergranular FMP radius (m)')[-1]*1e9:.2f} nm (no OC "
-              f"{ref.get_all('Intergranular FMP radius (m)')[-1]*1e9:.2f} nm)")
+              f"R_intra1 = {oc.get_all('Intragranular FMP radius (m)')[-1]*1e9:.2f} nm (no OC "
+              f"{ref.get_all('Intragranular FMP radius (m)')[-1]*1e9:.2f} nm), R_strip = {strip_radius(oc)[-1]*1e9:.2f} nm "
+              f"(no OC {strip_radius(ref)[-1]*1e9:.2f} nm)")
 
 
 def main():
-    plot_calibration()
+    plot_validation()
     plot_buck()
     plot_partition()
     plot_elements()

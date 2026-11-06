@@ -25,8 +25,9 @@ import matplotlib.pyplot as plt
 from plot import C
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-A_GRAIN = 12.3e-6  # grain radius of the calibration cases (m)
+A_GRAIN = 4.4e-6  # grain radius of the TEM cases (m), grain size 8.8 um (Angleraud 2024)
 D, P = 1.0, 1.0    # kGB^2 does not depend on D and P
+Z_R000 = 267.0     # z = k1 a of r000 at 54.1 MWd/kgUO2 (three-zone model, literature parameters)
 
 
 def kgb2_numerical(k1, a=A_GRAIN, n=20000):
@@ -64,24 +65,24 @@ def profile(z, x):
 
 def main():
     a = A_GRAIN
-    z_values = np.array([0.1, 0.3, 1.0, 3.0, 10.0, 30.0, 100.0, 293.0])
+    z_values = np.array([0.1, 0.3, 1.0, 3.0, 10.0, 30.0, 100.0, Z_R000])
     numerical = np.array([kgb2_numerical(z / a) for z in z_values])
     analytical = np.array([kgb2_analytical(z / a) for z in z_values])
-    print("Grain-boundary sink strength with intragranular particles, a = 12.3 um")
+    print(f"Grain-boundary sink strength with intragranular particles, a = {a * 1e6:.1f} um")
     print(f"{'z = k1 a':>9} {'numerical (1/m2)':>18} {'analytical (1/m2)':>18} {'rel. diff':>10} {'L1 = 3/(a kGB2)':>16}")
     for z, nu, an in zip(z_values, numerical, analytical):
         print(f"{z:9g} {nu:18.5e} {an:18.5e} {abs(nu / an - 1):10.1e} {3 / (a * an) * 1e9:13.1f} nm")
     print(f"limits: 15/a^2 = {15 / a**2:.4e} 1/m2 (L1 = a/5 = {a / 5 * 1e9:.0f} nm); "
-          f"z = 293 (r000, 54.1 MWd/kgUO2): 3 k1/a = {3 * 293 / a**2:.4e} 1/m2 (L1 = 1/k1 = {a / 293 * 1e9:.0f} nm)")
+          f"z = {Z_R000:.0f} (r000, 54.1 MWd/kgUO2): 3 k1/a = {3 * Z_R000 / a**2:.4e} 1/m2 (L1 = 1/k1 = {a / Z_R000 * 1e9:.0f} nm)")
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3.9))
 
     x = np.geomspace(1e-10, a * 0.999, 2000)
     for z, colour, label in [(0.0, C[0], "no particles: c / c(0) = 1 - (r/a)$^2$"),
-                             (293.0, C[1], "r000 at 54.1 MWd/kgUO2, z = 293")]:
+                             (Z_R000, C[1], f"r000 at 54.1 MWd/kgUO2, z = {Z_R000:.0f}")]:
         ax1.plot(x * 1e9, profile(z, x), color=colour, linewidth=2, label=label)
-    ax1.axvline(a / 293 * 1e9, color="0.5", linewidth=1, linestyle=":")
-    ax1.text(a / 293 * 1e9 * 1.15, 0.08, "1/k$_1$ = 42 nm", fontsize=8, color="0.3")
+    ax1.axvline(a / Z_R000 * 1e9, color="0.5", linewidth=1, linestyle=":")
+    ax1.text(a / Z_R000 * 1e9 * 1.15, 0.08, f"1/k$_1$ = {a / Z_R000 * 1e9:.0f} nm", fontsize=8, color="0.3")
     ax1.set(xscale="log", xlim=(1e-1, a * 1e9), ylim=(0, 1.05), xlabel="Distance from the boundary, a - r (nm)",
             ylabel="Dissolved metal (normalised)", title="Profile in the grain (zero at the boundary)")
     ax1.legend(fontsize=7.5, loc="upper left", frameon=False)

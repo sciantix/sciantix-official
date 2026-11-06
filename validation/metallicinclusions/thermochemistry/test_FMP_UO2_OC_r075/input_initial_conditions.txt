@@ -1,4 +1,4 @@
-0.00001230                     # Grain_radius[0] (initial grain radius (m))
+0.0000044                      # Grain_radius[0] (initial grain radius (m)), EC November 2026: grain size 8.8 um (Angleraud 2024)
 0.0 0.0 0.0 0.0 0.0 0.0        # Initial_composition_Xe (initial Xe (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)
 0.0 0.0 0.0 0.0 0.0 0.0        # Initial_composition_Kr (initial Kr (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)
 0.0 0.0 0.0 0.0 0.0 0.0        # Initial_composition_He (initial He (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)
