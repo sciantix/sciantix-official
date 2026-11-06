@@ -286,7 +286,7 @@ def plot_porosity(live, reference):
                         alpha=0.20, color=COLOR_CURRENT, linewidth=0,
                         label=r"$\pm\sigma_\xi$ (Fokker-Planck)")
     ax.set_xlim(0, 210)
-    ax.set_ylim(0, 0.27)
+    ax.set_ylim(0, 0.30)
     ax.legend(loc="upper left", ncol=1)
     save(fig, "plot_porosity.png")
 
