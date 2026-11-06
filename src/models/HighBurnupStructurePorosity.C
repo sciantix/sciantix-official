@@ -55,19 +55,19 @@ static double ImplicitVacanciesPerPore(double  n_vp0,
 
     auto step = [&](double n_vp)
     {
-        double V    = n_xe * omega_xe + n_vp * omega_vac;
-        double y    = std::min(0.65, n_xe * omega_xe / V);
-        double Z    = (1.0 + y + y * y - y * y * y) / pow(1.0 - y, 3.0);
-        double R    = 0.620350491 * pow(V, 1.0 / 3.0);
-        double psi  = std::min(0.7, R / rho);
+        double V   = n_xe * omega_xe + n_vp * omega_vac;
+        double y   = std::min(0.65, n_xe * omega_xe / V);
+        double Z   = (1.0 + y + y * y - y * y * y) / pow(1.0 - y, 3.0);
+        double R   = 0.620350491 * pow(V, 1.0 / 3.0);
+        double psi = std::min(0.7, R / rho);
         // Mean-concentration solution on the spherical cell (manuscript, Appendix A):
         // zeta -> 1/(2 psi) for psi -> 0, i.e. the isolated-sink rate 4 pi D R.
-        double zeta = (-pow(psi, 6.0) + 5.0 * pow(psi, 3.0) - 9.0 * psi + 5.0) /
-                      (10.0 * psi * pow(1.0 - pow(psi, 3.0), 2.0));
-        double vfr  = 2.0 * M_PI * rho * D_v / zeta;
-        a           = vfr * n_xe * Z / omega_vac;
-        b           = -vfr * (2.0 * gamma / R - sigma_h) / kT;
-        double x0   = n_vp0 + u + b * dt;
+        double zeta =
+            (-pow(psi, 6.0) + 5.0 * pow(psi, 3.0) - 9.0 * psi + 5.0) / (10.0 * psi * pow(1.0 - pow(psi, 3.0), 2.0));
+        double vfr = 2.0 * M_PI * rho * D_v / zeta;
+        a          = vfr * n_xe * Z / omega_vac;
+        b          = -vfr * (2.0 * gamma / R - sigma_h) / kT;
+        double x0  = n_vp0 + u + b * dt;
         return std::max(0.0, 0.5 * (x0 + sqrt(x0 * x0 + 4.0 * a * dt)) - u);
     };
 
