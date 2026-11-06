@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Initialization.h"
+#include "MainVariables.h"
 
 void Initialization(double Sciantix_history[],
                     double Sciantix_variables[],
@@ -89,7 +90,7 @@ void Initialization(double Sciantix_history[],
     double initial_condition(0.0);
     double projection_remainder(0.0);
     double reconstructed_solution(0.0);
-    int    iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(18);
+    int    iteration(0), iteration_max(20), n(0), np1(1), n_modes(N_DIFFUSION_MODES), k(0), K(N_MODE_BLOCKS);
     double projection_coeff(0.0);
     projection_coeff = -sqrt(8.0 / M_PI);
 

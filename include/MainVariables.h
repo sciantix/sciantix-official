@@ -38,7 +38,11 @@ constexpr int SCIANTIX_OPTIONS_SIZE         = 40;
 constexpr int SCIANTIX_HISTORY_SIZE         = 20;
 constexpr int SCIANTIX_VARIABLES_SIZE       = 300;
 constexpr int SCIANTIX_SCALING_FACTORS_SIZE = 20;
-constexpr int N_DIFFUSION_MODES             = 40;
+// Host codes can reduce the number of spectral modes at compile time.
+#ifndef SCIANTIX_N_DIFFUSION_MODES
+#define SCIANTIX_N_DIFFUSION_MODES 40
+#endif
+constexpr int N_DIFFUSION_MODES             = SCIANTIX_N_DIFFUSION_MODES;
 // TRANSURANUS only tracks 12 of the 18 mode-blocks (Xe, Kr, He, Xe133);
 // Kr85m and Xe-in-HBS are standalone-SCIANTIX-only
 // (see SetSystem.C and Simulation.h's getDiffusionModes* guards).
