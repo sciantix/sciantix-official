@@ -27,7 +27,7 @@ from plot import C
 HERE = os.path.dirname(os.path.abspath(__file__))
 A_GRAIN = 4.4e-6  # grain radius of the TEM cases (m), grain size 8.8 um (Angleraud 2024)
 D, P = 1.0, 1.0    # kGB^2 does not depend on D and P
-Z_R000 = 267.0     # z = k1 a of r000 at 54.1 MWd/kgUO2 (three-zone model, literature parameters)
+Z_R000 = 144.0     # z = k1 a of r000 at 54.1 MWd/kgUO2 (three-zone model, literature parameters)
 
 
 def kgb2_numerical(k1, a=A_GRAIN, n=20000):
