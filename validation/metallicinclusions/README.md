@@ -25,7 +25,7 @@ literature; the TEM data of the four radial positions are used only for validati
 | Mass limit of nucleation | both requests reduced in proportion to the dissolved metal | each population limited by the metal of its zone |
 | Implicit system | 3x3, (C_m, C_intra, C_GB) | 5x5, (C_m1, C_m2, C_p1, C_p2, C_gb) |
 | Outputs | Cm, Metal produced, atoms per particle | radii, dissolved metal and particles of intra2, volume fraction of intra2, oxygen in the Mo oxides |
-| OpenCalphad at the grain boundary | whole production of each metal | gb inventory of the model, x_X C_gb |
+| OpenCalphad at the grain boundary | whole production of each metal | metal of all the particles, x_X (C_p1 + C_p2 + C_gb) |
 | Mo oxidation, oxygen | none | metallic share 1 - x_Mo f_ox of all the particles; oxygen balance between the fuel and the Mo oxides |
 | TEM data | used to fit k_0 and B | validation only |
 | Grain radius of the TEM cases | 12.3 um | 4.4 um (mean grain size 8.8 um, Angleraud 2024) |
@@ -206,10 +206,13 @@ thermochemistry).
 
 ### Coupling with OpenCalphad at the grain boundary (EC November 2026)
 
-With `iThermochimica` active, OpenCalphad at the grain boundary receives, for each metal, the gb inventory of the
-model, $n_X^{\mathrm{OC}} = x_X C_{gb}$. `JOGFormation` stores the fraction of this Mo in oxide phases,
-$f_{\mathrm{ox}}$ (`Mo in oxide fraction`); the oxygen potential is uniform in the grain, so $f_{\mathrm{ox}}$ holds for
-all the particles, and the metallic share of the inventory (one time step of lag) is
+With `iThermochimica` active, OpenCalphad at the grain boundary receives, for each metal, the inventory of all the
+particles, $n_X^{\mathrm{OC}} = x_X (C_{p1} + C_{p2} + C_{gb})$ (**[FMP, Nov. 2026]**; before, only $x_X C_{gb}$). The
+particles of the three zones have the same composition (one lumped species), the same temperature and, with the
+oxygen balance below, the same O/Mo ratio, so the equilibrium phase fractions do not depend on the zone: the
+calculation gives the phases of all the particles. With the gb inventory alone the fractions were the same to the
+third digit, but OpenCalphad worked on less than 1% of the metal. `JOGFormation` stores the fraction of Mo in oxide
+phases, $f_{\mathrm{ox}}$ (`Mo in oxide fraction`), which holds for all the particles, and the metallic share of the inventory (one time step of lag) is
 $\phi_{\mathrm{met}} = 1 - x_{\mathrm{Mo}} f_{\mathrm{ox}}$. The oxidised Mo stays in the particle inventory. A step
 where OpenCalphad gives no result keeps the previous $f_{\mathrm{ox}}$.
 
@@ -219,13 +222,12 @@ UO2 with `iStoichiometryDeviation = 7` (Kleykamp 1979, x increasing by 0.0013 pe
 (`SetPhaseDiagram.C`). The excess oxygen E (at/m3), released by fission and not taken by the other oxide-forming
 fission products, is shared between the fuel and the Mo of the particles:
 
-$$ E = x M + O_{\mathrm{ox}}, \qquad \mathrm{Mo}_p = x_{\mathrm{Mo}} (C_{p1} + C_{p2} + C_{gb}), \qquad
-\mathrm{Mo}_{gb} = x_{\mathrm{Mo}} C_{gb}, $$
+$$ E = x M + O_{\mathrm{ox}}, \qquad \mathrm{Mo}_p = x_{\mathrm{Mo}} (C_{p1} + C_{p2} + C_{gb}), $$
 
 with M the heavy-metal atoms per unit volume.
 
-- $E < 2\,\mathrm{Mo}_p$: the Mo/MoO2 equilibrium buffers the fuel. OpenCalphad at the grain boundary is solved
-  with the oxygen $E\,\mathrm{Mo}_{gb}/\mathrm{Mo}_p$ and gives $\mu_\mathrm{O}$; x from the inverse of the Blackburn
+- $E < 2\,\mathrm{Mo}_p$: the Mo/MoO2 equilibrium buffers the fuel. OpenCalphad is solved with the metal of
+  all the particles and the oxygen E and gives $\mu_\mathrm{O}$; x from the inverse of the Blackburn
   relation (`Solver::NewtonBlackburn`),
 
   $$ \ln\frac{p_{\mathrm{O_2}}}{1\ \mathrm{atm}} = 2\ln\frac{x(2+x)}{1-x} + 108 x^2 - \frac{32700}{T} + 9.92
@@ -385,13 +387,21 @@ or the database is missing.
 | Case | mu_O2 (kJ/mol) | x | Mo oxidised | R intra1 with / without OC (nm) | R strip with / without OC (nm) | Steps with an OC result |
 |---|---|---|---|---|---|---|
 | r000 | -375 | 1.3e-5 | 29% | 3.84 / 4.04 | 5.67 / 5.91 | 498 / 501 |
-| r030 | -258 | 7.6e-3 | 76% | 3.30 / 3.84 | 5.25 / 5.92 | 61 / 501 |
+| r030 | -384 | 6.6e-6 | 29% | 3.64 / 3.84 | 5.68 / 5.92 | 499 / 501 |
 | r056 | -404 | 9.1e-7 | 30% | 3.56 / 3.76 | 5.78 / 6.06 | 499 / 501 |
 | r075 | -427 | 5.4e-8 | 31% | 3.83 / 4.05 | 5.88 / 6.21 | 499 / 501 |
 
-At r000, r056 and r075 the fuel is buffered at Mo/MoO2 and x stays far below the Kleykamp value (8.7e-3). At r030
-OpenCalphad stops converging after 6.9 MWd/kgUO2: the oxygen in the oxides stays at its last value and x follows
-the Kleykamp relation; the end values of this case are not OpenCalphad results. Figure:
+At the four positions the fuel is buffered at Mo/MoO2 and x stays far below the Kleykamp value (8.7e-3). The
+OpenCalphad phases at the end are hcp / bcc / MoO2 = 0.66 / 0.19 / 0.15 (r000), 0.67 / 0.18 / 0.15 (r030),
+0.68 / 0.16 / 0.16 (r056), 0.69 / 0.15 / 0.16 (r075), mass fractions.
+
+**[FMP, Nov. 2026]**: the closed-oxygen calculation uses its own OpenCalphad equilibrium records (suffix `_O`).
+An OpenCalphad record keeps its conditions between calls: a record used in an open-oxygen step keeps MU(O), and
+the closed-oxygen step adds N(O), so O has two conditions (9 for 6 elements, 8 needed) and OpenCalphad returns
+error 4144 (wrong number of conditions). With shared records, r030 stopped converging at the switch to the closed
+balance (6.9 MWd/kgUO2), because all its records already held MU(O); the other positions converged only through
+the recovery record. Removing MU(O) with `tqsetc` is not possible: in `liboctq.F90` the "none" branch of MU writes
+`M(O)=none`. Figure:
 `figures/fmp_thermochemistry.png`.
 
 ## Data
@@ -418,7 +428,7 @@ python3 validation/metallicinclusions/check_exchange.py    # check of K_12, figu
   vs burnup;
 - `fmp_elements.png`: production of the five elements and particle composition without and with OpenCalphad;
 - `fmp_thermochemistry.png`: oxygen potential with the oxygen balance and with Kleykamp only, x, Mo oxide
-  fraction, grain-boundary phases, strip radius with and without OpenCalphad, share of the excess oxygen in the
+  fraction, phases of the particles, strip radius with and without OpenCalphad, share of the excess oxygen in the
   Mo oxides.
 
 ## Known limits
@@ -435,8 +445,7 @@ python3 validation/metallicinclusions/check_exchange.py    # check of K_12, figu
 - TEM cases: 4% U-235 and 10421.5 kg/m3 (about 5% porosity), while the fuel of Angleraud has 4.48% U-235 and
   3.95% porosity (not changed).
 - Oxygen balance: only the Mo of the particles takes oxygen, the excess oxygen comes from the Kleykamp relation
-  (no radial O/M profile), Cs and Ba are not in the UO2 systems; OpenCalphad does not converge at r030 after
-  6.9 MWd/kgUO2.
+  (no radial O/M profile), Cs and Ba are not in the UO2 systems.
 - The MOX systems keep fast-reactor yields: the model is validated only for UO2 in LWR conditions.
 
 ## References

@@ -1256,11 +1256,12 @@ namespace OCUtilsCoupling
         return output_file.good();
     }
 
-    // EC November 2026: with the FMP model only the grain-boundary particles, "FMP at grain boundary" with the
-    // production composition, take part in the grain-boundary equilibrium (no double counting of "X produced").
-    double fmpInventoryAtGrainBoundary(const std::string&               element,
-                                       SciantixArray<SciantixVariable>& sciantix_variable,
-                                       SciantixArray<System>&           sciantix_system)
+    // [FMP, Nov. 2026]: with the FMP model the metal of all the particles (intra1, intra2, gb), with the production
+    // composition, takes part in the grain-boundary equilibrium (no double counting of "X produced"). The particles of
+    // the three zones have the same composition, temperature and O/Mo ratio, so the phase fractions apply to all.
+    double fmpInventoryInParticles(const std::string&               element,
+                                   SciantixArray<SciantixVariable>& sciantix_variable,
+                                   SciantixArray<System>&           sciantix_system)
     {
         double produced_total = 0.0;
         for (auto& system : sciantix_system)
@@ -1272,7 +1273,9 @@ namespace OCUtilsCoupling
             return 0.0;
 
         return sciantix_variable[element + " produced"].getFinalValue() / produced_total *
-               std::max(0.0, sciantix_variable["FMP at grain boundary"].getFinalValue());
+               std::max(0.0, sciantix_variable["FMP in intragranular particles"].getFinalValue() +
+                                 sciantix_variable["FMP in near-boundary particles"].getFinalValue() +
+                                 sciantix_variable["FMP at grain boundary"].getFinalValue());
     }
 
     std::vector<InputComponent> buildInputComponents(const std::set<std::string>&     selected_elements,
@@ -1280,8 +1283,8 @@ namespace OCUtilsCoupling
                                                      SciantixArray<System>&           sciantix_system,
                                                      double&                          total_content,
                                                      const std::string&               location,
-                                                     bool                             fmp_active,
-                                                     double                           oxygen_content_override)
+                                                     bool                             fmp_active, // [FMP, Nov. 2026]
+                                                     double                           oxygen_content_override) // [FMP, Nov. 2026]
     {
         std::vector<InputComponent> components;
         total_content = 0.0;
@@ -1310,7 +1313,7 @@ namespace OCUtilsCoupling
                 component.name    = "O";
                 component.content = std::max(0.0, sciantix_variable["O available content"].getFinalValue());
 
-                // EC November 2026: oxygen given by the FMP oxygen balance (closed-oxygen calculation)
+                // [FMP, Nov. 2026]: oxygen given by the FMP oxygen balance (closed-oxygen calculation)
                 if (oxygen_content_override >= 0.0)
                     component.content = oxygen_content_override;
 
@@ -1341,8 +1344,8 @@ namespace OCUtilsCoupling
                 else if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))
                 {
                     double atoms_available = sciantix_variable[element_name + " produced"].getFinalValue();
-                    if (fmp_active && system.isMetallicFP())  // EC November 2026: single inventory with FMP
-                        atoms_available = fmpInventoryAtGrainBoundary(element_name, sciantix_variable, sciantix_system);
+                    if (fmp_active && system.isMetallicFP())   // [FMP, Nov. 2026]: single inventory with FMP
+                        atoms_available = fmpInventoryInParticles(element_name, sciantix_variable, sciantix_system);
 
                     component.content = std::max(0.0, atoms_available / avogadro_number);
                 }
@@ -1391,7 +1394,7 @@ namespace OCUtilsCoupling
                                  const std::string&                 location,
                                  double                             oxygen_potential_kj_per_mol_o2,
                                  OCOutputData&                      output_data,
-                                 bool                               closed_oxygen)
+                                 bool                               closed_oxygen) // [FMP, Nov. 2026]
     {
         try
         {
@@ -1475,7 +1478,10 @@ namespace OCUtilsCoupling
                     return false;
                 }
 
-                const std::string record_name           = equilibriumRecordName(location, solve_mode);
+                // [FMP, Nov. 2026]: separate records for the closed-oxygen calculation, because a record keeps its
+                // conditions: MU(O) left from an open-oxygen step plus N(O) gives too many conditions (OC error 4144)
+                const std::string record_name =
+                    equilibriumRecordName(location, solve_mode) + (closed_oxygen ? "_O" : "");
                 const bool        reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
                 const bool        record_ready          = (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
                                                               ? oc.prepareRecoveryRecord(record_name)
@@ -1520,7 +1526,7 @@ namespace OCUtilsCoupling
                         return false;
                     }
 #if !defined(COUPLING_TU)
-                    if (closed_oxygen)
+                    if (closed_oxygen) // [FMP, Nov. 2026]
                         return true;
                     const bool oxygen_potential_ready = oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
                     if (!oxygen_potential_ready)
@@ -1567,7 +1573,8 @@ namespace OCUtilsCoupling
                     if (solve_mode != OpenCalphadSolveMode::SaveReadWarmStart)
                     {
                         const std::string warm_start_record =
-                            equilibriumRecordName(location, OpenCalphadSolveMode::SaveReadWarmStart);
+                            equilibriumRecordName(location, OpenCalphadSolveMode::SaveReadWarmStart) +
+                            (closed_oxygen ? "_O" : "");  // [FMP, Nov. 2026]
                         if (!oc.syncRecordFractionsInto(warm_start_record))
                             std::cerr << "Warning: could not sync warm-start record for " << location << std::endl;
                     }
@@ -1901,7 +1908,7 @@ namespace OCUtilsCoupling
                                        double                                    content_scaling_factor,
                                        SciantixArray<SciantixVariable>&          sciantix_variable,
                                        SciantixArray<System>&                    sciantix_system,
-                                       bool                                      fmp_active)
+                                       bool                                      fmp_active) // [FMP, Nov. 2026]
     {
         const auto gas_phase = solution_phases.find("gas");
 
@@ -1934,8 +1941,8 @@ namespace OCUtilsCoupling
             else if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))
             {
                 double available = sciantix_variable[element + " produced"].getFinalValue();
-                if (fmp_active && system.isMetallicFP())  // EC November 2026: single inventory with FMP
-                    available = fmpInventoryAtGrainBoundary(element, sciantix_variable, sciantix_system);
+                if (fmp_active && system.isMetallicFP())   // [FMP, Nov. 2026]: single inventory with FMP
+                    available = fmpInventoryInParticles(element, sciantix_variable, sciantix_system);
 
                 const double updated_atoms = std::min(available, gas_moles * avogadro_number);
                 sciantix_variable[element + " in solution"].setFinalValue(updated_atoms);

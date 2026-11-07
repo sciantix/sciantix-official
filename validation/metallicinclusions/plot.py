@@ -522,7 +522,7 @@ def plot_thermochemistry():
         loc="upper left", fontsize=7)
     fig.legend(*ax_f.get_legend_handles_labels(), loc="lower center", ncol=4)
 
-    # (d) phases at the grain boundary, centre position
+    # (d) phases of the particles (all zones, calculated at the grain boundary node), centre position
     th = load_case(os.path.join(OC_DIR, "test_FMP_UO2_OC_r000"), "thermochemistry_output")
     oc0 = cases[0][3]
     phases = [("MOO2", "MoO$_2$"), ("MO4O11", "Mo$_4$O$_{11}$"), ("HCP_A3", "HCP_A3 (metal)"), ("FCC_A1", "FCC_A1 (metal)"),
@@ -537,7 +537,7 @@ def plot_thermochemistry():
             ax_ph.plot(bu_th[solved], values[solved], MARKERS[k], color=C[k], ms=1.6, label=label)
     ax_ph.set_yscale("log")
     ax_ph.set_ylim(bottom=1e-1)
-    ax_ph.set(ylabel="Phase amount (g/m$^3$ of fuel)", title="(d) Grain-boundary phases at r/R = 0 (converged steps)")
+    ax_ph.set(ylabel="Phase amount (g/m$^3$ of fuel)", title="(d) Phases of the particles at r/R = 0 (converged steps)")
     ax_ph.legend(fontsize=7, markerscale=4, title="Phase", title_fontsize=7)
     fig.suptitle("OpenCalphad coupling: FMP inventory at the grain boundary, oxygen balance between fuel and Mo oxides "
                  "(UO$_2$, LWR, iStoichiometryDeviation = 7)", fontsize=10)
