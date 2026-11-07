@@ -15,25 +15,13 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
-
 #include <algorithm>
 
 /**
- * Five metal particles (FMP): nucleation (CNT), growth and irradiation-induced re-solution of the Mo-Tc-Ru-Rh-Pd
- * precipitates in three zones.
- *
- * EC November 2026, changes with respect to the model of V. Bellani:
- *  - FMP naming, single switch iFMP, radii as outputs;
- *  - production from the Mo, Tc, Ru, Rh, Pd systems ("X produced", LWR yields) instead of y = 0.578;
- *  - three zones: intra1, the grain interior; intra2, the near-boundary zone (delta on each side of the boundaries,
- *    bubble-free zone of Angleraud 2024), with its own dissolved metal; gb, the grain boundary, a perfect sink fed
- *    from intra2, with its particles;
- *  - nucleation on dislocations only, rho_d / lambda (no bubble sites, no weight 0.67), spherical nuclei also on the boundary;
- *  - literature parameters only (no calibration): Turnbull diffusivity, CNT barrier from the interface energy, CNT
- *    nucleation frequency Z beta*;
- *  - Mo oxidation from OpenCalphad applied to all the particles; the oxygen taken by the oxides is removed from the
- *    fuel in SetPhaseDiagram.
- * All concentrations are per unit fuel volume; c = C / phi is the local concentration in a zone.
+ * 
+ * // [FMP, Nov. 2026]
+ * 
+ * Five metal particles (FMP): nucleation (CNT), growth and irradiation-induced re-solution of the Mo-Tc-Ru-Rh-Pd precipitates in three zones.
  */
 void Simulation::FiveMetalParticles()
 {
@@ -50,11 +38,11 @@ void Simulation::FiveMetalParticles()
     const double kB = boltzmann_constant;                               // (J/K)
 
     // Literature values, nothing fitted
-    const double gamma  = 1.0;          // metal/UO2 interface energy, incoherent interfaces 0.5-1 J/m2 (Porter, Easterling)
-    const double delta  = 100.0e-9;     // near-boundary bubble-free zone of ~100 nm on each side (Angleraud 2024)
-    const double V_eff  = 1.44123e-29;  // atomic volume of the FMP phase (m3/at), hcp packing (V. Bellani)
-    const double n_min  = 2.0;          // minimum nucleus, metallic dimers (at) (Hong et al. 2012)
-    const double lambda = 15e-9;        // spacing of the nucleation sites (m) (V. Bellani)
+    const double gamma  = 1.0;  // metal/UO2 interface energy, incoherent interfaces 0.5-1 J/m2 (Porter, Easterling)
+    const double delta  = 100.0e-9; // near-boundary bubble-free zone of ~100 nm on each side (Angleraud 2024)
+    const double V_eff  = 1.44123e-29;  // atomic volume of the FMP phase (m3/at), hcp packing (V. Bellani MSc thesis)
+    const double n_min  = 2.0;  // minimum nucleus, metallic dimers (at) (Hong et al. 2012)
+    const double lambda = 15e-9;    // spacing of the nucleation sites (m) (V. Bellani MSc thesis)
 
     // Production, Mo share and metal diffusivity (Mo system: Turnbull et al. 1988)
     double production = 0.0, produced_total = 0.0, produced_mo = 0.0, D = 0.0;  // (at/m3), (m2/s)
@@ -96,12 +84,13 @@ void Simulation::FiveMetalParticles()
 
     // Zone volume fractions: 
     // intra2 is the shell of thickness delta inside each spherical grain of radius a, 
-    // phi_2 = 1 - (1 - delta/a)^3, limited to 0.999 for grains smaller than the layer; uniform production
+    // phi_2 limited to 0.999 for grains smaller than the layer
     const double a     = sciantix_variable["Grain radius"].getFinalValue();
     const double phi_2 = (a > delta) ? std::min(1.0 - std::pow(1.0 - delta / a, 3.0), 0.999) : 0.999;
     const double phi_1 = 1.0 - phi_2;
+    // uniform production
     const double P_1   = phi_1 * production;  // (at/m3)
-    const double P_2   = phi_2 * production;
+    const double P_2   = phi_2 * production;  // (at/m3)
 
     // Equilibrium concentration C_eq = x_eq N_U exp[-(H/kB)(1/T - 1/T_ref)]
     // Mo solubility 0.006 at.% at 1900 degC (Kleykamp), 4/a_UO2^3 cation sites (a_UO2 = 547.5 pm), 
@@ -111,8 +100,7 @@ void Simulation::FiveMetalParticles()
                                       : C_eq_ref;
 
     // Nucleation sites:
-    // - dislocations (spacing lambda) in intra1 and intra2, all counted: no bubble sites and no weight 0.67, because the TEM shows
-    //   the bubble/precipitate pairs at the end of irradiation, not which of the two formed first (EC November 2026),
+    // - dislocations (spacing lambda) in intra1 and intra2
     // - areal density 1/lambda^2 on the boundary area 3/(2a) per unit volume for gb
     const double f_T    = 0.608 + (1.0 - 0.608) / (1.0 + std::exp((T - 1109.0) / 25.8)); // dislocations
     const double sites_disl =
@@ -195,7 +183,7 @@ void Simulation::FiveMetalParticles()
 
     // CNT (Kashchiev)
     // per site: nu = Z beta* exp(-dG*/kB T)
-    //           dG* = 16 pi gamma^3 Omega^2 / (3 dmu^2), spherical nucleus in every zone and on the boundary,
+    //           dG* = 16 pi gamma^3 Omega^2 / (3 dmu^2), spherical nucleus
     //           dmu = kB T ln S, n* = max(n_min, 2 dG*/dmu), 
     //           r* = 2 gamma Omega / dmu, 
     //           beta* = 4 pi r* D c, 
@@ -211,10 +199,10 @@ void Simulation::FiveMetalParticles()
         const double S = (C_eq > 0.0) ? c / C_eq : 0.0;
         if (T <= 0.0 || S <= 1.0 || std::log(S) <= 1.0e-12)
             return n;
-        const double dmu = kB * T * std::log(S);                                                       // (J)
-        n.dG             = 16.0 * M_PI * std::pow(gamma, 3.0) * V_eff * V_eff / (3.0 * dmu * dmu);  // (J)
-        n.n_crit         = std::max(n_min, 2.0 * n.dG / dmu);
-        const double Z   = std::sqrt(n.dG / (3.0 * M_PI * kB * T)) / n.n_crit;
+        const double dmu = kB * T * std::log(S);    // (J)
+        n.dG    = 16.0 * M_PI * std::pow(gamma, 3.0) * V_eff * V_eff / (3.0 * dmu * dmu);  // (J)
+        n.n_crit    = std::max(n_min, 2.0 * n.dG / dmu);
+        const double Z  = std::sqrt(n.dG / (3.0 * M_PI * kB * T)) / n.n_crit;
         const double beta = 4.0 * M_PI * (2.0 * gamma * V_eff / dmu) * D * c;  // (1/s)
         if (n.dG / (kB * T) < 700.0)
             n.nu = Z * beta * std::exp(-n.dG / (kB * T));
@@ -235,7 +223,7 @@ void Simulation::FiveMetalParticles()
     const double N2  = nucleate(nucleation(c_2), sites_2, N2_old, C_m2_old + P_2, mass_2);
     const double Ngb = nucleate(nucleation(c_2), sites_gb, Ngb_old, C_gb_old, mass_gb);
 
-    // Growth J = k (c - C_eq), switched on in each zone if c > C_eq after production and nucleation; dissolution only by re-solution (back to the zone of the particles). Implicit 5x5 balance, X = (C_m1, C_m2, C_p1, C_p2, C_gb):
+    // Growth J = k (c - C_eq), switched on in each zone if c > C_eq after production and nucleation; dissolution only by re-solution. Implicit 5x5 balance, X = (C_m1, C_m2, C_p1, C_p2, C_gb):
     //   dC_m1/dt = P_1 - k_1 (c_1 - C_eq) - K_12 (c_1 - c_2) + k_res C_p1
     //   dC_m2/dt = P_2 - (k_2 + K_23) (c_2 - C_eq) + K_12 (c_1 - c_2) + k_res (C_p2 + C_gb)
     //   dC_p1/dt = k_1 (c_1 - C_eq) - k_res C_p1
