@@ -43,7 +43,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputChromiumContent,
                                                          bool   toOutputThermochimica,
                                                          bool   toOutputMOX,
-                                                         bool   toFMP);
+                                                         bool   toFMP);  // [FMP, Nov. 2026]
 
 std::vector<ThermochemistryVariable>
 initializeThermochemistryVariable(const std::vector<ThermochemistryManifestEntry>& manifest,

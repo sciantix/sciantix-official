@@ -56,7 +56,7 @@ std::vector<std::string> getInputVariableNames()
                                       "iReleaseMode",
                                       "iThermochimica",
                                       "iThermochimicaOuterNode",
-                                      "iFMP"};
+                                      "iFMP"}; // [FMP, Nov. 2026]
 
     return names;
 }
@@ -122,7 +122,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputChromiumContent,
                                                          bool   toOutputThermochimica,
                                                          bool   toOutputMOX,
-                                                         bool   toFMP)
+                                                         bool   toFMP) // [FMP, Nov. 2026]
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -238,7 +238,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "Cs in the gap", "(at/m3)", Sciantix_variables[110], Sciantix_variables[110], toOutputThermochimica),
 #endif
-        // METALS
+        // METALS  // [FMP, Nov. 2026]
         SciantixVariable(
             "Mo produced", "(at/m3)", Sciantix_variables[130], Sciantix_variables[130], toOutputThermochimica || toFMP),
         SciantixVariable(
@@ -553,7 +553,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         // Optional
         SciantixVariable("Surface tension", "(N/m)", Sciantix_variables[203], Sciantix_variables[203], 0),
 
-        // EC November 2026: five metal particles (FMP) - FiveMetalParticles.C, output only with iFMP = 1
+        // [FMP, Nov. 2026]: five metal particles (FMP) - FiveMetalParticles.C, output only with iFMP = 1
         SciantixVariable("FMP in matrix", "(at/m3)", Sciantix_variables[210], Sciantix_variables[210], toFMP),
         SciantixVariable(
             "FMP in intragranular particles", "(at/m3)", Sciantix_variables[211], Sciantix_variables[211], toFMP),
@@ -564,8 +564,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Intergranular FMP concentration", "(FMP/m3)", Sciantix_variables[214], Sciantix_variables[214], toFMP),
         SciantixVariable("Intragranular FMP radius", "(m)", Sciantix_variables[215], Sciantix_variables[215], toFMP),
         SciantixVariable("Intergranular FMP radius", "(m)", Sciantix_variables[216], Sciantix_variables[216], toFMP),
-        // EC November 2026: three-zone FMP model (intra1 = grain interior, intra2 = near-boundary zone, gb = grain
-        // boundary; 211/213/215 intra1, 212/214/216 gb) and oxygen balance
         SciantixVariable(
             "FMP in near-boundary zone matrix", "(at/m3)", Sciantix_variables[217], Sciantix_variables[217], toFMP),
         SciantixVariable(

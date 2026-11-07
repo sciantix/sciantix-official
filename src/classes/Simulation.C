@@ -83,7 +83,7 @@ void Simulation::execute()
 
     FissionProductDecay();
 
-    FiveMetalParticles();
+    FiveMetalParticles();  // [FMP, Nov. 2026]
 
     IntraGranularBubbleBehavior();
 

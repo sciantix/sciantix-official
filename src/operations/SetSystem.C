@@ -18,8 +18,8 @@
 #include "Simulation.h"
 
 #include <cmath>
-#include <map>
-#include <string>
+#include <map> // [FMP, Nov. 2026]
+#include <string> // [FMP, Nov. 2026]
 
 void Simulation::setSystem()
 {
@@ -61,7 +61,7 @@ void Simulation::setSystem()
             sciantix_system.push(
                 Xe_in_UO2HBS(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 #endif
-            // EC November 2026: Mo, Tc, Ru, Rh, Pd in UO2 (LWR yields) for the five metal particles (FMP) model
+            // [FMP, Nov. 2026]: Mo, Tc, Ru, Rh, Pd in UO2 (LWR yields) for the five metal particles (FMP) model
             if ((int)input_variable["iFMP"].getValue() == 1)
             {
                 for (const auto& element : {"Mo", "Tc", "Ru", "Rh", "Pd"})
@@ -92,7 +92,7 @@ void Simulation::setSystem()
 
             if ((int)input_variable["iThermochimica"].getValue() == 0)
             {
-                // EC November 2026: the FMP model needs the five metals also without thermochemistry
+                // [FMP, Nov. 2026]: the FMP model needs the five metals also without thermochemistry
                 if ((int)input_variable["iFMP"].getValue() == 1)
                 {
                     sciantix_system.push(Mo_in_MOX(
@@ -616,7 +616,7 @@ System Mo_in_MOX(SciantixArray<Matrix>&           matrices,
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
-    // EC November 2026: metal diffusivity read by the FMP model, Turnbull et al. (1988) as for Xe
+    // [FMP, Nov. 2026]: metal diffusivity read by the FMP model, Turnbull et al. (1988) as for Xe
     system_.setFissionProductDiffusivity(1, sciantix_variable, history_variable, scaling_factors, matrices);
     return system_;
 }
@@ -721,7 +721,7 @@ System Rh_in_MOX(SciantixArray<Matrix>&           matrices,
     return system_;
 }
 
-// EC November 2026: Mo, Tc, Ru, Rh, Pd in UO2, for the five metal particles (FMP) model.
+// [FMP, Nov. 2026]: Mo, Tc, Ru, Rh, Pd in UO2, for the five metal particles (FMP) model.
 // Yields for LWR UO2: ENDF/B-VIII.0 cumulative fission yields summed over the stable or long-lived end-of-chain
 // isotopes (Mo 95, 96, 97, 98, 100; Tc 99; Ru 100, 101, 102, 104; Rh 103; Pd 104, 105, 106, 107, 108, 110),
 // weighted with the cycle-average PWR fission fractions 235U 0.564 (thermal), 238U 0.076 (fast, 500 keV),

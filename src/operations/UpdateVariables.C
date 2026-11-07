@@ -156,7 +156,8 @@ std::map<int, std::string> update_sciantix_variable = {
     {174, "Pu241"},
     {175, "Pu242"},
     {177, "q"},
-    // EC November 2026: five metal particles (FMP)
+    // [FMP, Nov. 2026]
+    {181, "Mo in oxide fraction"},
     {210, "FMP in matrix"},
     {211, "FMP in intragranular particles"},
     {212, "FMP at grain boundary"},
@@ -164,15 +165,12 @@ std::map<int, std::string> update_sciantix_variable = {
     {214, "Intergranular FMP concentration"},
     {215, "Intragranular FMP radius"},
     {216, "Intergranular FMP radius"},
-    // EC November 2026: three-zone FMP model and oxygen balance
     {217, "FMP in near-boundary zone matrix"},
     {218, "FMP near-boundary zone volume fraction"},
     {219, "FMP oxygen in Mo oxides"},
     {220, "FMP in near-boundary particles"},
     {221, "Near-boundary FMP concentration"},
     {222, "Near-boundary FMP radius"},
-    // EC November 2026: kept between time steps, read by FiveMetalParticles (Mo oxidation at the grain boundary)
-    {181, "Mo in oxide fraction"},
 };
 
 void Simulation::update(double Sciantix_variables[],

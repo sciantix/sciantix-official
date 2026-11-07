@@ -53,7 +53,7 @@ void Simulation::setVariables(int                            Sciantix_options[],
          toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0,
          toOutputMOX                    = input_variable["iFuelMatrix"].getValue() == 2;
 
-    // EC November 2026: five metal particles (FMP), single switch
+    // [FMP, Nov. 2026]: five metal particles (FMP), single switch
     bool toFMP = input_variable["iFMP"].getValue() == 1;
 
     // Physics variable
@@ -83,7 +83,7 @@ void Simulation::setVariables(int                            Sciantix_options[],
                                         toOutputChromiumContent,
                                         toOutputThermochimica,
                                         toOutputMOX,
-                                        toFMP);
+                                        toFMP); // [FMP, Nov. 2026]
 
     for (SciantixVariable initial_value : values)
     {

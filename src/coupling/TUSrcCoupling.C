@@ -85,7 +85,7 @@ void getSciantixOptions(int    Sciantix_options[],
     Sciantix_options[23] = ReadOneSetting("iDensification", settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", settings, input_check);
     Sciantix_options[25] = ReadOneSetting("iThermochimica", settings, input_check);
-    Sciantix_options[27] = ReadOneSetting("iFMP", settings, input_check);  // EC November 2026: FMP model
+    Sciantix_options[27] = ReadOneSetting("iFMP", settings, input_check);   // [FMP, Nov. 2026]
 
     // The time discretisation is TRANSURANUS's own, so a settings file shared with standalone runs
     // may carry Number_of_time_steps_per_interval without it being an error here
