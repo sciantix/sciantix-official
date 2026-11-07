@@ -28,7 +28,7 @@
  *  - three zones: intra1, the grain interior; intra2, the near-boundary zone (delta on each side of the boundaries,
  *    bubble-free zone of Angleraud 2024), with its own dissolved metal; gb, the grain boundary, a perfect sink fed
  *    from intra2, with its particles;
- *  - nucleation on dislocations only (no bubble sites);
+ *  - nucleation on dislocations only, rho_d / lambda (no bubble sites, no weight 0.67), spherical nuclei also on the boundary;
  *  - literature parameters only (no calibration): Turnbull diffusivity, CNT barrier from the interface energy, CNT
  *    nucleation frequency Z beta*;
  *  - Mo oxidation from OpenCalphad applied to all the particles; the oxygen taken by the oxides is removed from the
@@ -111,12 +111,12 @@ void Simulation::FiveMetalParticles()
                                       : C_eq_ref;
 
     // Nucleation sites:
-    // - dislocations (weight 0.67, spacing lambda) in intra1 and intra2,
-    // - no bubble sites: the bubbles of the bubble/precipitate pairs are more likely nucleated on the precipitates than the opposite (EC November 2026),
+    // - dislocations (spacing lambda) in intra1 and intra2, all counted: no bubble sites and no weight 0.67, because the TEM shows
+    //   the bubble/precipitate pairs at the end of irradiation, not which of the two formed first (EC November 2026),
     // - areal density 1/lambda^2 on the boundary area 3/(2a) per unit volume for gb
     const double f_T    = 0.608 + (1.0 - 0.608) / (1.0 + std::exp((T - 1109.0) / 25.8)); // dislocations
     const double sites_disl =
-        (sciantix_variable["Burnup"].getFinalValue() > 0.0 && T > 0.0) ? 0.67 * 6.545e12 * std::pow(sciantix_variable["Burnup"].getFinalValue(), 1.151) * f_T / lambda : 0.0;  // (1/m3)
+        (sciantix_variable["Burnup"].getFinalValue() > 0.0 && T > 0.0) ? 6.545e12 * std::pow(sciantix_variable["Burnup"].getFinalValue(), 1.151) * f_T / lambda : 0.0;  // (1/m3)
     const double sites_1  = phi_1 * sites_disl;
     const double sites_2  = phi_2 * sites_disl;
     const double sites_gb = (a > 0.0) ? 3.0 / (2.0 * a) / (lambda * lambda) : 0.0;
@@ -195,7 +195,7 @@ void Simulation::FiveMetalParticles()
 
     // CNT (Kashchiev)
     // per site: nu = Z beta* exp(-dG*/kB T)
-    //           dG* = 16 pi gamma^3 Omega^2 Phi / (3 dmu^2), 
+    //           dG* = 16 pi gamma^3 Omega^2 / (3 dmu^2), spherical nucleus in every zone and on the boundary,
     //           dmu = kB T ln S, n* = max(n_min, 2 dG*/dmu), 
     //           r* = 2 gamma Omega / dmu, 
     //           beta* = 4 pi r* D c, 
@@ -205,14 +205,14 @@ void Simulation::FiveMetalParticles()
     {
         double dG = 0.0, n_crit = 2.0, nu = 0.0;
     };
-    auto nucleation = [&](double c, double phi_het)
+    auto nucleation = [&](double c)
     {
         Nucleation   n;
         const double S = (C_eq > 0.0) ? c / C_eq : 0.0;
         if (T <= 0.0 || S <= 1.0 || std::log(S) <= 1.0e-12)
             return n;
         const double dmu = kB * T * std::log(S);                                                       // (J)
-        n.dG             = 16.0 * M_PI * std::pow(gamma, 3.0) * V_eff * V_eff * phi_het / (3.0 * dmu * dmu);  // (J)
+        n.dG             = 16.0 * M_PI * std::pow(gamma, 3.0) * V_eff * V_eff / (3.0 * dmu * dmu);  // (J)
         n.n_crit         = std::max(n_min, 2.0 * n.dG / dmu);
         const double Z   = std::sqrt(n.dG / (3.0 * M_PI * kB * T)) / n.n_crit;
         const double beta = 4.0 * M_PI * (2.0 * gamma * V_eff / dmu) * D * c;  // (1/s)
@@ -231,16 +231,9 @@ void Simulation::FiveMetalParticles()
         return N_old + mass / n.n_crit;
     };
     double       mass_1 = 0.0, mass_2 = 0.0, mass_gb = 0.0;
-    const double N1  = nucleate(nucleation(c_1, 1.0), sites_1, N1_old, C_m1_old + P_1, mass_1);
-    const double N2  = nucleate(nucleation(c_2, 1.0), sites_2, N2_old, C_m2_old + P_2, mass_2);
-
-    // Grain-boundary nucleation on a lens, 
-    // Phi = (2 + cos)(1 - cos)^2 / 2
-    // cos = gamma_gb / (2 gamma), gamma_gb = 2 gamma_s cos(theta_b) 
-    // from the UO2 surface tension and semi-dihedral angle (0.7 J/m2, 50 deg: gamma_gb = 0.90 J/m2)
-    const double cos_gb = std::min(matrices[0].getSurfaceTension() * std::cos(matrices[0].getSemidihedralAngle()) / gamma, 1.0);
-    const double phi_het_gb = 0.5 * (2.0 + cos_gb) * (1.0 - cos_gb) * (1.0 - cos_gb);
-    const double Ngb = nucleate(nucleation(c_2, phi_het_gb), sites_gb, Ngb_old, C_gb_old, mass_gb);
+    const double N1  = nucleate(nucleation(c_1), sites_1, N1_old, C_m1_old + P_1, mass_1);
+    const double N2  = nucleate(nucleation(c_2), sites_2, N2_old, C_m2_old + P_2, mass_2);
+    const double Ngb = nucleate(nucleation(c_2), sites_gb, Ngb_old, C_gb_old, mass_gb);
 
     // Growth J = k (c - C_eq), switched on in each zone if c > C_eq after production and nucleation; dissolution only by re-solution (back to the zone of the particles). Implicit 5x5 balance, X = (C_m1, C_m2, C_p1, C_p2, C_gb):
     //   dC_m1/dt = P_1 - k_1 (c_1 - C_eq) - K_12 (c_1 - c_2) + k_res C_p1

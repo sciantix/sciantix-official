@@ -18,9 +18,9 @@ literature; the TEM data of the four radial positions are used only for validati
 | Production | lumped yield y = 0.578 at/fiss (PRODHEL) | sum of the Mo, Tc, Ru, Rh, Pd systems, ENDF/B-VIII.0 LWR yields (0.5666 at/fiss) |
 | Zones | one matrix, intragranular and grain-boundary particles | intra1, intra2 (each with its own dissolved metal and particles) and gb, the grain boundary as a perfect sink fed from intra2 |
 | Supersaturation | S = C_m / C_eq for both populations | S of the zone of each population (intra2 for gb) |
-| Nucleation sites | f_d rho_d / lambda + f_b N_b (intra), 3/(2 a lambda^2) (GB) | dislocations only, phi_k f_d rho_d / lambda in intra1 and intra2 (no bubble sites); gb unchanged |
+| Nucleation sites | f_d rho_d / lambda + f_b N_b (intra), 3/(2 a lambda^2) (GB) | dislocations only, phi_k rho_d / lambda in intra1 and intra2 (no bubble sites, no weight f_d); gb unchanged |
 | Diffusivity | k_0 exp(-1 eV / k_B T), k_0 fitted | Turnbull et al. (1988), as for Xe |
-| CNT barrier | B = 2.666e8 eV K2, fitted | from the interface energy, gamma = 1.0 J/m2; lens factor at the boundary |
+| CNT barrier | B = 2.666e8 eV K2, fitted | from the interface energy, gamma = 1.0 J/m2; spherical nucleus everywhere |
 | CNT frequency | nu_0 = 1 1/s | Z beta* |
 | Mass limit of nucleation | both requests reduced in proportion to the dissolved metal | each population limited by the metal of its zone |
 | Implicit system | 3x3, (C_m, C_intra, C_GB) | 5x5, (C_m1, C_m2, C_p1, C_p2, C_gb) |
@@ -79,34 +79,31 @@ the gb particles nucleate from the metal arriving from intra2.
 
 Per site (Kashchiev), $\Delta\mu = k_B T \ln S > 0$:
 
-$$ \Delta G^* = \frac{16\pi\gamma^3\Omega^2 \Phi}{3\Delta\mu^2}, \qquad
+$$ \Delta G^* = \frac{16\pi\gamma^3\Omega^2}{3\Delta\mu^2}, \qquad
 n^* = \max\left(n_{\min}, \frac{2\Delta G^*}{\Delta\mu}\right), \qquad r^* = \frac{2\gamma\Omega}{\Delta\mu}, $$
 
 $$ \nu = Z \beta^* \exp\left(-\frac{\Delta G^*}{k_B T}\right), \qquad \beta^* = 4\pi r^* D c, \qquad
 Z = \frac{1}{n^*}\sqrt{\frac{\Delta G^*}{3\pi k_B T}}, $$
 
-with c the local concentration of the zone. $\Phi = 1$ in intra1 and intra2; at the boundary the nucleus is a
-lens,
-
-$$ \Phi_{gb} = \tfrac{1}{2}(2 + \cos\theta)(1 - \cos\theta)^2, \qquad \cos\theta = \frac{\gamma_{gb}}{2\gamma}, \qquad
-\gamma_{gb} = 2\gamma_s\cos\theta_b, $$
-
-with the UO2 surface tension and semi-dihedral angle already in SCIANTIX ($\gamma_s$ = 0.7 J/m2,
-$\theta_b$ = 50 deg): $\gamma_{gb}$ = 0.90 J/m2, $\Phi_{gb}$ = 0.37. In the form of V. Bellani,
-$\Delta G^* = B / (T^2 \ln^2 S)$ with $B = 16\pi\gamma^3\Omega^2\Phi / (3 k_B^2)$ = 1.14e8 eV K2 (intra) and
-4.2e7 eV K2 (gb).
+with c the local concentration of the zone. The nucleus is a sphere in intra1, intra2 and on the boundary
+(**EC November 2026**: no lens factor at the boundary. Lens-shaped FMP are not observed, and with the lens,
+$\Phi_{gb}$ = 0.37 from the UO2 $\gamma_s$ and $\theta_b$, J is 1.114 instead of 1.112 with sites $f_d \rho_d/\lambda$: practically all the gb sites
+nucleate with either shape). In the form of V. Bellani, $\Delta G^* = B / (T^2 \ln^2 S)$ with
+$B = 16\pi\gamma^3\Omega^2 / (3 k_B^2)$ = 1.14e8 eV K2.
 
 Nucleation sites:
 
-$$ N_{\mathrm{site},1} = \phi_1 f_d \frac{\rho_d}{\lambda}, \qquad
-N_{\mathrm{site},2} = \phi_2 f_d \frac{\rho_d}{\lambda}, \qquad N_{\mathrm{site},gb} = \frac{3}{2 a \lambda^2}, $$
+$$ N_{\mathrm{site},1} = \phi_1 \frac{\rho_d}{\lambda}, \qquad
+N_{\mathrm{site},2} = \phi_2 \frac{\rho_d}{\lambda}, \qquad N_{\mathrm{site},gb} = \frac{3}{2 a \lambda^2}, $$
 
 $$ \rho_d = 6.545\times10^{12}\, b^{1.151} f_T, \qquad f_T = 0.608 + \frac{1 - 0.608}{1 + \exp[(T - 1109)/25.8]}, $$
 
-with b the burnup (MWd/kgUO2, Veshchunov and Shestak 2009), $f_d$ = 0.67, lambda = 15 nm and 3/(2a) the
-boundary area per unit volume. **EC November 2026**: no bubble sites (V. Bellani: $+ f_b N_b$, $f_b$ = 0.33).
-The bubbles of the bubble/precipitate pairs are more likely nucleated on the precipitates than the opposite,
-and the near-boundary zone has no nanometric bubbles (Angleraud 2024).
+with b the burnup (MWd/kgUO2, Veshchunov and Shestak 2009), lambda = 15 nm and 3/(2a) the boundary area per
+unit volume. **EC November 2026**: no bubble sites (V. Bellani: $f_d \rho_d/\lambda + f_b N_b$, $f_d$ = 0.67,
+$f_b$ = 0.33). The TEM shows the bubble/precipitate pairs at the end of irradiation, not which of the two formed
+first, so the bubbles are not counted as sites; the near-boundary zone has no nanometric bubbles (Angleraud 2024).
+Without bubble sites the weight $f_d$ has no role (it would only rescale lambda), and every dislocation site counts
+(J = 1.132, against 1.112 with $f_d \rho_d/\lambda$).
 
 Particle number, implicit in time, never decreasing; each nucleus takes $n^*$ atoms, within the metal available:
 
@@ -249,19 +246,17 @@ None is fitted to the TEM data of the validation.
 |---|---|---|
 | D | $D_1 + D_2 + D_3$ | Turnbull et al. (1988), single-atom Xe diffusivity used as a surrogate (no Mo data found) |
 | gamma (metal/UO2) | 1.0 J/m2 | incoherent interfaces 0.5-1 J/m2 (Porter and Easterling); no Mo/UO2 value found |
-| $\gamma_s$, $\theta_b$ | 0.7 J/m2, 50 deg | UO2 matrix in SCIANTIX |
 | delta | 100 nm | bubble-free zone on each side of the boundaries (Angleraud 2024) |
 | a (TEM cases) | 4.4 um | mean grain size 8.8 um (Angleraud 2024, ch. 2) |
 | $\Omega$ | 1.44123e-29 m3/at | atomic radii, hcp packing (V. Bellani) |
 | $n_{\min}$ | 2 at | stable metallic dimers (Hong et al. 2012) |
 | $\rho_d$ | $6.545\times10^{12} b^{1.151} f_T$ | Veshchunov and Shestak (2009) |
 | lambda | 15 nm | V. Bellani |
-| $f_d$ | 0.67 | V. Bellani, image analysis (bubble sites, $f_b$ = 0.33, not used) |
 | $k_{\mathrm{res,ref}}$ | 3.085078e-6 1/s at 1.48e19 fiss/(m3 s) | Sakib et al. (2025) |
 | $x_{\mathrm{eq}}$, H, $T_{\mathrm{ref}}$ | 6e-5, 1.14 eV, 2173.15 K | Kleykamp (1985), Brillant et al. (2009) |
 
-lambda and $f_d$ come from the images of the same fuel (geometry and EDX of bubble/precipitate pairs), not from a
-fit of R or A.
+lambda comes from the images of the same fuel (about twice the largest intragranular radius, so that neighbouring
+particles do not overlap), not from a fit of R or A.
 
 ### Order in the time step
 
@@ -316,29 +311,29 @@ Comparison:
 
 | Case | R intra exp / model (nm) | R strip exp / model (nm) | A intra exp / model (%) | A strip exp / model (%) | R_intra2, R_gb (nm) | Metal dissolved |
 |---|---|---|---|---|---|---|
-| r000 | 7.58 / 4.43 | 14.28 / 5.87 | 1.37 / 5.79 | 7.21 / 25.4 | 10.8, 2.71 | 7.4% |
-| r030 | 3.59 / 4.20 | 11.95 / 5.88 | 0.56 / 5.94 | 3.62 / 26.2 | 10.5, 2.59 | 7.9% |
-| r056 | 3.45 / 4.12 | 5.58 / 5.87 | 3.25 / 8.02 | 1.76 / 34.8 | 10.4, 2.55 | 10.1% |
-| r075 | 3.10 / 4.41 | 6.68 / 5.70 | 2.62 / 4.59 | 0.72 / 19.5 | 10.4, 2.71 | 12.8% |
+| r000 | 7.58 / 4.04 | 14.28 / 5.91 | 1.37 / 6.37 | 7.21 / 26.4 | 10.4, 2.56 | 6.1% |
+| r030 | 3.59 / 3.84 | 11.95 / 5.92 | 0.56 / 6.54 | 3.62 / 27.1 | 10.2, 2.46 | 6.6% |
+| r056 | 3.45 / 3.76 | 5.58 / 6.06 | 3.25 / 8.76 | 1.76 / 36.4 | 10.2, 2.45 | 8.4% |
+| r075 | 3.10 / 4.05 | 6.68 / 6.21 | 2.62 / 4.93 | 0.72 / 20.8 | 10.2, 2.71 | 10.7% |
 
-J = 1.11. Figure: `figures/metallicinclusions_UO2_LWR.png`.
+J = 1.13. Figure: `figures/metallicinclusions_UO2_LWR.png`.
 
-- intra1: R within 20% of the TEM value at r/R = 0.30-0.56, 42% too small at the centre and 42% too large at
-  0.75. The density is 1.9-2.2e22 /m3 against 1.5e21-2.2e22 /m3 from the TEM A and R (up to 13 times too high at
-  the centre, right at 0.75), so A is 2-11 times too high.
-- Strip: R 5.7-5.9 nm, right at r/R = 0.56-0.75 and 2-2.4 times too small at 0-0.30. The density is 15-29 times
-  too high: all the gb sites nucleate (1.52e21 /m3, 2.3e22 per unit volume of the strip, already 9-18 times the
-  TEM value) and stay at 2.6-2.7 nm, and the intra2 particles (10.4-10.8 nm) are 1.5e22 per unit volume of
-  intra2. A is 3.5-27 times too high.
-- Metal at the end: 51-52% in intra1 particles, 36-40% in intra2 particles (6.7% of the volume), 1% at the
-  boundary, 7-13% dissolved. The boundary drains intra2 and intra1, the intra2 particles capture most of this
-  flux ($\theta$ = 4.4 at the end), and the gb inventory stays small because the re-solution returns it to intra2
+- intra1: R within 10% of the TEM value at r/R = 0.30-0.56, 47% too small at the centre and 31% too large at
+  0.75. The density is 2.5-3.0e22 /m3 against 1.5e21-2.2e22 /m3 from the TEM A and R (17 times too high at the
+  centre, 10% at 0.75), so A is 2-12 times too high.
+- Strip: R 5.9-6.2 nm, within 7-9% at r/R = 0.56-0.75 and 2-2.4 times too small at 0-0.30. The density is 15-28 times
+  too high: practically all the gb sites nucleate (1.3-1.5e21 /m3, 1.9-2.2e22 per unit volume of the strip, already
+  8-15 times the TEM value) and stay at 2.5-2.7 nm, and the intra2 particles (10.2-10.4 nm) are 1.7-1.9e22 per unit
+  volume of intra2. A is 3.7-29 times too high.
+- Metal at the end: 48-52% in intra1 particles, 38-43% in intra2 particles (6.7% of the volume), 0.7-0.8% at the
+  boundary, 6-11% dissolved. The boundary drains intra2 and intra1, the intra2 particles capture most of this
+  flux ($\theta$ = 4.7 at the end), and the gb inventory stays small because the re-solution returns it to intra2
   in about 4 days ($1/k_{\mathrm{res}}$).
 - The radial trend of the TEM data (larger particles at the centre) is not reproduced: the radii depend little
   on the temperature.
 
 Sensitivity to the only free literature value, gamma (J/m2): J = 1.12 (0.8), 1.11 (1.0), 0.95 (1.2),
-1.22 (1.33); the strip radius stays at 4.5-6.3 nm. gamma = 1.33 J/m2 gives the B of V. Bellani (2.67e8 eV K2).
+1.22 (1.33), computed with the lens factor at the boundary and sites $f_d \rho_d/\lambda$; the strip radius stays at 4.5-6.3 nm. gamma = 1.33 J/m2 gives the B of V. Bellani (2.67e8 eV K2).
 
 ## Validation on Buck et al. (2015), ATM-109
 
@@ -358,10 +353,10 @@ The paper gives no power or temperature history, so the cases use an **assumed**
 
 | Case | r/R | Temperature (K) | d_intra1 / d_intra2 / d_gb (nm) | Metal dissolved |
 |---|---|---|---|---|
-| `test_FMP_UO2_Buck2015_r035` | 0.354 | 1117 | 9.8 / 26.3 / 5.6 | 6% |
-| `test_FMP_UO2_Buck2015_r061` | 0.612 | 1004 | 8.9 / 25.1 / 5.1 | 9% |
-| `test_FMP_UO2_Buck2015_r079` | 0.791 | 892 | 9.1 / 24.6 / 5.2 | 12% |
-| `test_FMP_UO2_Buck2015_r094` | 0.935 | 779 | 9.9 / 24.4 / 5.7 | 14% |
+| `test_FMP_UO2_Buck2015_r035` | 0.354 | 1117 | 9.0 / 25.3 / 5.4 | 5% |
+| `test_FMP_UO2_Buck2015_r061` | 0.612 | 1004 | 8.1 / 24.2 / 4.9 | 7% |
+| `test_FMP_UO2_Buck2015_r079` | 0.791 | 892 | 8.4 / 23.9 / 5.1 | 10% |
+| `test_FMP_UO2_Buck2015_r094` | 0.935 | 779 | 9.1 / 24.0 / 6.0 | 12% |
 
 The comparison uses the pellet-averaged population (equal ring volumes, the three populations weighted by
 number). Fig. 6 of the paper (cumulative number distribution of the particle volume) was digitized
@@ -371,9 +366,9 @@ number). Fig. 6 of the paper (cumulative number distribution of the particle vol
 |---|---|---|---|
 | Buck et al., carbonate-peroxide | 13 | 50 (reported 43) | 7.07 |
 | Buck et al., nitric acid | 28 | 62 (reported 58) | 9.30 |
-| SCIANTIX | 9.1 | 9.5 | 6.07 |
+| SCIANTIX | 8.4 | 8.7 | 5.82 |
 
-The model particles are 5-7 times too small in number-mean diameter; the intra2 particles (24-26 nm) are close to
+The model particles are 6-7 times too small in number-mean diameter; the intra2 particles (24-25 nm) are close to
 the measured median of the nitric series but are few. The size
 distribution is much narrower than the measured one (one size per ring and population) and the large particles
 (100-300 nm) are missing. The particle composition of the model (42Mo-11Tc-25Ru-8Rh-14Pd at.%) is richer in Mo
@@ -389,13 +384,13 @@ or the database is missing.
 
 | Case | mu_O2 (kJ/mol) | x | Mo oxidised | R intra1 with / without OC (nm) | R strip with / without OC (nm) | Steps with an OC result |
 |---|---|---|---|---|---|---|
-| r000 | -375 | 1.3e-5 | 30% | 4.22 / 4.43 | 5.64 / 5.87 | 499 / 501 |
-| r030 | -258 | 7.6e-3 | 78% | 3.63 / 4.20 | 5.21 / 5.88 | 66 / 501 |
-| r056 | -404 | 9.1e-7 | 31% | 3.91 / 4.12 | 5.63 / 5.87 | 499 / 501 |
-| r075 | -427 | 5.4e-8 | 32% | 4.18 / 4.41 | 5.45 / 5.70 | 498 / 501 |
+| r000 | -375 | 1.3e-5 | 29% | 3.84 / 4.04 | 5.67 / 5.91 | 498 / 501 |
+| r030 | -258 | 7.6e-3 | 76% | 3.30 / 3.84 | 5.25 / 5.92 | 61 / 501 |
+| r056 | -404 | 9.1e-7 | 30% | 3.56 / 3.76 | 5.78 / 6.06 | 499 / 501 |
+| r075 | -427 | 5.4e-8 | 31% | 3.83 / 4.05 | 5.88 / 6.21 | 499 / 501 |
 
 At r000, r056 and r075 the fuel is buffered at Mo/MoO2 and x stays far below the Kleykamp value (8.7e-3). At r030
-OpenCalphad stops converging after 7.4 MWd/kgUO2: the oxygen in the oxides stays at its last value and x follows
+OpenCalphad stops converging after 6.9 MWd/kgUO2: the oxygen in the oxides stays at its last value and x follows
 the Kleykamp relation; the end values of this case are not OpenCalphad results. Figure:
 `figures/fmp_thermochemistry.png`.
 
@@ -428,9 +423,9 @@ python3 validation/metallicinclusions/check_exchange.py    # check of K_12, figu
 
 ## Known limits
 
-- Too many particles (J = 1.11), above all in the strip: the gb sites, 1/lambda^2 on the boundary, all nucleate
-  and give alone 9-18 times the TEM density. The radial trend of the TEM data is not reproduced.
-- gamma, D for Mo in UO2 and the nucleation sites (lambda, $f_d$) are the weakest inputs: no direct data for the
+- Too many particles (J = 1.13), above all in the strip: the gb sites, 1/lambda^2 on the boundary, all nucleate
+  and give alone 8-15 times the TEM density. The radial trend of the TEM data is not reproduced.
+- gamma, D for Mo in UO2 and the nucleation sites (lambda, rho_d) are the weakest inputs: no direct data for the
   metal/UO2 interface and Mo diffusion.
 - intra2 has a fixed thickness (100 nm) and its storage sits on the middle node of the T equivalent; gb has no
   volume and no grain-boundary diffusion; the gb nucleation uses the supersaturation of intra2.
@@ -441,7 +436,7 @@ python3 validation/metallicinclusions/check_exchange.py    # check of K_12, figu
   3.95% porosity (not changed).
 - Oxygen balance: only the Mo of the particles takes oxygen, the excess oxygen comes from the Kleykamp relation
   (no radial O/M profile), Cs and Ba are not in the UO2 systems; OpenCalphad does not converge at r030 after
-  7.4 MWd/kgUO2.
+  6.9 MWd/kgUO2.
 - The MOX systems keep fast-reactor yields: the model is validated only for UO2 in LWR conditions.
 
 ## References

@@ -26,7 +26,7 @@ on these data: J is a validation metric.
 
 EC November 2026: translated to English, FMP naming, radius read from the new output columns, new figures
 (Buck et al. 2015 validation, inventory partition, elements, thermochemistry), three-zone model and oxygen
-balance, TEM data used for validation only.
+balance, TEM data used for validation only, one colour per zone and clearer labels.
 """
 
 import os
@@ -37,6 +37,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.lines
 import matplotlib.ticker
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
@@ -55,8 +56,17 @@ ELEMENTS = ["Mo", "Tc", "Ru", "Rh", "Pd"]
 # marker or line style and a legend entry.
 C = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]
 INK = "#333333"
+GRAY = "#777777"  # measurements (Buck) and line-style keys
 MARKERS = ["o", "s", "^", "D", "v"]
 LINESTYLES = ["-", "--", "-.", ":", (0, (5, 1, 1, 1))]
+# One colour per zone in every figure; the TEM grain-boundary strip (intra2 + gb pooled) has its own colour and
+# the dissolved metal a light tint of its zone
+ZONE = {"intra1": C[0], "intra2": C[2], "gb": C[3], "strip": C[4]}
+TINT = {"intra1": "#b7d3f6", "intra2": "#a4dfca"}
+NAME = {"intra1": "grain interior", "intra2": "near-boundary zone", "gb": "grain boundary",
+        "strip": "near-boundary zone + grain boundary"}  # zone names in the figures
+BU_LABEL = "Burnup (MWd/kgUO$_2$)"
+RR_LABEL = "Radial position r/R (-)"
 
 # name, r/R, TEM foil thickness (m)
 POSITIONS = [
@@ -73,8 +83,9 @@ plt.rcParams.update({
     "font.size": 9, "axes.titlesize": 9.5, "axes.labelsize": 9, "legend.fontsize": 7.5,
     "axes.edgecolor": "#888888", "axes.linewidth": 0.8, "axes.grid": True, "grid.color": "#e6e6e6",
     "grid.linewidth": 0.6, "lines.linewidth": 1.8, "lines.markersize": 6, "legend.frameon": False,
-    "axes.spines.top": False, "axes.spines.right": False,
+    "axes.spines.top": False, "axes.spines.right": False, "axes.axisbelow": True,
 })
+log_ticks = matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:g}")
 
 
 def load_case(case_dir, stem="output"):
@@ -172,34 +183,37 @@ def plot_validation():
     j = np.mean(errors)
     print(f"J = mean |ln(model/exp)| over {len(errors)} observables = {j:.3f} (validation metric, nothing fitted)\n")
 
+    # TEM: open markers (error bars = standard deviation of the measured radii); SCIANTIX: lines
     x = np.array([row["r_over_R"] for row in rows])
-    fig, (ax_r, ax_a) = plt.subplots(1, 2, figsize=(10, 3.9))
-    ax_r.errorbar(x, [r["intra"]["radius"] * 1e9 for r in rows], yerr=[r["intra"]["std_radius"] * 1e9 for r in rows],
-                  fmt="o", color=C[0], capsize=3, label="TEM, intragranular")
-    ax_r.errorbar(x + 0.01, [r["inter"]["radius"] * 1e9 for r in rows],
-                  yerr=[r["inter"]["std_radius"] * 1e9 for r in rows], fmt="s", color=C[1], capsize=3,
-                  label="TEM, grain-boundary strip")
-    ax_r.plot(x, [r["model"]["radius_intra"] * 1e9 for r in rows], "-", color=C[0], label="SCIANTIX, intra1")
-    ax_r.plot(x, [r["model"]["radius_strip"] * 1e9 for r in rows], "--", color=C[1], label="SCIANTIX, intra2 + gb")
-    ax_r.plot(x, [r["model"]["radius_near"] * 1e9 for r in rows], ":", color=C[2], lw=1.2, label="SCIANTIX, intra2")
-    ax_r.plot(x, [r["model"]["radius_gb"] * 1e9 for r in rows], ls=LINESTYLES[3], color=C[3], lw=1.2,
-              label="SCIANTIX, gb")
-    ax_r.set(xlabel="r/R (-)", ylabel="Mean particle radius (nm)", title="FMP radius at 54.1 MWd/kgUO2")
-    ax_r.set_ylim(bottom=0)
-    ax_r.legend(fontsize=7)
-
-    ax_a.semilogy(x, [r["intra"]["area_fraction"] * 100 for r in rows], "o", color=C[0], label="TEM, intragranular")
-    ax_a.semilogy(x + 0.01, [r["inter"]["area_fraction"] * 100 for r in rows], "s", color=C[1],
-                  label="TEM, grain-boundary strip")
-    ax_a.semilogy(x, [r["model"]["area_intra"] * 100 for r in rows], "-", color=C[0], label="SCIANTIX, intra1")
-    ax_a.semilogy(x, [r["model"]["area_strip"] * 100 for r in rows], "--", color=C[1], label="SCIANTIX, intra2 + gb")
-    ax_a.set(xlabel="r/R (-)", ylabel="Projected area fraction (%)", title="FMP projected area fraction (TEM foil)")
-    ax_a.set_ylim(0.1, 100)
-    ax_a.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:g}"))
-    ax_a.legend(loc="upper right", ncol=2, fontsize=8)
-    fig.suptitle(f"Validation, three-zone model with literature parameters: J = {j:.3f} (16 observables)",
-                 fontsize=10)
-    fig.tight_layout()
+    tem = lambda kind, key, scale: np.array([r[kind][key] for r in rows]) * scale
+    mod = lambda key, scale: np.array([r["model"][key] for r in rows]) * scale
+    tem_style = dict(ls="none", capsize=3, ms=7, mfc="white", mew=1.5, zorder=3)
+    fig, (ax_r, ax_a) = plt.subplots(1, 2, figsize=(10, 4.4))
+    ax_r.errorbar(x - 0.008, tem("intra", "radius", 1e9), yerr=tem("intra", "std_radius", 1e9), marker="o",
+                  color=ZONE["intra1"], label="TEM, grain interior", **tem_style)
+    ax_r.errorbar(x + 0.008, tem("inter", "radius", 1e9), yerr=tem("inter", "std_radius", 1e9), marker="s",
+                  color=ZONE["strip"], label="TEM, within 100 nm of the grain boundary", **tem_style)
+    ax_a.errorbar(x - 0.008, tem("intra", "area_fraction", 100), marker="o", color=ZONE["intra1"], **tem_style)
+    ax_a.errorbar(x + 0.008, tem("inter", "area_fraction", 100), marker="s", color=ZONE["strip"], **tem_style)
+    for ax, key, scale in ((ax_r, "radius", 1e9), (ax_a, "area", 100)):
+        ax.plot(x, mod(f"{key}_intra", scale), "o-", ms=4, color=ZONE["intra1"], label=f"SCIANTIX, {NAME['intra1']}")
+        ax.plot(x, mod(f"{key}_strip", scale), "s--", ms=4, color=ZONE["strip"], label=f"SCIANTIX, {NAME['strip']}")
+    ax_r.plot(x, mod("radius_near", 1e9), "^:", ms=4, lw=1.2, color=ZONE["intra2"],
+              label=f"SCIANTIX, {NAME['intra2']} alone")
+    ax_r.plot(x, mod("radius_gb", 1e9), "v:", ms=4, lw=1.2, color=ZONE["gb"], label=f"SCIANTIX, {NAME['gb']} alone")
+    ax_r.text(0.98, 0.97, "error bars: ±1 standard deviation of the measured radii", transform=ax_r.transAxes,
+              ha="right", va="top", fontsize=7, color=GRAY)
+    ax_r.set(ylabel="Mean particle radius (nm)", title="(a) Mean particle radius", ylim=(0, None))
+    ax_a.set(yscale="log", ylim=(0.1, 100), ylabel="Projected area fraction (%)",
+             title="(b) Projected area fraction in the TEM foil")
+    ax_a.yaxis.set_major_formatter(log_ticks)
+    for ax in (ax_r, ax_a):
+        ax.set(xlabel=RR_LABEL, xticks=x, xlim=(-0.05, 0.8))
+    handles, labels = ax_r.get_legend_handles_labels()
+    fig.legend(handles[-2:] + handles[:-2], labels[-2:] + labels[:-2], loc="lower center", ncol=3)
+    fig.suptitle(f"Validation on the TEM data at {BURNUP_EXP:.1f} MWd/kgUO$_2$, nothing fitted: "
+                 f"J = mean |ln(model / TEM)| = {j:.2f} over {len(errors)} observables", fontsize=10)
+    fig.tight_layout(rect=(0, 0.11, 1, 1))
     save(fig, "metallicinclusions_UO2_LWR.png")
 
 
@@ -271,6 +285,7 @@ def plot_buck():
 
     fig, axes = plt.subplots(1, 3, figsize=(14.5, 4.1))
 
+    # Measurements in gray, SCIANTIX pellet average in black, SCIANTIX zones in their colours
     # (a) cumulative distribution of ln V, as Fig. 6 of the paper
     ax = axes[0]
     xs = np.linspace(-2, 18, 300)
@@ -278,53 +293,56 @@ def plot_buck():
     for k, (s, label, key) in enumerate((("carbonate", "carbonate-peroxide", "carbonate_peroxide"),
                                          ("nitric", "nitric acid", "nitric"))):
         data = lnv_exp[s]
-        ax.plot(data[:, 0], data[:, 1], MARKERS[k + 1], color=C[k], ms=4.5, mfc="white", mew=1.2,
+        ax.plot(data[:, 0], data[:, 1], MARKERS[k + 1], color=GRAY, ms=4.5, mfc="white", mew=1.2,
                 label=f"Buck et al. (2015), {label}")
         mu, sig = exp[f"lnV_mu_{key}"], exp[f"lnV_sigma_{key}"]
-        ax.plot(xs, [0.5 * (1 + erf((x - mu) / (sig * math.sqrt(2)))) for x in xs], ":", color=C[k], lw=1.2,
-                label=f"log-normal fit, {label}")
+        ax.plot(xs, [0.5 * (1 + erf((x - mu) / (sig * math.sqrt(2)))) for x in xs], (":", "--")[k], color=GRAY,
+                lw=1.2, label=f"log-normal fit, {label}")
     ax.step(np.r_[-2, lnv, 18], np.r_[0, np.cumsum(weight), 1], where="post", color=INK, lw=2,
-            label="SCIANTIX, pellet average")
-    ax.set(xlim=(-2, 18), ylim=(0, 1.02), xlabel="ln particle volume (nm$^3$)", ylabel="Cumulative number fraction (-)",
-           title="(a) Particle volume distribution (Fig. 6)")
+            label="SCIANTIX, pellet average (all zones)")
+    ax.set(xlim=(-2, 18), ylim=(0, 1.02), xlabel="ln(V / nm$^3$) (-)", ylabel="Cumulative number fraction (-)",
+           title="(a) Particle volume distribution (cf. Buck, Fig. 6)")
     top = ax.secondary_xaxis("top", functions=(lambda v: v, lambda v: v))
     ticks_d = [2, 5, 10, 20, 50, 100, 300]
     top.set_xticks([math.log(math.pi / 6 * d**3) for d in ticks_d], [str(d) for d in ticks_d])
     top.set_xlabel("Equivalent diameter (nm)", fontsize=8)
-    ax.legend(loc="upper left", fontsize=7)
+    ax.legend(loc="lower right", fontsize=7)
 
     # (b) diameter per ring vs the reported sizes
     ax = axes[1]
     ax.axhspan(exp["particle_diameter_min"], exp["particle_diameter_max"], color="#eeeeee", zorder=0,
-               label="observed range, 10-300 nm")
+               label="Buck, observed range (10-300 nm)")
     ax.axhspan(exp["mean_particle_size_carbonate_peroxide"], exp["mean_particle_size_nitric"], color="#c9c9c9",
-               zorder=0, label="reported mean size, 43-58 nm")
+               zorder=0, label="Buck, reported mean size (43-58 nm)")
     x = [r for _, r, _ in rings]
-    for k, (kind, label) in enumerate(zip(POPULATIONS, ("intra1", "intra2", "gb"))):
+    for k, (kind, zone) in enumerate(zip(POPULATIONS, ("intra1", "intra2", "gb"))):
         ax.plot(x, [2e9 * out.get_all(f"{kind} FMP radius (m)")[-1] for *_, out in rings], MARKERS[k] + "-",
-                color=C[k], mfc="none" if k else C[k], ms=7, mew=1.3, label=f"SCIANTIX, {label}")
-    ax.axhline(d_number_mean, color=INK, lw=1.4, ls="--", label=f"SCIANTIX, pellet number-mean ({d_number_mean:.0f} nm)")
-    ax.set_yscale("log")
-    ax.set(xlim=(0, 1), ylim=(5, 400), xlabel="r/R (-)", ylabel="Particle diameter (nm)",
-           title="(b) End of irradiation, 70.8 GWd/tHM")
-    ax.legend(loc="upper right", fontsize=7)
+                color=ZONE[zone], ms=7, label=f"SCIANTIX, {NAME[zone]}")
+    ax.axhline(d_number_mean, color=INK, lw=1.4, ls="--",
+               label=f"SCIANTIX, pellet number mean ({d_number_mean:.1f} nm)")
+    ax.set(yscale="log", xlim=(0, 1), ylim=(3, 400), xlabel=RR_LABEL, ylabel="Particle diameter (nm)",
+           title="(b) Diameter at the end of irradiation (70.8 GWd/tHM)")
+    ax.yaxis.set_major_formatter(log_ticks)
+    ax.legend(loc="upper right", fontsize=7, frameon=True, facecolor="white", edgecolor="none")
 
-    # (c) evolution in time
+    # (c) evolution in time, grain interior only: one blue (its colour) per ring, darker = hotter
     ax = axes[2]
     for k, (name, r_over_R, out) in enumerate(rings):
         t = out.get_all("Time (h)") / 8766.0 + 1979.083
-        ax.plot(t, 2e9 * out.get_all("Intragranular FMP radius (m)"), ls=LINESTYLES[k], color=C[k],
-                label=f"r/R = {r_over_R:.2f}, {out.get_all('Temperature (K)')[0]:.0f} K")
+        ax.plot(t, 2e9 * out.get_all("Intragranular FMP radius (m)"), ls=LINESTYLES[k],
+                color=("#0d366b", "#1c5cab", "#3987e5", "#86b6ef")[k],
+                label=f"r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
     fission = rings[0][2].get_all("Fission rate (fiss / m3 s)")
     t = rings[0][2].get_all("Time (h)") / 8766.0 + 1979.083
-    ax.fill_between(t, 0, 1, where=fission <= 0.0, color="#dddddd", transform=ax.get_xaxis_transform(), zorder=0,
-                    label="out of the reactor")
-    ax.set(xlabel="Year", ylabel="intra1 particle diameter (nm)", title="(c) Growth during irradiation")
+    ax.fill_between(t, 0, 1, where=fission <= 0.0, color="#e6e6e6", transform=ax.get_xaxis_transform(), zorder=0)
+    ax.text(np.median(t[fission <= 0.0]), 0.5, "out of the reactor", rotation=90, ha="center", va="center",
+            fontsize=7, color=GRAY, transform=ax.get_xaxis_transform())
+    ax.set(xlabel="Year", ylabel="Particle diameter (nm)", title="(c) Grain-interior particles during irradiation")
     ax.set_ylim(bottom=0)
-    ax.legend(fontsize=7)
+    ax.legend(loc="lower right", fontsize=7)
 
-    fig.suptitle("Validation: ATM-109, Quad Cities I BWR (Buck et al. 2015). "
-                 "Power and temperature history assumed (see README)", fontsize=10)
+    fig.suptitle("Independent validation: ATM-109 fuel, Quad Cities I BWR (Buck et al. 2015); "
+                 "power and temperature history assumed (see README)", fontsize=10)
     fig.tight_layout()
     save(fig, "buck2015_ATM109.png")
 
@@ -337,16 +355,21 @@ def stacked_partition(ax, out, title):
     total = produced_total(out)
     ok = total > 0
     dissolved_2 = out.get_all("FMP in near-boundary zone matrix (at/m3)")
-    parts = [out.get_all("FMP in matrix (at/m3)") - dissolved_2, dissolved_2,
-             out.get_all("FMP in intragranular particles (at/m3)"), out.get_all("FMP in near-boundary particles (at/m3)"),
+    parts = [out.get_all("FMP in matrix (at/m3)") - dissolved_2, out.get_all("FMP in intragranular particles (at/m3)"),
+             dissolved_2, out.get_all("FMP in near-boundary particles (at/m3)"),
              out.get_all("FMP at grain boundary (at/m3)")]
     fractions = [np.clip(p[ok] / total[ok], 0, 1) * 100 for p in parts]
-    ax.stackplot(bu[ok], *fractions, colors=[C[0], C[4], C[2], C[3], C[1]], edgecolor="white", linewidth=0.6,
-                 labels=["dissolved, intra1", "dissolved, intra2", "intra1 particles", "intra2 particles",
-                         "gb particles"])
+    ax.stackplot(bu[ok], *fractions, edgecolor="white", linewidth=0.6,
+                 colors=[TINT["intra1"], ZONE["intra1"], TINT["intra2"], ZONE["intra2"], ZONE["gb"]],
+                 labels=[f"{NAME['intra1']}, dissolved", f"{NAME['intra1']}, particles",
+                         f"{NAME['intra2']}, dissolved", f"{NAME['intra2']}, particles", NAME["gb"]])
     ax.set(xlim=(0, bu[-1]), ylim=(0, 100), title=title)
-    ax.text(0.97, 0.06, f"intra2 {fractions[3][-1]:.1f}%, gb {fractions[4][-1]:.2f}%", transform=ax.transAxes,
-            ha="right", fontsize=7.5, color=INK)
+    ax.grid(False)
+    ax.text(0.96, 0.05, f"at the end:\ngrain-interior particles {fractions[1][-1]:.0f}%\n"
+            f"near-boundary particles {fractions[3][-1]:.0f}%\ngrain boundary {fractions[4][-1]:.1f}%",
+            transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=7, color=INK,
+            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="none", alpha=0.85))
 
 
 def plot_partition():
@@ -355,18 +378,18 @@ def plot_partition():
     fig, axes = plt.subplots(nrows, 4, figsize=(13, 3.2 * nrows), sharey=True, squeeze=False)
     for k, (name, r_over_R, _) in enumerate(POSITIONS):
         out = load_case(os.path.join(GROUP_DIR, f"test_FMP_UO2_{name}"))
-        stacked_partition(axes[0, k], out, f"TEM case r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
+        stacked_partition(axes[0, k], out, f"TEM case, r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
     if nrows == 2:
         for k, ((name, r_over_R), out) in enumerate(zip(BUCK_RINGS, buck)):
-            stacked_partition(axes[1, k], out, f"ATM-109 r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
+            stacked_partition(axes[1, k], out, f"ATM-109, r/R = {r_over_R:.2f} ({out.get_all('Temperature (K)')[0]:.0f} K)")
     for ax in axes[:, 0]:
-        ax.set_ylabel("Share of produced Mo+Tc+Ru+Rh+Pd (%)")
+        ax.set_ylabel("Share of the produced FMP (%)")
     for ax in axes[-1]:
-        ax.set_xlabel("Burnup (MWd/kgUO2)")
+        ax.set_xlabel(BU_LABEL)
     handles, labels = axes[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="lower center", ncol=5, bbox_to_anchor=(0.5, -0.03))
-    fig.suptitle("Single inventory: sum of 'X produced' = dissolved (intra1, intra2) + particles (intra1, intra2, gb)",
-                 fontsize=10)
+    fig.suptitle("Where the produced FMP (Mo + Tc + Ru + Rh + Pd) is: dissolved in the matrix or in particles, "
+                 "per zone (the five parts sum to 100%)", fontsize=10)
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     save(fig, "fmp_partition.png")
 
@@ -380,12 +403,12 @@ def plot_elements():
     bu = out.get_all("Burnup (MWd/kgUO2)")
     total = produced_total(out)
 
-    fig, (ax_p, ax_b) = plt.subplots(1, 2, figsize=(11.5, 3.9), gridspec_kw={"width_ratios": [1, 1.35]})
+    fig, (ax_p, ax_b) = plt.subplots(1, 2, figsize=(11.5, 3.9), gridspec_kw={"width_ratios": [1, 1.15]})
     for k, e in enumerate(ELEMENTS):
         ax_p.plot(bu, out.get_all(f"{e} produced (at/m3)") / 1e26, ls=LINESTYLES[k], color=C[k],
                   label=f"{e} ({out.get_all(f'{e} produced (at/m3)')[-1] / total[-1] * 100:.1f}%)")
-    ax_p.set(xlabel="Burnup (MWd/kgUO2)", ylabel="Produced (10$^{26}$ at/m$^3$)",
-             title="(a) Production, LWR element yields (share of the five)", xlim=(0, bu[-1]))
+    ax_p.set(xlabel=BU_LABEL, ylabel="Produced (10$^{26}$ at/m$^3$)",
+             title="(a) Produced, LWR yields (share of the five)", xlim=(0, bu[-1]))
     ax_p.set_ylim(bottom=0)
     ax_p.legend()
 
@@ -401,22 +424,23 @@ def plot_elements():
     # by Buck et al. (2015); mid-range values, normalised.
     residue = np.array([20.0, 2.75, 55.0, 10.0, 10.0])
     residue /= residue.sum()
-    bars = [("SCIANTIX, particles without OC", share),
-            ("SCIANTIX, particles (metallic)" + (f" with OC, {f_ox*100:.0f}% of Mo oxidised" if oc is not None else ""),
+    bars = [("SCIANTIX, no OC", share),
+            ("SCIANTIX with OC, metallic part\n" + (f"({f_ox*100:.0f}% of Mo oxidised)" if oc is not None else "(no OC output)"),
              metallic),
-            ("Dissolution residue, Adachi et al.\n(as quoted by Buck et al. 2015)", residue)]
+            ("Undissolved residue, Adachi et al.\n(quoted by Buck et al. 2015)", residue)]
     y = np.arange(len(bars))[::-1]
     left = np.zeros(len(bars))
     for k, e in enumerate(ELEMENTS):
         width = np.array([b[1][k] for b in bars]) * 100
         ax_b.barh(y, width, left=left, color=C[k], edgecolor="white", linewidth=2, height=0.6, label=e)
         for yi, li, wi in zip(y, left, width):
-            if wi >= 6:
-                ax_b.text(li + wi / 2, yi, f"{wi:.0f}", ha="center", va="center", fontsize=7.5, color="white")
+            if wi >= 6:  # white text only on the dark blue, dark text on the lighter fills
+                ax_b.text(li + wi / 2, yi, f"{wi:.0f}", ha="center", va="center", fontsize=7.5,
+                          color="white" if k == 0 else INK)
         left += width
     ax_b.set_yticks(y, [b[0] for b in bars])
     ax_b.set(xlim=(0, 100), xlabel="Composition (at.%)",
-             title=f"(b) Particle composition at {bu[-1]:.1f} MWd/kgUO2, r/R = 0")
+             title=f"(b) Particle composition at {bu[-1]:.1f} MWd/kgUO$_2$, r/R = 0")
     ax_b.grid(False)
     ax_b.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=5)
     fig.tight_layout()
@@ -478,19 +502,25 @@ def plot_thermochemistry():
         ax_rgb.errorbar(BURNUP_EXP + 0.8 * k, tem["radius"] * 1e9, yerr=tem["std_radius"] * 1e9, fmt=MARKERS[k], color=C[k],
                         capsize=3, mfc="white", mew=1.3)
 
-    ax_mu.set(xlabel="Burnup (MWd/kgUO2)", ylabel="Oxygen potential (kJ/mol O$_2$)", ylim=(-440, -230),
-              title="(a) Oxygen potential: O balance (thick), Kleykamp (thin)")
-    ax_x.set(xlabel="Burnup (MWd/kgUO2)", ylabel="x in UO$_{2+x}$ (-)", ylim=(1e-8, 3e-2),
-             title="(b) x: O balance (thick), Kleykamp (thin)")
-    ax_f.set(xlabel="Burnup (MWd/kgUO2)", ylabel="Mo in oxide phases (-)", ylim=(-0.02, 1.02),
-             title="(c) Mo oxidised, all particles (OpenCalphad)")
-    ax_o.set(xlabel="Burnup (MWd/kgUO2)", ylabel="Excess oxygen in Mo oxides (%)", ylim=(-2, 102),
-             title="(f) Excess oxygen taken by the Mo of the particles")
-    ax_rgb.set(xlabel="Burnup (MWd/kgUO2)", ylabel="intra2 + gb mean radius (nm)",
-               title="(e) Strip radius: OC (thick), no OC (thin), TEM (markers)")
-    ax_rgb.set_ylim(bottom=0)
-    for ax in (ax_mu, ax_x, ax_f, ax_o):
-        ax.legend(fontsize=7)
+    ax_mu.set(ylabel="Oxygen potential (kJ/mol O$_2$)", ylim=(-440, -230), title="(a) Fuel oxygen potential")
+    ax_x.set(ylabel="x in UO$_{2+x}$ (-)", ylim=(1e-8, 3e-2), title="(b) Stoichiometry deviation")
+    ax_f.set(ylabel="Fraction of Mo in oxides (-)", ylim=(-0.02, 1.02),
+             title="(c) Mo in oxides, all particles (OpenCalphad)")
+    ax_o.set(ylabel="Share of the excess O (%)", ylim=(-2, 102), title="(f) Excess oxygen bound in the Mo oxides")
+    ax_rgb.set(ylabel="Mean particle radius (nm)", ylim=(0, None),
+               title="(e) Near-boundary zone + grain boundary vs TEM")
+    for ax in axes.flat:
+        ax.set_xlabel(BU_LABEL)
+    # Thick / thin line key (gray proxies); the colours are the radial positions, legend below the figure
+    key = lambda thick, thin: [matplotlib.lines.Line2D([], [], color=GRAY, lw=1.8, label=thick),
+                               matplotlib.lines.Line2D([], [], color=GRAY, lw=0.9, label=thin)]
+    ax_mu.legend(handles=key("with O balance (Mo oxides take O)", "without (all excess O stays in the fuel)"),
+                 loc="center right", fontsize=7)
+    ax_x.legend(handles=key("with O balance", "without O balance"), loc="lower left", fontsize=7)
+    ax_rgb.legend(handles=key("with OpenCalphad", "without OpenCalphad") + [matplotlib.lines.Line2D(
+        [], [], color=GRAY, marker="o", mfc="white", mew=1.3, ls="none", label="TEM, ±1 std of the radii")],
+        loc="upper left", fontsize=7)
+    fig.legend(*ax_f.get_legend_handles_labels(), loc="lower center", ncol=4)
 
     # (d) phases at the grain boundary, centre position
     th = load_case(os.path.join(OC_DIR, "test_FMP_UO2_OC_r000"), "thermochemistry_output")
@@ -507,12 +537,11 @@ def plot_thermochemistry():
             ax_ph.plot(bu_th[solved], values[solved], MARKERS[k], color=C[k], ms=1.6, label=label)
     ax_ph.set_yscale("log")
     ax_ph.set_ylim(bottom=1e-1)
-    ax_ph.set(xlabel="Burnup (MWd/kgUO2)", ylabel="Phase amount (g/m$^3$ of fuel)",
-              title="(d) Grain-boundary phases, r/R = 0 (converged steps)")
-    ax_ph.legend(fontsize=7, markerscale=4)
-    fig.suptitle("OpenCalphad with the FMP inventory and oxygen balance fuel/Mo oxides "
-                 "(UO2, LWR, iStoichiometryDeviation = 7)", fontsize=10)
-    fig.tight_layout()
+    ax_ph.set(ylabel="Phase amount (g/m$^3$ of fuel)", title="(d) Grain-boundary phases at r/R = 0 (converged steps)")
+    ax_ph.legend(fontsize=7, markerscale=4, title="Phase", title_fontsize=7)
+    fig.suptitle("OpenCalphad coupling: FMP inventory at the grain boundary, oxygen balance between fuel and Mo oxides "
+                 "(UO$_2$, LWR, iStoichiometryDeviation = 7)", fontsize=10)
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
     save(fig, "fmp_thermochemistry.png")
 
     print("Thermochemistry (end of irradiation)")
