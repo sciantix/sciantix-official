@@ -99,6 +99,13 @@ def compare_outputs(out, gold,
                   f"output={out_data.shape}, gold={gold_data.shape}")
         return False
 
+    # Skip the rows that repeat the time of the previous row: they come from a time step of
+    # ~1e-16 h at the history points, where rates are dominated by round-off (issue #78).
+    time_cols = np.where(gold_header == "Time (h)")[0]
+    if time_cols.size and len(gold_data) > 1:
+        keep = np.r_[True, np.diff(gold_data[:, time_cols[0]]) != 0]
+        out_data, gold_data = out_data[keep], gold_data[keep]
+
     ok, diff, bad_mask = compare_arrays(out_data, gold_data,
                                         abs_tol, rel_tol)
 
