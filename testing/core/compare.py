@@ -27,10 +27,17 @@ def _drop_columns(header, data, ignore_columns):
 
 def compare_arrays(a: np.ndarray, b: np.ndarray,
                    abs_tol: float = 1e-8,
-                   rel_tol: float = 1e-6):
+                   rel_tol: float = 1e-6,
+                   scale_tol: float = 1e-10):
     """
     Element-wise numerical comparison between two arrays with
     absolute and relative tolerances.
+
+    An element also passes when its difference is below scale_tol times the
+    largest value of its column: quantities obtained as the difference of two
+    large numbers (e.g. gas released = produced - retained) carry a round-off
+    error of the order of the large numbers, which differs between platforms
+    and compilers (e.g. fused multiply-add on ARM64).
 
     Returns:
         ok (bool): True if all elements match within tolerance.
@@ -44,8 +51,10 @@ def compare_arrays(a: np.ndarray, b: np.ndarray,
     diff = np.abs(a - b)
     rel = diff / np.maximum(abs_tol, np.abs(b))
 
+    scale = np.max(np.abs(np.nan_to_num(b)), axis=0, initial=0.0)
+
     one_sided_nan = np.isnan(a) ^ np.isnan(b)
-    bad_mask = ((diff > abs_tol) & (rel > rel_tol)) | one_sided_nan
+    bad_mask = ((diff > abs_tol) & (rel > rel_tol) & (diff > scale_tol * scale)) | one_sided_nan
     ok = not np.any(bad_mask)
 
     return ok, diff, bad_mask

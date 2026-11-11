@@ -62,3 +62,30 @@ jobs:
         run: |
           export PATH=$PATH:$(pwd)/build
           python3 -m testing.runner --mode-gold 0
+
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build SCIANTIX (Apple Clang, ARM64)
+        run: |
+          cmake -S . -B build
+          cmake --build build -j
+
+      - name: Run unit tests
+        run: ctest --test-dir build -L unit --output-on-failure
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install testing dependencies
+        run: pip install -r testing/requirements.txt
+
+      - name: Run tests
+        run: python3 -m testing.runner --mode-gold 0

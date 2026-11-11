@@ -11,13 +11,8 @@
 
 cmake_minimum_required(VERSION 3.5.0)
 
-if(APPLE)
-    message(STATUS "Configuring on macOS, setting custom compilers...")
-    set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
-    set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
-else()
-    message(STATUS "Not on macOS, using default compilers.")
-endif()
+# The compiler is found by CMake (default: c++ in the PATH, i.e. Apple Clang on macOS).
+# To use another one: cmake -S . -B build -DCMAKE_CXX_COMPILER=g++-15 (or CXX=g++-15 cmake ...).
 
 # Name of the project created / existent in visual studio
 project(sciantix VERSION 2.5)
@@ -41,6 +36,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra)
+    # No fused multiply-add contraction (default on ARM64, e.g. Apple Silicon): keeps the results
+    # identical across platforms, so that the gold files of the testing suite apply everywhere.
+    add_compile_options(-ffp-contract=off)
 endif()
 
 # Set option for coupling with TU

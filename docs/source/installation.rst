@@ -25,7 +25,7 @@ SCIANTIX requires the following minimum specifications:
 - **Operating System**:
   
   - Ubuntu ≥ 20.04 (native)
-  - macOS Ventura
+  - macOS (Intel and Apple Silicon)
   - Windows 10/11 via Windows Subsystem for Linux 2 (WSL2)
 
 Obtaining the Code
@@ -96,6 +96,19 @@ After successful compilation, the executable `sciantix.x` will be located in the
 .. code-block:: bash
 
     ls -l build/sciantix.x
+
+macOS Installation
+------------------
+
+Install the Xcode command line tools (Apple Clang) and CMake, e.g. with `Homebrew <https://brew.sh>`_:
+
+.. code-block:: bash
+
+    xcode-select --install
+    brew install cmake
+
+Then follow the Linux steps from **Step 2**. CMake uses the default compiler (Apple Clang). To use another one,
+e.g. a GCC installed with Homebrew, pass it at configuration: ``cmake -DCMAKE_CXX_COMPILER=g++-15 ..``.
 
 Windows Installation (via WSL)
 -------------------------------
