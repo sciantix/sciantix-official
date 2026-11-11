@@ -67,6 +67,7 @@ Next Steps
    installation
    input_files
    examples
+   coupling
    testing
    publications
    references
