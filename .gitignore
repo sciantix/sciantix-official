@@ -113,3 +113,13 @@ out/
 /UN_model/VERIFICATION/reproduce_extended_*/
 /UN_model/VERIFICATION/reproduce_accuracy_*/
 /UN_model/VERIFICATION/reproduce_coefficients_*/
+
+########################################
+# UN_model: keep only Python, Markdown and notebooks, matching the history filter.
+########################################
+
+/UN_model/**
+!/UN_model/**/
+!/UN_model/**/*.py
+!/UN_model/**/*.md
+!/UN_model/**/*.ipynb
