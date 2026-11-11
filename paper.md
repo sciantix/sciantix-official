@@ -74,8 +74,12 @@ Generative AI tools were used in the preparation and refinement of parts of the 
 
 No generative AI tools were used in the development of the SCIANTIX software, in the implementation of its physical models or numerical solvers, or in the preparation of validation results.
 
+# Author contributions
+
+Following the CRediT taxonomy: D. Pizzocri: conceptualization, methodology, software (original version of the code); G. Zullo: software (version 2 architecture), methodology, verification, validation, maintenance; E. Cappellari: software, validation, documentation; G. Nicodemo: software, validation; A. Zayat: software (numerical solvers), verification; L. Luzzi: supervision, funding acquisition, writing - review and editing. All authors contributed to writing the manuscript.
+
 # Acknowledgements
 
-The authors acknowledge contributions from collaborators providing feedback and support during development.
+The authors thank T. Barani, co-developer of the original version of SCIANTIX, and the students and external contributors who reported issues and contributed fixes and improvements to the code.
 
 # References
