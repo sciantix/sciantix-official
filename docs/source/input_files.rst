@@ -27,14 +27,24 @@ A SCIANTIX case is a folder holding up to four plain-text input files. The code 
 
 .. code-block:: text
 
-    <value(s)>    #    <Key> (<description>)
+    <value(s)>    #    <Key> [<comment>]
 
-SCIANTIX looks each entry up by its **key**, the first word after the ``#``. Therefore:
+where ``<...>`` marks a placeholder and ``[...]`` an optional part. SCIANTIX looks each entry up by its **key**, the first word after the ``#``. Therefore:
 
-- the order of the lines does not matter, and the description in brackets is free text for the code user (it is not parsed);
-- blank lines and lines holding only a comment are ignored;
+- the order of the lines does not matter;
+- everything after the key is a free comment for the code user and is not parsed (by convention, a description in round brackets);
+- a line with nothing but blanks before the ``#`` is a comment line and is ignored, as are blank lines;
 - a line with a value but no key, a key given twice, or a key the code does not know stops the run with an error;
 - an entry that is left out takes its default: 0 in ``input_settings.txt`` and ``input_initial_conditions.txt``, 1.0 in ``input_scaling_factors.txt``.
+
+For example, in
+
+.. code-block:: text
+
+    # Models for intragranular gas behaviour
+    1    #    iFissionProductDiffusivity (Turnbull et al. (1988))
+
+the first line is a comment line, ``1`` is the value, ``iFissionProductDiffusivity`` the key and ``(Turnbull et al. (1988))`` a comment.
 
 .. note::
 
@@ -59,28 +69,28 @@ The file contains one integer flag per model. Each flag selects a model option: 
      - 0 = no grain growth; 1 = :ref:`Ainscough et al. (1973) <ref-ainscough1973>`; 2 = :ref:`Van Uffelen et al. (2013) <ref-vanuffelen2013>`
      - :doc:`models/grain_growth`
    * - ``iFissionProductDiffusivity``
-     - 0 = constant value; 1 = :ref:`Turnbull et al. (1988) <ref-turnbull1988>`
+     - 0 = constant value; 1 = :ref:`Turnbull et al. (1988) <ref-turnbull1988>`; 2 = Matzke (1980); 3 = :ref:`Turnbull and Beyer (2010) <ref-turnbull2010>`; 4 = Ronchi (2007); 5 = UO\ :sub:`2` HBS; 7 = amorphous Cr-doped UO\ :sub:`2`, Owen et al. (2023); 8 and 10 = Cr-doped UO\ :sub:`2`, :ref:`Nicodemo et al. (2024) <ref-nicodemo2024>`; 9 = Cr-doped UO\ :sub:`2`, Cooper et al. (2021); 99 = zero diffusivity (test option)
      - :doc:`models/gas_diffusion`
    * - ``iDiffusionSolver``
      - 1 = spectral diffusion solver (SDA) with quasi-stationary hypothesis; 2 = SDA without quasi-stationary hypothesis
      - :doc:`models/gas_diffusion`, :doc:`solvers`
    * - ``iIntraGranularBubbleBehavior``
-     - 1 = :ref:`Pizzocri et al. (2018) <ref-pizzocri2018>`
+     - 0 = constant bubble concentration and radius; 1 = :ref:`Pizzocri et al. (2018) <ref-pizzocri2018>`; 2 = :ref:`White and Tucker (1983) <ref-white1983>`; 3 = annealing and helium behaviour (similarity ratio); 99 = no intragranular bubbles
      - :doc:`models/intragranular_bubble_behavior`
    * - ``iResolutionRate``
-     - 0 = constant value; 1 = :ref:`Turnbull (1971) <ref-turnbull1971>`; 2 = Losonen (2000); 3 = thermal resolution, :ref:`Cognini et al. (2021) <ref-cognini2021>`
+     - 0 = constant value; 1 = :ref:`Turnbull (1971) <ref-turnbull1971>`; 2 = Lösönen (2002); 3 = thermal resolution, :ref:`Cognini et al. (2021) <ref-cognini2021>`; 99 = no resolution
      - :doc:`models/intragranular_bubble_behavior`
    * - ``iTrappingRate``
-     - 0 = constant value; 1 = :ref:`Ham (1958) <ref-ham1958>`
+     - 0 = constant value; 1 = :ref:`Ham (1958) <ref-ham1958>`; 99 = no trapping
      - :doc:`models/intragranular_bubble_behavior`
    * - ``iNucleationRate``
-     - 0 = constant value; 1 = :ref:`Olander and Wongsawaeng (2006) <ref-olander2006>`
+     - 0 = constant value; 1 = :ref:`Olander and Wongsawaeng (2006) <ref-olander2006>`; 99 = no nucleation
      - :doc:`models/intragranular_bubble_behavior`
    * - ``iOutput``
      - 1 = default output files
      - :ref:`output-files`
    * - ``iGrainBoundaryVacancyDiffusivity``
-     - 0 = constant value; 1 = :ref:`Reynolds and Burton (1979) <ref-reynolds1979>`; 2 = :ref:`White (2004) <ref-white2004>`
+     - 0 = constant value; 1 = :ref:`Reynolds and Burton (1979) <ref-reynolds1979>`; 2 = :ref:`White (2004) <ref-white2004>`; 5 = UO\ :sub:`2` HBS, :ref:`Barani et al. (2022) <ref-barani2022>`
      - :doc:`models/intergranular_bubble_behavior`
    * - ``iGrainBoundaryBehaviour``
      - 0 = no grain-boundary bubbles; 1 = :ref:`Pastore et al. (2013) <ref-pastore2013>`
@@ -107,16 +117,16 @@ The file contains one integer flag per model. Each flag selects a model option: 
      - 0 = no HBS porosity evolution; 1 = HBS porosity evolution based on :ref:`Spino et al. (2006) <ref-spino2006>`
      - :doc:`models/high_burnup_structure_porosity`
    * - ``iRadioactiveFissionGas``
-     - 0 = not considered; 1 = radioactive Xe-133 and Kr-85m tracked with decay
+     - 0 = no output; 1 = Xe-133 and Kr-85m written to the output. The radioactive gases are always computed; the flag only selects the output
      - :doc:`models/gas_decay`
    * - ``iHelium``
-     - 0 = not considered; non-zero = helium behaviour (also activates the helium outputs)
+     - 0 = no output; non-zero = helium written to the output. Helium is always computed; the flag only selects the output
      - :doc:`models/gas_production`, :doc:`models/gas_diffusion`
    * - ``iHeDiffusivity``
-     - 0 = null value; 1 = limited lattice damage, :ref:`Luzzi et al. (2018) <ref-luzzi2018>`; 2 = significant lattice damage, :ref:`Luzzi et al. (2018) <ref-luzzi2018>`
+     - 0 = constant value; 1 = limited lattice damage, :ref:`Luzzi et al. (2018) <ref-luzzi2018>`; 2 = significant lattice damage, :ref:`Luzzi et al. (2018) <ref-luzzi2018>`; 3 = :ref:`Talip et al. (2014) <ref-talip2014>`; 99 = zero diffusivity
      - :doc:`models/gas_diffusion`
    * - ``iHeliumProductionRate``
-     - 0 = zero production rate; 1 = helium from ternary fissions; 2 = linear with burnup
+     - 0 = zero production rate; 1 = helium from ternary fissions; 2 = linear with burnup, Cechet et al. (2021); 3 = constant production rate
      - :doc:`models/gas_production`
    * - ``iBubbleDiffusivity``
      - 0 = not considered; 1 = volume diffusivity
@@ -133,7 +143,9 @@ The file contains one integer flag per model. Each flag selects a model option: 
 
 Remarks:
 
+- Each model page names the flags that control it; the options of every flag are listed only in this table.
 - Some validation cases use options that are not in the table (for instance ``iFissionProductDiffusivity = 6`` and ``90``, ``iStoichiometryDeviation = 6``). They are explained, together with the case that uses them, in :doc:`testing`.
+- An option value that does not exist for a flag stops the run with an error.
 - ``Number_of_time_steps_per_interval`` is an optional integer entry of ``input_settings.txt`` that sets the number of time steps between two rows of ``input_history.txt`` (see below). Absent, the default in ``src/MainVariables.C`` (100) applies.
 
 input_history.txt
@@ -185,7 +197,11 @@ Two model parameters can also be set per case in this file; when the entry is ab
 input_scaling_factors.txt
 -------------------------
 
-This optional file multiplies selected model parameters, for sensitivity or uncertainty studies without editing the code. A factor left out defaults to 1.0.
+This optional file lets the user select model parameters and set a multiplicative scaling factor for each of them, for sensitivity or uncertainty studies without editing the code. A factor left out defaults to 1.0. ``sf_temperature`` and ``sf_fission_rate`` scale the corresponding columns of ``input_history.txt``; the other factors scale the model parameter they name.
+
+.. warning::
+
+   The code does not check the values of the scaling factors. They must be positive, and values far from 1 can move a model outside the range in which it was derived or validated. ``sf_diffusion_based_release`` is read but not used by any model in the current version.
 
 .. code-block:: text
 
@@ -208,4 +224,4 @@ Output files
 
 Besides ``output.txt``, a run writes into the case folder ``input_check.txt`` (the flags and the values actually read, to check that the inputs were interpreted as intended), ``overview.txt`` (the model and reference selected for each phenomenon) and ``execution.txt`` (run information).
 
-If you experience any issues with these files, please contact the main developers (D. Pizzocri, G. Zullo) for support.
+For questions or problems with the input files, open an issue on the `GitHub issue tracker <https://github.com/sciantix/sciantix-official/issues>`_.

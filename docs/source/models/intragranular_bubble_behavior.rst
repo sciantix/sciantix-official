@@ -14,6 +14,8 @@ The model behaviour is selected by the input option:
 
 - ``iIntraGranularBubbleBehavior``
 
+The rates entering the model are selected by ``iResolutionRate``, ``iTrappingRate`` and ``iNucleationRate``; the diffusivity of the bubbles by ``iBubbleDiffusivity``. The options of all these flags are listed in :ref:`input_settings.txt <input-settings>`.
+
 Option summary
 --------------
 

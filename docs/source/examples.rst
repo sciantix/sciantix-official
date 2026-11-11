@@ -140,9 +140,9 @@ Reading the last row, at 5500 h, gives the quantities that Baker measured:
     print("bubble concentration (bub/m3):", last["Intragranular bubble concentration (bub/m3)"])
     print("bubble radius (m):            ", last["Intragranular bubble radius (m)"])
     print("gas swelling (%):             ", 100 * last["Intragranular gas bubble swelling (/)"])
-    print("fission gas release (/):      ", last["Fission gas release (/)"])
+    print("fission gas release (%):      ", 100 * last["Fission gas release (/)"])
 
-For 1273 K the result is a bubble concentration of 5.9e23 bub/m\ :sup:`3`, a bubble radius of 0.50 nm, an intragranular swelling of 0.031 % and a fission gas release of 13%. The experimental values of Baker, in ``validation/baker/data/``, are 8.7e23 bub/m\ :sup:`3`, 0.55 nm and 0.06 %.
+For 1273 K the result is a bubble concentration of 5.9e23 bub/m\ :sup:`3`, a bubble radius of 0.50 nm, an intragranular swelling of 0.031 % and a fission gas release of 13%. The experimental values of Baker, in ``validation/baker/data/``, are 8.7e23 bub/m\ :sup:`3`, 0.55 nm and 0.06 %. Baker measured the intragranular bubbles and the swelling, not the gas release, so the computed fission gas release has no experimental counterpart in this case. In ``output.txt`` both swelling and gas release are fractions (unit ``/``); the script converts them to percent.
 
 **Regression.** ``output_gold.txt`` is the reference output of the case, with the same layout. If the code is unchanged, ``output.txt`` agrees with it; this is what ``python3 -m testing.runner --baker`` checks for all nine temperatures. ``validation/baker/parity_plot.py`` collects the last row of every case and plots it against the experimental data.
 
@@ -150,7 +150,7 @@ Things to try
 ~~~~~~~~~~~~~
 
 - Change the temperature in ``input_history.txt`` (both rows) and compare with the corresponding Baker case.
-- Switch off grain growth (``iGrainGrowth = 0``) and see the effect on the gas release.
+- Switch off grain growth (``iGrainGrowth = 0``) and see the effect on the gas release. Use a high-temperature case, e.g. ``test_Baker1977__1873K``: at 1273 K the limiting grain size of the grain-growth models is smaller than the initial grain size, so the grain does not grow and the flag has no effect (see :doc:`models/grain_growth`). At 1873 K, the grain radius grows from 5 to about 22 µm and the gas release drops from about 49 % without grain growth to about 15 % with it.
 - Add an ``input_scaling_factors.txt`` containing ``2.0 # sf_resolution_rate`` and observe the change of the bubble concentration and radius.
 
 Additional short examples

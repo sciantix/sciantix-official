@@ -75,7 +75,7 @@ Execute `sciantix.x` within the directory containing your input files, or provid
 Run `./build/sciantix.x --help` to list the expected input files.
 
 ### Input preparation
-Refer to the [Input File Explanation](utilities/InputExplanation.md) for detailed syntax.
+The format of the input files is described in the [Input Files](https://sciantix.github.io/sciantix-official/input_files.html) page of the documentation, and a step-by-step tutorial on a complete case is given in [Examples](https://sciantix.github.io/sciantix-official/examples.html).
 Generation scripts for template input files are available in `utilities/inputExample/`:
 ```bash
 python3 utilities/inputExample/print_input_settings.py
@@ -121,6 +121,11 @@ cd docs
 make html
 ```
 The HTML documentation is written to `docs/build/html/` (open `index.html`).
+
+# Support
+
+- **Questions, bug reports and feature requests:** open an issue on the [GitHub issue tracker](https://github.com/sciantix/sciantix-official/issues). Please include the output of `sciantix.x --version` and, for a bug, the input files of the case.
+- **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 # How to cite
 

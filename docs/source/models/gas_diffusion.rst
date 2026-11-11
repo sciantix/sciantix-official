@@ -18,6 +18,8 @@ the ``iDiffusionSolver`` input flag (values 1, 2 or 3). If the flag is not set
 or set to a disabling value, the routine returns without updating diffusion
 variables.
 
+The diffusivity of the fission gases is selected by ``iFissionProductDiffusivity`` and that of helium by ``iHeDiffusivity``. The options of these flags are listed in :ref:`input_settings.txt <input-settings>`.
+
 Inputs
 ------
 
