@@ -169,7 +169,7 @@ def main():
     fig.tight_layout(rect=(0, 0, 1, 0.96))
     fig.savefig(os.path.join(outdir, "overview.png"), dpi=180)
 
-    plt.show()
+    plt.close("all")
 
 
 if __name__ == "__main__":

@@ -3,7 +3,8 @@ This is a python script to write the SCIANTIX default input file "input_initial_
 
 Every entry is written as "<value(s)>  # <Key> (<description>)" and SCIANTIX looks it up by
 <Key>, so the order of the lines is irrelevant and an entry left out takes its default (0).
-See utilities/InputExplanation.md.
+See the Input Files page of the documentation:
+https://sciantix.github.io/sciantix-official/input_files.html
 
 @author G. Zullo
 

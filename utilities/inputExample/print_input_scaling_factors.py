@@ -3,7 +3,8 @@ This is a python script to write the SCIANTIX optional input file "input_scaling
 
 Every entry is written as "<value>  # <Key> (<description>)" and SCIANTIX looks it up by <Key>,
 so the order of the lines is irrelevant and a factor left out defaults to 1.0.
-See utilities/InputExplanation.md.
+See the Input Files page of the documentation:
+https://sciantix.github.io/sciantix-official/input_files.html
 
 @author G. Zullo
 

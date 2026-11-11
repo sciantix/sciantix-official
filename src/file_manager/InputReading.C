@@ -176,7 +176,8 @@ void ReportUnrecognisedEntries(const std::string& file_name, const NamedInput& p
         if (!parsed.consumed.count(entry.first))
             ErrorMessages::Fatal(file_name.c_str(),
                                  "the entry \"" + entry.first +
-                                     "\" is not one this file accepts; see utilities/InputExplanation.md");
+                                     "\" is not one this file accepts; see the Input Files page of the documentation "
+                                     "(https://sciantix.github.io/sciantix-official/input_files.html)");
 }
 
 /// Keys of input_scaling_factors.txt, by index in Sciantix_scaling_factors[].
