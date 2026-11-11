@@ -88,17 +88,18 @@ void printHelp()
  * - release of radioactive fission gases
  * The validation database is accessible in the *regression* folder.
  * @param argc Number of command-line arguments.
- * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the
- * input file.
+ * @param argv Array of command-line arguments: the options -h/--help and -v/--version, in any
+ * position, and at most one input directory.
  * @return Returns 0 upon successful completion of the program.
  */
 int main(int argc, char** argv)
 {
     clock_t timer;
 
-    if (argc >= 2)
+    std::string input_directory;
+    for (int i = 1; i < argc; ++i)
     {
-        const std::string arg = argv[1];
+        const std::string arg = argv[i];
         if (arg == "-h" || arg == "--help")
         {
             printHelp();
@@ -109,9 +110,20 @@ int main(int argc, char** argv)
             std::cout << "SCIANTIX " << SCIANTIX_VERSION << std::endl;
             return 0;
         }
+        if (arg.size() > 1 && arg[0] == '-')
+        {
+            std::cerr << "sciantix.x: unknown option '" << arg << "'. Use --help for the usage." << std::endl;
+            return 1;
+        }
+        if (!input_directory.empty())
+        {
+            std::cerr << "sciantix.x: only one input directory can be given. Use --help for the usage." << std::endl;
+            return 1;
+        }
+        input_directory = arg;
     }
 
-    if (argc < 2)
+    if (input_directory.empty())
     {
         std::cerr << "Using current directory." << std::endl;
         std::cout << "Use ./sciantix.x ../input_path/ in the working directory" << std::endl;
@@ -119,7 +131,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        TestPath = argv[1];
+        TestPath = input_directory;
         if (TestPath.back() != '/')
         {
             TestPath += '/';
