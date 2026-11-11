@@ -89,3 +89,12 @@ jobs:
 
       - name: Run tests
         run: python3 -m testing.runner --mode-gold 0
+
+      - name: Upload outputs of the failed cases
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-outputs
+          path: |
+            validation/**/output.txt
+            verification/**/output.txt
