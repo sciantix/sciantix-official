@@ -182,8 +182,26 @@ class Simulation
      */
     void GasDiffusion();
 
-    // # COARSENING: two-population intragranular bubble evolution.
-    void BaraniCoarsening();
+    /**
+     * @brief Dislocation density rho_d(B, T), correlation fitted to Veshchunov & Shestak (2009), Fig. 5.
+     * Defined with the two-population intragranular bubble model (iIntraGranularBubbleBehavior = 5).
+     *
+     * @author G. Nicodemo
+     * @author G. Zullo
+     *
+     */
+    void DislocationDensity();
+
+    /**
+     * @brief Dislocation-bubble population of the two-population intragranular bubble model
+     * (iIntraGranularBubbleBehavior = 5): nucleation along dislocations, gas trapping and re-solution,
+     * vacancy absorption, coalescence. Called by IntraGranularBubbleBehavior().
+     *
+     * @author G. Nicodemo
+     * @author G. Zullo
+     *
+     */
+    void IntraGranularBubbleCoarsening();
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.

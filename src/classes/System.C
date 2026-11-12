@@ -16,7 +16,7 @@
 
 #include <SourceHandler.h>
 #include "System.h"
-#include "BaraniCoarsening.h"
+#include "IntraGranularBubbleBehavior.h"
 #include "MainVariables.h"
 #include <algorithm>
 #include <fstream>
@@ -946,9 +946,25 @@ void System::setResolutionRate(int                              input_value,
     {
         case 98: // # COARSENING: Setyawan per-atom resolution with radius in nm.
         {
-            resolution_rate = barani_coarsening::resolution(
+            resolution_rate = intragranular_coarsening::resolution(
                 sciantix_variable["Intragranular bubble radius"].getInitialValue(),
                 history_variable["Fission rate"].getFinalValue());
+            // # COARSENING: the bubble gas of the solver holds both populations (Eq. 1): gas-weighted mean of
+            // alpha_b and alpha_d with the previous-step split.
+            if (sciantix_variable.isElementPresent("Coarsening dislocation radius"))
+            {
+                double total = 0.0, dislocation = 0.0;
+                for (const std::string g : {"Xe", "Kr"})
+                {
+                    total += std::max(sciantix_variable[g + " in intragranular bubbles"].getInitialValue(), 0.0);
+                    dislocation += std::max(sciantix_variable[g + " coarsening partition state"].getInitialValue(), 0.0);
+                }
+                const double f = total > 0.0 ? std::min(dislocation / total, 1.0) : 0.0;
+                resolution_rate = (1.0 - f) * resolution_rate +
+                                  f * intragranular_coarsening::resolution(
+                                          sciantix_variable["Coarsening dislocation radius"].getInitialValue(),
+                                          history_variable["Fission rate"].getFinalValue());
+            }
             resolution_rate *= scaling_factors["Resolution rate"].getValue();
             reference += "Barani et al. (2020), reference coarsening formulation; Setyawan et al. (2018).\n";
             break;
@@ -1312,6 +1328,13 @@ void System::setTrappingRate(int                              input_value,
                 trapping_rate = 4.0 * M_PI * diffusivity *
                                 (sciantix_variable["Intragranular bubble radius"].getFinalValue() + radius_in_lattice) *
                                 sciantix_variable["Intragranular bubble concentration"].getFinalValue();
+
+            // # COARSENING: dislocation bubbles and lines also trap the dissolved gas (Eq. 1): beta_d + beta' from
+            // IntraGranularBubbleCoarsening, previous step, computed with the fission-gas diffusivity.
+            if (sciantix_variable.isElementPresent("Coarsening dislocation trapping rate") &&
+                (getGasName() == "Xe" || getGasName() == "Kr"))
+                trapping_rate +=
+                    std::max(sciantix_variable["Coarsening dislocation trapping rate"].getInitialValue(), 0.0);
 
             trapping_rate *= scaling_factors["Trapping rate"].getValue();
 

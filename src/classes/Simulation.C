@@ -77,6 +77,8 @@ void Simulation::execute()
 
     GrainBoundarySource();
 
+    DislocationDensity();
+
     IntraGranularBubbleBehavior();
 
     GasDiffusion();

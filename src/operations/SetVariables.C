@@ -89,6 +89,10 @@ void Simulation::setVariables(int    Sciantix_options[],
         sciantix_variable.push(SciantixVariable("Xe in bulk bubbles", "(at/m3)", Sciantix_variables[181], Sciantix_variables[181], 1));
         sciantix_variable.push(SciantixVariable("Kr in bulk bubbles", "(at/m3)", Sciantix_variables[182], Sciantix_variables[182], 1));
         sciantix_variable.push(SciantixVariable("Coarsening line trapping rate", "(1/s)", Sciantix_variables[183], Sciantix_variables[183], 1));
+        // # COARSENING: beta_d + beta', added to the trapping of the dissolved gas in System (next step).
+        sciantix_variable.push(SciantixVariable("Coarsening dislocation trapping rate", "(1/s)", Sciantix_variables[184], Sciantix_variables[184], 0));
+        // # COARSENING: rho_d from the DislocationDensity model.
+        sciantix_variable.push(SciantixVariable("Dislocation density", "(m/m3)", Sciantix_variables[185], Sciantix_variables[185], 1));
         sciantix_variable.push(SciantixVariable("Xe in dislocation bubbles", "(at/m3)", 0, 0, 1));
         sciantix_variable.push(SciantixVariable("Kr in dislocation bubbles", "(at/m3)", 0, 0, 1));
     }

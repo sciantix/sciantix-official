@@ -58,7 +58,8 @@ The saved Hart reference has RMSE log10 R/Nd/IG/GB of
 114 outputs against hashes from the original local campaigns; its result is
 recorded in regression/White_COARSENING/reproduction_validation.json.
 
-Sources: [correlations](../include/models/BaraniCoarsening.h),
-[structural update](../src/models/BaraniCoarsening.C),
+Sources: [kernels](../include/models/IntraGranularBubbleBehavior.h),
+[model](../src/models/IntraGranularBubbleBehavior.C) (IntraGranularBubbleCoarsening),
+[dislocation density](../src/models/DislocationDensity.C),
 [White regression](../regression/White_COARSENING/README.md),
 [reproduction check](../regression/White_COARSENING/verify_reference.py).

@@ -143,6 +143,8 @@ void Simulation::update(double Sciantix_variables[],
         Sciantix_variables[181] = sciantix_variable["Xe in bulk bubbles"].getFinalValue();
         Sciantix_variables[182] = sciantix_variable["Kr in bulk bubbles"].getFinalValue();
         Sciantix_variables[183] = sciantix_variable["Coarsening line trapping rate"].getFinalValue();
+        Sciantix_variables[184] = sciantix_variable["Coarsening dislocation trapping rate"].getFinalValue();
+        Sciantix_variables[185] = sciantix_variable["Dislocation density"].getFinalValue();
     }
 
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();
