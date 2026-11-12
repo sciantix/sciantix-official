@@ -1,0 +1,33 @@
+{
+  "prepared_on": "2026-11-12",
+  "documentation": "Concise English summaries; full historical documents remain outside this repository",
+  "unchanged_copies": [
+    {
+      "path": "dd_fit.py",
+      "source_workspace_relative": "developments/analytic_rho/inputs/dd_fit.py",
+      "sha256": "77d5d48b484b675dc07f942783054514256e80f906097bfef8f11494a66bf9dc"
+    },
+    {
+      "path": "kjma_fit_comparison.py",
+      "source_workspace_relative": "developments/analytic_rho/inputs/kjma_fit_comparison.py",
+      "sha256": "9f1fd672150559e5e81761eaa7435ccb9e0da294747e02193b7b70c774351de8"
+    },
+    {
+      "path": "fit_parameters.json",
+      "source_workspace_relative": "developments/analytic_rho/fit_parameters.json",
+      "sha256": "337535eaeb9477a0abc0e8e59711e3abf4a79cc367dff76b97a2778f1130db42"
+    }
+  ],
+  "source_reports_workspace_relative": [
+    "analysis/ANALISI_COARSENING.md",
+    "analysis/SVILUPPI_COARSENING.md",
+    "reference/README.md",
+    "developments/vesh_hart_1p5b/README.md",
+    "developments/analytic_rho/README.md",
+    "TU/TRANSURANUS_POLIMI/ValidationGN5_analytic_4cases/RESULTS.md",
+    "developments/hart_radius_sensitivity/README.md",
+    "developments/reversible_vacancies_20261029/README.md"
+  ],
+  "previous_remote_context_tree": "615ffa5e4fcb1eb37b0222f8c38c308575e0a14b",
+  "previous_remote_context": "Preserved in branch history; not an authoritative description of the current implementation"
+}

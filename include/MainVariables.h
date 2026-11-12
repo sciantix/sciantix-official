@@ -8,14 +8,16 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef MAIN_VARIABLES_H
 #define MAIN_VARIABLES_H
+
+#include "Source.h"
 
 #include <fstream>
 #include <vector>
@@ -30,11 +32,25 @@
  *
  */
 
-extern int    Sciantix_options[40];
-extern double Sciantix_history[20];
-extern double Sciantix_variables[300];
-extern double Sciantix_scaling_factors[20];
-extern double Sciantix_diffusion_modes[720];
+// Sizes of the global state arrays. The diffusion-mode array holds N_MODE_BLOCKS
+// contiguous blocks of N_DIFFUSION_MODES spectral modes each: (Xe, Kr, He, Xe133,
+// Kr85m, Xe in HBS) x (initial conditions, solution, bubbles).
+constexpr int SCIANTIX_OPTIONS_SIZE         = 40;
+constexpr int SCIANTIX_HISTORY_SIZE         = 20;
+constexpr int SCIANTIX_VARIABLES_SIZE       = 300;
+constexpr int SCIANTIX_SCALING_FACTORS_SIZE = 20;
+constexpr int N_DIFFUSION_MODES             = 40;
+constexpr int N_MODE_BLOCKS                 = 24;
+constexpr int SCIANTIX_DIFFUSION_MODES_SIZE = N_MODE_BLOCKS * N_DIFFUSION_MODES;
+
+extern int    Sciantix_options[SCIANTIX_OPTIONS_SIZE];
+extern double Sciantix_history[SCIANTIX_HISTORY_SIZE];
+extern double Sciantix_variables[SCIANTIX_VARIABLES_SIZE];
+extern double Sciantix_scaling_factors[SCIANTIX_SCALING_FACTORS_SIZE];
+extern double Sciantix_diffusion_modes[SCIANTIX_DIFFUSION_MODES_SIZE];
+
+// Companion mode array used by the non-uniform-source (NUS) spectral solver.
+extern double Sciantix_diffusion_modes_NUS[SCIANTIX_DIFFUSION_MODES_SIZE];
 
 extern long long int Time_step_number;
 extern double        Time_h, dTime_h, Time_end_h;
@@ -59,5 +75,15 @@ extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
+extern std::vector<Source> sources_input;
+extern std::vector<Source> sources_interp;
+extern std::vector<Source> sources_correct;
+
+extern std::vector<Source> initial_distribution;
+extern bool                ICfile;
+extern double              visualization;
+extern double              animation;
+extern double              iNonSym;
+extern double              GBresolve;
 
 #endif

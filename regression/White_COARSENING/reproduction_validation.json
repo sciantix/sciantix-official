@@ -1,0 +1,12 @@
+{
+  "reference": "Saved local analytic_rho campaign and frozen Hart controls",
+  "source_files": 79,
+  "input_files": 457,
+  "byte_identical_outputs": {
+    "legacy": 38,
+    "barani": 38,
+    "analytic_rho": 38
+  },
+  "mismatches": [],
+  "text_comparison": "SHA256 after CRLF-to-LF normalization; outputs use raw bytes"
+}

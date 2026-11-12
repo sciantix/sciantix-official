@@ -8,14 +8,23 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include <SourceHandler.h>
 #include "System.h"
+#include "BaraniCoarsening.h"
+#include "MainVariables.h"
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <sstream>
+#include <string>
+#include <vector>
 
 void System::setRestructuredMatrix(bool y)
 {
@@ -251,6 +260,102 @@ double System::getHeliumDiffusivity()
     return diffusivity;
 }
 
+// NEWLY ADDED
+void System::setHeliumDiffusivityNUS(int input_value, SciantixArray<SciantixVariable>& history_variable)
+{
+    /**
+     * ### setHeliumDiffusivity
+     * @brief The intra-granular helium diffusivity within the fuel grain is set according to the input_variable
+     * iHeDiffusivity
+     *
+     */
+    switch (input_value)
+    {
+        case 0:
+        {
+            /**
+             * @brief iHeDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
+             *
+             */
+
+            reference += "iHeDiffusivity: constant intragranular diffusivity.\n\t";
+            diffusivity_NUS = 7e-19;
+            break;
+        }
+
+        case 1:
+        {
+            /**
+             * @brief iHeDiffusivity = 1 is the best-estimate correlation, from data available in literature, for
+             * samples with no or very limited lattice damage. This correlation is also recommended for simulations of
+             * helium in UO<sub>2</sub> samples in which **infusion** technique has been adopted.
+             * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L.
+             * Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
+             *
+             */
+
+            reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 "
+                         "(2018) 265-271.\n\t";
+            diffusivity_NUS = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue());
+            break;
+        }
+
+        case 2:
+        {
+            /**
+             * @brief iHeDiffusivity = 2 is the best-estimate correlation, from data available in literature, for
+             * samples with significant lattice damage. This correlation is also recommended for simulations of helium
+             * in UO<sub>2</sub> samples in which **implantation** technique has been adopted.
+             * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L.
+             * Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
+             *
+             */
+
+            reference +=
+                "(significant lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
+            diffusivity_NUS = 3.3e-10 * exp(-19032.8 / history_variable["Temperature"].getFinalValue());
+            break;
+        }
+
+        case 3:
+        {
+            /**
+             * @brief iHeDiffusivity = 2 sets the single gas-atom intra-granular diffusivity equal to the correlation
+             * reported in <a href="../../references/pdf_link/Talip_et_al_2014.pdf" target="_blank">Z. Talip et al. JNM
+             * 445 (2014) 117-127</a>.
+             *
+             */
+
+            reference += "iHeDiffusivity: Z. Talip et al. JNM 445 (2014) 117-127.\n\t";
+            diffusivity_NUS = 1.0e-7 * exp(-30057.9 / history_variable["Temperature"].getFinalValue());
+            break;
+        }
+
+        case 99:
+        {
+            /**
+             * @brief iHeDiffusivity = 4 corresponds to a null intra-granular diffusivity value
+             *
+             */
+
+            reference += "iHeDiffusivity: null intragranular diffusivity.\n\t";
+            diffusivity_NUS = 0.0;
+            break;
+        }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "iHeDiffusivity", input_value);
+            break;
+    }
+}
+
+double System::getHeliumDiffusivityNUS()
+{
+    /// Member function to get the bubble diffusivity of the isotope in the fuel matrix
+    return diffusivity_NUS;
+}
+//
+
 void System::setFissionGasDiffusivity(int                              input_value,
                                       SciantixArray<SciantixVariable>& sciantix_variable,
                                       SciantixArray<SciantixVariable>& history_variable,
@@ -450,9 +555,8 @@ void System::setFissionGasDiffusivity(int                              input_val
             double Cr_content = Cr_atoms / (Cr_atoms + U_content) * 100;            // at.%
 
             // linear fitting of amorphous Cr doped-UO2 data
-            double activation_energy = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
-            double Pre_exponential_factor =
-                scaling_factors["Diffusivity2"].getValue() * (Cr_content - 41.93) / (-1.376e+9);
+            double activation_energy      = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
+            double Pre_exponential_factor = (Cr_content - 41.93) / (-1.376e+9);
 
             diffusivity =
                 Pre_exponential_factor *
@@ -616,6 +720,203 @@ double System::getFissionGasDiffusivity()
     return diffusivity;
 }
 
+// NEWLY ADDED
+void System::setFissionGasDiffusivityNUS(int                              input_value,
+                                         SciantixArray<SciantixVariable>& sciantix_variable,
+                                         SciantixArray<SciantixVariable>& history_variable,
+                                         SciantixArray<InputVariable>&    scaling_factors,
+                                         std::vector<Source>&             sourcesinput)
+{
+    /**
+     * ### setFissionGasDiffusivity
+     * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to
+     * the input_variable iFissionGasDiffusivity
+     *
+     */
+    switch (input_value)
+    {
+        case 0:
+        {
+            /**
+             * @brief iFissionGasDiffusivity = 0 corresponds to a constant intra-granular diffusivity value, equal to
+             * 7e-19 m^2/s.
+             *
+             */
+
+            reference += "iFissionGasDiffusivity: constant diffusivity (7e-19 m2/s).\n\t";
+            diffusivity_NUS = 7e-19;
+            diffusivity_NUS *= scaling_factors["Diffusivity"].getValue();
+
+            break;
+        }
+
+        case 1:
+        {
+            /**
+             * @brief iFissionGasDiffusivity = 1 set the fission gas (xenon and krypton) single-atom intragranular
+             * diffusivity equal to the expression in <a href="../../references/pdf_link/Turnbull_et_al_1988.pdf"
+             * target="_blank">Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.
+             *
+             */
+
+            reference += "iFissionGasDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.\n\t";
+
+            double      temperature  = history_variable["Temperature"].getFinalValue();
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
+            double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+            double d3 = 8.0e-40 * fission_rate;
+
+            diffusivity_NUS = d1 + d2 + d3;
+            diffusivity_NUS *= scaling_factors["Diffusivity"].getValue();
+
+            break;
+        }
+
+        case 2:
+        {
+            /**
+             * @brief iFissionGasDiffusivity = 2 set the xenon effective intragranular diffusivity equal to the
+             * expression in <a href="../../references/pdf_link/Matzke_1980.pdf" target="_blank">Matzke (1980),
+             * Radiation Effects, 53, 219-242</a>.
+             *
+             */
+
+            reference += "iFissionGasDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
+            diffusivity_NUS = 5.0e-08 * exp(-40262.0 / history_variable["Temperature"].getFinalValue());
+            diffusivity_NUS *= scaling_factors["Diffusivity"].getValue();
+
+            break;
+        }
+
+        case 3:
+        {
+            /**
+             * @brief iFissionGasDiffusivity = 3 set the xenon single-atom intragranular diffusivity equal to the
+             * expression in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf" target="_blank">Turnbull et
+             * al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model</a>.
+             *
+             */
+
+            reference += "iFissionGasDiffusivity: Turnbull et al., (2010), Background and Derivation of ANS-5.4 "
+                         "Standard Fission Product Release Model.\n\t";
+
+            double      temperature  = history_variable["Temperature"].getFinalValue();
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            double d1 = 7.6e-11 * exp(-4.86e-19 / (boltzmann_constant * temperature));
+            double d2 = 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+            double d3 = 2.0e-40 * fission_rate;
+
+            diffusivity_NUS = d1 + d2 + d3;
+            diffusivity_NUS *= scaling_factors["Diffusivity"].getValue();
+
+            break;
+        }
+
+        case 4:
+        {
+            /**
+             * @brief iFissionGasDiffusivity = 4 set the xenon single-atom intragranular diffusivity equal to the
+             * expression in <a href="../../references/pdf_link/Ronchi_2007.pdf" target="_blank">Ronchi, C. High Temp
+             * 45, 552-571 (2007)</a>.
+             *
+             */
+
+            reference += "iFissionGasDiffusivity: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
+
+            double      temperature  = history_variable["Temperature"].getFinalValue();
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
+            double d2 = 6.64e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+            double d3 = 1.2e-39 * fission_rate;
+
+            diffusivity_NUS = d1 + d2 + d3;
+            diffusivity_NUS *= scaling_factors["Diffusivity"].getValue();
+
+            break;
+        }
+
+        case 5:
+        {
+            /**
+             * @brief this case is for the UO2HBS.
+             * @see This value is from <a href="../../references/pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani
+             * et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
+             *
+             */
+
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+            diffusivity_NUS          = 4.5e-42 * fission_rate;
+            diffusivity_NUS *= scaling_factors["Diffusivity"].getValue();
+
+            reference += "HBS : Inert fission gas diffusivity in UO2-HBS.\n\t";
+            break;
+        }
+
+        case 6:
+        {
+            /**
+             * @brief this case is for
+             *
+             */
+            double      x            = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+            double      temperature  = history_variable["Temperature"].getFinalValue();
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
+            double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+            double d3 = 8.0e-40 * fission_rate;
+
+            double S                 = exp(-74100 / temperature);
+            double G                 = exp(-35800 / temperature);
+            double uranium_vacancies = 0.0;
+
+            uranium_vacancies =
+                S / pow(G, 2.0) * (0.5 * pow(x, 2.0) + G + 0.5 * pow((pow(x, 4.0) + 4 * G * pow(x, 2.0)), 0.5));
+
+            double d4 = pow(3e-10, 2) * 1e13 * exp(-27800 / temperature) * uranium_vacancies;
+
+            diffusivity_NUS = d1 + d2 + d3 + d4;
+
+            diffusivity_NUS *= scaling_factors["Diffusivity"].getValue();
+
+            break;
+        }
+
+        case 99:
+        {
+            /**
+             * @brief iFissionGasDiffusivity = 99 set the xenon single-atom intragranular diffusivity to zero.
+             *
+             */
+
+            reference += "iFissionGasDiffusivity: Test case: zero diffusion coefficient.\n\t";
+            diffusivity_NUS = 0.0;
+
+            break;
+        }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "iFissionGasDiffusivity", input_value);
+            break;
+    }
+}
+
+double System::getFissionGasDiffusivityNUS()
+{
+    /// Member function to get the diffusivity of the isotope in the fuel matrix
+    return diffusivity_NUS;
+}
+//
+
 void System::setHenryConstant(double h)
 {
     /// Member function to set the value of the Henry constant
@@ -643,6 +944,15 @@ void System::setResolutionRate(int                              input_value,
 
     switch (input_value)
     {
+        case 98: // # COARSENING: Setyawan per-atom resolution with radius in nm.
+        {
+            resolution_rate = barani_coarsening::resolution(
+                sciantix_variable["Intragranular bubble radius"].getInitialValue(),
+                history_variable["Fission rate"].getFinalValue());
+            resolution_rate *= scaling_factors["Resolution rate"].getValue();
+            reference += "Barani et al. (2020), reference coarsening formulation; Setyawan et al. (2018).\n";
+            break;
+        }
         case 0:
         {
             /**
@@ -761,27 +1071,6 @@ void System::setResolutionRate(int                              input_value,
             break;
         }
 
-        case 4:
-        {
-            // COARSENING: Setyawan-informed size-dependent re-solution used by the Barani two-size model.
-            reference += "iResolutionRate: Setyawan-informed size-dependent re-solution for COARSENING.\n\t";
-            const double radius = sciantix_variable["Intragranular bubble radius"].getFinalValue();
-            if (radius > 0.0)
-            {
-                const double a           = 9.49e-24;  // COARSENING: m3, Barani et al. Table 1.
-                const double b1          = 7.07e-2;   // COARSENING: 1/m, Barani et al. Table 1.
-                const double b0          = 9.18e-23;  // COARSENING: m3, Barani et al. Table 1.
-                const double c           = 7.982;     // COARSENING: 1/m2, Barani et al. Table 1.
-                const double d           = 3.71e-2;   // COARSENING: 1/m2, Barani et al. Table 1.
-                const double denominator = 1.0 + c * pow(radius, 2.0) * exp(-d * pow(radius, 2.0));
-                const double volume_rate = (a * exp(-b1 * radius) + b0 - a) / denominator;
-                resolution_rate = std::max(volume_rate * history_variable["Fission rate"].getFinalValue(), 0.0);
-            }
-            else
-                resolution_rate = 0.0;
-            break;
-        }
-
         case 99:
         {
             /**
@@ -798,7 +1087,6 @@ void System::setResolutionRate(int                              input_value,
             ErrorMessages::Switch(__FILE__, "iResolutionRate", input_value);
             break;
     }
-    resolution_rate *= scaling_factors["Resolution rate"].getValue();
 }
 
 double System::getResolutionRate()
@@ -807,6 +1095,168 @@ double System::getResolutionRate()
     /// nanobubbles
     return resolution_rate;
 }
+
+// NEWLY ADDED
+void System::setResolutionRateNUS(int                              input_value,
+                                  SciantixArray<SciantixVariable>& sciantix_variable,
+                                  SciantixArray<SciantixVariable>& history_variable,
+                                  SciantixArray<InputVariable>&    scaling_factors,
+                                  SciantixArray<Matrix>&           matrices,
+                                  std::vector<Source>&             sourcesinput)
+{
+    /**
+     * ### setResolutionRate
+     * @brief The helium intra-granular resolution rate is set according to the input_variable iResolutionRate.
+     *
+     */
+
+    switch (input_value)
+    {
+        case 0:
+        {
+            /**
+             * @brief iResolutionRate = 0 corresponds to a constant intra-granular resolution rate, equal to 0.0001 1/s.
+             * @see This value is from <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf"
+             * target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
+             *
+             */
+
+            reference +=
+                "iResolutionRate: Constant resolution rate from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.\n\t";
+            resolution_rate_NUS = 1.0e-4;
+            resolution_rate_NUS *= scaling_factors["Resolution rate"].getValue();
+            break;
+        }
+
+        case 1:
+        {
+            /**
+             * @brief iResolutionRate = 1 corresponds to the irradiation-induced intra-granular resolution rate from <a
+             * href="../../references/pdf_link/Turnbull_1971.pdf" target="_blank">J.A. Turnbull, JNM, 38 (1971), 203</a>.
+             *
+             */
+
+            reference += "iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.\n\t";
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            resolution_rate_NUS = 2.0 * M_PI * matrices["UO2"].getFissionFragmentRange() *
+                                  pow(matrices["UO2"].getFissionFragmentInfluenceRadius() +
+                                          sciantix_variable["Intragranular bubble radius"].getFinalValue(),
+                                      2) *
+                                  fission_rate;
+            resolution_rate_NUS *= scaling_factors["Resolution rate"].getValue();
+
+            break;
+        }
+
+        case 2:
+        {
+            /**
+             * @brief iResolutionRate = 2 corresponds to the irradiation-induced intra-granular resolution rate from <a
+             href="../../references/pdf_link/Losonen_2002.pdf" target="_blank">P. Losonen, JNM 304 (2002) 29-49</a>.
+
+             *
+             */
+
+            reference += "iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.\n\t";
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            resolution_rate_NUS = 3.0e-23 * fission_rate;
+            resolution_rate_NUS *= scaling_factors["Resolution rate"].getValue();
+
+            break;
+        }
+
+        case 3:
+        {
+            /**
+             * @brief iResolutionRate = 3 corresponds to the intra-granular resolution rate from <a
+             * href="../../references/pdf_link/Cognini_et_al_2021.pdf" target="_blank">Cognini et al. NET 53 (2021)
+             * 562-571</a>.
+             *
+             * iResolutionRate = 3 includes the helium solubility in the resolution rate, with a thermal resolution term.
+             *
+             */
+
+            reference += "iResolutionRate: Cognini et al. NET 53 (2021) 562-571.\n\t";
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            /// irradiation_resolution_rate
+            double irradiation_resolution_rate =
+                2.0 * M_PI * matrices["UO2"].getFissionFragmentRange() *
+                pow(matrices["UO2"].getFissionFragmentInfluenceRadius() +
+                        sciantix_variable["Intragranular bubble radius"].getFinalValue(),
+                    2) *
+                fission_rate;
+
+            /// compressibility_factor
+            double helium_hard_sphere_diameter =
+                2.973e-10 * (0.8414 - 0.05 * log(history_variable["Temperature"].getFinalValue() / 10.985));  // (m)
+            double helium_volume_in_bubble =
+                matrices["UO2"].getOctahedralInterstitialSite();  // 7.8e-30, approximation of saturated nanobubbles
+            double y = M_PI * pow(helium_hard_sphere_diameter, 3) / (6.0 * helium_volume_in_bubble);
+            double compressibility_factor = (1.0 + y + pow(y, 2) - pow(y, 3)) / (pow(1.0 - y, 3));
+
+            /// thermal_resolution_rate
+            // thermal_resolution_rate = 3 D k_H k_B T Z / R_b^2
+            double thermal_resolution_rate;
+            if (sciantix_variable["Intragranular bubble radius"].getFinalValue() > 0.0)
+            {
+                thermal_resolution_rate = 3.0 * diffusivity_NUS * henry_constant * boltzmann_constant *
+                                          history_variable["Temperature"].getFinalValue() * compressibility_factor /
+                                          pow(sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2);
+                if (sciantix_variable["Intragranular bubble radius"].getFinalValue() < (2.0 * radius_in_lattice))
+                    thermal_resolution_rate =
+                        3 * diffusivity_NUS * henry_constant * boltzmann_constant *
+                            history_variable["Temperature"].getFinalValue() * compressibility_factor /
+                            pow(sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) -
+                        2.0 * 3.0 * diffusivity_NUS * henry_constant * boltzmann_constant *
+                            history_variable["Temperature"].getFinalValue() * compressibility_factor *
+                            (sciantix_variable["Intragranular bubble radius"].getFinalValue() - radius_in_lattice) /
+                            pow(radius_in_lattice, 3) +
+                        3.0 * 3.0 * diffusivity_NUS * henry_constant * boltzmann_constant *
+                            history_variable["Temperature"].getFinalValue() * compressibility_factor *
+                            pow(sciantix_variable["Intragranular bubble radius"].getFinalValue() - radius_in_lattice,
+                                2) /
+                            pow(radius_in_lattice, 4);
+            }
+            else
+                thermal_resolution_rate = 0.0;
+
+            resolution_rate_NUS = irradiation_resolution_rate + thermal_resolution_rate;
+            resolution_rate_NUS *= scaling_factors["Resolution rate"].getValue();
+
+            break;
+        }
+
+        case 99:
+        {
+            /**
+             * @brief iResolutionRate = 99 corresponds to a null intra-granular resolution rate.
+             *
+             */
+
+            reference += "iResolutionRate: Null resolution rate.\n\t";
+            resolution_rate_NUS = 0.0;
+            break;
+        }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "iResolutionRate", input_value);
+            break;
+    }
+    resolution_rate_NUS *= scaling_factors["Resolution rate"].getValue();
+}
+
+double System::getResolutionRateNUS()
+{
+    /// Member function to get the value of the resolution rate of the isotope from fuel matrix nanobubbles
+    return resolution_rate_NUS;
+}
+//
 
 void System::setTrappingRate(int                              input_value,
                              SciantixArray<SciantixVariable>& sciantix_variable,
@@ -865,23 +1315,6 @@ void System::setTrappingRate(int                              input_value,
 
             trapping_rate *= scaling_factors["Trapping rate"].getValue();
 
-            break;
-        }
-
-        case 2:
-        {
-            // COARSENING: Ham trapping for the bulk population; Barani dislocation trapping is added in model 4.
-            reference += "iTrappingRate: Ham bulk trapping plus Barani dislocation trapping for COARSENING.\n\t";
-
-            if (sciantix_variable["Intragranular bubble concentration"].getFinalValue() == 0.0)
-                trapping_rate = 0.0;
-
-            else
-                trapping_rate = 4.0 * M_PI * diffusivity *
-                                (sciantix_variable["Intragranular bubble radius"].getFinalValue() + radius_in_lattice) *
-                                sciantix_variable["Intragranular bubble concentration"].getFinalValue();
-
-            trapping_rate *= scaling_factors["Trapping rate"].getValue();
             break;
         }
 
@@ -954,17 +1387,6 @@ void System::setNucleationRate(int                              input_value,
             break;
         }
 
-        case 2:
-        {
-            // COARSENING: Olander-Wongsawaeng bulk nucleation plus Barani dislocation-bubble nucleation in model 4.
-            reference +=
-                "iNucleationRate: Olander-Wongsawaeng bulk plus Barani dislocation nucleation for COARSENING.\n\t";
-            nucleation_rate = 2.0 * history_variable["Fission rate"].getFinalValue() * 25;
-            nucleation_rate *= scaling_factors["Nucleation rate"].getValue();
-
-            break;
-        }
-
         case 99:
         {
             /**
@@ -987,6 +1409,78 @@ double System::getNucleationRate()
 {
     return nucleation_rate;
 }
+
+// NEWLY ADDED
+void System::setNucleationRateNUS(int                              input_value,
+                                  SciantixArray<SciantixVariable>& history_variable,
+                                  SciantixArray<SciantixVariable>& sciantix_variable,
+                                  SciantixArray<InputVariable>&    scaling_factors,
+                                  std::vector<Source>&             sourcesinput)
+{
+    /**
+     * ### setNucleationRate
+     * @brief Evaluation of the nucleation rate of intragranular gas bubble inside the UO<sub>2</sub> matrix
+     *
+     */
+    /// nucleation_rate
+    switch (input_value)
+    {
+        case 0:
+        {
+            /**
+             * @brief iNucleationRate = 0 correspond to the case with constant nucleation rate.
+             *
+             */
+
+            reference += "iNucleationRate: constant value.\n\t";
+            nucleation_rate_NUS = 4e20;
+            nucleation_rate_NUS *= scaling_factors["Nucleation rate"].getValue();
+
+            break;
+        }
+
+        case 1:
+        {
+            /**
+             * @brief iNucleationRate = 1 correspond to expression for intragranular bubble nucleation rate from
+             * @see <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander,
+             * Wongsawaeng, JNM, 354 (2006), 94-109</a>.
+             *
+             */
+
+            reference += "iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.\n\t";
+            const auto& source       = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      fission_rate = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), source);
+
+            nucleation_rate_NUS = 2.0 * fission_rate * 25;
+            nucleation_rate_NUS *= scaling_factors["Nucleation rate"].getValue();
+
+            break;
+        }
+
+        case 99:
+        {
+            /**
+             * @brief iNucleationRate = 99 correspond to case with zero nucleation rate.
+             */
+
+            reference += "iNucleationRate: Null nucleation rate.\n\t";
+            nucleation_rate_NUS = 0.0;
+
+            break;
+        }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "setNucleationRate", input_value);
+            break;
+    }
+}
+
+double System::getNucleationRateNUS()
+{
+    return nucleation_rate_NUS;
+}
+//
 
 void System::setPoreNucleationRate(double t)
 {
@@ -1107,5 +1601,179 @@ void System::setProductionRate(int                              input_value,
 
 double System::getProductionRate()
 {
+    // std::cout<<production_rate<<std::endl;
     return production_rate;
 }
+
+// NEWLY ADDED
+void System::setProductionRateNUS(int                              input_value,
+                                  SciantixArray<InputVariable>&    input_variable,
+                                  SciantixArray<SciantixVariable>& sciantix_variable,
+                                  SciantixArray<InputVariable>&    scaling_factors,
+                                  SciantixArray<SciantixVariable>& history_variable,
+                                  std::vector<Source>&             sourcesinput)
+{
+    /**
+     * ### setProductionRate
+     *
+     */
+    switch (input_value)
+    {
+        case 0:
+        {
+            reference += "No production rate.\n\t";
+            double      factor = 0;
+            const auto& source = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            // Ensure production_rate_NUS has correct sizes
+            production_rate_NUS.time             = source.time;
+            production_rate_NUS.NormalizedDomain = source.NormalizedDomain;
+            production_rate_NUS.Slopes.resize(source.Slopes.size());
+            production_rate_NUS.Intercepts.resize(source.Intercepts.size());
+
+            // Scale slopes
+            std::transform(source.Slopes.begin(),
+                           source.Slopes.end(),
+                           production_rate_NUS.Slopes.begin(),
+                           [factor](double x) { return x * factor; });  //(at/m4.s)
+
+            // Scale intercepts
+            std::transform(source.Intercepts.begin(),
+                           source.Intercepts.end(),
+                           production_rate_NUS.Intercepts.begin(),
+                           [factor](double x) { return x * factor; });  //(at/m3.s)
+
+            break;
+        }
+        case 1:
+        {
+            /**
+             * @brief Production rate = cumulative yield * fission rate density
+             *
+             */
+
+            double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+            double sf(1.0);
+            if (input_variable["iFuelMatrix"].getValue() == 1)
+                sf = 1.25;
+
+            reference += "Production rate = cumulative yield * fission rate density * (1 - alpha).\n\t";
+            double      factor = sf * (1 - alpha) * yield;
+            const auto& source = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            // Ensure production_rate_NUS has correct sizes
+            production_rate_NUS.time             = source.time;
+            production_rate_NUS.NormalizedDomain = source.NormalizedDomain;
+            production_rate_NUS.Slopes.resize(source.Slopes.size());
+            production_rate_NUS.Intercepts.resize(source.Intercepts.size());
+
+            // Scale slopes
+            std::transform(source.Slopes.begin(),
+                           source.Slopes.end(),
+                           production_rate_NUS.Slopes.begin(),
+                           [factor](double x) { return x * factor; });  //(at/m4.s)
+
+            // Scale intercepts
+            std::transform(source.Intercepts.begin(),
+                           source.Intercepts.end(),
+                           production_rate_NUS.Intercepts.begin(),
+                           [factor](double x) { return x * factor; });  //(at/m3.s)
+            break;
+        }
+
+        case 2:  // For now this is not accounted for
+        {
+            /**
+             * @brief Surrogate model derived from **helium production in fast reactor conditions**.
+             * The helium production rate is fitted with a function linearly dependent on the local burnup.
+             * @see The default fit is from <a href="../../references/pdf_link/Cechet_et_al_2021.pdf" target="_blank">A.
+             * Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908</a>.
+             *
+             * **Default range of utilization of the default fit**
+             * - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX fuel in SFR conditions
+             * - Up to 200 GWd/tHM
+             * - Pu/HM concentration of 20-40%
+             *
+             * The default fit (hence the helium production rate) can be calibrated by using the dedicated
+             * scaling factor (to be set in input_scaling_factors.txt).
+             *
+             */
+
+            reference += "Case for helium production rate: Cechet et al., Nuclear Engineering and Technology, 53 "
+                         "(2021) 1893-1908.\n\t";
+
+            // specific power = dburnup / dt
+            sciantix_variable["Specific power"].setFinalValue(
+                Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(),
+                                      sourcesinput.at(history_variable["Time step number"].getFinalValue())) *
+                3.12e-17 / sciantix_variable["Fuel density"].getFinalValue());
+
+            // production rate in dproduced / dburnup -> dproduced / dtime
+            production_rate = 2.0e+21 * sciantix_variable["Burnup"].getFinalValue() + 3.0e+23;  // (at/m3 burnup)
+            production_rate *= sciantix_variable["Specific power"].getFinalValue() / 86400;     // (at/m3s)
+
+            production_rate *= scaling_factors["Helium production rate"].getValue();
+
+            break;
+        }
+
+        case 3:
+        {
+            /**
+             * @brief Same production rate for all gases // needed maybe during implantation
+             *
+             */
+
+            reference += "Constant production rate.\n\t";
+            production_rate_NUS.time = sourcesinput.at(history_variable["Time step number"].getFinalValue()).time;
+            production_rate_NUS.NormalizedDomain =
+                sourcesinput.at(history_variable["Time step number"].getFinalValue()).NormalizedDomain;
+            production_rate_NUS.Slopes = sourcesinput.at(history_variable["Time step number"].getFinalValue()).Slopes;
+            production_rate_NUS.Intercepts =
+                sourcesinput.at(history_variable["Time step number"].getFinalValue()).Intercepts;
+
+            break;
+        }
+
+        case 5:
+        {
+            /**
+             * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
+             *
+             */
+            double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+            reference += "Production rate = cumulative yield * fission rate density * alpha.\n\t";
+
+            const auto& source = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+            double      factor = 1.25 * yield * alpha;
+
+            // Ensure production_rate_NUS has correct sizes
+            production_rate_NUS.time             = source.time;
+            production_rate_NUS.NormalizedDomain = source.NormalizedDomain;
+            production_rate_NUS.Slopes.resize(source.Slopes.size());
+            production_rate_NUS.Intercepts.resize(source.Intercepts.size());
+
+            // Scale slopes
+            std::transform(source.Slopes.begin(),
+                           source.Slopes.end(),
+                           production_rate_NUS.Slopes.begin(),
+                           [factor](double x) { return x * factor; });  //(at/m4.s)
+
+            // Scale intercepts
+            std::transform(source.Intercepts.begin(),
+                           source.Intercepts.end(),
+                           production_rate_NUS.Intercepts.begin(),
+                           [factor](double x) { return x * factor; });  //(at/m3.s)
+
+            break;
+        }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "setProductionRate", input_value);
+            break;
+    }
+}
+
+Source System::getProductionRateNUS()
+{
+    return production_rate_NUS;
+}
+//

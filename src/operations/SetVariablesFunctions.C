@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -29,34 +29,35 @@
 
 std::vector<std::string> getInputVariableNames()
 {
-    std::vector<std::string> names = {
-        "iGrainGrowth",
-        "iFissionGasDiffusivity",
-        "iDiffusionSolver",
-        "iIntraGranularBubbleBehavior",
-        "iResolutionRate",
-        "iTrappingRate",
-        "iNucleationRate",
-        "iOutput",
-        "iGrainBoundaryVacancyDiffusivity",
-        "iGrainBoundaryBehaviour",
-        "iGrainBoundaryMicroCracking",
-        "iFuelMatrix",
-        "iGrainBoundaryVenting",
-        "iRadioactiveFissionGas",
-        "iHelium",
-        "iHeDiffusivity",
-        "iGrainBoundarySweeping",
-        "iHighBurnupStructureFormation",
-        "iHighBurnupStructurePorosity",
-        "iHeliumProductionRate",
-        "iStoichiometryDeviation",
-        "iBubbleDiffusivity",
-        "iChromiumSolubility",
-        "iDensification",
-        "iReleaseMode",
-        "iCoarseningDislocationDensity",  // COARSENING: 0=fixed Barani 2019, 1=Veshchunov 2009, 2=Nogita 1995.
-        "iCoarseningKModel"};  // COARSENING: 0=Barani 2019, 1=Nicodemo 2026 algebraic, 2=Nicodemo 2026 kinetic.
+    std::vector<std::string> names = {"iGrainGrowth",
+                                      "iFissionGasDiffusivity",
+                                      "iDiffusionSolver",
+                                      "iIntraGranularBubbleBehavior",
+                                      "iResolutionRate",
+                                      "iTrappingRate",
+                                      "iNucleationRate",
+                                      "iOutput",
+                                      "iGrainBoundaryVacancyDiffusivity",
+                                      "iGrainBoundaryBehaviour",
+                                      "iGrainBoundaryMicroCracking",
+                                      "iFuelMatrix",
+                                      "iGrainBoundaryVenting",
+                                      "iRadioactiveFissionGas",
+                                      "iHelium",
+                                      "iHeDiffusivity",
+                                      "iGrainBoundarySweeping",
+                                      "iHighBurnupStructureFormation",
+                                      "iHighBurnupStructurePorosity",
+                                      "iHeliumProductionRate",
+                                      "iStoichiometryDeviation",
+                                      "iBubbleDiffusivity",
+                                      "iChromiumSolubility",
+                                      "iDensification",
+                                      "iReleaseMode",
+                                      "iNUSOutput",
+                                      "iNUSAnimation",
+                                      "iNonSym",
+                                      "iGrainBoundaryResolution"};
 
     return names;
 }
@@ -100,12 +101,8 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  * @param toOutputCracking Flag for outputting cracking information.
  * @param toOutputGrainBoundary Flag for outputting grain boundary information.
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
- * @param
- * toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
- * @param toOutputCoarsening
- * Flag for outputting Barani two-size intragranular coarsening information. COARSENING.
- * @return A vector of
- * SciantixVariable objects initialized with the given values and flags.
+ * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
+ * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
 std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
                                                          bool   toOutputRadioactiveFG,
@@ -115,8 +112,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent,
-                                                         bool   toOutputCoarsening)
+                                                         bool   toOutputChromiumContent)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -153,7 +149,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "He in intragranular bubbles", "(at/m3)", Sciantix_variables[16], Sciantix_variables[16], toOutputHelium),
         SciantixVariable(
-            "He at grain boundary", "(at/m3)", Sciantix_variables[17], Sciantix_variables[71], toOutputHelium),
+            "He at grain boundary", "(at/m3)", Sciantix_variables[17], Sciantix_variables[17], toOutputHelium),
         SciantixVariable("He released", "(at/m3)", Sciantix_variables[18], Sciantix_variables[18], toOutputHelium),
         SciantixVariable("He decayed", "(at/m3)", 0.0, 0.0, 0),
         SciantixVariable("He fractional release", "(/)", 0.0, 0.0, toOutputHelium),
@@ -221,55 +217,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          0),
 
         SciantixVariable("Intragranular gas bubble swelling", "(/)", Sciantix_variables[24], Sciantix_variables[24], 1),
-        // COARSENING: Barani et al. two-size intragranular model outputs for dislocation/coarsened bubbles.
-        SciantixVariable("Intragranular coarsened bubble concentration",
-                         "(bub/m3)",
-                         Sciantix_variables[170],
-                         Sciantix_variables[170],
-                         toOutputCoarsening),
-        SciantixVariable("Intragranular coarsened bubble radius",
-                         "(m)",
-                         Sciantix_variables[171],
-                         Sciantix_variables[171],
-                         toOutputCoarsening),
-        SciantixVariable(
-            "Intragranular coarsened atoms per bubble", "(at/bub)", Sciantix_variables[172], Sciantix_variables[172], 0),
-        SciantixVariable("Intragranular coarsened vacancies per bubble",
-                         "(vac/bub)",
-                         Sciantix_variables[173],
-                         Sciantix_variables[173],
-                         0),
-        SciantixVariable("Intragranular coarsened gas bubble swelling",
-                         "(/)",
-                         Sciantix_variables[174],
-                         Sciantix_variables[174],
-                         toOutputCoarsening),
-        SciantixVariable("Intragranular bulk gas bubble swelling",
-                         "(/)",
-                         Sciantix_variables[175],
-                         Sciantix_variables[175],
-                         toOutputCoarsening),
-        SciantixVariable(
-            "Intragranular gas in coarsened bubbles", "(at/m3)", Sciantix_variables[176], Sciantix_variables[176], 0),
-        SciantixVariable(
-            "Intragranular coarsened bubble pressure", "(MPa)", Sciantix_variables[177], Sciantix_variables[177], 0),
-        SciantixVariable("Intragranular coarsened bubble equilibrium pressure",
-                         "(MPa)",
-                         Sciantix_variables[178],
-                         Sciantix_variables[178],
-                         0),
-        SciantixVariable(
-            "Dislocation density", "(m/m3)", Sciantix_variables[179], Sciantix_variables[179], toOutputCoarsening),
-        SciantixVariable("Coarsening maximum temperature",
-                         "(K)",
-                         Sciantix_variables[180],
-                         Sciantix_variables[180],
-                         0),  // COARSENING: hidden memory for the peak-temperature K_eff weight.
-        SciantixVariable("Coarsening bubbles per dislocation",
-                         "(bub/m)",
-                         Sciantix_variables[181],
-                         Sciantix_variables[181],
-                         toOutputCoarsening),  // COARSENING: effective K for dislocation-bubble nucleation.
         SciantixVariable("Intragranular gas solution swelling",
                          "(/)",
                          Sciantix_variables[68],
@@ -454,14 +401,11 @@ std::vector<std::string> getScalingFactorsNames()
         "Trapping rate",
         "Nucleation rate",
         "Diffusivity",
-        "Diffusivity2",  // da seguire
         "Temperature",
         "Fission rate",
+        "Diffusion-based release",
         "Helium production rate",
         "Dummy",
-        "Coarsening K0",    // COARSENING: Barani/Nicodemo bubbles-per-dislocation prefactor.
-        "Coarsening Tsat",  // COARSENING: peak-temperature saturation for K_eff.
-        "Coarsening Bsat",  // COARSENING: burnup saturation for K_eff.
     };
 
     return names;

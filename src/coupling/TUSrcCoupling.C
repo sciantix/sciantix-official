@@ -8,13 +8,14 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include "MainVariables.h"
 #include "Sciantix.h"
 #include "Simulation.h"
 #include "TUSrcCoupling.h"
@@ -28,12 +29,18 @@ void callSciantix(int    Sciantix_options[],
 {
     Simulation* simulation = Simulation::getInstance();
 
-    simulation->initialize(
-        Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+    // The TU coupling exposes the uniform-source interface only; the NUS mode array is the
+    // global one and stays untouched when iDiffusionSolver != 4.
+    simulation->initialize(Sciantix_options,
+                           Sciantix_history,
+                           Sciantix_variables,
+                           Sciantix_scaling_factors,
+                           Sciantix_diffusion_modes,
+                           ::Sciantix_diffusion_modes_NUS);
 
     simulation->execute();
 
-    simulation->update(Sciantix_variables, Sciantix_diffusion_modes);
+    simulation->update(Sciantix_variables, Sciantix_diffusion_modes, ::Sciantix_diffusion_modes_NUS);
 }
 
 void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[])
@@ -72,9 +79,6 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
-    Sciantix_options[25] =
-        ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 0);         // COARSENING.
-    Sciantix_options[26] = ReadOptionalSetting("iCoarseningKModel", input_settings, input_check, 0);  // COARSENING.
 
     if (!input_scaling_factors.fail())
     {
@@ -82,32 +86,24 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
         Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[2] = ReadOneParameter("sf_nucleation_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[4] = ReadOneParameter("sf_diffusivity2", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[5] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
+        Sciantix_scaling_factors[4] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
+        Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
+        Sciantix_scaling_factors[6] =
+            ReadOneParameter("sf_diffusion_based_release", input_scaling_factors, input_check);
         Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[9] =
-            ReadOptionalParameter("sf_coarsening_k0", input_scaling_factors, input_check, 0.0);  // COARSENING.
-        Sciantix_scaling_factors[10] =
-            ReadOptionalParameter("sf_coarsening_tsat", input_scaling_factors, input_check, 0.0);  // COARSENING.
-        Sciantix_scaling_factors[11] =
-            ReadOptionalParameter("sf_coarsening_bsat", input_scaling_factors, input_check, 0.0);  // COARSENING.
     }
     else
     {
-        Sciantix_scaling_factors[0]  = 1.0;
-        Sciantix_scaling_factors[1]  = 1.0;
-        Sciantix_scaling_factors[2]  = 1.0;
-        Sciantix_scaling_factors[3]  = 1.0;
-        Sciantix_scaling_factors[4]  = 1.0;
-        Sciantix_scaling_factors[5]  = 1.0;
-        Sciantix_scaling_factors[6]  = 1.0;
-        Sciantix_scaling_factors[7]  = 1.0;
-        Sciantix_scaling_factors[8]  = 1.0;
-        Sciantix_scaling_factors[9]  = 0.0;  // COARSENING: use model-specific K0 default.
-        Sciantix_scaling_factors[10] = 0.0;  // COARSENING: use model-specific Tsat default.
-        Sciantix_scaling_factors[11] = 0.0;  // COARSENING: use model-specific Bsat default.
+        Sciantix_scaling_factors[0] = 1.0;
+        Sciantix_scaling_factors[1] = 1.0;
+        Sciantix_scaling_factors[2] = 1.0;
+        Sciantix_scaling_factors[3] = 1.0;
+        Sciantix_scaling_factors[4] = 1.0;
+        Sciantix_scaling_factors[5] = 1.0;
+        Sciantix_scaling_factors[6] = 1.0;
+        Sciantix_scaling_factors[7] = 1.0;
+        Sciantix_scaling_factors[8] = 1.0;
     }
 
     input_check.close();

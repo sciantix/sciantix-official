@@ -8,13 +8,44 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include "SourceHandler.h"
+#include <limits>
+
+/**
+ * @brief Discards the remainder of the current line.
+ *
+ * The inline comment that follows every entry has no length limit: bounding the skip
+ * (as a fixed ignore(256) does) leaves the tail of a long comment in the stream, the
+ * next extraction then fails and every remaining entry is silently read as zero.
+ */
+static void skipRestOfLine(std::ifstream& input_file)
+{
+    input_file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+/**
+ * @brief Aborts if an extraction failed on malformed content rather than at end of file.
+ * @param variable_name The name of the entry being read, reported in the error message.
+ * @param input_file The stream to inspect.
+ *
+ * A failed extraction leaves the value at zero and latches failbit, so without this check
+ * a single malformed token silently zeroes every entry that follows it. Reaching the end
+ * of the file is *not* treated as an error: the input files are allowed to stop early and
+ * leave the trailing entries at their default of zero, which the whole validation database
+ * relies on (no case supplies the last one or two blocks).
+ */
+static void checkMalformedEntry(const std::string& variable_name, std::ifstream& input_file)
+{
+    if (input_file.fail() && !input_file.eof())
+        ErrorMessages::Fatal("InputReading.C", "malformed value for the input entry \"" + variable_name + "\"");
+}
 
 /**
  * @brief Read a single setting from the input file.
@@ -25,36 +56,13 @@
  */
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-    char               comment;
-    unsigned short int variable;
+    char               comment('\0');
+    unsigned short int variable(0);
     input_file >> variable;
+    checkMalformedEntry(variable_name, input_file);
     input_file >> comment;
     if (comment == '#')
-        input_file.ignore(256, '\n');
-    output_file << variable_name << " = " << variable << std::endl;
-    return variable;
-}
-
-// COARSENING: read optional settings appended after legacy input_settings.txt entries.
-unsigned short int ReadOptionalSetting(std::string        variable_name,
-                                       std::ifstream&     input_file,
-                                       std::ofstream&     output_file,
-                                       unsigned short int default_value)
-{
-    char               comment;
-    unsigned short int variable;
-
-    if (!(input_file >> variable))
-    {
-        input_file.clear();
-        output_file << variable_name << " = " << default_value << " (default)" << std::endl;
-        return default_value;
-    }
-
-    input_file >> comment;
-    if (comment == '#')
-        input_file.ignore(256, '\n');
-
+        skipRestOfLine(input_file);
     output_file << variable_name << " = " << variable << std::endl;
     return variable;
 }
@@ -68,36 +76,13 @@ unsigned short int ReadOptionalSetting(std::string        variable_name,
  */
 double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-    char   comment;
-    double variable;
+    char   comment('\0');
+    double variable(0.0);
     input_file >> variable;
+    checkMalformedEntry(variable_name, input_file);
     input_file >> comment;
     if (comment == '#')
-        input_file.ignore(256, '\n');
-    output_file << variable_name << " = " << variable << std::endl;
-    return variable;
-}
-
-// COARSENING: read optional scaling factors appended after legacy input_scaling_factors.txt entries.
-double ReadOptionalParameter(std::string    variable_name,
-                             std::ifstream& input_file,
-                             std::ofstream& output_file,
-                             double         default_value)
-{
-    char   comment;
-    double variable;
-
-    if (!(input_file >> variable))
-    {
-        input_file.clear();
-        output_file << variable_name << " = " << default_value << " (default)" << std::endl;
-        return default_value;
-    }
-
-    input_file >> comment;
-    if (comment == '#')
-        input_file.ignore(256, '\n');
-
+        skipRestOfLine(input_file);
     output_file << variable_name << " = " << variable << std::endl;
     return variable;
 }
@@ -112,8 +97,8 @@ double ReadOptionalParameter(std::string    variable_name,
 std::vector<double>
 ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-    char      comment;
-    double    variable;
+    char      comment('\0');
+    double    variable(0.0);
     short int K(0);
 
     std::vector<double> vector_read;
@@ -131,7 +116,7 @@ ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std:
     input_file >> comment;
 
     if (comment == '#')
-        input_file.ignore(256, '\n');
+        skipRestOfLine(input_file);
 
     return vector_read;
 }
@@ -146,7 +131,9 @@ void InputReading(int                  Sciantix_options[],
                   std::vector<double>& Hydrostaticstress_input,
                   std::vector<double>& Steampressure_input,
                   double&              Time_end_h,
-                  double&              Time_end_s)
+                  double&              Time_end_s,
+                  std::vector<Source>& sources_input,
+                  std::vector<Source>& initial_distribution)
 {
     /**
      * Besides the two input files, this routines creates an input_check.txt file
@@ -198,9 +185,29 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
-    Sciantix_options[25] =
-        ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 0);         // COARSENING.
-    Sciantix_options[26] = ReadOptionalSetting("iCoarseningKModel", input_settings, input_check, 0);  // COARSENING.
+
+    // Non-uniform-source (NUS) options. Absent from the settings file they read back as zero,
+    // which is the inactive value for all four.
+    Sciantix_options[25] = ReadOneSetting("iNUSOutput", input_settings, input_check);
+    Sciantix_options[26] = ReadOneSetting("iNUSAnimation", input_settings, input_check);
+    Sciantix_options[27] = ReadOneSetting("iNonSym", input_settings, input_check);
+    Sciantix_options[28] = ReadOneSetting("iGrainBoundaryResolution", input_settings, input_check);
+
+    visualization = Sciantix_options[25];
+    animation     = Sciantix_options[26];
+    iNonSym       = Sciantix_options[27];
+
+    // The radial source profile is mandatory only for the NUS solver; loading it unconditionally
+    // would abort every case that does not ship a non_uniform_source.txt.
+    if (Sciantix_options[2] == 4)
+    {
+        loadSourcesFromFile("non_uniform_source.txt", sources_input);
+        loadICFromFile("initial_distribution.txt", initial_distribution, ICfile);
+    }
+    else
+    {
+        ICfile = false;
+    }
 
     if (!input_initial_conditions.fail())
     {
@@ -283,33 +290,45 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
     }
 
-    int n = 0;
-    while (input_history >> Time_input[n] >> Temperature_input[n] >> Fissionrate_input[n] >> Hydrostaticstress_input[n])
+    Time_input.clear();
+    Temperature_input.clear();
+    Fissionrate_input.clear();
+    Hydrostaticstress_input.clear();
+    Steampressure_input.clear();
+
+    double time_in(0.0), temperature_in(0.0), fissionrate_in(0.0), hydrostaticstress_in(0.0), steampressure_in(0.0);
+    while (input_history >> time_in >> temperature_in >> fissionrate_in >> hydrostaticstress_in)
     {
         if (Sciantix_options[20] > 0)
-            input_history >> Steampressure_input[n];
+            input_history >> steampressure_in;
 
-        input_check << Time_input[n] << "\t";
-        input_check << Temperature_input[n] << "\t";
-        input_check << Fissionrate_input[n] << "\t";
-        input_check << Hydrostaticstress_input[n] << "\t";
+        Time_input.push_back(time_in);
+        Temperature_input.push_back(temperature_in);
+        Fissionrate_input.push_back(fissionrate_in);
+        Hydrostaticstress_input.push_back(hydrostaticstress_in);
+
+        input_check << time_in << "\t";
+        input_check << temperature_in << "\t";
+        input_check << fissionrate_in << "\t";
+        input_check << hydrostaticstress_in << "\t";
 
         if (Sciantix_options[20] > 0)
-            input_check << Steampressure_input[n] << "\t";
+        {
+            Steampressure_input.push_back(steampressure_in);
+            input_check << steampressure_in << "\t";
+        }
 
         input_check << std::endl;
-
-        n++;
-        Input_history_points = n;
     }
 
-    Time_input.resize(Input_history_points);
-    Temperature_input.resize(Input_history_points);
-    Fissionrate_input.resize(Input_history_points);
-    Hydrostaticstress_input.resize(Input_history_points);
+    Input_history_points = static_cast<int>(Time_input.size());
 
-    if (Sciantix_options[20] > 0)
-        Steampressure_input.resize(Input_history_points);
+    if (Input_history_points == 0)
+        ErrorMessages::Fatal("InputReading.C", "input_history.txt is empty or its first row is malformed");
+
+    // Without the steam-pressure column the history is interpolated as identically zero
+    if (Sciantix_options[20] == 0)
+        Steampressure_input.assign(Input_history_points, 0.0);
 
     Time_end_h = Time_input[Input_history_points - 1];
     Time_end_s = Time_end_h * 3600.0;
@@ -320,32 +339,24 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[2] = ReadOneParameter("sf_nucleation_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[4] = ReadOneParameter("sf_diffusivity2", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[5] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
+        Sciantix_scaling_factors[4] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
+        Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
+        Sciantix_scaling_factors[6] =
+            ReadOneParameter("sf_diffusion_based_release", input_scaling_factors, input_check);
         Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[9] =
-            ReadOptionalParameter("sf_coarsening_k0", input_scaling_factors, input_check, 0.0);  // COARSENING.
-        Sciantix_scaling_factors[10] =
-            ReadOptionalParameter("sf_coarsening_tsat", input_scaling_factors, input_check, 0.0);  // COARSENING.
-        Sciantix_scaling_factors[11] =
-            ReadOptionalParameter("sf_coarsening_bsat", input_scaling_factors, input_check, 0.0);  // COARSENING.
     }
     else
     {
-        Sciantix_scaling_factors[0]  = 1.0;
-        Sciantix_scaling_factors[1]  = 1.0;
-        Sciantix_scaling_factors[2]  = 1.0;
-        Sciantix_scaling_factors[3]  = 1.0;
-        Sciantix_scaling_factors[4]  = 1.0;
-        Sciantix_scaling_factors[5]  = 1.0;
-        Sciantix_scaling_factors[6]  = 1.0;
-        Sciantix_scaling_factors[7]  = 1.0;
-        Sciantix_scaling_factors[8]  = 1.0;
-        Sciantix_scaling_factors[9]  = 0.0;  // COARSENING: use model-specific K0 default.
-        Sciantix_scaling_factors[10] = 0.0;  // COARSENING: use model-specific Tsat default.
-        Sciantix_scaling_factors[11] = 0.0;  // COARSENING: use model-specific Bsat default.
+        Sciantix_scaling_factors[0] = 1.0;
+        Sciantix_scaling_factors[1] = 1.0;
+        Sciantix_scaling_factors[2] = 1.0;
+        Sciantix_scaling_factors[3] = 1.0;
+        Sciantix_scaling_factors[4] = 1.0;
+        Sciantix_scaling_factors[5] = 1.0;
+        Sciantix_scaling_factors[6] = 1.0;
+        Sciantix_scaling_factors[7] = 1.0;
+        Sciantix_scaling_factors[8] = 1.0;
     }
 
     input_check.close();

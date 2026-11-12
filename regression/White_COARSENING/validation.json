@@ -1,0 +1,995 @@
+{
+  "locations": 38,
+  "simulations": 114,
+  "selected_model": "analytic_rho",
+  "checks": [
+    {
+      "case": "test_White2004_4000-4",
+      "model": "legacy",
+      "gas_balance": 4.1654732709971335e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4004-1",
+      "model": "legacy",
+      "gas_balance": 4.6118693029828e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4004-2",
+      "model": "legacy",
+      "gas_balance": 4.38655660406892e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4004-3",
+      "model": "legacy",
+      "gas_balance": 5.083786716662072e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4000-1",
+      "model": "legacy",
+      "gas_balance": 7.059922941458564e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4000-2",
+      "model": "legacy",
+      "gas_balance": 5.939132042946924e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4000-3",
+      "model": "legacy",
+      "gas_balance": 4.27478514269179e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4005-1",
+      "model": "legacy",
+      "gas_balance": 4.372612068503536e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4005-2",
+      "model": "legacy",
+      "gas_balance": 3.9679628489219365e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4005-3",
+      "model": "legacy",
+      "gas_balance": 4.486948942561295e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4005-4",
+      "model": "legacy",
+      "gas_balance": 4.372492497549504e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4004-4",
+      "model": "legacy",
+      "gas_balance": 4.576498490409409e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4064-2",
+      "model": "legacy",
+      "gas_balance": 4.3508155091074053e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4064-3",
+      "model": "legacy",
+      "gas_balance": 4.5379511329359724e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4064-1",
+      "model": "legacy",
+      "gas_balance": 4.350815510293857e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4064-4",
+      "model": "legacy",
+      "gas_balance": 4.154967140807673e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4065-1",
+      "model": "legacy",
+      "gas_balance": 4.2486534316016627e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4065-2",
+      "model": "legacy",
+      "gas_balance": 3.480631328533084e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4065-3",
+      "model": "legacy",
+      "gas_balance": 3.565493641489672e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4065-4",
+      "model": "legacy",
+      "gas_balance": 3.279803095283739e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4065-5",
+      "model": "legacy",
+      "gas_balance": 4.4352519754210516e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4136-1",
+      "model": "legacy",
+      "gas_balance": 4.225872360554606e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4136-2",
+      "model": "legacy",
+      "gas_balance": 4.83327739116657e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4136-3",
+      "model": "legacy",
+      "gas_balance": 2.992072331737202e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4140-1",
+      "model": "legacy",
+      "gas_balance": 3.880903188151044e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4136-4",
+      "model": "legacy",
+      "gas_balance": 3.667845686488177e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4135-2",
+      "model": "legacy",
+      "gas_balance": 2.6332174719570245e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4135-1",
+      "model": "legacy",
+      "gas_balance": 2.6332174719570245e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4135-3",
+      "model": "legacy",
+      "gas_balance": 3.091117845253129e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4140-2",
+      "model": "legacy",
+      "gas_balance": 3.880903190003083e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4162-1",
+      "model": "legacy",
+      "gas_balance": 4.0402469182599197e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4162-2",
+      "model": "legacy",
+      "gas_balance": 4.078725248082782e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4162-3",
+      "model": "legacy",
+      "gas_balance": 3.847877102637835e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4162-4",
+      "model": "legacy",
+      "gas_balance": 3.5198992870071787e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4163-2",
+      "model": "legacy",
+      "gas_balance": 3.7240833956795967e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4163-3",
+      "model": "legacy",
+      "gas_balance": 4.1670323511551025e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4163-1",
+      "model": "legacy",
+      "gas_balance": 4.808089591769616e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4163-4",
+      "model": "legacy",
+      "gas_balance": 4.196222057963428e-07,
+      "finite": true
+    },
+    {
+      "case": "test_White2004_4000-4",
+      "model": "barani",
+      "gas_balance": 7.487440748073097e-07,
+      "finite": true,
+      "partition_balance": 4.849206806308606e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-1",
+      "model": "barani",
+      "gas_balance": 6.560427223774134e-07,
+      "finite": true,
+      "partition_balance": 4.877513033498972e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-2",
+      "model": "barani",
+      "gas_balance": 6.624503523420747e-07,
+      "finite": true,
+      "partition_balance": 4.8430773741588e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-3",
+      "model": "barani",
+      "gas_balance": 6.712020412246983e-07,
+      "finite": true,
+      "partition_balance": 4.967042798015209e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4000-1",
+      "model": "barani",
+      "gas_balance": 6.547875214395343e-07,
+      "finite": true,
+      "partition_balance": 4.5247669595158727e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4000-2",
+      "model": "barani",
+      "gas_balance": 6.997195133335655e-07,
+      "finite": true,
+      "partition_balance": 4.799674017986254e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4000-3",
+      "model": "barani",
+      "gas_balance": 6.349420205831296e-07,
+      "finite": true,
+      "partition_balance": 4.861186307644432e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-1",
+      "model": "barani",
+      "gas_balance": 5.453957643255312e-07,
+      "finite": true,
+      "partition_balance": 4.878801424623197e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-2",
+      "model": "barani",
+      "gas_balance": 6.958128588714267e-07,
+      "finite": true,
+      "partition_balance": 4.772562658399374e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-3",
+      "model": "barani",
+      "gas_balance": 6.447197764579111e-07,
+      "finite": true,
+      "partition_balance": 4.516118752967649e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-4",
+      "model": "barani",
+      "gas_balance": 6.294991489988497e-07,
+      "finite": true,
+      "partition_balance": 4.791987522806977e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-4",
+      "model": "barani",
+      "gas_balance": 6.790224523552486e-07,
+      "finite": true,
+      "partition_balance": 4.789626762976193e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-2",
+      "model": "barani",
+      "gas_balance": 6.570713453757804e-07,
+      "finite": true,
+      "partition_balance": 7.527966395571771e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-3",
+      "model": "barani",
+      "gas_balance": 6.165969585005565e-07,
+      "finite": true,
+      "partition_balance": 4.464143673015004e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-1",
+      "model": "barani",
+      "gas_balance": 6.10543895685415e-07,
+      "finite": true,
+      "partition_balance": 7.867659050749866e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-4",
+      "model": "barani",
+      "gas_balance": 6.699220413770235e-07,
+      "finite": true,
+      "partition_balance": 4.592296690169038e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-1",
+      "model": "barani",
+      "gas_balance": 4.6089176804083874e-07,
+      "finite": true,
+      "partition_balance": 4.824013794218233e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-2",
+      "model": "barani",
+      "gas_balance": 3.8338342886343296e-07,
+      "finite": true,
+      "partition_balance": 3.6654338592062825e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-3",
+      "model": "barani",
+      "gas_balance": 3.13067527958634e-07,
+      "finite": true,
+      "partition_balance": 4.759614773534276e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-4",
+      "model": "barani",
+      "gas_balance": 3.2481220468142986e-07,
+      "finite": true,
+      "partition_balance": 3.86092202048934e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-5",
+      "model": "barani",
+      "gas_balance": 3.5655947243131574e-07,
+      "finite": true,
+      "partition_balance": 3.880123279931191e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-1",
+      "model": "barani",
+      "gas_balance": 3.7946608945871434e-07,
+      "finite": true,
+      "partition_balance": 5.03459047311328e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-2",
+      "model": "barani",
+      "gas_balance": 4.4017347663264156e-07,
+      "finite": true,
+      "partition_balance": 4.240423314582337e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-3",
+      "model": "barani",
+      "gas_balance": 3.121537045589089e-07,
+      "finite": true,
+      "partition_balance": 6.06186741866783e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4140-1",
+      "model": "barani",
+      "gas_balance": 3.4712524836060605e-07,
+      "finite": true,
+      "partition_balance": 4.707927857287628e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-4",
+      "model": "barani",
+      "gas_balance": 3.1168646286963373e-07,
+      "finite": true,
+      "partition_balance": 4.812426216169134e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4135-2",
+      "model": "barani",
+      "gas_balance": 2.634050581922718e-07,
+      "finite": true,
+      "partition_balance": 3.6477098702346613e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4135-1",
+      "model": "barani",
+      "gas_balance": 2.634050581922718e-07,
+      "finite": true,
+      "partition_balance": 3.6477098702346613e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4135-3",
+      "model": "barani",
+      "gas_balance": 3.1997917361681363e-07,
+      "finite": true,
+      "partition_balance": 3.9259310287279283e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4140-2",
+      "model": "barani",
+      "gas_balance": 3.670472333136422e-07,
+      "finite": true,
+      "partition_balance": 4.122423444939957e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-1",
+      "model": "barani",
+      "gas_balance": 4.078725246430141e-07,
+      "finite": true,
+      "partition_balance": 3.879406828564084e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-2",
+      "model": "barani",
+      "gas_balance": 4.1734418492646625e-07,
+      "finite": true,
+      "partition_balance": 3.7984189696314823e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-3",
+      "model": "barani",
+      "gas_balance": 2.803452116828315e-07,
+      "finite": true,
+      "partition_balance": 4.013324879807468e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-4",
+      "model": "barani",
+      "gas_balance": 3.220099056673582e-07,
+      "finite": true,
+      "partition_balance": 5.542179915601412e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-2",
+      "model": "barani",
+      "gas_balance": 3.4618245066248055e-07,
+      "finite": true,
+      "partition_balance": 4.0205380986134365e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-3",
+      "model": "barani",
+      "gas_balance": 3.769562056059529e-07,
+      "finite": true,
+      "partition_balance": 4.941016613050434e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-1",
+      "model": "barani",
+      "gas_balance": 5.38506034057924e-07,
+      "finite": true,
+      "partition_balance": 4.4732718197380764e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-4",
+      "model": "barani",
+      "gas_balance": 3.088768988055724e-07,
+      "finite": true,
+      "partition_balance": 4.4620611959675284e-07,
+      "initializations": 1,
+      "number_nonincreasing": true,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4000-4",
+      "model": "analytic_rho",
+      "gas_balance": 6.795977054791764e-07,
+      "finite": true,
+      "partition_balance": 6.304739510656603e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-1",
+      "model": "analytic_rho",
+      "gas_balance": 5.324497980000633e-07,
+      "finite": true,
+      "partition_balance": 4.6475369752416966e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-2",
+      "model": "analytic_rho",
+      "gas_balance": 4.594529906528256e-07,
+      "finite": true,
+      "partition_balance": 5.695610946247321e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-3",
+      "model": "analytic_rho",
+      "gas_balance": 4.498416601353235e-07,
+      "finite": true,
+      "partition_balance": 6.699934960618992e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4000-1",
+      "model": "analytic_rho",
+      "gas_balance": 6.093659376158865e-07,
+      "finite": true,
+      "partition_balance": 5.729774791639137e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4000-2",
+      "model": "analytic_rho",
+      "gas_balance": 6.641583820908072e-07,
+      "finite": true,
+      "partition_balance": 6.670981331864849e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4000-3",
+      "model": "analytic_rho",
+      "gas_balance": 6.746369692245289e-07,
+      "finite": true,
+      "partition_balance": 4.769470721870717e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-1",
+      "model": "analytic_rho",
+      "gas_balance": 4.3726053893956333e-07,
+      "finite": true,
+      "partition_balance": 5.495604421782222e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-2",
+      "model": "analytic_rho",
+      "gas_balance": 4.961463740030685e-07,
+      "finite": true,
+      "partition_balance": 5.68869471579682e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-3",
+      "model": "analytic_rho",
+      "gas_balance": 4.350169706905863e-07,
+      "finite": true,
+      "partition_balance": 6.387068013258222e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4005-4",
+      "model": "analytic_rho",
+      "gas_balance": 4.164269031163916e-07,
+      "finite": true,
+      "partition_balance": 4.312618463664428e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4004-4",
+      "model": "analytic_rho",
+      "gas_balance": 4.330457187692028e-07,
+      "finite": true,
+      "partition_balance": 6.457596468548682e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-2",
+      "model": "analytic_rho",
+      "gas_balance": 5.862254336529507e-07,
+      "finite": true,
+      "partition_balance": 6.366702250901877e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-3",
+      "model": "analytic_rho",
+      "gas_balance": 3.898817878538947e-07,
+      "finite": true,
+      "partition_balance": 4.7409609727300885e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-1",
+      "model": "analytic_rho",
+      "gas_balance": 5.890616157301571e-07,
+      "finite": true,
+      "partition_balance": 4.6494191593917255e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4064-4",
+      "model": "analytic_rho",
+      "gas_balance": 6.144934192001745e-07,
+      "finite": true,
+      "partition_balance": 7.11348529217315e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-1",
+      "model": "analytic_rho",
+      "gas_balance": 4.3045551930308824e-07,
+      "finite": true,
+      "partition_balance": 4.321555724952883e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-2",
+      "model": "analytic_rho",
+      "gas_balance": 3.828694461760122e-07,
+      "finite": true,
+      "partition_balance": 3.628976968543071e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-3",
+      "model": "analytic_rho",
+      "gas_balance": 4.7434477796140644e-07,
+      "finite": true,
+      "partition_balance": 6.487742301307869e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-4",
+      "model": "analytic_rho",
+      "gas_balance": 2.9428764522257194e-07,
+      "finite": true,
+      "partition_balance": 4.175094435631063e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4065-5",
+      "model": "analytic_rho",
+      "gas_balance": 4.783114875490694e-07,
+      "finite": true,
+      "partition_balance": 5.738387578143969e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-1",
+      "model": "analytic_rho",
+      "gas_balance": 3.7946608964391825e-07,
+      "finite": true,
+      "partition_balance": 4.596953074916202e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-2",
+      "model": "analytic_rho",
+      "gas_balance": 4.3154262428411544e-07,
+      "finite": true,
+      "partition_balance": 5.568994928801427e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-3",
+      "model": "analytic_rho",
+      "gas_balance": 2.6976823716077746e-07,
+      "finite": true,
+      "partition_balance": 6.674843824866949e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4140-1",
+      "model": "analytic_rho",
+      "gas_balance": 3.169404441482901e-07,
+      "finite": true,
+      "partition_balance": 7.057101195841833e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4136-4",
+      "model": "analytic_rho",
+      "gas_balance": 3.309335478669931e-07,
+      "finite": true,
+      "partition_balance": 5.69596707800007e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4135-2",
+      "model": "analytic_rho",
+      "gas_balance": 3.818164138032227e-07,
+      "finite": true,
+      "partition_balance": 6.779282086953355e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4135-1",
+      "model": "analytic_rho",
+      "gas_balance": 3.818164138032227e-07,
+      "finite": true,
+      "partition_balance": 5.941040211492592e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4135-3",
+      "model": "analytic_rho",
+      "gas_balance": 3.079044876218069e-07,
+      "finite": true,
+      "partition_balance": 4.6282623628638303e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4140-2",
+      "model": "analytic_rho",
+      "gas_balance": 3.169404439862367e-07,
+      "finite": true,
+      "partition_balance": 6.625371773362447e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-1",
+      "model": "analytic_rho",
+      "gas_balance": 4.1227008118015464e-07,
+      "finite": true,
+      "partition_balance": 4.7214119506118255e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-2",
+      "model": "analytic_rho",
+      "gas_balance": 3.4630710674256543e-07,
+      "finite": true,
+      "partition_balance": 5.014121248720221e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-3",
+      "model": "analytic_rho",
+      "gas_balance": 3.6279967577389973e-07,
+      "finite": true,
+      "partition_balance": 4.7546503178042575e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4162-4",
+      "model": "analytic_rho",
+      "gas_balance": 4.306707549649157e-07,
+      "finite": true,
+      "partition_balance": 4.1724010247693534e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-2",
+      "model": "analytic_rho",
+      "gas_balance": 3.956370466932333e-07,
+      "finite": true,
+      "partition_balance": 4.4147323390591076e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-3",
+      "model": "analytic_rho",
+      "gas_balance": 4.011342978537504e-07,
+      "finite": true,
+      "partition_balance": 4.0880971062868366e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-1",
+      "model": "analytic_rho",
+      "gas_balance": 3.41374202137671e-07,
+      "finite": true,
+      "partition_balance": 3.610687470519905e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    },
+    {
+      "case": "test_White2004_4163-4",
+      "model": "analytic_rho",
+      "gas_balance": 4.3011276088774663e-07,
+      "finite": true,
+      "partition_balance": 4.6726414169406875e-07,
+      "initializations": 1,
+      "number_nonincreasing": false,
+      "radius_within_grain": true
+    }
+  ]
+}

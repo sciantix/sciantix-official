@@ -1,0 +1,572 @@
+[
+  {
+    "case": "test_White2004_4000-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-5",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4140-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4140-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-2",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-3",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-1",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-4",
+    "model": "legacy",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-5",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4140-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4140-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-2",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-3",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-1",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-4",
+    "model": "barani",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4000-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4005-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4004-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4064-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4065-5",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4140-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4136-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4135-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4140-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4162-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-2",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-3",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-1",
+    "model": "analytic_rho",
+    "returncode": 0
+  },
+  {
+    "case": "test_White2004_4163-4",
+    "model": "analytic_rho",
+    "returncode": 0
+  }
+]

@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -21,13 +21,14 @@ void Simulation::setVariables(int    Sciantix_options[],
                               double Sciantix_history[],
                               double Sciantix_variables[],
                               double Sciantix_scaling_factors[],
-                              double Sciantix_diffusion_modes[])
+                              double Sciantix_diffusion_modes[],
+                              double Sciantix_diffusion_modes_NUS[])
 {
     // Input variable
     if (input_variable.empty())
     {
         std::vector<std::string> name_list = getInputVariableNames();
-        for (int i = 0; i < name_list.size(); i++)
+        for (size_t i = 0; i < name_list.size(); i++)
         {
             input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
         }
@@ -41,9 +42,7 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
-         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
-         toOutputCoarsening             = input_variable["iIntraGranularBubbleBehavior"].getValue() ==
-                              4;  // COARSENING: only model-4 cases print the extra Barani two-size outputs.
+         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
 
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
@@ -66,12 +65,32 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputGrainBoundary,
                                         toOutputHighBurnupStructure,
                                         toOutputStoichiometryDeviation,
-                                        toOutputChromiumContent,
-                                        toOutputCoarsening);
+                                        toOutputChromiumContent);
 
     for (SciantixVariable initial_value : values)
     {
         sciantix_variable.push(initial_value);
+    }
+
+    // # COARSENING: persistent population, gas partition and bubble properties.
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() == 5)
+    {
+        sciantix_variable.push(SciantixVariable("Coarsening dislocation concentration", "(bub/m3)", Sciantix_variables[170], Sciantix_variables[170], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening vacancy concentration", "(vac/m3)", Sciantix_variables[171], Sciantix_variables[171], 1));
+        sciantix_variable.push(SciantixVariable("Xe coarsening partition state", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], 1));
+        sciantix_variable.push(SciantixVariable("Kr coarsening partition state", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening initialized", "(/)", Sciantix_variables[174], Sciantix_variables[174], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening dislocation radius", "(m)", Sciantix_variables[175], Sciantix_variables[175], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening vacancies per bubble", "(vac/bub)", Sciantix_variables[176], Sciantix_variables[176], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening pressure", "(Pa)", Sciantix_variables[177], Sciantix_variables[177], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening equilibrium pressure", "(Pa)", Sciantix_variables[178], Sciantix_variables[178], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening dislocation swelling", "(/)", Sciantix_variables[179], Sciantix_variables[179], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening bulk swelling", "(/)", Sciantix_variables[180], Sciantix_variables[180], 1));
+        sciantix_variable.push(SciantixVariable("Xe in bulk bubbles", "(at/m3)", Sciantix_variables[181], Sciantix_variables[181], 1));
+        sciantix_variable.push(SciantixVariable("Kr in bulk bubbles", "(at/m3)", Sciantix_variables[182], Sciantix_variables[182], 1));
+        sciantix_variable.push(SciantixVariable("Coarsening line trapping rate", "(1/s)", Sciantix_variables[183], Sciantix_variables[183], 1));
+        sciantix_variable.push(SciantixVariable("Xe in dislocation bubbles", "(at/m3)", 0, 0, 1));
+        sciantix_variable.push(SciantixVariable("Kr in dislocation bubbles", "(at/m3)", 0, 0, 1));
     }
 
 #if defined(COUPLING_TU)
@@ -84,9 +103,18 @@ void Simulation::setVariables(int    Sciantix_options[],
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 17; j++)
+        for (int j = 0; j < N_MODE_BLOCKS; j++)
         {
             modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];
+        }
+    }
+
+    // Diffusion modes NUS
+    for (int i = 0; i < n_modes; ++i)
+    {
+        for (int j = 0; j <= 17; j++)
+        {
+            modes_initial_conditions_NUS[j * n_modes + i] = Sciantix_diffusion_modes_NUS[j * n_modes + i];
         }
     }
 
@@ -97,4 +125,11 @@ void Simulation::setVariables(int    Sciantix_options[],
         scaling_factors.push(InputVariable(name, Sciantix_scaling_factors[index]));
         index++;
     }
+
+    // Source profiles seen by the NUS solver: the grain-boundary re-solution model consumes the
+    // corrected profiles, everything else the interpolated ones.
+    if (input_variable["iGrainBoundaryResolution"].getValue() == 1)
+        sourcesinput = sources_correct;
+    else
+        sourcesinput = sources_interp;
 }

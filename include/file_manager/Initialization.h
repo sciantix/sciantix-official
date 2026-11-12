@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -20,6 +20,8 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+
+#include "Source.h"
 
 /**
  * @brief Initializes SCIANTIX internal variables with initial conditions.
@@ -32,6 +34,7 @@
 void Initialization(double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],
+                    double              Sciantix_diffusion_modes_NUS[],
                     std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,

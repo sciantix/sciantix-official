@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -17,11 +17,13 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
+#include "ErrorMessages.h"
 #include "Matrix.h"
 #include "Model.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
 #include "Solver.h"
+#include "Source.h"
 #include "System.h"
 #include <cmath>
 #include <vector>
@@ -52,21 +54,22 @@ class Simulation
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
+    std::vector<Source>          sourcesinput;
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
+    std::vector<double> modes_initial_conditions_NUS;
 
     Solver solver;
-
-    static Simulation* instance;
 
     /**
      * @brief Default constructor for the Simulation class
      */
     Simulation()
     {
-        n_modes = 40;
-        modes_initial_conditions.resize(720);
+        n_modes = N_DIFFUSION_MODES;
+        modes_initial_conditions.resize(SCIANTIX_DIFFUSION_MODES_SIZE);
+        modes_initial_conditions_NUS.resize(SCIANTIX_DIFFUSION_MODES_SIZE);
     }
 
   public:
@@ -83,7 +86,8 @@ class Simulation
                       double Sciantix_history[],
                       double Sciantix_variables[],
                       double Sciantix_scaling_factors[],
-                      double Sciantix_diffusion_modes[]);
+                      double Sciantix_diffusion_modes[],
+                      double Sciantix_diffusion_modes_NUS[]);
 
     void setGas();
     void setMatrix();
@@ -95,11 +99,12 @@ class Simulation
                     double Sciantix_history[],
                     double Sciantix_variables[],
                     double Sciantix_scaling_factors[],
-                    double Sciantix_diffusion_modes[]);
+                    double Sciantix_diffusion_modes[],
+                    double Sciantix_diffusion_modes_NUS[]);
 
     void execute();
 
-    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_diffusion_modes_NUS[]);
 
     void output();
 
@@ -160,6 +165,14 @@ class Simulation
     void GasRelease();
 
     /**
+     * @brief Fixes the mass balance at the grain boundary for the re-solution problem.
+     *
+     * @author A. Zayat
+     *
+     */
+    void GrainBoundarySource();
+
+    /**
      * @brief Handles the intragranular gas diffusion problem.
      *
      * @author D. Pizzocri
@@ -168,6 +181,9 @@ class Simulation
      *
      */
     void GasDiffusion();
+
+    // # COARSENING: two-population intragranular bubble evolution.
+    void BaraniCoarsening();
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
@@ -198,22 +214,9 @@ class Simulation
      * evolution.
      *
      * - **iIntraGranularBubbleBehavior == 3**:
-     *   The evolution of intra-granular bubble concentration, radius,
-     * and atoms per bubble is
-     * described through the similarity ratio, based on the evolution of intra-granular
-     * gas
+     *   The evolution of intra-granular bubble concentration, radius, and atoms per bubble is
+     * described through the similarity ratio, based on the evolution of intra-granular gas
      * concentration in bubbles.
-     *
-     * - **iIntraGranularBubbleBehavior == 4**:
-     *   COARSENING: two-size intra-granular bubble model following Barani et al., JNM, 538
-     *   (2020) 152195, with nanometric bulk bubbles and coarsened dislocation bubbles.
-     *   COARSENING options:
-     *   iResolutionRate = 4 selects the Setyawan-informed size-dependent re-solution;
-     *   iTrappingRate = 2 enables Barani trapping to dislocations; iNucleationRate = 2 enables
-     *   Barani dislocation-bubble nucleation; iCoarseningDislocationDensity = 0/1/2 selects fixed
-     *   Barani 2019
-     * density, Veshchunov 2009, or Nogita 1995. COARSENING.
-
      *
      * @author D. Pizzocri
      * @author T. Barani
@@ -291,6 +294,29 @@ class Simulation
      * @author E. Cappellari
      */
     double openPorosity(double fabrication_porosity);
+
+    /**
+     * @brief Calculates a corrective factor for the athermal fission gas release.
+     * @param open_porosity the open porosity of the fuel.
+     * @param theta the grain-edge inclination angle.
+     * @param porosity the as-fabricated porosity.
+     * @param grain_edge_lenght the grain-edge lenght.
+     * @param burnup the fuel burn-up.
+     * @param temperature the fuel temperature given as input.
+     * @param fission_rate the fission rate given as input.
+     * @return the athermal venting factor to correct athermal release for the real shape of gas
+     * flux within the grain including its dependency on the grain-edge inclination angle.
+     *
+     * @author A. Pagani
+     * @author E. Cappellari
+     */
+    double athermalVentingFactor(double open_porosity,
+                                 double theta,
+                                 double porosity,
+                                 double grain_edge_lenght,
+                                 double burnup,
+                                 double temperature,
+                                 double fission_rate);
 
     /**
      * @brief Calculates the formation of high burnup structures within the nuclear fuel.
@@ -397,24 +423,20 @@ class Simulation
         if (gas_name == "Xe")
             return &modes_initial_conditions[0];
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[3 * 40];
+            return &modes_initial_conditions[3 * n_modes];
         else if (gas_name == "He")
-            return &modes_initial_conditions[6 * 40];
+            return &modes_initial_conditions[6 * n_modes];
         else if (gas_name == "Xe133")
-            return &modes_initial_conditions[9 * 40];
+            return &modes_initial_conditions[9 * n_modes];
 
         else if (gas_name == "Kr85m")
-            return &modes_initial_conditions[12 * 40];
+            return &modes_initial_conditions[12 * n_modes];
 
         else if (gas_name == "Xe in HBS")
-            return &modes_initial_conditions[15 * 40];
+            return &modes_initial_conditions[15 * n_modes];
 
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModes");
     }
 
     /**
@@ -426,28 +448,24 @@ class Simulation
     double* getDiffusionModesSolution(std::string gas_name)
     {
         if (gas_name == "Xe")
-            return &modes_initial_conditions[1 * 40];
+            return &modes_initial_conditions[1 * n_modes];
 
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[4 * 40];
+            return &modes_initial_conditions[4 * n_modes];
 
         else if (gas_name == "He")
-            return &modes_initial_conditions[7 * 40];
+            return &modes_initial_conditions[7 * n_modes];
 
         else if (gas_name == "Xe133")
-            return &modes_initial_conditions[10 * 40];
+            return &modes_initial_conditions[10 * n_modes];
 
         else if (gas_name == "Kr85m")
-            return &modes_initial_conditions[13 * 40];
+            return &modes_initial_conditions[13 * n_modes];
 
         else if (gas_name == "Xe in HBS")
-            return &modes_initial_conditions[16 * 40];
+            return &modes_initial_conditions[16 * n_modes];
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModesSolution");
     }
 
     /**
@@ -459,19 +477,92 @@ class Simulation
     double* getDiffusionModesBubbles(std::string gas_name)
     {
         if (gas_name == "Xe")
-            return &modes_initial_conditions[2 * 40];
+            return &modes_initial_conditions[2 * n_modes];
 
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[5 * 40];
+            return &modes_initial_conditions[5 * n_modes];
 
         else if (gas_name == "He")
-            return &modes_initial_conditions[8 * 40];
+            return &modes_initial_conditions[8 * n_modes];
 
         else if (gas_name == "Xe133")
-            return &modes_initial_conditions[11 * 40];
+            return &modes_initial_conditions[11 * n_modes];
 
         else if (gas_name == "Kr85m")
-            return &modes_initial_conditions[14 * 40];
+            return &modes_initial_conditions[14 * n_modes];
+
+        else
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModesBubbles");
+    }
+
+    double* getDiffusionModes_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[0];
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[3 * 40];
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[6 * 40];
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[9 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[12 * 40];
+
+        else if (gas_name == "Xe in HBS")
+            return &modes_initial_conditions_NUS[15 * 40];
+
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes."
+                      << std::endl;
+            return nullptr;
+        }
+    }
+
+    double* getDiffusionModesSolution_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[1 * 40];
+
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[4 * 40];
+
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[7 * 40];
+
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[10 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[13 * 40];
+
+        else if (gas_name == "Xe in HBS")
+            return &modes_initial_conditions_NUS[16 * 40];
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution."
+                      << std::endl;
+            return nullptr;
+        }
+    }
+
+    double* getDiffusionModesBubbles_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[2 * 40];
+
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[5 * 40];
+
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[8 * 40];
+
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[11 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[14 * 40];
 
         else
         {
@@ -482,4 +573,4 @@ class Simulation
     }
 };
 
-#endif
+#endif  // SIMULATION_H

@@ -1,0 +1,16 @@
+model,quantity,RMSE_log10,locations
+published,radius_m,0.22785692307633573,38
+legacy,radius_m,1.8016692561197607,38
+barani,radius_m,0.2344522084277706,38
+analytic_rho,radius_m,0.22543220105352232,38
+published,density_m3,0.537642360855488,38
+legacy,density_m3,4.1454549707027155,38
+barani,density_m3,0.5576819776690422,38
+analytic_rho,density_m3,0.6365468888364809,38
+published,swelling_ig_pct,0.5387759161462049,38
+legacy,swelling_ig_pct,1.3100265362772927,38
+barani,swelling_ig_pct,0.49368592902793057,38
+analytic_rho,swelling_ig_pct,0.5942255243517254,38
+legacy,swelling_gb_pct,0.42985240084021475,38
+barani,swelling_gb_pct,0.3232227322359312,38
+analytic_rho,swelling_gb_pct,0.37500010008033974,38

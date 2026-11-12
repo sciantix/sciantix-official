@@ -8,21 +8,33 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
+#include <stdexcept>
+#include "Solver.h"
+#include "SourceHandler.h"
+#include "SourceReader.h"
 
 void Simulation::GasDiffusion()
 {
+    // # COARSENING: supported gas transport and conservative inventory projection.
+    if (int(input_variable["iIntraGranularBubbleBehavior"].getValue()) == 5)
+    {
+        if (input_variable["iDiffusionSolver"].getValue() != 2 || input_variable["iResolutionRate"].getValue() != 98 ||
+            input_variable["iHelium"].getValue() != 0 || input_variable["iRadioactiveFissionGas"].getValue() != 0 ||
+            input_variable["iFuelMatrix"].getValue() != 0 || input_variable["iGrainBoundarySweeping"].getValue() != 0)
+            throw std::runtime_error("Coarsening requires SDA2, resolution 98, stable Xe/Kr, UO2 and no sweeping");
+    }
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
-        case 1:
-            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);
+        case 1:  // Updated to account for a linear source S(r) = A * r + B; A = 0 => SDA 1.0
+            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);  // SDA 2.0
             break;
 
         case 2:
@@ -31,6 +43,10 @@ void Simulation::GasDiffusion()
 
         case 3:
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
+            break;
+
+        case 4:  // New One Added | SDA for a Non Uniform Source
+            defineSpectralDiffusionNUS1Equation(sciantix_system, model, n_modes);
             break;
 
         default:
@@ -111,6 +127,66 @@ void Simulation::GasDiffusion()
             case 3:
                 break;
 
+            case 4:
+            {
+                if (visualization == 1)
+                {
+                    writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
+                    computeAndSaveSourcesToFile(sources_input,
+                                                TestPath + "source_shape.txt",
+                                                0.001,
+                                                sciantix_variable["Grain radius"].getFinalValue());
+                    computeAndSaveICToFile(initial_distribution,
+                                           TestPath + "ic_shape.txt",
+                                           0.001,
+                                           sciantix_variable["Grain radius"].getFinalValue());
+
+                    if (animation == 1)
+                        computeAndSaveSourcesToFile(sources_interp,
+                                                    TestPath + "source_gif.txt",
+                                                    0.001,
+                                                    sciantix_variable["Grain radius"].getFinalValue());
+                }
+
+                if (system.getRestructuredMatrix() == 0)
+                {
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                        solver.SpectralDiffusionNUS(getDiffusionModes_NUS(system.getGasName()),
+                                                    model["Gas diffusion - " + system.getName()].getParameter(),
+                                                    system.getProductionRateNUS(),
+                                                    physics_variable["Time step"].getFinalValue(),
+                                                    iNonSym));
+
+                    // Gas re-solved from the grain boundary
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue() + GBresolve);
+
+                    double equilibrium_fraction(1.0);
+                    if ((system.getResolutionRateNUS() + system.getTrappingRate()) > 0.0)
+                        equilibrium_fraction =
+                            system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate());
+
+                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                        equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                        (1.0 - equilibrium_fraction) *
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+                }
+
+                else if (system.getRestructuredMatrix() == 1)
+                {
+                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
+                        solver.SpectralDiffusionNUS(getDiffusionModes_NUS(system.getGasName() + " in HBS"),
+                                                    model["Gas diffusion - " + system.getName()].getParameter(),
+                                                    system.getProductionRateNUS(),
+                                                    physics_variable["Time step"].getFinalValue(),
+                                                    iNonSym));
+                }
+
+                break;
+            }
+
             default:
                 ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
                 break;
@@ -145,6 +221,7 @@ void Simulation::GasDiffusion()
             pow(matrices["UO2"].getLatticeParameter(), 3) / 4);
     }
 
+
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto& system : sciantix_system)
     {
@@ -154,7 +231,7 @@ void Simulation::GasDiffusion()
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " released"].getInitialValue());
+                sciantix_variable[system.getGasName() + " released"].getInitialValue() - 0);
 
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
@@ -184,6 +261,21 @@ void Simulation::GasDiffusion()
             }
         }
     }
+    // # COARSENING: supported gas transport and conservative inventory projection.
+    if (int(input_variable["iIntraGranularBubbleBehavior"].getValue()) == 5)
+    {
+        // # COARSENING: project the stored fraction onto the current SDA inventory.
+        for (const std::string gas : {"Xe", "Kr"})
+        {
+            const double total = sciantix_variable[gas + " in intragranular bubbles"].getFinalValue();
+            const double state = sciantix_variable[gas + " coarsening partition state"].getFinalValue();
+            const double old_total = state + sciantix_variable[gas + " in bulk bubbles"].getFinalValue();
+            const double fraction = old_total > 0 ? state / old_total : 0;
+            sciantix_variable[gas + " in dislocation bubbles"].setFinalValue(total * fraction);
+            sciantix_variable[gas + " in bulk bubbles"].setFinalValue(total * (1 - fraction));
+        }
+    }
+
 }
 
 void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes)
@@ -293,6 +385,45 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
     model_.setParameter(parameters);
     model.push(model_);
 }
+
+// Newly Added
+
+// Non Uniform Source
+
+void defineSpectralDiffusionNUS1Equation(SciantixArray<System>& sciantix_system,
+                                         SciantixArray<Model>&  model,
+                                         int                    n_modes)
+{
+    std::string reference;
+    // Parameters {n, D, a, l, f}
+    // The source data is within the solver (case 4)
+    for (auto& system : sciantix_system)
+    {
+        Model model_;
+        model_.setName("Gas diffusion - " + system.getName());
+        model_.setRef(reference);
+        std::vector<double> parameters;
+
+        parameters.push_back(n_modes);
+        double gasDiffusivity;
+        if (system.getResolutionRateNUS() + system.getTrappingRate() == 0)
+            gasDiffusivity = system.getFissionGasDiffusivityNUS() * system.getGas().getPrecursorFactor();
+        else
+            gasDiffusivity =
+                (system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate())) *
+                    system.getFissionGasDiffusivityNUS() * system.getGas().getPrecursorFactor() +
+                (system.getTrappingRate() / (system.getResolutionRateNUS() + system.getTrappingRate())) *
+                    system.getBubbleDiffusivity();
+
+        parameters.push_back(gasDiffusivity);
+        parameters.push_back(system.getMatrix().getGrainRadius());
+        parameters.push_back(system.getGas().getDecayRate());
+        model_.setParameter(parameters);
+        model.push(model_);
+    }
+}
+
+//
 
 void errorHandling(SciantixArray<InputVariable> input_variable)
 {

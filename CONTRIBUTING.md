@@ -15,9 +15,7 @@ Please include:
 1. Fork the repository.
 2. Create a new branch:
 ```
-
 git checkout -b new_name
-
 ```
 3. Make your changes with clear commits.
 4. Ensure that:
@@ -31,13 +29,17 @@ git checkout -b new_name
 - Document new classes and methods using Doxygen comments.
 
 ## Testing
-SCIANTIX includes a regression test suite.  
-Before submitting a PR, run:
+SCIANTIX includes a regression test suite.
+Before submitting a PR, run it from the repository root:
 
 ```
+python3 -m regression.runner --all -j $(nproc)
+```
 
-python regression/regression.py
+Unit tests are run separately with:
 
+```
+ctest --test-dir build
 ```
 
 ## Documentation
@@ -45,4 +47,3 @@ Any new model, variable or option must be documented in:
 - Doxygen comments,
 - the user manual (`docs/`),
 - example input files when relevant.
-```

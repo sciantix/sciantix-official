@@ -16,11 +16,18 @@ Currently, SCIANTIX is validated against experimental data for:
 
 The validation database and regression suite are available in the `regression/` directory.
 
+# Training
+
+Training material — tutorials, hands-on cases, and the OperaHPC online training —
+is maintained in a dedicated repository: 
+- [sciantix-training](https://github.com/sciantix/sciantix-training)
+- [OperaHPC Online Training](https://github.com/sciantix/sciantix-training/tree/main/training/OperaHPC_online_training)
+
 # Installation
 
 Recommended requirements:
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
-- CMake ≥ 3.6
+- CMake ≥ 3.10
 - Python 3.8+ (for regression suite)
 
 ## Quick installation (Linux/WSL2)
@@ -156,3 +163,30 @@ SCIANTIX is developed and maintained by:
 - Lelio Luzzi
 
 Politecnico di Milano, Nuclear Engineering Division.
+
+# Barani 2020 default coarsening configuration
+
+Select `iIntraGranularBubbleBehavior=5`, `iResolutionRate=98` and
+`iDiffusionSolver=2` in the existing positions of `input_settings.txt`.
+The default Barani 2020 configuration uses 100 time steps per history interval,
+one-off dislocation-bubble initialization, Setyawan radius in nanometres, no phi
+in gas exchange, and phi in dislocation-number loss only. Line capture uses
+`Dmean=(1-f)*Dbulk+f*Dcore`, with Murphy (2015) Xe core mobility,
+`f=pi*a^2*rho`, `a=1.5*0.385 nm` and `rho=4e13 m^-2`. This Hart-type
+volume weighting is a declared local capture closure, assuming equal mobile-Xe
+density in core and bulk. No empirical multiplier is applied. Native bulk
+transport and vacancy diffusivity are unchanged. Pressure is
+Carnahan-Starling and gas volume is `omega(T)=4*v_HS(T)`.
+
+No additional input lines, initial-condition entries or experimental scaling
+settings are required. The supported reference is stable Xe/Kr in UO2 without
+grain-boundary sweeping. See
+[White_COARSENING](regression/White_COARSENING/README.md) for the complete input
+selection and the three regression figures. This is a declared local reference,
+not a literal reproduction of all equations in the publication. The 0.2 nm/call
+and 250 nm vacancy-uptake limits remain part of this reference.
+
+# Non-uniform source (NUS) solver
+
+Mini guide for the generalized spectral diffusion solver with non-uniform source:
+https://polimi365-my.sharepoint.com/:b:/g/personal/10884872_polimi_it/EUT-2KKVWdBNgbRhSLts3LYB44YjGkc51bAKPb6uTe0oHg?e=YH19AK

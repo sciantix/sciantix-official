@@ -9,7 +9,7 @@
 #
 # Author: G. Zullo (giovanni.zullo@polimi.it)
 
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10)
 
 if(APPLE)
     message(STATUS "Configuring on macOS, setting custom compilers...")
@@ -36,6 +36,13 @@ endfunction()
 # Enable C++ compiler
 enable_language (CXX)
 
+# Language standard and warnings
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra)
+endif()
+
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
 
@@ -52,7 +59,7 @@ add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
 
 # Set custom object file directory (to have all object files in the obj directory)
-set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
+set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 
 # Add executable sciantix.x (or .exe) or create static library
 if(COUPLING_TU)
@@ -65,6 +72,17 @@ else()
     endif()
 endif()
 
+# Unit tests (run with: ctest --test-dir build)
+if(BUILD_TESTING AND NOT COUPLING_TU)
+    add_executable(unit_tests
+        ${PROJECT_SOURCE_DIR}/tests/unit_tests.C
+        ${PROJECT_SOURCE_DIR}/src/classes/Solver.C
+        ${PROJECT_SOURCE_DIR}/src/namespaces/ErrorMessages.C
+        ${PROJECT_SOURCE_DIR}/src/MainVariables.C
+    )
+    add_test(NAME unit_tests COMMAND unit_tests)
+endif()
+
 # Copy all object files in obj directory by using a custom command
 add_custom_command(TARGET sciantix POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/obj # make obj directory
@@ -75,3 +93,11 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
 include(CPack)
+if(BUILD_TESTING AND NOT COUPLING_TU)
+    # COARSENING: persistent nucleation, number loss and conservative partition.
+    add_executable(coarsening_tests tests/coarsening_tests.C)
+    add_test(NAME coarsening_kernels COMMAND coarsening_tests)
+    add_executable(analytic_rho_tests tests/analytic_rho_tests.C)
+    add_test(NAME analytic_rho_kernels COMMAND analytic_rho_tests)
+    set_tests_properties(analytic_rho_kernels PROPERTIES ENVIRONMENT "SCIANTIX_NUCLEATION=vesh_matrix_network")
+endif()

@@ -1,0 +1,18 @@
+{
+  "configuration": "Barani 2020 default; Hart mean in beta-prime; a=1.5b; SDA2; CS; one-off Nd",
+  "steps_per_interval": 100,
+  "locations": 38,
+  "legacy_byte_identical_to_previous": 38,
+  "barani_byte_identical_to_selected_hart_scan": 38,
+  "source_changes": [
+    "src/models/BaraniCoarsening.C",
+    "include/models/BaraniCoarsening.h"
+  ],
+  "all_input_files_unchanged": true,
+  "previous_snapshots_verified": {
+    "Barani_2020": 702,
+    "Barani_2020_100steps": 704
+  },
+  "max_printed_gas_balance": 7.487440748073097e-07,
+  "binary_sha256": "b5f691b969e9299b9f4abd16bb03dd189fae07d08e5ad3f0e9a45f740d1f43e3"
+}

@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -44,19 +44,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {22, "Intragranular Kr atoms per bubble"},
     {23, "Intragranular He atoms per bubble"},
     {24, "Intragranular gas bubble swelling"},
-    // COARSENING: persisted state and output for the Barani et al. dislocation-bubble population.
-    {170, "Intragranular coarsened bubble concentration"},
-    {171, "Intragranular coarsened bubble radius"},
-    {172, "Intragranular coarsened atoms per bubble"},
-    {173, "Intragranular coarsened vacancies per bubble"},
-    {174, "Intragranular coarsened gas bubble swelling"},
-    {175, "Intragranular bulk gas bubble swelling"},
-    {176, "Intragranular gas in coarsened bubbles"},
-    {177, "Intragranular coarsened bubble pressure"},
-    {178, "Intragranular coarsened bubble equilibrium pressure"},
-    {179, "Dislocation density"},
-    {180, "Coarsening maximum temperature"},      // COARSENING: hidden memory for the peak-temperature K_eff weight.
-    {181, "Coarsening bubbles per dislocation"},  // COARSENING: effective K for dislocation-bubble nucleation.
     {68, "Intragranular gas solution swelling"},
     {25, "Intergranular bubble concentration"},
     {26, "Intergranular Xe atoms per bubble"},
@@ -126,14 +113,36 @@ std::map<int, std::string> update_sciantix_variable = {
     {160, "Diffusion coefficient"},
 };
 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
+void Simulation::update(double Sciantix_variables[],
+                        double Sciantix_diffusion_modes[],
+                        double Sciantix_diffusion_modes_NUS[])
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 17; j++)
+        for (int j = 0; j < N_MODE_BLOCKS; j++)
         {
-            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];
+            Sciantix_diffusion_modes[j * n_modes + i]     = modes_initial_conditions[j * n_modes + i];
+            Sciantix_diffusion_modes_NUS[j * n_modes + i] = modes_initial_conditions_NUS[j * n_modes + i];
         }
+    }
+
+    // # COARSENING: persistent population, gas partition and bubble properties.
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() == 5)
+    {
+        Sciantix_variables[170] = sciantix_variable["Coarsening dislocation concentration"].getFinalValue();
+        Sciantix_variables[171] = sciantix_variable["Coarsening vacancy concentration"].getFinalValue();
+        Sciantix_variables[172] = sciantix_variable["Xe coarsening partition state"].getFinalValue();
+        Sciantix_variables[173] = sciantix_variable["Kr coarsening partition state"].getFinalValue();
+        Sciantix_variables[174] = sciantix_variable["Coarsening initialized"].getFinalValue();
+        Sciantix_variables[175] = sciantix_variable["Coarsening dislocation radius"].getFinalValue();
+        Sciantix_variables[176] = sciantix_variable["Coarsening vacancies per bubble"].getFinalValue();
+        Sciantix_variables[177] = sciantix_variable["Coarsening pressure"].getFinalValue();
+        Sciantix_variables[178] = sciantix_variable["Coarsening equilibrium pressure"].getFinalValue();
+        Sciantix_variables[179] = sciantix_variable["Coarsening dislocation swelling"].getFinalValue();
+        Sciantix_variables[180] = sciantix_variable["Coarsening bulk swelling"].getFinalValue();
+        Sciantix_variables[181] = sciantix_variable["Xe in bulk bubbles"].getFinalValue();
+        Sciantix_variables[182] = sciantix_variable["Kr in bulk bubbles"].getFinalValue();
+        Sciantix_variables[183] = sciantix_variable["Coarsening line trapping rate"].getFinalValue();
     }
 
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();

@@ -54,7 +54,23 @@ compile_commands.json
 
 docs/build/
 docs/doxygen/
+docs/source/api/
 latex/
+
+# Written by the regression runner on every run
+regression/report.html
+
+# Written by ErrorMessages next to the case that produced it
+# Templates written by the generators in utilities/inputExample/. Scoped to that folder:
+# input_settings.txt and friends are real, tracked inputs everywhere else.
+utilities/inputExample/*.txt
+
+# SCIANTIX run artefacts: regenerated on every execution, never meant to be committed
+error_log.txt
+input_check.txt
+execution.txt
+overview.txt
+
 
 
 ########################################
@@ -88,4 +104,17 @@ Testing/
 
 bin/
 out/
+# Figures are regenerable artefacts, not documentation: every regression group writes
+# its plots into <group>/figures/ and plotter.sh rebuilds the lot. Nothing under a
+# figures/ directory is meant to be committed.
 *.png
+# NUS parametric studies: generated cases and their outputs
+regression/nus/studies/runs/
+
+# Regenerated runtime outputs; retain input files and output_gold.txt.
+/regression/**/output.txt
+/regression/**/run.log
+/regression/White_COARSENING/*/test_*/nucleation.csv
+/regression/White_COARSENING/*/test_*/hart.csv
+/regression/White_COARSENING/*/test_*/nu_rate.csv
+/regression/White_COARSENING/figures/

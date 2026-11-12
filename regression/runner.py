@@ -13,7 +13,6 @@ python3 -m regression.runner --white --mode-gold 1
 import sys
 import os
 import argparse
-import subprocess
 from regression.core.generic_runner import run_group
 from regression.core.report import generate_html_report
 
@@ -22,10 +21,8 @@ def main():
     parser = argparse.ArgumentParser(description="SCIANTIX regression test runner")
 
     parser.add_argument("--baker", action="store_true")
-    parser.add_argument("--BakerCoarsening", "--baker-coarsening", dest="BakerCoarsening", action="store_true")  # COARSENING: Baker suite with model 4 and no dislocations.
     parser.add_argument("--cornell", action="store_true")
     parser.add_argument("--white", action="store_true")
-    parser.add_argument("--whiteCOARSENING", "--white-coarsening", dest="whiteCOARSENING", action="store_true")  # COARSENING: isolated White suite using the Barani two-size intragranular model.
     parser.add_argument("--kashibe", action="store_true")
     parser.add_argument("--talip", action="store_true")
     parser.add_argument("--oxidation", action="store_true")
@@ -34,7 +31,9 @@ def main():
     parser.add_argument("--hbs", action="store_true")
     parser.add_argument("--vercors", action="store_true")
     parser.add_argument("--pulse", action="store_true")
+    parser.add_argument("--analytics", action="store_true")
     parser.add_argument("--gpr", action="store_true")
+    parser.add_argument("--nus", action="store_true")
     parser.add_argument("--all", action="store_true")
 
     parser.add_argument(
@@ -51,7 +50,16 @@ def main():
         help="Number of parallel threads (default=1)"
     )
 
-    args = parser.parse_args()
+    args, extras = parser.parse_known_args()
+
+    targeted = {}  # group -> set of case names/substrings
+    for tok in extras:
+        if tok.startswith("--") and "." in tok:
+            group, _, case = tok[2:].partition(".")
+            if group and case:
+                targeted.setdefault(group, set()).add(case)
+        else:
+            print(f"[WARN] Ignoring unrecognized argument: {tok}")
 
     # Dynamic discovery of regression groups
     # We look for folders in regression/ that contain test cases (folders starting with test_)
@@ -60,7 +68,7 @@ def main():
     
     if os.path.isdir(regression_root):
         for entry in os.scandir(regression_root):
-            if entry.is_dir() and entry.name not in ("core", "__pycache__", "analytics"): # analytics often handled separately or is empty
+            if entry.is_dir() and entry.name not in ("core", "__pycache__"):
                 # Check if it has at least one test_ folder
                 has_tests = False
                 for sub in os.scandir(entry.path):
@@ -71,17 +79,18 @@ def main():
                     available_groups.append(entry.name)
 
     results = []
-    
-    # Selected groups map
+
+    # Selected groups map. --pulse is an alias for --analytics and has no folder of its
+    # own, so it has to be checked explicitly: otherwise selecting it leaves
+    # explicit_selection False and the whole suite is run instead of the chosen group.
     explicit_selection = any([getattr(args, g, False) for g in available_groups if hasattr(args, g)])
-    
+    explicit_selection = explicit_selection or args.pulse or bool(targeted)
+
     # Hardcoded runners list for compatibility and precise prefixes
     runners = [
         ("baker", "test_Baker"),
-        ("BakerCoarsening", "test_Baker"),  # COARSENING: Baker cases for no-dislocation coarsening fallback checks.
         ("cornell", "test_Cornell"),
         ("white", "test_White"),
-        ("whiteCOARSENING", "test_White"),  # COARSENING: keep model-4 White cases out of the legacy white regression group.
         ("kashibe", "test_Kashibe"),
         ("talip", "test_Talip"),
         ("oxidation", "test_UO2_oxidation"),
@@ -89,8 +98,9 @@ def main():
         ("contact", "test_CONTACT"),
         ("hbs", "test_UO2HBS"),
         ("vercors", "test_Vercors"),
-        ("analytics", "test_powerPulse"), # 'pulse' arg maps to 'analytics' group
+        ("analytics", "test_"), # 'pulse'/'analytics' arg; broad prefix covers all analytics cases
         ("gpr", "test_GPR"),
+        ("nus", "test_N"),  # test_NewSolver, test_NUS_*
     ]
 
     if not explicit_selection and not args.all:
@@ -98,28 +108,17 @@ def main():
 
     for group, prefix in runners:
         # Check if this group is requested
-        # The arg name might differ from group name (e.g. pulse vs analytics)
-        arg_name = group if group != "analytics" else "pulse"
-        
-        should_run = args.all or getattr(args, arg_name, False)
-        
+        # The 'analytics' group is reachable via --pulse or --analytics
+        if group == "analytics":
+            group_flag = args.pulse or args.analytics
+        else:
+            group_flag = getattr(args, group, False)
+
+        group_only = targeted.get(group)
+        should_run = args.all or group_flag or bool(group_only)
+
         if should_run:
-            results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
-            if group == "white" and args.mode_gold in (0, 1, 2):
-                # COARSENING: keep White parity plots for intra/inter-granular bubble metrics in the regression workflow.
-                script = os.path.join(regression_root, "white", "parity_plot.py")
-                subprocess.run([sys.executable, script], check=True)
-            if group == "whiteCOARSENING" and args.mode_gold in (0, 1, 2):
-                # COARSENING: keep the White coarsening diagnostic figures part of the regression workflow.
-                script = os.path.join(regression_root, "whiteCOARSENING", "coarsening_metrics.py")
-                subprocess.run([sys.executable, script, "--figures", "--dislocation-variants"], check=True)
-                csv_path = os.path.join(regression_root, "whiteCOARSENING", "coarsening_metrics.csv")
-                if os.path.exists(csv_path):
-                    os.remove(csv_path)
-            if group == "BakerCoarsening" and args.mode_gold in (0, 1, 2):
-                # COARSENING: keep Baker measured parity plots and dislocation-density comparisons in the workflow.
-                script = os.path.join(regression_root, "BakerCoarsening", "baker_coarsening_metrics.py")
-                subprocess.run([sys.executable, script, "--figures", "--dislocation-variants"], check=True)
+            results.extend(run_group(group, prefix, args.mode_gold, args.jobs, only=group_only))
 
     print("\n=== RESULTS ===")
     for name, ok, msg in results:

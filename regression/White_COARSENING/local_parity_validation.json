@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "selected_model": "Direct fitted rho(T,B), dose-driven gas-limited births, dynamic Hart a=1.5b",
+  "source_comparison": "Direct original workspace comparison; normalize CRLF to LF only",
+  "source_files": 79,
+  "unchanged_selected_overrides": [
+    "include/models/BaraniCoarsening.h",
+    "include/models/NucleationModels.h",
+    "include/models/HartTrace.h",
+    "src/models/BaraniCoarsening.C"
+  ],
+  "original_campaign_hashes_verified": 10,
+  "input_files": 342,
+  "outputs_compared": 114,
+  "byte_identical_outputs": {
+    "legacy": 38,
+    "barani": 38,
+    "analytic_rho": 38
+  },
+  "byte_identical_analytic_trace_files": 114,
+  "failures": []
+}

@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -68,8 +68,9 @@ void Simulation::HighBurnupStructurePorosity()
         }
 
         default:
-            ErrorMessages::Switch(
-                __FILE__, "HighBurnupStructurePorosity", int(input_variable["HighBurnupStructurePorosity"].getValue()));
+            ErrorMessages::Switch(__FILE__,
+                                  "iHighBurnupStructurePorosity",
+                                  int(input_variable["iHighBurnupStructurePorosity"].getValue()));
             break;
     }
 
@@ -138,9 +139,9 @@ void Simulation::HighBurnupStructurePorosity()
 
     sciantix_variable["Xe in HBS pores - variance"].setFinalValue(solver.Integrator(
         sciantix_variable["Xe in HBS pores - variance"].getInitialValue(),
-        matrices["UO2"].getPoreTrappingRate() * sciantix_variable["HBS pore density"].getFinalValue() -
-            matrices["UO2"].getPoreResolutionRate() * sciantix_variable["HBS pore density"].getFinalValue() +
-            matrices["UO2"].getPoreNucleationRate() *
+        matrices["UO2HBS"].getPoreTrappingRate() * sciantix_variable["HBS pore density"].getFinalValue() -
+            matrices["UO2HBS"].getPoreResolutionRate() * sciantix_variable["HBS pore density"].getFinalValue() +
+            matrices["UO2HBS"].getPoreNucleationRate() *
                 pow((sciantix_variable["Xe atoms per HBS pore"].getFinalValue() - 2.0), 2.0),
         physics_variable["Time step"].getFinalValue()));
 

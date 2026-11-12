@@ -134,12 +134,6 @@ Below are some essential Git commands for effectively managing your local and re
 - **Delete local Git branches that were deleted on the remote repository**:
 
   ```bash
-  git branch -vv | grep ': gone]' | grep -v "\*" | awk '{ print $1; }' | xargs -r git branch -D
-  ```
-
-  Alternative command:
-
-  ```bash
   git fetch -p; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -d
   ```
 

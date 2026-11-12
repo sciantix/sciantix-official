@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-12",
+  "build": "Fresh CMake Release build with GNU C++ 11.4.0",
+  "executable_sha256": "5961f760b6dc2585a0516a6eb8fe4dc4d347f7a61770f5ef36ceab7f488f3374",
+  "ctest_passed": 3,
+  "ctest_total": 3,
+  "standard_regression_passed": 113,
+  "standard_regression_failed": 0,
+  "white_output_parity": {
+    "legacy": 38,
+    "barani": 38,
+    "analytic_rho": 38
+  },
+  "analytic_trace_files_identical": 114,
+  "source_files_verified": 79,
+  "scientific_input_files_verified": 342,
+  "gold_files_regenerated": false,
+  "max_printed_gas_balance_error": 7.487440748073097e-07,
+  "scientific_source_changes_during_this_audit": false,
+  "push_performed": false
+}

@@ -13,10 +13,10 @@ grain boundary and accounts for optional immediate release.
 Activation
 ----------
 
-The diffusion model is executed when a diffusion solver option is selected via
-the ``iDiffusionSolver`` input flag (values 1, 2 or 3). If the flag is not set
-or set to a disabling value, the routine returns without updating diffusion
-variables.
+The diffusion model runs at every time step; the solver is chosen with the
+``iDiffusionSolver`` input flag, whose only valid values are 1, 2 and 3. There is
+no disabling value: any other setting is a fatal error and aborts the run. To
+suppress diffusion, set a null diffusivity instead (``iFissionGasDiffusivity = 99``).
 
 Inputs
 ------

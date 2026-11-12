@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +42,7 @@ void Sciantix(int    Sciantix_options[],
               double Sciantix_history[],
               double Sciantix_variables[],
               double Sciantix_scaling_factors[],
-              double Sciantix_diffusion_modes[]);
+              double Sciantix_diffusion_modes[],
+              double Sciantix_diffusion_modes_NUS[]);
 
 #endif  // SCIANTIX_H

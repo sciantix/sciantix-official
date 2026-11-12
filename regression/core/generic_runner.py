@@ -47,7 +47,7 @@ def run_single_case(args):
         return (test_id, False, str(e))
 
 
-def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
+def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1, only=None):
     """
     Generic runner for any regression group.
 
@@ -60,6 +60,8 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
             2 = compare only
             3 = rewrite gold only
         jobs: number of parallel threads
+        only: optional iterable of case names/substrings; when given, only
+              matching test folders in the group are run
 
     Returns:
         list of (test_name, ok)
@@ -77,12 +79,16 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
     for name in sorted(os.listdir(base)):
         if not name.startswith(prefix):
             continue
+        if only and name not in only and not any(o in name for o in only):
+            continue
         case = os.path.join(base, name)
         if not os.path.isdir(case):
             continue
         tasks.append((group_name, name, case, mode_gold))
 
     if not tasks:
+        if only:
+            print(f"[WARN] No cases in '{group_name}' matched {sorted(only)}")
         return []
 
     print(f"Running {len(tasks)} cases in {group_name} with {jobs} threads...")

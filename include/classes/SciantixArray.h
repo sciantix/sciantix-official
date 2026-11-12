@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ template <class T> class SciantixArray
     {
         array = data;
 
-        for (int i = 0; i < data.size(); i++)
+        for (size_t i = 0; i < data.size(); i++)
         {
             map[data[i].getName()] = i;
         }
