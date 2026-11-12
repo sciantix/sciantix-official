@@ -442,7 +442,8 @@ def cv_running_mean(live):
 
 
 DISTRIBUTION_BURNUPS = (40, 65, 110, 150, 200)
-DISTRIBUTION_COLORS = plt.cm.viridis(np.linspace(0.0, 0.9, len(DISTRIBUTION_BURNUPS)))
+# distinct hues, none green (the CV curve is green)
+DISTRIBUTION_COLORS = ("#1f4e9c", "#e67e22", "#c0392b", "#8e44ad", "#222222")
 
 
 def plot_cv(live):
