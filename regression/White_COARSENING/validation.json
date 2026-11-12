@@ -234,9 +234,9 @@
     {
       "case": "test_White2004_4000-4",
       "model": "barani",
-      "gas_balance": 7.487440748073097e-07,
+      "gas_balance": 6.909355576512617e-07,
       "finite": true,
-      "partition_balance": 4.849206806308606e-07,
+      "partition_balance": 8.640151416760339e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -244,9 +244,9 @@
     {
       "case": "test_White2004_4004-1",
       "model": "barani",
-      "gas_balance": 6.560427223774134e-07,
+      "gas_balance": 7.211757318169054e-07,
       "finite": true,
-      "partition_balance": 4.877513033498972e-07,
+      "partition_balance": 8.402568799129947e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -254,9 +254,9 @@
     {
       "case": "test_White2004_4004-2",
       "model": "barani",
-      "gas_balance": 6.624503523420747e-07,
+      "gas_balance": 7.019893831036358e-07,
       "finite": true,
-      "partition_balance": 4.8430773741588e-07,
+      "partition_balance": 4.850025697064694e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -264,9 +264,9 @@
     {
       "case": "test_White2004_4004-3",
       "model": "barani",
-      "gas_balance": 6.712020412246983e-07,
+      "gas_balance": 7.523060534854488e-07,
       "finite": true,
-      "partition_balance": 4.967042798015209e-07,
+      "partition_balance": 4.7572036969143134e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -274,9 +274,9 @@
     {
       "case": "test_White2004_4000-1",
       "model": "barani",
-      "gas_balance": 6.547875214395343e-07,
+      "gas_balance": 6.597286718204914e-07,
       "finite": true,
-      "partition_balance": 4.5247669595158727e-07,
+      "partition_balance": 7.46228252959653e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -284,9 +284,9 @@
     {
       "case": "test_White2004_4000-2",
       "model": "barani",
-      "gas_balance": 6.997195133335655e-07,
+      "gas_balance": 6.998604971032006e-07,
       "finite": true,
-      "partition_balance": 4.799674017986254e-07,
+      "partition_balance": 7.658950019529501e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -294,9 +294,9 @@
     {
       "case": "test_White2004_4000-3",
       "model": "barani",
-      "gas_balance": 6.349420205831296e-07,
+      "gas_balance": 6.701440498633536e-07,
       "finite": true,
-      "partition_balance": 4.861186307644432e-07,
+      "partition_balance": 7.563972438999596e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -304,9 +304,9 @@
     {
       "case": "test_White2004_4005-1",
       "model": "barani",
-      "gas_balance": 5.453957643255312e-07,
+      "gas_balance": 6.825001462422409e-07,
       "finite": true,
-      "partition_balance": 4.878801424623197e-07,
+      "partition_balance": 4.968077197503327e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -314,9 +314,9 @@
     {
       "case": "test_White2004_4005-2",
       "model": "barani",
-      "gas_balance": 6.958128588714267e-07,
+      "gas_balance": 6.911816439254976e-07,
       "finite": true,
-      "partition_balance": 4.772562658399374e-07,
+      "partition_balance": 5.561339884766629e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -324,9 +324,9 @@
     {
       "case": "test_White2004_4005-3",
       "model": "barani",
-      "gas_balance": 6.447197764579111e-07,
+      "gas_balance": 6.626322038913588e-07,
       "finite": true,
-      "partition_balance": 4.516118752967649e-07,
+      "partition_balance": 7.684676699069848e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -334,9 +334,9 @@
     {
       "case": "test_White2004_4005-4",
       "model": "barani",
-      "gas_balance": 6.294991489988497e-07,
+      "gas_balance": 6.880396765369935e-07,
       "finite": true,
-      "partition_balance": 4.791987522806977e-07,
+      "partition_balance": 7.36670222715534e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -344,9 +344,9 @@
     {
       "case": "test_White2004_4004-4",
       "model": "barani",
-      "gas_balance": 6.790224523552486e-07,
+      "gas_balance": 6.868122596749495e-07,
       "finite": true,
-      "partition_balance": 4.789626762976193e-07,
+      "partition_balance": 8.016470322820993e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -354,9 +354,9 @@
     {
       "case": "test_White2004_4064-2",
       "model": "barani",
-      "gas_balance": 6.570713453757804e-07,
+      "gas_balance": 6.500270185277694e-07,
       "finite": true,
-      "partition_balance": 7.527966395571771e-07,
+      "partition_balance": 6.55757934658964e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -364,9 +364,9 @@
     {
       "case": "test_White2004_4064-3",
       "model": "barani",
-      "gas_balance": 6.165969585005565e-07,
+      "gas_balance": 6.360222135619697e-07,
       "finite": true,
-      "partition_balance": 4.464143673015004e-07,
+      "partition_balance": 6.931085814384548e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -374,9 +374,9 @@
     {
       "case": "test_White2004_4064-1",
       "model": "barani",
-      "gas_balance": 6.10543895685415e-07,
+      "gas_balance": 6.611017542572178e-07,
       "finite": true,
-      "partition_balance": 7.867659050749866e-07,
+      "partition_balance": 7.849403879001673e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -384,9 +384,9 @@
     {
       "case": "test_White2004_4064-4",
       "model": "barani",
-      "gas_balance": 6.699220413770235e-07,
+      "gas_balance": 6.744199383597372e-07,
       "finite": true,
-      "partition_balance": 4.592296690169038e-07,
+      "partition_balance": 7.459198556409595e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -394,9 +394,9 @@
     {
       "case": "test_White2004_4065-1",
       "model": "barani",
-      "gas_balance": 4.6089176804083874e-07,
+      "gas_balance": 4.96576000614188e-07,
       "finite": true,
-      "partition_balance": 4.824013794218233e-07,
+      "partition_balance": 5.640096032229827e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -404,9 +404,9 @@
     {
       "case": "test_White2004_4065-2",
       "model": "barani",
-      "gas_balance": 3.8338342886343296e-07,
+      "gas_balance": 3.7677834136789715e-07,
       "finite": true,
-      "partition_balance": 3.6654338592062825e-07,
+      "partition_balance": 4.413865590926064e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -414,9 +414,9 @@
     {
       "case": "test_White2004_4065-3",
       "model": "barani",
-      "gas_balance": 3.13067527958634e-07,
+      "gas_balance": 4.2068457110875484e-07,
       "finite": true,
-      "partition_balance": 4.759614773534276e-07,
+      "partition_balance": 6.996422131511492e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -424,9 +424,9 @@
     {
       "case": "test_White2004_4065-4",
       "model": "barani",
-      "gas_balance": 3.2481220468142986e-07,
+      "gas_balance": 3.436156108498461e-07,
       "finite": true,
-      "partition_balance": 3.86092202048934e-07,
+      "partition_balance": 3.767748951454797e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -434,9 +434,9 @@
     {
       "case": "test_White2004_4065-5",
       "model": "barani",
-      "gas_balance": 3.5655947243131574e-07,
+      "gas_balance": 4.783114871755545e-07,
       "finite": true,
-      "partition_balance": 3.880123279931191e-07,
+      "partition_balance": 4.7404715972118e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -444,9 +444,9 @@
     {
       "case": "test_White2004_4136-1",
       "model": "barani",
-      "gas_balance": 3.7946608945871434e-07,
+      "gas_balance": 3.169404439862367e-07,
       "finite": true,
-      "partition_balance": 5.03459047311328e-07,
+      "partition_balance": 4.2838568175787827e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -454,9 +454,9 @@
     {
       "case": "test_White2004_4136-2",
       "model": "barani",
-      "gas_balance": 4.4017347663264156e-07,
+      "gas_balance": 3.7055129033796976e-07,
       "finite": true,
-      "partition_balance": 4.240423314582337e-07,
+      "partition_balance": 4.873527499872204e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -464,9 +464,9 @@
     {
       "case": "test_White2004_4136-3",
       "model": "barani",
-      "gas_balance": 3.121537045589089e-07,
+      "gas_balance": 3.156471935535494e-07,
       "finite": true,
-      "partition_balance": 6.06186741866783e-07,
+      "partition_balance": 5.87765004555112e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -474,9 +474,9 @@
     {
       "case": "test_White2004_4140-1",
       "model": "barani",
-      "gas_balance": 3.4712524836060605e-07,
+      "gas_balance": 3.6221763111634215e-07,
       "finite": true,
-      "partition_balance": 4.707927857287628e-07,
+      "partition_balance": 4.744895806470103e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -484,9 +484,9 @@
     {
       "case": "test_White2004_4136-4",
       "model": "barani",
-      "gas_balance": 3.1168646286963373e-07,
+      "gas_balance": 4.0479035293983024e-07,
       "finite": true,
-      "partition_balance": 4.812426216169134e-07,
+      "partition_balance": 4.945729931386063e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -494,9 +494,9 @@
     {
       "case": "test_White2004_4135-2",
       "model": "barani",
-      "gas_balance": 2.634050581922718e-07,
+      "gas_balance": 2.8998714969276374e-07,
       "finite": true,
-      "partition_balance": 3.6477098702346613e-07,
+      "partition_balance": 4.91694500382884e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -504,9 +504,9 @@
     {
       "case": "test_White2004_4135-1",
       "model": "barani",
-      "gas_balance": 2.634050581922718e-07,
+      "gas_balance": 2.8998714969276374e-07,
       "finite": true,
-      "partition_balance": 3.6477098702346613e-07,
+      "partition_balance": 4.91694500382884e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -514,9 +514,9 @@
     {
       "case": "test_White2004_4135-3",
       "model": "barani",
-      "gas_balance": 3.1997917361681363e-07,
+      "gas_balance": 3.2601651641984053e-07,
       "finite": true,
-      "partition_balance": 3.9259310287279283e-07,
+      "partition_balance": 4.343976057512279e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -524,9 +524,9 @@
     {
       "case": "test_White2004_4140-2",
       "model": "barani",
-      "gas_balance": 3.670472333136422e-07,
+      "gas_balance": 4.0568382362098406e-07,
       "finite": true,
-      "partition_balance": 4.122423444939957e-07,
+      "partition_balance": 3.287048611890079e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -534,9 +534,9 @@
     {
       "case": "test_White2004_4162-1",
       "model": "barani",
-      "gas_balance": 4.078725246430141e-07,
+      "gas_balance": 3.5309744191441774e-07,
       "finite": true,
-      "partition_balance": 3.879406828564084e-07,
+      "partition_balance": 4.7642960433455994e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -544,9 +544,9 @@
     {
       "case": "test_White2004_4162-2",
       "model": "barani",
-      "gas_balance": 4.1734418492646625e-07,
+      "gas_balance": 3.7997577681249155e-07,
       "finite": true,
-      "partition_balance": 3.7984189696314823e-07,
+      "partition_balance": 4.978166382554765e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -554,9 +554,9 @@
     {
       "case": "test_White2004_4162-3",
       "model": "barani",
-      "gas_balance": 2.803452116828315e-07,
+      "gas_balance": 3.9578147524055563e-07,
       "finite": true,
-      "partition_balance": 4.013324879807468e-07,
+      "partition_balance": 4.183410527827357e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -564,9 +564,9 @@
     {
       "case": "test_White2004_4162-4",
       "model": "barani",
-      "gas_balance": 3.220099056673582e-07,
+      "gas_balance": 4.213471065918307e-07,
       "finite": true,
-      "partition_balance": 5.542179915601412e-07,
+      "partition_balance": 5.101417780389405e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -574,9 +574,9 @@
     {
       "case": "test_White2004_4163-2",
       "model": "barani",
-      "gas_balance": 3.4618245066248055e-07,
+      "gas_balance": 3.942631632649223e-07,
       "finite": true,
-      "partition_balance": 4.0205380986134365e-07,
+      "partition_balance": 4.71952882281745e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -584,9 +584,9 @@
     {
       "case": "test_White2004_4163-3",
       "model": "barani",
-      "gas_balance": 3.769562056059529e-07,
+      "gas_balance": 3.478327095333928e-07,
       "finite": true,
-      "partition_balance": 4.941016613050434e-07,
+      "partition_balance": 3.893879595356899e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -594,9 +594,9 @@
     {
       "case": "test_White2004_4163-1",
       "model": "barani",
-      "gas_balance": 5.38506034057924e-07,
+      "gas_balance": 3.2310361629205803e-07,
       "finite": true,
-      "partition_balance": 4.4732718197380764e-07,
+      "partition_balance": 5.256540860819334e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -604,9 +604,9 @@
     {
       "case": "test_White2004_4163-4",
       "model": "barani",
-      "gas_balance": 3.088768988055724e-07,
+      "gas_balance": 4.933181354893477e-07,
       "finite": true,
-      "partition_balance": 4.4620611959675284e-07,
+      "partition_balance": 4.7465772733387254e-07,
       "initializations": 1,
       "number_nonincreasing": true,
       "radius_within_grain": true
@@ -614,9 +614,9 @@
     {
       "case": "test_White2004_4000-4",
       "model": "analytic_rho",
-      "gas_balance": 6.795977054791764e-07,
+      "gas_balance": 6.401130008355409e-07,
       "finite": true,
-      "partition_balance": 6.304739510656603e-07,
+      "partition_balance": 5.095822872738361e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -624,9 +624,9 @@
     {
       "case": "test_White2004_4004-1",
       "model": "analytic_rho",
-      "gas_balance": 5.324497980000633e-07,
+      "gas_balance": 6.891803419864634e-07,
       "finite": true,
-      "partition_balance": 4.6475369752416966e-07,
+      "partition_balance": 5.997241137146645e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -634,9 +634,9 @@
     {
       "case": "test_White2004_4004-2",
       "model": "analytic_rho",
-      "gas_balance": 4.594529906528256e-07,
+      "gas_balance": 7.581428534245103e-07,
       "finite": true,
-      "partition_balance": 5.695610946247321e-07,
+      "partition_balance": 5.037249130970397e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -644,9 +644,9 @@
     {
       "case": "test_White2004_4004-3",
       "model": "analytic_rho",
-      "gas_balance": 4.498416601353235e-07,
+      "gas_balance": 6.418411897945485e-07,
       "finite": true,
-      "partition_balance": 6.699934960618992e-07,
+      "partition_balance": 5.643766745435234e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -654,9 +654,9 @@
     {
       "case": "test_White2004_4000-1",
       "model": "analytic_rho",
-      "gas_balance": 6.093659376158865e-07,
+      "gas_balance": 6.843953134415079e-07,
       "finite": true,
-      "partition_balance": 5.729774791639137e-07,
+      "partition_balance": 5.39222676873371e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -664,9 +664,9 @@
     {
       "case": "test_White2004_4000-2",
       "model": "analytic_rho",
-      "gas_balance": 6.641583820908072e-07,
+      "gas_balance": 6.651190620833145e-07,
       "finite": true,
-      "partition_balance": 6.670981331864849e-07,
+      "partition_balance": 5.394815686604707e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -674,9 +674,9 @@
     {
       "case": "test_White2004_4000-3",
       "model": "analytic_rho",
-      "gas_balance": 6.746369692245289e-07,
+      "gas_balance": 6.232961866764584e-07,
       "finite": true,
-      "partition_balance": 4.769470721870717e-07,
+      "partition_balance": 4.3774013892557225e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -684,9 +684,9 @@
     {
       "case": "test_White2004_4005-1",
       "model": "analytic_rho",
-      "gas_balance": 4.3726053893956333e-07,
+      "gas_balance": 6.365958196997688e-07,
       "finite": true,
-      "partition_balance": 5.495604421782222e-07,
+      "partition_balance": 4.500622959327802e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -694,9 +694,9 @@
     {
       "case": "test_White2004_4005-2",
       "model": "analytic_rho",
-      "gas_balance": 4.961463740030685e-07,
+      "gas_balance": 6.631219004986398e-07,
       "finite": true,
-      "partition_balance": 5.68869471579682e-07,
+      "partition_balance": 4.924909112022956e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -704,9 +704,9 @@
     {
       "case": "test_White2004_4005-3",
       "model": "analytic_rho",
-      "gas_balance": 4.350169706905863e-07,
+      "gas_balance": 5.991845683043192e-07,
       "finite": true,
-      "partition_balance": 6.387068013258222e-07,
+      "partition_balance": 4.4309015679777366e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -714,9 +714,9 @@
     {
       "case": "test_White2004_4005-4",
       "model": "analytic_rho",
-      "gas_balance": 4.164269031163916e-07,
+      "gas_balance": 6.192545666526557e-07,
       "finite": true,
-      "partition_balance": 4.312618463664428e-07,
+      "partition_balance": 4.5037335955532865e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -724,9 +724,9 @@
     {
       "case": "test_White2004_4004-4",
       "model": "analytic_rho",
-      "gas_balance": 4.330457187692028e-07,
+      "gas_balance": 7.256257475695578e-07,
       "finite": true,
-      "partition_balance": 6.457596468548682e-07,
+      "partition_balance": 4.51391467517719e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -734,9 +734,9 @@
     {
       "case": "test_White2004_4064-2",
       "model": "analytic_rho",
-      "gas_balance": 5.862254336529507e-07,
+      "gas_balance": 6.383729347663721e-07,
       "finite": true,
-      "partition_balance": 6.366702250901877e-07,
+      "partition_balance": 4.475041638939093e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -744,9 +744,9 @@
     {
       "case": "test_White2004_4064-3",
       "model": "analytic_rho",
-      "gas_balance": 3.898817878538947e-07,
+      "gas_balance": 5.615502855680369e-07,
       "finite": true,
-      "partition_balance": 4.7409609727300885e-07,
+      "partition_balance": 4.6016815342948164e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -754,9 +754,9 @@
     {
       "case": "test_White2004_4064-1",
       "model": "analytic_rho",
-      "gas_balance": 5.890616157301571e-07,
+      "gas_balance": 6.287722552122023e-07,
       "finite": true,
-      "partition_balance": 4.6494191593917255e-07,
+      "partition_balance": 4.796062540260985e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -764,9 +764,9 @@
     {
       "case": "test_White2004_4064-4",
       "model": "analytic_rho",
-      "gas_balance": 6.144934192001745e-07,
+      "gas_balance": 6.634544303626253e-07,
       "finite": true,
-      "partition_balance": 7.11348529217315e-07,
+      "partition_balance": 4.78537122600396e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -774,9 +774,9 @@
     {
       "case": "test_White2004_4065-1",
       "model": "analytic_rho",
-      "gas_balance": 4.3045551930308824e-07,
+      "gas_balance": 3.9567123508472963e-07,
       "finite": true,
-      "partition_balance": 4.321555724952883e-07,
+      "partition_balance": 6.035161747584319e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -784,9 +784,9 @@
     {
       "case": "test_White2004_4065-2",
       "model": "analytic_rho",
-      "gas_balance": 3.828694461760122e-07,
+      "gas_balance": 3.0455524134007734e-07,
       "finite": true,
-      "partition_balance": 3.628976968543071e-07,
+      "partition_balance": 7.530309918105474e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -794,9 +794,9 @@
     {
       "case": "test_White2004_4065-3",
       "model": "analytic_rho",
-      "gas_balance": 4.7434477796140644e-07,
+      "gas_balance": 4.031930613486873e-07,
       "finite": true,
-      "partition_balance": 6.487742301307869e-07,
+      "partition_balance": 5.739181719671095e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -804,9 +804,9 @@
     {
       "case": "test_White2004_4065-4",
       "model": "analytic_rho",
-      "gas_balance": 2.9428764522257194e-07,
+      "gas_balance": 3.4437920516392374e-07,
       "finite": true,
-      "partition_balance": 4.175094435631063e-07,
+      "partition_balance": 4.585406239501481e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -814,9 +814,9 @@
     {
       "case": "test_White2004_4065-5",
       "model": "analytic_rho",
-      "gas_balance": 4.783114875490694e-07,
+      "gas_balance": 4.696149148138815e-07,
       "finite": true,
-      "partition_balance": 5.738387578143969e-07,
+      "partition_balance": 6.095867679568911e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -824,9 +824,9 @@
     {
       "case": "test_White2004_4136-1",
       "model": "analytic_rho",
-      "gas_balance": 3.7946608964391825e-07,
+      "gas_balance": 4.139630070694784e-07,
       "finite": true,
-      "partition_balance": 4.596953074916202e-07,
+      "partition_balance": 5.451694578313499e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -834,9 +834,9 @@
     {
       "case": "test_White2004_4136-2",
       "model": "analytic_rho",
-      "gas_balance": 4.3154262428411544e-07,
+      "gas_balance": 4.4017347663264156e-07,
       "finite": true,
-      "partition_balance": 5.568994928801427e-07,
+      "partition_balance": 5.883293594145523e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -844,9 +844,9 @@
     {
       "case": "test_White2004_4136-3",
       "model": "analytic_rho",
-      "gas_balance": 2.6976823716077746e-07,
+      "gas_balance": 2.7791748592763943e-07,
       "finite": true,
-      "partition_balance": 6.674843824866949e-07,
+      "partition_balance": 4.103886887253626e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -854,9 +854,9 @@
     {
       "case": "test_White2004_4140-1",
       "model": "analytic_rho",
-      "gas_balance": 3.169404441482901e-07,
+      "gas_balance": 3.967145483566983e-07,
       "finite": true,
-      "partition_balance": 7.057101195841833e-07,
+      "partition_balance": 5.470408722914295e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -864,9 +864,9 @@
     {
       "case": "test_White2004_4136-4",
       "model": "analytic_rho",
-      "gas_balance": 3.309335478669931e-07,
+      "gas_balance": 3.5486117574188584e-07,
       "finite": true,
-      "partition_balance": 5.69596707800007e-07,
+      "partition_balance": 5.385667660510265e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -874,9 +874,9 @@
     {
       "case": "test_White2004_4135-2",
       "model": "analytic_rho",
-      "gas_balance": 3.818164138032227e-07,
+      "gas_balance": 3.7138704010854823e-07,
       "finite": true,
-      "partition_balance": 6.779282086953355e-07,
+      "partition_balance": 4.5206377383549134e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -884,9 +884,9 @@
     {
       "case": "test_White2004_4135-1",
       "model": "analytic_rho",
-      "gas_balance": 3.818164138032227e-07,
+      "gas_balance": 3.7138704010854823e-07,
       "finite": true,
-      "partition_balance": 5.941040211492592e-07,
+      "partition_balance": 4.5206377383549134e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -894,9 +894,9 @@
     {
       "case": "test_White2004_4135-3",
       "model": "analytic_rho",
-      "gas_balance": 3.079044876218069e-07,
+      "gas_balance": 3.079044877514579e-07,
       "finite": true,
-      "partition_balance": 4.6282623628638303e-07,
+      "partition_balance": 3.9634026426651227e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -904,9 +904,9 @@
     {
       "case": "test_White2004_4140-2",
       "model": "analytic_rho",
-      "gas_balance": 3.169404439862367e-07,
+      "gas_balance": 3.4633095401030783e-07,
       "finite": true,
-      "partition_balance": 6.625371773362447e-07,
+      "partition_balance": 5.803671792247531e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -914,9 +914,9 @@
     {
       "case": "test_White2004_4162-1",
       "model": "analytic_rho",
-      "gas_balance": 4.1227008118015464e-07,
+      "gas_balance": 4.1227008100308595e-07,
       "finite": true,
-      "partition_balance": 4.7214119506118255e-07,
+      "partition_balance": 6.185482283559569e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -924,9 +924,9 @@
     {
       "case": "test_White2004_4162-2",
       "model": "analytic_rho",
-      "gas_balance": 3.4630710674256543e-07,
+      "gas_balance": 3.3806146615338615e-07,
       "finite": true,
-      "partition_balance": 5.014121248720221e-07,
+      "partition_balance": 5.666877755628414e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -934,9 +934,9 @@
     {
       "case": "test_White2004_4162-3",
       "model": "analytic_rho",
-      "gas_balance": 3.6279967577389973e-07,
+      "gas_balance": 3.627996755968301e-07,
       "finite": true,
-      "partition_balance": 4.7546503178042575e-07,
+      "partition_balance": 7.24329273751285e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -944,9 +944,9 @@
     {
       "case": "test_White2004_4162-4",
       "model": "analytic_rho",
-      "gas_balance": 4.306707549649157e-07,
+      "gas_balance": 3.220099056673582e-07,
       "finite": true,
-      "partition_balance": 4.1724010247693534e-07,
+      "partition_balance": 3.9020089028407387e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -954,9 +954,9 @@
     {
       "case": "test_White2004_4163-2",
       "model": "analytic_rho",
-      "gas_balance": 3.956370466932333e-07,
+      "gas_balance": 3.154106731650124e-07,
       "finite": true,
-      "partition_balance": 4.4147323390591076e-07,
+      "partition_balance": 5.258465813787643e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -964,9 +964,9 @@
     {
       "case": "test_White2004_4163-3",
       "model": "analytic_rho",
-      "gas_balance": 4.011342978537504e-07,
+      "gas_balance": 3.5003076215367833e-07,
       "finite": true,
-      "partition_balance": 4.0880971062868366e-07,
+      "partition_balance": 4.84412313725265e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -974,9 +974,9 @@
     {
       "case": "test_White2004_4163-1",
       "model": "analytic_rho",
-      "gas_balance": 3.41374202137671e-07,
+      "gas_balance": 3.933890911008475e-07,
       "finite": true,
-      "partition_balance": 3.610687470519905e-07,
+      "partition_balance": 5.720417068601647e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true
@@ -984,9 +984,9 @@
     {
       "case": "test_White2004_4163-4",
       "model": "analytic_rho",
-      "gas_balance": 4.3011276088774663e-07,
+      "gas_balance": 4.0157828598829845e-07,
       "finite": true,
-      "partition_balance": 4.6726414169406875e-07,
+      "partition_balance": 6.12519863294791e-07,
       "initializations": 1,
       "number_nonincreasing": false,
       "radius_within_grain": true

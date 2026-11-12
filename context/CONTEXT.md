@@ -15,7 +15,7 @@ in [Subsequent developments](coarsening_barani_extensions.md).
 | Item | Frozen reference setting |
 |---|---|
 | Intragranular model / resolution / diffusion | 5 / 98 / SDA2 (2) |
-| Dislocation density / K | 4e13 m^-2 / 1e6 m^-1 |
+| Dislocation density / K | rho_d(B,T) Fig. 5 fit (4e13 m^-2 reference) / 1e5 m^-1 (calibrated on White 2006) |
 | Initialization | One-off minimum seed K*rho=4e19 m^-3 at first irradiation |
 | Re-solution correction | phi=1/(n-1) in dislocation-bubble number loss only |
 | Transport radius / capture radius | a=1.5b / 5b, b=0.385 nm |
@@ -47,14 +47,15 @@ establish exact reproduction of the published model.
 
 Retained approximations: algebraic gas partitioning followed by SDA2,
 Carnahan-Starling with operational volume V=n*omega(T)+nv*Omega,
-absorption-only vacancy uptake capped at 0.2 nm/call and 250 nm during uptake.
+absorption-only vacancy uptake above 1873 K, up to mechanical equilibrium, 250 nm guard.
 Three independent gas balances are not solved; coalescence does not conserve
 vacancies as pure fusion would. Structural and post-SDA inventories must not
 be treated as simultaneous states. Full timestep convergence is unproven.
 
-The saved Hart reference has RMSE log10 R/Nd/IG/GB of
-0.234452 / 0.557682 / 0.493686 / 0.323223. The selected analytic model has
-0.225432 / 0.636547 / 0.594226 / 0.375000. The new White runner checks all
+The bbbf85dc Hart reference had RMSE log10 R/Nd/IG/GB of
+0.234452 / 0.557682 / 0.493686 / 0.323223 and the analytic model
+0.225432 / 0.636547 / 0.594226 / 0.375000. After the White (2006) corrections
+(12 November 2026) the analytic model has 0.298805 / 0.665966 / 0.504330 / 0.305647. The new White runner checks all
 114 outputs against hashes from the original local campaigns; its result is
 recorded in regression/White_COARSENING/reproduction_validation.json.
 

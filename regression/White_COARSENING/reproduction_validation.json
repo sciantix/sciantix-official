@@ -1,7 +1,7 @@
 {
   "reference": "Saved local analytic_rho campaign and frozen Hart controls",
-  "source_files": 79,
-  "input_files": 457,
+  "source_files": 78,
+  "input_files": 343,
   "byte_identical_outputs": {
     "legacy": 38,
     "barani": 38,

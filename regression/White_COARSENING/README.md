@@ -51,19 +51,30 @@ The 12 November clean Release build passed all three CTest targets and all
 and analytic diagnostic traces were reproduced exactly. Generated case outputs,
 traces and figures remain available locally and are excluded from commits.
 
+## Reference regenerated on 12 November 2026
+
+The reference (reference_manifest.json) was regenerated after the corrections of the White (2006)
+check (see the "regenerated" entry of the manifest). The legacy outputs are unchanged; the barani
+and analytic_rho outputs changed. The original reference is commit bbbf85dc. input_check.txt files
+were removed from the recorded inputs: SCIANTIX writes them during the run and Git ignores them, so
+the pre-run input check failed on a clean checkout. RMSE log10 R/Nd/IG/GB of analytic_rho:
+0.299 / 0.666 / 0.504 / 0.306 (bbbf85dc: 0.225 / 0.637 / 0.594 / 0.375).
+
 ## Model and scope
 
-The selected model uses direct fitted rho(T,B), Hart weighting with a=1.5b, and
-births K*max[rho(B_new,T_new)-rho(B_old,T_new),0], K=1e6 m^-1. Births consume two
+The selected model uses rho(T,B) from the DislocationDensity model (fit of Veshchunov-Shestak
+2009 Fig. 5, T held at 1500 K above it), line capture with the matrix diffusivity (D_d = D), and
+births K*max[rho(B_new,T_new)-rho(B_old,T_new),0], K=1e5 m^-1 (calibrated on White 2006). Births consume two
 solution-gas atoms per embryo and start with zero vacancies. The one-off initial
 seed remains independent of rho. Cooling alone does not nucleate bubbles.
 Coverage-triggered release, KJMA kinetics and loop punching are absent.
 
-Native bulk transport, EOS, original coalescence and absorption-only uptake
-(0.2 nm/call and 250 nm during uptake) remain unchanged. Fit extrapolation outside
-approximately 3-93 GWd/tHM and 900-1400 K is unvalidated. Exact reproduction
-establishes numerical parity with the saved local work, not full physical
-validation or timestep convergence. See [context](../../context/README.md).
+Vacancy uptake (cell geometric factor zeta) runs only above 1873 K and stops at mechanical
+equilibrium in each step (no 0.2 nm/call limiter; the 250 nm guard remains). Gas in dislocation
+bubbles follows Eq. (1) with Solver::Decay; beta_d + beta' enters the trapping of the dissolved gas.
+Native bulk transport, EOS and coalescence are unchanged. Fit extrapolation above 1500 K is
+unvalidated. Exact reproduction establishes numerical parity with the saved reference, not full
+physical validation or timestep convergence. See [context](../../context/README.md).
 
 ## Figures
 

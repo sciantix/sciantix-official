@@ -31,7 +31,7 @@
 // # COARSENING: experimental birth laws; none is enabled in the frozen base.
 namespace intragranular_nucleation {
 constexpr double pi=3.14159265358979323846;
-constexpr double initial_density=dislocation_density::initial_density, K=1e6, embryo_atoms=2;
+constexpr double initial_density=dislocation_density::initial_density, K=1e5, embryo_atoms=2;  // K calibrated on White (2006), see below
 constexpr double core_radius=5*3.85e-10;
 constexpr double oxide_to_heavy_metal=dislocation_density::oxide_to_heavy_metal;
 inline const std::string& mode() {
@@ -96,7 +96,9 @@ constexpr double pi = 3.14159265358979323846;
 constexpr double kb = 1.380649e-23;
 constexpr double atomic_volume = 4.09e-29;
 constexpr double rho = 4e13;
-constexpr double K = 1e6;
+// # COARSENING: bubble nuclei per dislocation length. K = 1e5 m^-1 (Barani: 1e6), calibrated on 52 White (2006) SEM
+// points with D_d = D and T_v = 1873 K: swelling calc/exp median 0.78 (1e6: 0.07). See validation notes.
+constexpr double K = 1e5;
 constexpr double gamma = 0.7;
 // # COARSENING: selected equivalent transport radius; capture-cell radius remains distinct.
 constexpr double gas_core_radius = 1.5 * 3.85e-10;
@@ -106,7 +108,7 @@ constexpr double radius_max = 2.5e-7;
 // base irradiation (TEM 4001A, 4070A), only 4-7 nm dislocation bubbles at 1490-1610 C after ramps, while near the
 // bore the measured swelling needs >= 40-86% vacancies. A hard threshold: with the published D_v the uptake is
 // ~1e13 vacancies/s at 1200 K, so any smooth reduction still fills the bubbles during base irradiation.
-// Calibrated value of the previous branch (with D_d = D and K = 1e5); to be rechecked on this model.
+// Calibrated together with K = 1e5 and D_d = D on the White (2006) data.
 constexpr double vacancy_activation_temperature = 1873.0;
 
 struct PopulationSeed

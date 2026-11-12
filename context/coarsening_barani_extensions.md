@@ -21,7 +21,7 @@ without a rho0 offset. At B=0, rho=0. Births use
 
 ```text
 Delta_rho = max[rho(B_new,T_new)-rho(B_old,T_new), 0]
-Delta_N_requested = K*Delta_rho, K=1e6 m^-1
+Delta_N_requested = K*Delta_rho, K=1e5 m^-1 (calibrated on White 2006; Barani 1e6)
 ```
 
 Actual births consume solution gas: two atoms per embryo, zero initial vacancies.
