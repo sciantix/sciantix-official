@@ -83,7 +83,7 @@ void Simulation::setVariables(int                            Sciantix_options[],
                                         toOutputChromiumContent,
                                         toOutputThermochimica,
                                         toOutputMOX,
-                                        toFMP); // [FMP, Nov. 2026]
+                                        toFMP);  // [FMP, Nov. 2026]
 
     for (SciantixVariable initial_value : values)
     {

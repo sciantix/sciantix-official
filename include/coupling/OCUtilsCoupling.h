@@ -97,11 +97,11 @@ namespace OCUtilsCoupling
 
     bool fileExists(const std::string& file_path);
 
-    bool                        writePhaseSublatticeCompositionOutput(const std::string&  file_path,
-                                                                      double              time_hours,
-                                                                      const std::string&  location,
-                                                                      const OCOutputData& output_data,
-                                                                      double              content_scaling_factor);
+    bool writePhaseSublatticeCompositionOutput(const std::string&  file_path,
+                                               double              time_hours,
+                                               const std::string&  location,
+                                               const OCOutputData& output_data,
+                                               double              content_scaling_factor);
     // [FMP, Nov. 2026]: inventory of a metallic fission product in all the FMP particles (at/m3)
     double fmpInventoryInParticles(const std::string&               element,
                                    SciantixArray<SciantixVariable>& sciantix_variable,
@@ -112,8 +112,8 @@ namespace OCUtilsCoupling
                                                      SciantixArray<System>&           sciantix_system,
                                                      double&                          total_content,
                                                      const std::string&               location,
-                                                     bool                             fmp_active, // [FMP, Nov. 2026]
-                                                     double oxygen_content_override); // [FMP, Nov. 2026]
+                                                     bool                             fmp_active,  // [FMP, Nov. 2026]
+                                                     double oxygen_content_override);              // [FMP, Nov. 2026]
 
     bool runOpenCalphadCaseOCASI(const std::string&                 database_path,
                                  double                             temperature,
@@ -143,7 +143,7 @@ namespace OCUtilsCoupling
                                        double                                    content_scaling_factor,
                                        SciantixArray<SciantixVariable>&          sciantix_variable,
                                        SciantixArray<System>&                    sciantix_system,
-                                       bool                                      fmp_active); // [FMP, Nov. 2026]
+                                       bool                                      fmp_active);  // [FMP, Nov. 2026]
 }  // namespace OCUtilsCoupling
 
 #endif

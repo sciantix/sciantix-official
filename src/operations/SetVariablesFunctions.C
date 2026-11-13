@@ -56,7 +56,7 @@ std::vector<std::string> getInputVariableNames()
                                       "iReleaseMode",
                                       "iThermochimica",
                                       "iThermochimicaOuterNode",
-                                      "iFMP"}; // [FMP, Nov. 2026]
+                                      "iFMP"};  // [FMP, Nov. 2026]
 
     return names;
 }
@@ -122,7 +122,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputChromiumContent,
                                                          bool   toOutputThermochimica,
                                                          bool   toOutputMOX,
-                                                         bool   toFMP) // [FMP, Nov. 2026]
+                                                         bool   toFMP)  // [FMP, Nov. 2026]
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),

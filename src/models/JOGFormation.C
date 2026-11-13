@@ -486,7 +486,7 @@ void Simulation::JOGFormation()
     // grain boundary (no Mo in any phase) keeps the fraction of the previous step, which FiveMetalParticles uses;
     // without FMP the fraction is set to zero as before.
     double mo_oxide_fraction = total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles : 0.0;
-    if (total_mo_moles <= 0.0 && (int)input_variable["iFMP"].getValue() == 1) // [FMP, Nov. 2026]
+    if (total_mo_moles <= 0.0 && (int)input_variable["iFMP"].getValue() == 1)  // [FMP, Nov. 2026]
         mo_oxide_fraction = sciantix_variable["Mo in oxide fraction"].getInitialValue();
     sciantix_variable["Mo in oxide fraction"].setFinalValue(mo_oxide_fraction);
     sciantix_variable["Mo oxide valence"].setFinalValue(oxide_mo_moles > 0.0 ? oxide_mo_valence_sum / oxide_mo_moles
