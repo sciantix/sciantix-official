@@ -1,12 +1,16 @@
 {
-  "reference": "Saved local analytic_rho campaign and frozen Hart controls",
+  "reference": "White coarsening reference (see README.md, regenerated 12 November 2026)",
   "source_files": 78,
   "input_files": 343,
-  "byte_identical_outputs": {
+  "outputs_within_tolerance": {
     "legacy": 38,
     "barani": 38,
     "analytic_rho": 38
   },
+  "max_relative_deviation": {
+    "value": 0.0,
+    "where": null
+  },
   "mismatches": [],
-  "text_comparison": "SHA256 after CRLF-to-LF normalization; outputs use raw bytes"
+  "comparison": "sources/inputs: SHA256 after CRLF-to-LF normalization; outputs: final row and column maximum, relative tolerance 0.0001 (floor 1e-06 x column magnitude)"
 }

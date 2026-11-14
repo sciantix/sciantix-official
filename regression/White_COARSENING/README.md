@@ -22,8 +22,12 @@ python3 regression/White_COARSENING/run_all.py --jobs 6
 ```
 
 The runner sanitizes inherited SCIANTIX_* environment overrides, verifies scientific
-sources and inputs, runs 114 simulations, checks byte-exact reproduction and
-regenerates figures. It does not overwrite existing analytic inputs.
+sources and inputs (hashes), runs 114 simulations, compares the outputs with
+reference_outputs.json (final row and column maximum, relative tolerance 1e-4) and
+regenerates figures. Byte-exact output hashes were replaced on 14 November 2026: 14 of
+114 outputs differed byte-wise on the CI runner (different compiler). A -ffast-math build
+stays within 3.6e-5. After a deliberate model change, inspect the differences, then run
+verify_reference.py --write-outputs and record the change here. It does not overwrite existing analytic inputs.
 
 reference_manifest.json records hashes from the original local analytic_rho campaign
 and frozen legacy/Hart outputs. Text sources and inputs normalize CRLF to LF;
