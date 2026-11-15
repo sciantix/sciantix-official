@@ -22,9 +22,12 @@
 #include "Sciantix.h"
 #include "SourceHandler.h"
 #include "TimeStepCalculation.h"
+#include <cmath>
+#include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
@@ -94,6 +97,19 @@ int main(int argc, char** argv)
                  sources_input,
                  initial_distribution);
 
+    // #COARSENING: numerical refinement in physical history intervals.
+    if (Sciantix_options[3] == 4)
+        Number_of_time_steps_per_interval = 200;
+    if (const char* raw = std::getenv("SCIANTIX_TIME_STEPS"))
+    {
+        const std::string text(raw);
+        std::size_t       used = 0;
+        const double      n    = std::stod(text, &used);
+        if (used != text.size() || !std::isfinite(n) || n < 1 || n != std::floor(n))
+            throw std::invalid_argument("SCIANTIX_TIME_STEPS must be a positive integer");
+        Number_of_time_steps_per_interval = n;
+    }
+
     Initialization(Sciantix_history,
                    Sciantix_variables,
                    Sciantix_diffusion_modes,
@@ -114,20 +130,27 @@ int main(int argc, char** argv)
     sources_interp  = sourceInterpolation(sources_input, Number_of_time_steps_per_interval);
     sources_correct = subtractResolutionFromSource(sources_interp);
 
+    // #COARSENING: stable interpolation avoids rate noise on short ramps.
+    const char* matched             = std::getenv("SCIANTIX_STABLE_HISTORY");
+    const bool  stableInterpolation = Sciantix_options[3] == 4 || (matched && std::string(matched) == "1");
     while (Time_h <= Time_end_h)
     {
         Sciantix_history[0] = Sciantix_history[1];
-        Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
+        Sciantix_history[1] =
+            InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points, stableInterpolation);
         Sciantix_history[2] = Sciantix_history[3];
-        Sciantix_history[3] = InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points);
+        Sciantix_history[3] =
+            InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points, stableInterpolation);
         if (Sciantix_history[3] < 0.0)
             Sciantix_history[3] = 0.0;
-        Sciantix_history[4]  = Sciantix_history[5];
-        Sciantix_history[5]  = InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
-        Sciantix_history[7]  = Time_h;
-        Sciantix_history[8]  = static_cast<double>(Time_step_number);
-        Sciantix_history[9]  = Sciantix_history[10];
-        Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
+        Sciantix_history[4] = Sciantix_history[5];
+        Sciantix_history[5] =
+            InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points, stableInterpolation);
+        Sciantix_history[7] = Time_h;
+        Sciantix_history[8] = static_cast<double>(Time_step_number);
+        Sciantix_history[9] = Sciantix_history[10];
+        Sciantix_history[10] =
+            InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points, stableInterpolation);
 
         Sciantix(Sciantix_options,
                  Sciantix_history,

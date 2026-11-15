@@ -110,3 +110,16 @@ out/
 *.png
 # NUS parametric studies: generated cases and their outputs
 regression/nus/studies/runs/
+
+#COARSENING: keep inputs, selected results and figures; exclude raw run files.
+/regression/White_Coarsening/runs/
+!/regression/White_Coarsening/figures/**/*.png
+!/context/dislocation_density/figures/*.png
+# Editable SVGs are regenerated locally; the branch carries the PNG gallery.
+/regression/White_Coarsening/figures/**/*.svg
+/context/dislocation_density/figures/*.svg
+/regression/White_Coarsening/results.json
+/regression/White_Coarsening/verification.json
+/regression/White_Coarsening/endpoints.csv
+/context/dislocation_density/refit_verification.json
+/context/dislocation_density/source_manifest.json

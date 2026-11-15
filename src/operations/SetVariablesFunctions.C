@@ -57,7 +57,8 @@ std::vector<std::string> getInputVariableNames()
                                       "iNUSOutput",
                                       "iNUSAnimation",
                                       "iNonSym",
-                                      "iGrainBoundaryResolution"};
+                                      "iGrainBoundaryResolution",
+                                      "iDislocationDensity"};  // #COARSENING
 
     return names;
 }
@@ -406,6 +407,10 @@ std::vector<std::string> getScalingFactorsNames()
         "Diffusion-based release",
         "Helium production rate",
         "Dummy",
+        // #COARSENING: independent multiplicative factors, default1.
+        "Coarsening K",
+        "Coarsening gas diffusivity",
+        "Coarsening vacancy diffusivity",
     };
 
     return names;

@@ -23,4 +23,7 @@ with open('input_scaling_factors.txt', 'w') as file:
     file.write('1.0\n')
     file.write('# scaling factor - helium production rate\n')
     file.write('1.0\n')
-    file.write('# scaling factor - dummy')
+    file.write('# scaling factor - dummy\n')
+    #COARSENING: optional trailing factors, each multiplying the nominal closure.
+    for name in ('coarsening_K', 'coarsening_D', 'coarsening_Dv'):
+        file.write(f'1.0 # sf_{name}\n')

@@ -1,0 +1,26 @@
+{
+  "selection_date": "2026-11-15",
+  "status": "Frozen fit; calibration on White, not independent validation.",
+  "shared_burnup_parameters": {
+    "log10_A20": 14.636995815590845,
+    "n_cold": 0.5271037725180502,
+    "n_hot": 1.048816395670735,
+    "f_inf": 0.06994900781169244,
+    "Tc_K": 1050.3656167288575,
+    "width_K": 189.81458246783382
+  },
+  "nicodemo_2026": {
+    "id": "nicodemo_2026",
+    "name": "Nicodemo 2026",
+    "definition": "White-calibrated temperature dependence modified from 900 K, with the Veshchunov-refit burnup exponent preserved and a finite high-temperature asymptote",
+    "origin": "White adaptation from 900 K (white_join), central floor case; user correction supersedes the earlier tail-only selection",
+    "anchor_temperature_K": 900.0,
+    "floor_at_B20_m2": 10000000000000.0,
+    "floor_definition": "High-temperature asymptote at B=20 GWd/tU; at other burnup: rho_inf(B)=1e13*(B/20)^n_hot",
+    "log_tau_K": 4.532184881113394,
+    "tau_K": 92.96144907268437,
+    "power": 0.5500000000000006,
+    "temperature_smoothing_K": 20.0,
+    "R100_at_anchor_m2": 934138745000207.2
+  }
+}

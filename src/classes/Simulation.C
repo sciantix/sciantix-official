@@ -88,4 +88,7 @@ void Simulation::execute()
     InterGranularBubbleBehavior();
 
     GasRelease();
+    // #COARSENING: diagnostics after native GB storage and release.
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() == 4)
+        CoarseningDiagnostics();
 }

@@ -1,0 +1,8 @@
+observation,bore_distance_mm,T_C,T_K,diameter_nm,radius_nm,number_m3,small_bubble_swelling_derived_pct,source
+1,3.68,861,1134.15,0.9,0.45,1.9e+24,0.07252366640812041,White 2006 Table 13; report p28 / PDF p34; T calculated by ENIGMA
+2,3.08,930,1203.15,0.8,0.4,2.1e+24,0.056297340352329125,White 2006 Table 13; report p28 / PDF p34; T calculated by ENIGMA
+3,3.08,930,1203.15,0.9,0.45,1.7e+24,0.06488959625989721,White 2006 Table 13; report p28 / PDF p34; T calculated by ENIGMA
+4,2.88,952,1225.15,0.9,0.45,2.1e+24,0.08015773655634362,White 2006 Table 13; report p28 / PDF p34; T calculated by ENIGMA
+5,2.17,1018,1291.15,1.2,0.6,3.5e+24,0.3166725394818512,White 2006 Table 13; report p28 / PDF p34; T calculated by ENIGMA
+6,1.48,1068,1341.15,1.2,0.6,1e+24,0.09047786842338605,White 2006 Table 13; report p28 / PDF p34; T calculated by ENIGMA
+7,0.98,1092,1365.15,1.2,0.6,1.1e+24,0.09952565526572467,White 2006 Table 13; report p28 / PDF p34; T calculated by ENIGMA

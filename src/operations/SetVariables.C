@@ -79,6 +79,53 @@ void Simulation::setVariables(int    Sciantix_options[],
 
 #endif
 
+    // #COARSENING: restart fields occupy previously unused indices170–190.
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() == 4)
+    {
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening dislocation concentration", "(bub/m3)", Sciantix_variables[170], Sciantix_variables[170], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening vacancy concentration", "(vac/m3)", Sciantix_variables[171], Sciantix_variables[171], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening dislocation radius", "(m)", Sciantix_variables[172], Sciantix_variables[172], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening vacancies per bubble", "(vac/bub)", Sciantix_variables[173], Sciantix_variables[173], 1));
+        sciantix_variable.push(
+            SciantixVariable("Coarsening pressure", "(Pa)", Sciantix_variables[174], Sciantix_variables[174], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening equilibrium pressure", "(Pa)", Sciantix_variables[175], Sciantix_variables[175], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening dislocation swelling", "(/)", Sciantix_variables[176], Sciantix_variables[176], 1));
+        sciantix_variable.push(
+            SciantixVariable("Coarsening bulk swelling", "(/)", Sciantix_variables[177], Sciantix_variables[177], 1));
+        sciantix_variable.push(
+            SciantixVariable("Xe in bulk bubbles", "(at/m3)", Sciantix_variables[178], Sciantix_variables[178], 1));
+        sciantix_variable.push(
+            SciantixVariable("Kr in bulk bubbles", "(at/m3)", Sciantix_variables[179], Sciantix_variables[179], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening line trapping rate", "(1/s)", Sciantix_variables[180], Sciantix_variables[180], 1));
+        sciantix_variable.push(
+            SciantixVariable("Dislocation density", "(m/m3)", Sciantix_variables[181], Sciantix_variables[181], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Xe in dislocation bubbles", "(at/m3)", Sciantix_variables[182], Sciantix_variables[182], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Kr in dislocation bubbles", "(at/m3)", Sciantix_variables[183], Sciantix_variables[183], 1));
+        sciantix_variable.push(
+            SciantixVariable("Coarsening active fraction", "(/)", Sciantix_variables[184], Sciantix_variables[184], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Dislocation density rate", "(m^-2 s^-1)", Sciantix_variables[185], Sciantix_variables[185], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Dislocation density interval rate", "(m^-2 s^-1)", Sciantix_variables[186], Sciantix_variables[186], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening cumulative recruited bubbles", "(bub/m3)", Sciantix_variables[187], Sciantix_variables[187], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening cumulative recruited gas", "(at/m3)", Sciantix_variables[188], Sciantix_variables[188], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening projected production", "(at/m3)", Sciantix_variables[189], Sciantix_variables[189], 1));
+        sciantix_variable.push(SciantixVariable(
+            "Coarsening diffused gas", "(at/m3)", Sciantix_variables[190], Sciantix_variables[190], 1));
+    }
+
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
     {

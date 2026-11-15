@@ -3,7 +3,7 @@ This is a python script to write the SCIANTIX default input file "input_settings
 @author G. Zullo
 
 The settings are positional: they are written in the order in which InputReading.C fills
-Sciantix_options[0..28]. Adding, removing or reordering an entry here without doing the
+Sciantix_options[0..29]. Adding, removing or reordering an entry here without doing the
 same there silently shifts every following option, so the count is asserted below.
 
 A settings file may legally stop early — ReadOneSetting() leaves the remaining options at
@@ -17,8 +17,8 @@ it was read as zero. skipRestOfLine() now ignores to the newline without a bound
 cap is gone and comments can be as long as they need to be.
 """
 
-# Options consumed by InputReading.C, from iGrainGrowth to iGrainBoundaryResolution.
-EXPECTED_OPTIONS = 29
+#COARSENING: optional trailing density selector; existing positions stay unchanged.
+EXPECTED_OPTIONS = 30
 
 # (default value, option name, available models)
 SETTINGS = [
@@ -33,7 +33,8 @@ SETTINGS = [
      '4= generalized SDA with non-uniform source, Zayat et al.'),
     (1, 'iIntraGranularBubbleBehavior',
      '0= constant concentration and radius, 1= Pizzocri et al. (2018), 2= White and Tucker (1983), '
-     '3= annealing / helium similarity ratio, 99= no intragranular bubbles'),
+     '3= annealing / helium similarity ratio, 4= Nicodemo (2026) coarsening (requires solver2), '
+     '99= no intragranular bubbles'),
     (1, 'iResolutionRate',
      '0= constant value, 1= Turnbull (1971), 2= Losonen (2002), '
      '3= thermal resolution, Cognini et al. (2021), 99= null value'),
@@ -94,6 +95,8 @@ SETTINGS = [
     (0, 'iGrainBoundaryResolution',
      '0= off, 1= grain-boundary re-solution as a localized source in the outer shell '
      '(iDiffusionSolver = 4 only)'),
+    (1, 'iDislocationDensity',
+     '0= fixed Barani (2020) density only, 1= Nicodemo (2026) fit; coarsening model4 only'),
 ]
 
 if len(SETTINGS) != EXPECTED_OPTIONS:

@@ -93,3 +93,12 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
 include(CPack)
+
+#COARSENING: independent kernel invariants, sharing the production implementation.
+if(BUILD_TESTING AND NOT COUPLING_TU)
+    add_executable(coarsening_tests tests/coarsening_tests.C
+        src/models/IntraGranularBubbleBehavior.C
+        src/models/IntraGranularBubbleCoarsening.C src/models/DislocationDensity.C)
+    target_compile_definitions(coarsening_tests PRIVATE SCIANTIX_COARSENING_STANDALONE)
+    add_test(NAME coarsening_invariants COMMAND coarsening_tests)
+endif()

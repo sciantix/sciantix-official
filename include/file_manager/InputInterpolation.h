@@ -29,12 +29,14 @@
  * @param xx Vector of input values representing the x-coordinates at which yy values are defined.
  * @param yy Vector of output values corresponding to each xx value.
  * @param n The total number of points in xx and yy.
+ * @param stable Use a local coordinate to avoid cancellation near late-history knots.
  * @return The interpolated value at point x.
  *
  * @author D. Pizzocri
  * @author T. Barani
  *
  */
-double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
+double
+InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n, bool stable = false);
 
 #endif

@@ -181,6 +181,7 @@ class Simulation
      *
      */
     void GasDiffusion();
+    void GasBoundaryBalance();  // #COARSENING: shared native mass balance
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
@@ -221,6 +222,13 @@ class Simulation
      *
      */
     void IntraGranularBubbleBehavior();
+    // #COARSENING: one model and its state diagnostics.
+    void    IntraGranularBubbleCoarsening();
+    void    CoarseningDiagnostics();
+    double* getDiffusionModesDislocation(const std::string& gas)
+    {
+        return &modes_initial_conditions[(gas == "Xe" ? 18 : 19) * n_modes];
+    }
 
     /**
      * @brief The model considers one-off nucleation, growth of lenticular bubbles by vacancy

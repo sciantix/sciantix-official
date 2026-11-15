@@ -16,11 +16,11 @@
 
 #include "InputInterpolation.h"
 
-double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n)
+double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n, bool stable)
 {
     double           y;
     signed short int interval_low, interval_upp, interval_med, i;
-    double           a, b, c;
+    double           c;
 
     n--;
 
@@ -62,9 +62,19 @@ double InputInterpolation(double x, std::vector<double> xx, std::vector<double> 
     }
 
     c = xx[i + 1] - xx[i];
-    a = (xx[i + 1] * yy[i] - xx[i] * yy[i + 1]) / c;
-    b = (yy[i + 1] - yy[i]) / c;
-
-    y = a + b * x;
+    // Use a local coordinate: a+b*x loses precision near a short ramp after
+    // tens of thousands of hours and can create spurious temperature rates.
+    if (stable)
+    {
+        const double fraction = (x - xx[i]) / c;
+        y                     = yy[i] + fraction * (yy[i + 1] - yy[i]);
+    }
+    else
+    {
+        // Preserve historical four-argument behavior for existing gold tests.
+        const double a = (xx[i + 1] * yy[i] - xx[i] * yy[i + 1]) / c;
+        const double b = (yy[i + 1] - yy[i]) / c;
+        y              = a + b * x;
+    }
     return y;
 }

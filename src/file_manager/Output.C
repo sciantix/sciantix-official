@@ -34,6 +34,8 @@ void Simulation::output()
     std::fstream output_file;
     output_file.open(output_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
+    // #COARSENING: retain restart/diagnostic precision in the new model only.
+    const bool coarseningOutput = input_variable["iIntraGranularBubbleBehavior"].getValue() == 4;
     // iOutput == 1 --> output.txt organized in columns (header + values).
     if (int(input_variable["iOutput"].getValue()) == 1)
     {
@@ -57,13 +59,13 @@ void Simulation::output()
             for (auto& variable : history_variable)
             {
                 if (variable.getOutput())
-                    output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+                    output_file << std::setprecision(coarseningOutput ? 17 : 10) << variable.getFinalValue() << "\t";
             }
 
             for (auto& variable : sciantix_variable)
             {
                 if (variable.getOutput())
-                    output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+                    output_file << std::setprecision(coarseningOutput ? 17 : 7) << variable.getFinalValue() << "\t";
             }
             output_file << "\n";
         }
@@ -89,12 +91,12 @@ void Simulation::output()
         {
             for (auto& variable : history_variable)
             {
-                output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+                output_file << std::setprecision(coarseningOutput ? 17 : 10) << variable.getFinalValue() << "\t";
             }
 
             for (auto& variable : sciantix_variable)
             {
-                output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+                output_file << std::setprecision(coarseningOutput ? 17 : 7) << variable.getFinalValue() << "\t";
             }
             output_file << "\n";
         }

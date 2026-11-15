@@ -193,6 +193,13 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[27] = ReadOneSetting("iNonSym", input_settings, input_check);
     Sciantix_options[28] = ReadOneSetting("iGrainBoundaryResolution", input_settings, input_check);
 
+    // #COARSENING: optional trailing density selector; old input files remain valid.
+    Sciantix_options[29] = Sciantix_options[3] == 4 ? 1 : 0;
+    input_settings.clear();
+    input_settings >> std::ws;
+    if (input_settings.peek() != std::char_traits<char>::eof())
+        Sciantix_options[29] = ReadOneSetting("iDislocationDensity", input_settings, input_check);
+
     visualization = Sciantix_options[25];
     animation     = Sciantix_options[26];
     iNonSym       = Sciantix_options[27];
@@ -359,6 +366,20 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[8] = 1.0;
     }
 
+    // #COARSENING: optional trailing factors after the nine native entries.
+    const std::string coarsening_factors[] = {"sf_coarsening_K", "sf_coarsening_D", "sf_coarsening_Dv"};
+    input_scaling_factors.clear();
+    for (int i = 0; i < 3; ++i)
+    {
+        Sciantix_scaling_factors[9 + i] = 1.;
+        if (input_scaling_factors.is_open())
+        {
+            input_scaling_factors >> std::ws;
+            if (input_scaling_factors.peek() != std::char_traits<char>::eof())
+                Sciantix_scaling_factors[9 + i] =
+                    ReadOneParameter(coarsening_factors[i], input_scaling_factors, input_check);
+        }
+    }
     input_check.close();
     input_settings.close();
     input_initial_conditions.close();

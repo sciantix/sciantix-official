@@ -40,7 +40,7 @@ constexpr int SCIANTIX_HISTORY_SIZE         = 20;
 constexpr int SCIANTIX_VARIABLES_SIZE       = 300;
 constexpr int SCIANTIX_SCALING_FACTORS_SIZE = 20;
 constexpr int N_DIFFUSION_MODES             = 40;
-constexpr int N_MODE_BLOCKS                 = 18;
+constexpr int N_MODE_BLOCKS                 = 20;  // #COARSENING: Xe/Kr large-bubble modes
 constexpr int SCIANTIX_DIFFUSION_MODES_SIZE = N_MODE_BLOCKS * N_DIFFUSION_MODES;
 
 extern int    Sciantix_options[SCIANTIX_OPTIONS_SIZE];

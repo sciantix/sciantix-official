@@ -126,6 +126,32 @@ void Simulation::update(double Sciantix_variables[],
         }
     }
 
+    // #COARSENING: persist inventories, access memory and accepted flux ledgers.
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() == 4)
+    {
+        Sciantix_variables[170] = sciantix_variable["Coarsening dislocation concentration"].getFinalValue();
+        Sciantix_variables[171] = sciantix_variable["Coarsening vacancy concentration"].getFinalValue();
+        Sciantix_variables[172] = sciantix_variable["Coarsening dislocation radius"].getFinalValue();
+        Sciantix_variables[173] = sciantix_variable["Coarsening vacancies per bubble"].getFinalValue();
+        Sciantix_variables[174] = sciantix_variable["Coarsening pressure"].getFinalValue();
+        Sciantix_variables[175] = sciantix_variable["Coarsening equilibrium pressure"].getFinalValue();
+        Sciantix_variables[176] = sciantix_variable["Coarsening dislocation swelling"].getFinalValue();
+        Sciantix_variables[177] = sciantix_variable["Coarsening bulk swelling"].getFinalValue();
+        Sciantix_variables[178] = sciantix_variable["Xe in bulk bubbles"].getFinalValue();
+        Sciantix_variables[179] = sciantix_variable["Kr in bulk bubbles"].getFinalValue();
+        Sciantix_variables[180] = sciantix_variable["Coarsening line trapping rate"].getFinalValue();
+        Sciantix_variables[181] = sciantix_variable["Dislocation density"].getFinalValue();
+        Sciantix_variables[182] = sciantix_variable["Xe in dislocation bubbles"].getFinalValue();
+        Sciantix_variables[183] = sciantix_variable["Kr in dislocation bubbles"].getFinalValue();
+        Sciantix_variables[184] = sciantix_variable["Coarsening active fraction"].getFinalValue();
+        Sciantix_variables[185] = sciantix_variable["Dislocation density rate"].getFinalValue();
+        Sciantix_variables[186] = sciantix_variable["Dislocation density interval rate"].getFinalValue();
+        Sciantix_variables[187] = sciantix_variable["Coarsening cumulative recruited bubbles"].getFinalValue();
+        Sciantix_variables[188] = sciantix_variable["Coarsening cumulative recruited gas"].getFinalValue();
+        Sciantix_variables[189] = sciantix_variable["Coarsening projected production"].getFinalValue();
+        Sciantix_variables[190] = sciantix_variable["Coarsening diffused gas"].getFinalValue();
+    }
+
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();
          it != update_sciantix_variable.end();
          it++)

@@ -62,3 +62,7 @@ jobs:
         run: |
           export PATH=$PATH:$(pwd)/build
           python3 -m regression.runner --all --mode-gold 0
+
+      #COARSENING: actual executable, independent references and public-array restart.
+      - name: Check White coarsening and native controls
+        run: python3 regression/White_Coarsening/run.py --binary build/sciantix.x --check --verify --no-plots

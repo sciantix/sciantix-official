@@ -21,6 +21,12 @@
 
 void Simulation::GasDiffusion()
 {
+    // #COARSENING: C, Mb and Md were already advanced in bubble behavior.
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() == 4)
+    {
+        GasBoundaryBalance();
+        return;
+    }
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
@@ -212,6 +218,12 @@ void Simulation::GasDiffusion()
             pow(matrices["UO2"].getLatticeParameter(), 3) / 4);
     }
 
+    GasBoundaryBalance();
+}
+
+// #COARSENING: share the unchanged native boundary balance with the three-pool solver.
+void Simulation::GasBoundaryBalance()
+{
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto& system : sciantix_system)
     {
