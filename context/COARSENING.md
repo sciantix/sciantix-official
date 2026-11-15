@@ -121,5 +121,5 @@ The preramp adaptive/legacy inventory difference is at most 0.032 percentage
 points; on 4005-A it decreases from 0.0313 to 0.0159 under refinement. Physical
 equivalence of the bulk limit does not imply bitwise equality of two solvers.
 `clang-format18` is applied before committing; the upstream auto-format action
-remains enabled. Only the PNG gallery is versioned; editable SVGs are regenerated
-by the same plotting script.
+remains enabled. The regression gallery is generated and versioned only as
+300 dpi PNG files, with the model labelled Nicodemo 2026.

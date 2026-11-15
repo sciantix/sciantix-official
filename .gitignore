@@ -115,8 +115,9 @@ regression/nus/studies/runs/
 /regression/White_Coarsening/runs/
 !/regression/White_Coarsening/figures/**/*.png
 !/context/dislocation_density/figures/*.png
-# Editable SVGs are regenerated locally; the branch carries the PNG gallery.
+# Regression figures are PNG-only; exclude any SVGs left by older generators.
 /regression/White_Coarsening/figures/**/*.svg
+# Editable density-fit SVGs are regenerated locally.
 /context/dislocation_density/figures/*.svg
 /regression/White_Coarsening/results.json
 /regression/White_Coarsening/verification.json

@@ -13,6 +13,11 @@ import run as campaign
 HERE = campaign.HERE
 ROOT = campaign.ROOT
 NEW, LEGACY, BARANI, MEASURED = "#2379b5", "#888888", "#c44e52", "#222222"
+MODEL_LABELS = {
+    "coarsening": "Nicodemo 2026",
+    "legacy": "SCIANTIX legacy",
+    "Barani_table4": "Barani 2020, Table 4",
+}
 POOL_COLORS = ("#4c78a8", "#f2cf5b", "#e45756", "#64b5b4", "#80579b")
 POOL_LABELS = (
     "Solution",
@@ -29,7 +34,6 @@ plt.rcParams.update(
         "xtick.labelsize": 9,
         "ytick.labelsize": 9,
         "legend.fontsize": 9,
-        "svg.fonttype": "none",
     }
 )
 
@@ -37,7 +41,6 @@ plt.rcParams.update(
 def save(fig, path):
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path.with_suffix(".png"), dpi=300, bbox_inches="tight")
-    fig.savefig(path.with_suffix(".svg"), bbox_inches="tight")
     plt.close(fig)
 
 
@@ -179,7 +182,7 @@ def history(result, observation, folder, full=False):
     fig.suptitle(title, y=1.02, fontsize=11)
     fig.legend(
         handles=[
-            Line2D([], [], c=NEW, label="Coarsening"),
+            Line2D([], [], c=NEW, label=MODEL_LABELS["coarsening"]),
             Line2D([], [], ls="", marker="s", c=MEASURED, label="White measurements"),
         ],
         loc="upper center",
@@ -234,7 +237,7 @@ def plot_all(results, observations):
         all_y = []
         for model, color, label in [
             ("legacy", LEGACY, "SCIANTIX legacy"),
-            ("coarsening", NEW, "Coarsening"),
+            ("coarsening", NEW, MODEL_LABELS["coarsening"]),
         ]:
             y = np.array([by[model][s]["states"]["end"][key] * scale for s in samples])
             all_y.extend(y)
@@ -343,7 +346,7 @@ def plot_all(results, observations):
             [r["Rb"] * 1e9 for r in values],
             c=color,
             marker=marker,
-            label=model + " proxy",
+            label=MODEL_LABELS[model] + " proxy",
         )
         axes[1].scatter(
             [r["T"] for r in values], [r["Nb"] for r in values], c=color, marker=marker
@@ -368,7 +371,7 @@ def plot_all(results, observations):
             zoomed.append(sample)
             history(r, measured[sample], figdir / "histories", full=True)
     lines = [
-        "# White coarsening regression",
+        "# White coarsening regression — Nicodemo 2026",
         "",
         "38 ramp histories; six4070 unramped proxies. Same fixed inputs and physical yield for the new model and legacy controls. "
         "Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. "
@@ -382,7 +385,7 @@ def plot_all(results, observations):
     for model in metrics:
         lines.append(
             "|"
-            + model
+            + MODEL_LABELS[model]
             + "|"
             + "|".join(
                 (
@@ -429,6 +432,7 @@ def plot_all(results, observations):
         "```",
         "",
         "Frozen endpoint references are changed only with the explicit `--write-reference` option. Raw traces stay in ignored `runs/`. "
+        "Figures are generated only as 300 dpi PNG files. "
         "Equations, parameter provenance and limits are summarized in [context](../../context/COARSENING.md).",
     ]
     (HERE / "README.md").write_text("\n".join(lines) + "\n")
