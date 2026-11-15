@@ -110,6 +110,38 @@ Analytical/semi-analytical per-step integrators (each advances one variable over
 **40 modes per gas**. The 720-long mode array is partitioned by `getDiffusionModes`,
 `…Solution`, `…Bubbles` for Xe, Kr, He, Xe133, Kr85m, and "Xe in HBS".
 
+### Non-uniform source (NUS) solver — generalized spectral diffusion (GSD, #65)
+
+`iDiffusionSolver = 4` selects a generalized spectral solver that relaxes the uniform
+source and uniform initial condition assumptions of options 1-3. Reference:
+A. Zayat, G. Zullo, L. Luzzi, D. Pizzocri, *A generalized spectral algorithm for
+fission gas diffusion: Implementation and verification in SCIANTIX*.
+
+- **`Source`** (`include/classes/Source.h`) — one radial profile at one instant, as a
+  piecewise-linear `S(r) = A_i r + B_i` over a normalised domain `r/a`.
+- **`SourceHandler`** (`src/file_manager/SourceHandler.C`) — reads
+  `non_uniform_source.txt` (required) and `initial_distribution.txt` (optional, uniform
+  when absent), interpolates the profiles in time, evaluates volume averages, and strips
+  the re-solution term from the production source.
+- **`Solver::SourceProjection_i`** — analytical projection of a linear source onto
+  spatial mode `n` over one interval. With `A = 0` over `[0, a]` it reduces to the
+  uniform projection coefficient used by `SpectralDiffusion`.
+- **`Simulation::GrainBoundarySource`** — grain-boundary re-solution as a source term
+  confined to the outer shell; returns immediately unless the NUS solver is selected.
+
+State: a second mode array `Sciantix_diffusion_modes_NUS[]` (same size as the standard
+one), passed as the **last** argument of `Sciantix`, `Simulation::initialize` and
+`Simulation::update`, so the v2.5 coupling signature is unchanged up to that point; the TU
+coupling passes the global array. Option slots **27-30** are `iNUSOutput`,
+`iNUSAnimation`, `iNonSym`, `iGrainBoundaryResolution` (25-26 are `iThermochimica` and
+`iThermochimicaOuterNode`). Every NUS path is gated on `iDiffusionSolver == 4`: the
+source files are read only then. Burnup uses the volume average of the source profile as
+fission rate when the NUS solver is active.
+
+Tests: `verification/test_nus/` (runner group `nus`), with `plot.py`, `studies/` (paper
+figures, built from `validation/baker/test_Baker1977__1273K`) and `visualization/` (Tk
+inspectors); the runner matches only `test_N*`.
+
 ---
 
 ## 4. Execution flow

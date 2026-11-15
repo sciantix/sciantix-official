@@ -21,6 +21,8 @@
 #include <iostream>
 #include <vector>
 
+#include "Source.h"
+
 /**
  * @brief Initializes SCIANTIX internal variables with initial conditions.
  *
@@ -29,11 +31,11 @@
  * @author G. Zullo
  *
  */
-void Initialization(double Sciantix_history[],
-                    double Sciantix_variables[],
-                    double Sciantix_diffusion_modes[],
-                    double Sciantix_thermochemistry[],
-
+void Initialization(double              Sciantix_history[],
+                    double              Sciantix_variables[],
+                    double              Sciantix_diffusion_modes[],
+                    double              Sciantix_thermochemistry[],
+                    double              Sciantix_diffusion_modes_NUS[],
                     std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,

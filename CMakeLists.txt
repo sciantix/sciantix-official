@@ -9,7 +9,7 @@
 #
 # Author: G. Zullo (giovanni.zullo@polimi.it), E. Cappellari (elisa.cappellari@polimi.it)
 
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10)
 
 # The compiler is found by CMake (default: c++ in the PATH, i.e. Apple Clang on macOS).
 # To use another one: cmake -S . -B build -DCMAKE_CXX_COMPILER=g++-15 (or CXX=g++-15 cmake ...).
@@ -124,7 +124,7 @@ if(BUILD_TESTING AND NOT COUPLING_TU)
     find_program(PYTHON3_EXECUTABLE NAMES python3 python)
     if(PYTHON3_EXECUTABLE)
         set(TESTING_GROUPS_verification
-            mox-po2 openPorosity powerPulse oxidation vercors gpr)
+            mox-po2 openPorosity powerPulse oxidation vercors gpr nus)
         set(TESTING_GROUPS_validation
             baker cornell white kashibe talip chromium contact hbs jog
             oxygenpotential-freshfuel oxygenpotential-burnup)

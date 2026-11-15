@@ -55,7 +55,11 @@ std::vector<std::string> getInputVariableNames()
                                       "iDensification",
                                       "iReleaseMode",
                                       "iThermochimica",
-                                      "iThermochimicaOuterNode"};
+                                      "iThermochimicaOuterNode",
+                                      "iNUSOutput",
+                                      "iNUSAnimation",
+                                      "iNonSym",
+                                      "iGrainBoundaryResolution"};
 
     return names;
 }

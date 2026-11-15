@@ -22,7 +22,8 @@ void Sciantix(int                            Sciantix_options[],
               double                         Sciantix_scaling_factors[],
               double                         Sciantix_diffusion_modes[],
               double                         Sciantix_thermochemistry[],
-              const ThermochemistrySettings* Sciantix_thermochemistry_options)
+              const ThermochemistrySettings* Sciantix_thermochemistry_options,
+              double                         Sciantix_diffusion_modes_NUS[])
 {
     Simulation* simulation = Simulation::getInstance();
 
@@ -32,11 +33,13 @@ void Sciantix(int                            Sciantix_options[],
                            Sciantix_scaling_factors,
                            Sciantix_diffusion_modes,
                            Sciantix_thermochemistry,
-                           Sciantix_thermochemistry_options);
+                           Sciantix_thermochemistry_options,
+                           Sciantix_diffusion_modes_NUS);
 
     simulation->execute();
 
-    simulation->update(Sciantix_variables, Sciantix_diffusion_modes, Sciantix_thermochemistry);
+    simulation->update(
+        Sciantix_variables, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_diffusion_modes_NUS);
 
     simulation->output();
 }

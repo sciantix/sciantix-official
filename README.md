@@ -17,6 +17,13 @@ Currently, SCIANTIX is validated against experimental data for:
 
 The validation database and testing suite are available in the `verification/` and `validation/` directories.
 
+# Training
+
+Training material — tutorials, hands-on cases, and the OperaHPC online training —
+is maintained in a dedicated repository: 
+- [sciantix-training](https://github.com/sciantix/sciantix-training)
+- [OperaHPC Online Training](https://github.com/sciantix/sciantix-training/tree/main/training/OperaHPC_online_training)
+
 # Installation
 
 Requirements to build SCIANTIX:
@@ -192,6 +199,11 @@ SCIANTIX is developed and maintained by:
 - Lelio Luzzi
 
 Politecnico di Milano, Nuclear Engineering Division.
+
+# Non-uniform source (NUS) solver
+
+Mini guide for the generalized spectral diffusion solver with non-uniform source:
+https://polimi365-my.sharepoint.com/:b:/g/personal/10884872_polimi_it/EUT-2KKVWdBNgbRhSLts3LYB44YjGkc51bAKPb6uTe0oHg?e=YH19AK
 
 # License
 

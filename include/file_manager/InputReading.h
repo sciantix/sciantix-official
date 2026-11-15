@@ -18,6 +18,7 @@
 #define INPUT_READING_H
 
 #include "ErrorMessages.h"
+#include "Source.h"
 #include "ThermochemistrySettings.h"
 #include <fstream>
 #include <map>
@@ -52,7 +53,9 @@ void InputReading(int                       Sciantix_options[],
                   std::vector<double>&      Systempressure_input,
                   std::vector<double>&      OMratio_input,
                   double&                   Time_end_h,
-                  double&                   Time_end_s);
+                  double&                   Time_end_s,
+                  std::vector<Source>&      sources_input,
+                  std::vector<Source>&      initial_distribution);
 
 /**
  * @brief The keyed entries of an input file ("<value(s)> # <Key> (<description>)" lines).

@@ -20,6 +20,7 @@
 #include "InputReading.h"
 #include "MainVariables.h"
 #include "Sciantix.h"
+#include "SourceHandler.h"
 #include "TimeStepCalculation.h"
 #include <ctime>
 #include <fstream>
@@ -152,12 +153,15 @@ int main(int argc, char** argv)
                  Systempressure_input,
                  OMratio_input,
                  Time_end_h,
-                 Time_end_s);
+                 Time_end_s,
+                 sources_input,
+                 initial_distribution);
 
     Initialization(Sciantix_history,
                    Sciantix_variables,
                    Sciantix_diffusion_modes,
                    Sciantix_thermochemistry,
+                   Sciantix_diffusion_modes_NUS,
                    Temperature_input,
                    Fissionrate_input,
                    Hydrostaticstress_input,
@@ -176,6 +180,9 @@ int main(int argc, char** argv)
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
     timer = clock();
+
+    sources_interp  = sourceInterpolation(sources_input, Number_of_time_steps_per_interval);
+    sources_correct = subtractResolutionFromSource(sources_interp);
 
     while (Time_h <= Time_end_h)
     {
@@ -202,7 +209,8 @@ int main(int argc, char** argv)
                  Sciantix_scaling_factors,
                  Sciantix_diffusion_modes,
                  Sciantix_thermochemistry,
-                 Sciantix_thermochemistry_settings);
+                 Sciantix_thermochemistry_settings,
+                 Sciantix_diffusion_modes_NUS);
 
         dTime_h = TimeStepCalculation(Input_history_points, Time_h, Time_input, Number_of_time_steps_per_interval);
         Sciantix_history[6] = dTime_h * 3600;
