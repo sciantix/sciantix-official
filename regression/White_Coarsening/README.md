@@ -8,7 +8,7 @@
 |---|---:|---:|---:|---:|
 |Nicodemo 2026|39.18%|149.44%|167.52%|177.28%|
 |SCIANTIX legacy|98.05%|3133748.42%|92.26%|179.42%|
-|Barani 2020, Table 4|54.48%|140.98%|254.73%|not tabulated|
+|Barani 2020|54.48%|140.98%|254.73%|not tabulated|
 
 IG swelling includes both populations; R and N describe the large population in the new model. White SEM primarily resolves the large population. All gas fractions are normalized to local stable Xe+Kr production; means across38 locations are arithmetic diagnostics, not integral rod FGR.
 

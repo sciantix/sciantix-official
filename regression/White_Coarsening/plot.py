@@ -16,7 +16,7 @@ NEW, LEGACY, BARANI, MEASURED = "#2379b5", "#888888", "#c44e52", "#222222"
 MODEL_LABELS = {
     "coarsening": "Nicodemo 2026",
     "legacy": "SCIANTIX legacy",
-    "Barani_table4": "Barani 2020, Table 4",
+    "Barani_table4": "Barani 2020",
 }
 POOL_COLORS = ("#4c78a8", "#f2cf5b", "#e45756", "#64b5b4", "#80579b")
 POOL_LABELS = (
@@ -251,7 +251,9 @@ def plot_all(results, observations):
         if published:
             y = np.array([float(pub[s][published]) for s in samples])
             all_y.extend(y)
-            ax.scatter(x, y, c=BARANI, marker="x", s=22, label="Barani2020, Table4")
+            ax.scatter(
+                x, y, c=BARANI, marker="x", s=22, label=MODEL_LABELS["Barani_table4"]
+            )
             ratio = y / x
             metrics["Barani_table4"][key] = dict(
                 MAPE_pct=float(100 * np.mean(abs(ratio - 1))),

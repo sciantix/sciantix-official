@@ -99,10 +99,10 @@
     "inputs/4163-D/input_initial_conditions.txt": "981f3ee7ef0fae8a819bb79091baf8652ec5544e92ff9f52df1f265f102cf168"
   },
   "figures": {
-    "figures/00_merit_all.png": "4e26e8f50d56d6e742aaf6408fa2cce6709c071365d42f15c4e51732555b80dc",
-    "figures/01_merit_R.png": "7b86b19184db644f8ec6d22bdbe3f1418b83831abceeb7943a745ad742eb174c",
-    "figures/02_merit_N.png": "0d19a51839ef8b1bceb31ebb0d8651bfc4b7a6148dd5f58389fc8a1aff31107c",
-    "figures/03_merit_S.png": "ef218fdfa72f8aa6e321cc51eb4e88e18ed0f3f4fc196e216bc1ff1e8f4226c2",
+    "figures/00_merit_all.png": "5a3f1e2e9f5bd3802848cee2b0d18dbad99a23bac3e6559d88f93d0fc8a0bd5a",
+    "figures/01_merit_R.png": "a4283816489c07ebaae9f93d20d010f5f354745254eaf5393f7172ce4fe26fb4",
+    "figures/02_merit_N.png": "ecf1159657b46791ca83d4dcd2a702dff0ce8bc39dd5cbef9d62a7a84087fc25",
+    "figures/03_merit_S.png": "e21f77dccbaeaac8005b78af001238bfae3c1f9a8512851fadc4583d1cc5f0c2",
     "figures/04_merit_Sgb.png": "4ec71574d5d9af2af161da4496a8731659dfd68e0ec63b1717ce1d67b13753fa",
     "figures/05_gas_before_after.png": "6423ee81ed5b443579de053a7b672d89226caaca50e41a53c62e279b973b7811",
     "figures/06_preramp_4070.png": "572f79d485da0325a409131d51f5833dc32e64a6953f490e26332c9b3bc1d561",
