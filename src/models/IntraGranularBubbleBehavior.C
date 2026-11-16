@@ -28,7 +28,7 @@ namespace coarsening
 {
     namespace
     {
-        constexpr double pi = 3.14159265358979323846, omega = 4.09e-29;
+        constexpr double pi = 3.14159265358979323846;
         // #COARSENING
         double radius(double v)
         {
@@ -104,7 +104,8 @@ namespace coarsening
             if (s.largeNumber > 0. && gas[2] > 0. && p.vacancyDiffusivityMultiplier > 0.)
             {
                 const double atoms = gas[2] / s.largeNumber, nv0 = s.vacancies / s.largeNumber;
-                const double cell = ((1 - 1e-10) / s.largeNumber - atoms * omega) / omega;
+                const double cell =
+                    ((1 - 1e-10) / s.largeNumber - atoms * gasCoVolume(middle.temperature)) / vacancyVolume;
                 if (nv0 >= cell)
                     throw std::runtime_error("Coarsening porosity exceeds cell");
                 auto residual = [&](double nv)
@@ -131,16 +132,18 @@ namespace coarsening
             }
             if (s.largeNumber > 0.)
             {
-                // Driving volume is real inventory growth, excluding the purely
-                // geometric increase in mean volume caused by birth/number loss.
-                const double dV = omega * std::max(0., gas[2] - initial[2] + s.vacancies - initialQ) / s.largeNumber;
-                const double porosity = omega * (gas[2] + s.vacancies);
+                // Use the same total volume as pressure and swelling, including
+                // its temperature dependence. Birth/number-loss dilution alone
+                // is excluded from the growth that drives geometric overlap.
+                const double initialVolume = bubbleVolume(initial[2], initialQ, a.temperature);
+                const double porosity      = bubbleVolume(gas[2], s.vacancies, b.temperature);
+                const double dV            = std::max(0., porosity - initialVolume) / s.largeNumber;
                 if (porosity >= 1.)
                     throw std::runtime_error("Coarsening porosity >=1");
                 const double lambda = (2 - porosity) / (2 * std::pow(1 - porosity, 3));
                 s.largeNumber /= 1 + 4 * lambda * s.largeNumber * dV;
-                const double V  = omega * (gas[2] + s.vacancies) / s.largeNumber;
-                const double Rb = s.bulkNumber > 0. ? radius(omega * gas[1] / s.bulkNumber) : 0.;
+                const double V  = porosity / s.largeNumber;
+                const double Rb = s.bulkNumber > 0. ? radius(vacancyVolume * gas[1] / s.bulkNumber) : 0.;
                 const double excluded =
                     4 * pi / 3 * (std::pow(radius(V) + Rb, 3) - std::pow(radius(std::max(0., V - dV)) + Rb, 3));
                 const double fraction = -std::expm1(-s.largeNumber * std::max(0., excluded));

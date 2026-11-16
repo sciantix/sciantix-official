@@ -2,23 +2,25 @@
 
 38 ramp histories using experimental data reported by Barani 2020. Same fixed inputs and physical yield for the new model and legacy controls. Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. No published Barani intergranular values are available in this table.
 
-The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, with the same pressure driving vacancy uptake. The volume remains V=Omega*(n+nv); site, density and mobility parameters are retained without refitting. The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.
+The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, with the same pressure driving vacancy uptake. The volume is V=n*omega(T)+nv*Omega, where omega(T)=2*pi*dHS(T)^3/3 is the additive hard-sphere gas co-volume; site, density and mobility parameters are retained without refitting. The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.
+
+The temperature dependence of this reference co-volume also enters geometric overlap and coalescence. It increases on cooling without creating gas or vacancies; mechanical equilibrium is not imposed.
 
 ![Merit](figures/00_merit_all.png)
 
 |Model|R MAPE|N MAPE|IG swelling MAPE|GB swelling MAPE|
 |---|---:|---:|---:|---:|
-|Nicodemo 2026|41.43%|148.05%|187.72%|177.28%|
+|Nicodemo 2026|43.70%|147.45%|207.13%|177.28%|
 |SCIANTIX legacy|98.05%|3133748.42%|92.26%|179.42%|
 |Barani 2020|54.48%|140.98%|254.73%|not tabulated|
 
-IG swelling includes both populations; R and N describe the large population in the new model. White SEM primarily resolves the large population. All gas fractions are normalized to local stable Xe+Kr production; means across38 locations are arithmetic diagnostics, not integral rod FGR.
+IG swelling includes both populations; R and N describe the large population in the new model. White SEM primarily resolves the large population. All gas fractions are normalized to local stable Xe+Kr production; means across 38 locations are arithmetic diagnostics, not integral rod FGR.
 
 ![Inventories](figures/05_gas_before_after.png)
 
 The dislocation-density correlation was refitted to White 2006 data that cannot be shown. A comparison with pre-ramp data was also performed; those data and the corresponding figure are not distributed.
 
-Two of40 ramp histories are unavailable; local4163 histories omit the41 h hold listed in Barani Table3.
+Two of 40 ramp histories are unavailable; local 4163 histories omit the 41 h hold listed in Barani Table 3.
 
 ## Individual histories
 

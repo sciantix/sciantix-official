@@ -338,9 +338,13 @@ def plot_all(results, observations):
         "No published Barani intergranular values are available in this table.",
         "",
         "The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, "
-        "with the same pressure driving vacancy uptake. The volume remains V=Omega*(n+nv); "
+        "with the same pressure driving vacancy uptake. The volume is V=n*omega(T)+nv*Omega, "
+        "where omega(T)=2*pi*dHS(T)^3/3 is the additive hard-sphere gas co-volume; "
         "site, density and mobility parameters are retained without refitting. "
         "The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.",
+        "",
+        "The temperature dependence of this reference co-volume also enters geometric overlap and coalescence. "
+        "It increases on cooling without creating gas or vacancies; mechanical equilibrium is not imposed.",
         "",
         "![Merit](figures/00_merit_all.png)",
         "",
@@ -366,14 +370,14 @@ def plot_all(results, observations):
         "",
         "IG swelling includes both populations; R and N describe the large population in the new model. "
         "White SEM primarily resolves the large population. All gas fractions are normalized to local stable Xe+Kr production; "
-        "means across38 locations are arithmetic diagnostics, not integral rod FGR.",
+        "means across 38 locations are arithmetic diagnostics, not integral rod FGR.",
         "",
         "![Inventories](figures/05_gas_before_after.png)",
         "",
         "The dislocation-density correlation was refitted to White 2006 data that cannot be shown. "
         "A comparison with pre-ramp data was also performed; those data and the corresponding figure are not distributed.",
         "",
-        "Two of40 ramp histories are unavailable; local4163 histories omit the41 h hold listed in Barani Table3.",
+        "Two of 40 ramp histories are unavailable; local 4163 histories omit the 41 h hold listed in Barani Table 3.",
         "",
         "## Individual histories",
         "",
@@ -418,11 +422,16 @@ def plot_all(results, observations):
         HERE / "manifest.json",
         dict(
             official_base="2344575b7d246d02205f503b541b74f914f5f6b3",
-            physical_model="Nicodemo2026, Carnahan-Starling, V=Omega*(n+nv), Kmax3e6,1800–1950K, Hart b=.385nm, Dv3bulk, y=.27",
+            physical_model="Nicodemo2026, Carnahan-Starling, V=n*omega(T)+nv*Omega, omega=B2=2*pi*dHS^3/3, Kmax3e6,1800–1950K, Hart b=.385nm, Dv3bulk, y=.27",
             pressure_eos=dict(
                 name="Carnahan-Starling",
                 effective_species="Xe for combined stable Xe/Kr",
                 packing_domain="0 <= eta < 1; no clipping",
+            ),
+            volume_closure=dict(
+                dislocation_bubbles="n*omega(T)+nv*Omega; omega(T)=2*pi*dHS(T)^3/3",
+                bulk_bubbles="n*Omega",
+                overlap_growth="positive Delta[omega(T)*Md+Omega*Qv] per bubble, excluding number-only dilution",
             ),
             binary_sha256=sorted({r["binary_sha256"] for r in results}),
             outer_steps=sorted({r["steps"] for r in results}),

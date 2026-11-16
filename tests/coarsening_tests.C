@@ -76,14 +76,20 @@ int main(int argc, char** argv)
     const auto   lowPacking  = observe(dilute, cold, p);
     const double diluteIdeal = dilute.gas[2][0] * 1.380649e-23 * cold.temperature / lowPacking.largeSwelling;
     close(lowPacking.pressure / diluteIdeal, 1., 3e-9, "Carnahan-Starling dilute limit");
-    auto singular        = cold;
-    singular.temperature = 1.;
-    auto packed          = eos;
-    packed.vacancies     = 0.;
-    bool invalidPacking  = false;
+    auto gasOnly                    = eos;
+    gasOnly.vacancies               = 0.;
+    const auto   gasOnlyObservation = observe(gasOnly, cold, p);
+    const double gasOnlyIdeal = gasOnly.gas[2][0] * 1.380649e-23 * cold.temperature / gasOnlyObservation.largeSwelling;
+    close(gasOnlyObservation.pressure / gasOnlyIdeal,
+          83. / 27.,
+          1e-14,
+          "Gas co-volume fixes zero-vacancy packing to one quarter");
+    auto packed         = eos;
+    packed.vacancies    = -.9 * gasCoVolume(cold.temperature) * packed.gas[2][0] / vacancyVolume;
+    bool invalidPacking = false;
     try
     {
-        observe(packed, singular, p);
+        observe(packed, cold, p);
     }
     catch (const std::runtime_error&)
     {
@@ -133,6 +139,24 @@ int main(int argc, char** argv)
     evolve(merging, 1000., anneal, anneal, mergeParameters);
     require(merging.largeNumber < 1e19, "Growth causes coalescence");
     require(merging.vacancies == 1e24, "Pure coalescence conserves vacancy inventory");
+    // With no source, return, trapping or vacancy uptake, cooling changes only
+    // the gas co-volume and number through overlap; gas and vacancies are conserved.
+    auto thermal             = initialState();
+    thermal.largeNumber      = 1e19;
+    thermal.gas[2][0]        = 1e25;
+    thermal.vacancies        = 1e24;
+    const auto thermalBefore = observe(thermal, anneal, mergeParameters);
+    auto       cooled        = anneal;
+    cooled.temperature       = 573.;
+    evolve(thermal, 60., anneal, cooled, mergeParameters);
+    const auto thermalAfter = observe(thermal, cooled, mergeParameters);
+    require(average(thermal)[2] == 1e25 && thermal.vacancies == 1e24,
+            "Temperature-dependent co-volume conserves atomic and vacancy inventories");
+    require(thermalAfter.largeSwelling > thermalBefore.largeSwelling && thermal.largeNumber < 1e19,
+            "Thermal volume growth enters swelling and coalescence consistently");
+    const double cooledNumber = thermal.largeNumber;
+    evolve(thermal, 60., cooled, anneal, mergeParameters);
+    require(thermal.largeNumber == cooledNumber, "Thermal contraction alone does not cause coalescence");
     auto hot        = cold;
     hot.temperature = 2080.;
     hot.burnup      = 20.0001;

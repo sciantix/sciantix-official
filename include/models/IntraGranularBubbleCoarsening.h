@@ -7,6 +7,8 @@
 // explicit for refinement tests. K and the two mobilities have input scalings.
 namespace coarsening
 {
+    // Omega (m^3/vacancy), also the native fixed atomic volume of bulk bubbles.
+    constexpr double vacancyVolume = 4.09e-29;
     struct Environment
     {
         double temperature = 1200., fissionRate = 0., stress = 0., grainRadius = 5e-6, burnup = 0.;
@@ -36,6 +38,8 @@ namespace coarsening
     };
     State                 initialState(unsigned modes = 40);
     std::array<double, 3> average(const State&);
+    double                gasCoVolume(double temperature);  // omega(T)=B2=4*vHS (m^3/atom)
+    double                bubbleVolume(double atoms, double vacancies, double temperature);  // n*omega(T)+nv*Omega
     double                diffusivity(const Environment&);
     double                captureDiffusivity(const Environment&, const Parameters&);
     double                vacancyDiffusivity(double temperature, const Parameters&);

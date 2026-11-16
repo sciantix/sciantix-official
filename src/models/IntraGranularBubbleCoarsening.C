@@ -8,26 +8,40 @@ namespace coarsening
 {
     namespace
     {
-        constexpr double pi = 3.14159265358979323846, kB = 1.380649e-23, eV = 1.602176634e-19, omega = 4.09e-29;
+        constexpr double pi = 3.14159265358979323846, kB = 1.380649e-23, eV = 1.602176634e-19;
         // #COARSENING
         double radius(double v)
         {
             return std::cbrt(std::max(0., 3 * v / (4 * pi)));
         }
-        // #COARSENING: Carnahan-Starling pressure and the effective Xe diameter
-        // from Barani 2020, Eqs. (10)-(11). The bubble volume remains Omega*(n+nv).
+        // #COARSENING: Carnahan-Starling pressure in the whole bubble cavity.
         double gasPressure(double atoms, double volume, double temperature)
         {
             if (atoms <= 0. || volume <= 0.)
                 return 0.;
-            const double diameter = 4.45e-10 * (.8542 - .03996 * std::log(temperature / 231.2));
-            const double packing  = pi * diameter * diameter * diameter * atoms / (6 * volume);
+            const double packing = gasCoVolume(temperature) * atoms / (4 * volume);
             if (!std::isfinite(packing) || packing < 0. || packing >= 1.)
                 throw std::runtime_error("Coarsening Carnahan-Starling packing fraction outside [0,1)");
             const double Z = (1 + packing + packing * packing - packing * packing * packing) / std::pow(1 - packing, 3);
             return atoms * kB * temperature / volume * Z;
         }
     }  // namespace
+    // #COARSENING: additive reference co-volume, B2=4*vHS, using the effective
+    // Xe hard-sphere diameter of Barani 2020, Eq. (11). This is not V/n from EOS inversion.
+    double gasCoVolume(double temperature)
+    {
+        if (!std::isfinite(temperature) || temperature <= 0.)
+            throw std::invalid_argument("Invalid coarsening gas co-volume temperature");
+        const double diameter = 4.45e-10 * (.8542 - .03996 * std::log(temperature / 231.2));
+        if (!std::isfinite(diameter) || diameter <= 0.)
+            throw std::invalid_argument("Coarsening hard-sphere diameter must be positive");
+        return 2 * pi * diameter * diameter * diameter / 3;
+    }
+    // #COARSENING: applies equally to per-bubble and volume-density inventories.
+    double bubbleVolume(double atoms, double vacancies, double temperature)
+    {
+        return atoms * gasCoVolume(temperature) + vacancies * vacancyVolume;
+    }
     // #COARSENING
     State initialState(unsigned modes)
     {
@@ -92,7 +106,8 @@ namespace coarsening
     {
         if (atoms <= 0. || number <= 0. || p.vacancyDiffusivityMultiplier == 0.)
             return 0.;
-        const double volume = omega * (atoms + nv), R = radius(volume), delta = radius(1 / number), x = R / delta;
+        const double volume = bubbleVolume(atoms, nv, e.temperature), R = radius(volume), delta = radius(1 / number),
+                     x = R / delta;
         if (x >= 1.)
             throw std::runtime_error("Coarsening bubble exceeds Wigner-Seitz cell");
         const double zeta     = 10 * x * (1 + std::pow(x, 3)) / (-std::pow(x, 6) + 5 * x * x - 9 * x + 5);
@@ -106,8 +121,8 @@ namespace coarsening
         const auto  m = average(s);
         Observation o;
         o.rho           = dislocation_density::correlation(e.burnup, e.temperature, p.densityModel);
-        o.bulkSwelling  = omega * m[1];
-        o.largeSwelling = omega * (m[2] + s.vacancies);
+        o.bulkSwelling  = vacancyVolume * m[1];
+        o.largeSwelling = bubbleVolume(m[2], s.vacancies, e.temperature);
         if (s.bulkNumber > 0.)
             o.bulkRadius = radius(o.bulkSwelling / s.bulkNumber);
         if (s.largeNumber > 0. && o.largeSwelling > 0.)

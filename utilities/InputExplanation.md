@@ -30,7 +30,7 @@ line shifts every setting that follows it.
 1    #    iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))
 1    #    iFissionGasDiffusivity (0= constant value, 1= Turnbull (1988), 2= Matzke (1980), 3= Turnbull (2010), 4= Ronchi (2007), 5= UO2-HBS, 6= stoichiometry-dependent, 7-8-10= UO2-Cr, 9= Cooper (2021), 90= GPR-updated, 99= null value)
 1    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis, 3= SDA with three coupled equations (UO2 + HBS))
-1    #    iIntraGranularBubbleBehavior (0= constant concentration and radius, 1= Pizzocri et al. (2018), 2= White and Tucker (1983), 3= annealing / helium similarity ratio, 99= no intragranular bubbles)
+1    #    iIntraGranularBubbleBehavior (0= constant, 1= Pizzocri et al. (2018), 2= White and Tucker (1983), 3= annealing / helium, 4= Nicodemo (2026) coarsening, 99= no intragranular bubbles)
 1    #    iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2002), 3= thermal resolution, Cognini et al. (2021), 99= null value)
 1    #    iTrappingRate (0= constant value, 1= Ham (1958), 99= null value)
 1    #    iNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006), 99= null value)
@@ -54,8 +54,23 @@ line shifts every setting that follows it.
 0    #    iReleaseMode (0= White (2004) coalescence, saturation threshold from Pastore et al. (2013), 1= Pastore et al. (2013) coalescence, Cappellari et al. (2025) release, 2= White (2004) coalescence, Cappellari et al. (2025) release)
 ```
 
-**Note**: the inline comment must stay shorter than 256 characters. A longer comment leaves its
-tail in the stream and every setting that follows it is read as zero.
+**Note**: keep the positional order and the `#` comment marker after each value.
+Inline comments are read to the end of the line without a length limit.
+
+### Selected intragranular coarsening model
+
+Use `iIntraGranularBubbleBehavior=4` with `iDiffusionSolver=2`. The complete
+[White settings file](../regression/White_Coarsening/input_settings.txt) is a
+working configuration for stable Xe/Kr in UO2. The model fixes Carnahan–Starling
+pressure and `Vd=nd*omega(T)+nv*Omega`, with `omega(T)=2*pi*dHS(T)^3/3`;
+there are no pressure or volume switches. Former coarsening model numbers 5 and 6
+are unsupported.
+
+After the four optional NUS entries (indices 25–28), index 29 is
+`iDislocationDensity`: 1 selects the Nicodemo 2026 density correlation and is the
+CLI default for model 4; 0 is the constant-density control. This selector changes
+only the dislocation density. See the [model context](../context/COARSENING.md)
+for physical assumptions, supported combinations and numerical refinement.
 
 ---
 
@@ -146,6 +161,14 @@ It is optional: when absent, every factor defaults to 1.0.
 ```
 
 **Note**: the *diffusion-based release* factor is read but currently consumed by no model.
+
+For model 4, three optional factors follow the nine native values:
+`sf_coarsening_K`, `sf_coarsening_D`, and `sf_coarsening_Dv`, all defaulting to 1.
+They scale site density, line-capture gas mobility, and vacancy mobility,
+respectively. They do not select a different pressure or volume law. The native
+resolution, trapping, nucleation and diffusivity scaling factors must equal 1
+for model 4. A complete example is provided in the
+[White scaling file](../regression/White_Coarsening/input_scaling_factors.txt).
 
 ---
 
