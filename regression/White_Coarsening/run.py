@@ -1,4 +1,4 @@
-"""#COARSENING: self-contained38-case White regression and six4070 proxies.
+"""#COARSENING: self-contained 38-case regression using published ramp data.
 
 Barani2020 is read only as published Table4 data. There is no Barani solver.
 """
@@ -241,7 +241,7 @@ def write_csv(path, rows):
 
 def check(rows):
     expected = read_csv(HERE / "expected_endpoints.csv")
-    assert len(rows) == len(expected) == 88
+    assert len(rows) == len(expected) == 76
     reference = {(r["sample"], r["model"]): r for r in expected}
     errors = []
     for r in rows:
@@ -278,9 +278,7 @@ def main():
     assert binary.is_file(), binary
     assert not (args.check and args.write_reference)
     measured = read_csv(HERE / "data/white_2006.csv")
-    samples = args.samples or [r["sample"] for r in measured] + sorted(
-        p.name for p in (HERE / "inputs").glob("4070_*")
-    )
+    samples = args.samples or [r["sample"] for r in measured]
     jobs = [(s, m) for s in samples for m in ("coarsening", "legacy")]
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
         results = []
@@ -298,7 +296,6 @@ def main():
     write_csv(HERE / "endpoints.csv", rows)
     report = dict(
         ramp_cases=38,
-        preramp_proxies=6,
         models=["coarsening", "legacy"],
         max_balance={
             m: max(r["max_balance"] for r in results if r["model"] == m)

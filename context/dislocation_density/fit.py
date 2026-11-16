@@ -1,8 +1,10 @@
-"""Reproduce the selected Fig.5 and White fits, figures, and C++ parity check.
+"""Reproduce the public Fig.5 fit, model curves, and C++ parity check.
 
 python3 context/dislocation_density/fit.py [--cpp-grid build/coarsening_tests.x]
-#COARSENING: reproduce the frozen density fit; no simulation is calibrated here.
+#COARSENING: check the frozen correlation; no simulation is calibrated here.
 Requires numpy, scipy, matplotlib. No external workspace files are required.
+The density correlation was refitted to White 2006 data that cannot be shown.
+Those observations and their refit diagnostics are not distributed here.
 """
 
 from pathlib import Path
@@ -83,38 +85,12 @@ def main():
     # Optimizer/platform roundoff may slightly move coefficients; compare curves.
     fit_curve_error = float(np.max(abs(veshchunov(B, T, fit.x) / veshchunov(B, T) - 1)))
     assert fit_curve_error < 1e-5
-    white = list(csv.DictReader((ROOT / "data/white_fig36_redigitized.csv").open()))
-    b = np.array([float(r["burnup_nominal_GWd_tU"]) for r in white])
-    t = np.array([float(r["T_peak_or_base_K"]) for r in white])
-    observed = np.array([float(r["rho_m2"]) for r in white])
-    rods = np.array([r["rod"] for r in white])
-    weights = np.array([1 / sum(rods == r) for r in rods])
-    weights /= weights.sum()
-    trials = [
-        least_squares(
-            lambda p: np.sqrt(weights) * np.log10(nicodemo(b, t, p) / observed),
-            [np.log(tau), power],
-            bounds=([np.log(0.1), 0.55], [np.log(2000), 3]),
-            max_nfev=4000,
-        )
-        for tau, power in [(40, 0.7), (80, 1), (200, 0.7), (400, 1.4)]
-    ]
-    wf = min(trials, key=lambda f: sum(f.fun**2))
-    white_curve_error = float(np.max(abs(nicodemo(b, t, wf.x) / nicodemo(b, t) - 1)))
-    assert white_curve_error < 1e-5
     report = dict(
         fig5_points=len(grid),
-        white_points=len(white),
-        white_rods=len(set(rods)),
         fig5_refitted_parameters=dict(zip(P, fit.x.tolist())),
-        white_refitted_parameters=wf.x.tolist(),
-        max_relative_curve_difference_from_selected=dict(
-            fig5=fit_curve_error, white=white_curve_error
-        ),
+        max_relative_curve_difference_from_selected=dict(fig5=fit_curve_error),
         fig5_RMSE_log10=float(np.sqrt(np.mean(fit.fun**2))),
-        white_rod_balanced_RMSE_log10=float(np.sqrt(sum(wf.fun**2))),
         floor20_m2=1e13,
-        power_at_lower_fit_bound=bool(wf.x[1] < 0.55001),
     )
     if args.cpp_grid:
         env = {k: v for k, v in os.environ.items() if not k.startswith("SCIANTIX_")}
@@ -159,48 +135,10 @@ def main():
     axes[0].set_ylabel(r"Dislocation density (m$^{-2}$)")
     axes[1].legend(fontsize=8, ncol=2)
     save(fig, "fig5_fits")
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.8), layout="constrained")
-    tt = np.linspace(900, 2700, 500)
-    for rod in sorted(set(rods)):
-        mask = rods == rod
-        axes[0].scatter(
-            t[mask],
-            observed[mask] * (20 / b[mask]) ** exponent(t[mask]),
-            label=rod,
-            marker=(
-                "o" if white[np.flatnonzero(mask)[0]]["condition"] == "control" else "^"
-            ),
-        )
-    for name, fn, style in [
-        ("Veshchunov 2009", veshchunov, "--"),
-        ("Nicodemo 2026", nicodemo, "-"),
-    ]:
-        axes[0].plot(tt, fn(20, tt), style, label=name)
-        axes[1].scatter(observed, fn(b, t), s=24, label=name)
-    axes[0].axhline(4e13, color="#b55c25", ls=":", label="Barani 2020")
-    axes[0].axhline(1e13, color=".5", lw=0.8, label="Imposed asymptote at B20")
-    axes[0].set(
-        yscale="log",
-        xlabel="Base / peak temperature (K)",
-        ylabel=r"$\rho$ normalized to 20 GWd/tU (m$^{-2}$)",
-    )
-    axes[0].legend(fontsize=8, ncol=2)
-    xx = np.geomspace(5e12, 1e15)
-    axes[1].plot(xx, xx, ":", color=".4")
-    axes[1].set(
-        xscale="log",
-        yscale="log",
-        xlabel=r"White observed $\rho$ (m$^{-2}$)",
-        ylabel=r"Calculated $\rho$ (m$^{-2}$)",
-    )
-    axes[1].legend(fontsize=9)
-    for ax in axes:
-        ax.grid(alpha=0.2, which="both")
-    save(fig, "white_temperature_fit")
     inputs = [
         Path(__file__),
         ROOT / "selected_parameters.json",
-        *sorted((ROOT / "data").glob("*.csv")),
+        ROOT / "data/veshchunov_fig5_fit_samples.csv",
     ]
     (ROOT / "source_manifest.json").write_text(
         json.dumps(

@@ -124,3 +124,11 @@ regression/nus/studies/runs/
 /regression/White_Coarsening/endpoints.csv
 /context/dislocation_density/refit_verification.json
 /context/dislocation_density/source_manifest.json
+
+# White 2006 observations beyond the published Barani dataset stay local.
+/context/dislocation_density/data/white*
+/context/dislocation_density/figures/white*
+/regression/White_Coarsening/data/white_4070*
+/regression/White_Coarsening/inputs/4070*/
+/regression/White_Coarsening/figures/06_preramp_4070.*
+/sciantix_coarsening_local/

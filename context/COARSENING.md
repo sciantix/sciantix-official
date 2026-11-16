@@ -80,12 +80,15 @@ select different physical laws. Kernel tolerance defaults to 2e-5.
 
 `K`, the thermal window and effective mobility magnitude were constrained using
 White data and rounded; they are not independently measured constants. The
-density fit was also calibrated on White. Endpoint agreement is calibration,
+density correlation was refitted to White 2006 data that cannot be shown.
+A comparison with pre-ramp data was also performed; those data and the
+corresponding figure are not distributed. Endpoint agreement is calibration,
 not independent validation. The narrow predicted number dispersion remains a
 limitation of the two mean-size populations and their survival/coalescence law.
 
-`dislocation_density/fit.py` reproduces both the Veshchunov foundation and its
-White adaptation from bundled digitized data. Veshchunov remains an internal
+`dislocation_density/fit.py` reproduces the Veshchunov foundation from bundled
+public data and checks the frozen correlation and its C++ implementation.
+Veshchunov remains an internal
 foundation for the fit, not a third selectable density option.
 
 ## Reproduction
@@ -98,12 +101,12 @@ python3 context/dislocation_density/fit.py --cpp-grid build/coarsening_tests.x
 python3 regression/White_Coarsening/run.py --binary build/sciantix.x
 ```
 
-The regression includes 38 ramp histories and six 4070 constant-temperature
-proxies, original legacy controls, four parity plots, gas inventories and 38
-individual histories. Only measured White values are validation targets;
+The regression includes 38 ramp histories using experimental data reported by
+Barani 2020, original legacy controls, four parity plots, gas inventories and 38
+individual histories. Only measured values are comparison targets;
 Barani values are published predictions. Two histories are unavailable, the
-4163 histories lack the 41 h post-ramp hold, and original local 4070 histories
-were not recovered. No fabricated Barani GB values or time curves are used.
+4163 histories lack the 41 h post-ramp hold.
+No fabricated Barani GB values or time curves are used.
 
 ## Cleanup verification
 

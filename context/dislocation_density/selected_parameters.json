@@ -13,7 +13,7 @@
     "id": "nicodemo_2026",
     "name": "Nicodemo 2026",
     "definition": "White-calibrated temperature dependence modified from 900 K, with the Veshchunov-refit burnup exponent preserved and a finite high-temperature asymptote",
-    "origin": "White adaptation from 900 K (white_join), central floor case; user correction supersedes the earlier tail-only selection",
+    "origin": "Refitted to White 2006 data that cannot be shown; only the frozen model parameters are distributed",
     "anchor_temperature_K": 900.0,
     "floor_at_B20_m2": 10000000000000.0,
     "floor_definition": "High-temperature asymptote at B=20 GWd/tU; at other burnup: rho_inf(B)=1e13*(B/20)^n_hot",

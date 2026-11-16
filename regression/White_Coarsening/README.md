@@ -1,6 +1,6 @@
 # White coarsening regression — Nicodemo 2026
 
-38 ramp histories; six4070 unramped proxies. Same fixed inputs and physical yield for the new model and legacy controls. Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. No published Barani intergranular values are available in this table.
+38 ramp histories using experimental data reported by Barani 2020. Same fixed inputs and physical yield for the new model and legacy controls. Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. No published Barani intergranular values are available in this table.
 
 ![Merit](figures/00_merit_all.png)
 
@@ -14,9 +14,9 @@ IG swelling includes both populations; R and N describe the large population in 
 
 ![Inventories](figures/05_gas_before_after.png)
 
-![Preramp](figures/06_preramp_4070.png)
+The dislocation-density correlation was refitted to White 2006 data that cannot be shown. A comparison with pre-ramp data was also performed; those data and the corresponding figure are not distributed.
 
-The4070 inputs are constant-temperature dose proxies. The small-radius scale is retained but the native density defect persists. Two of40 ramp histories are unavailable; local4163 histories omit the41 h hold listed in Barani Table3.
+Two of40 ramp histories are unavailable; local4163 histories omit the41 h hold listed in Barani Table3.
 
 ## Individual histories
 

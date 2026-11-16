@@ -324,48 +324,6 @@ def plot_all(results, observations):
     save(fig, figdir / "05_gas_before_after")
     campaign.write_csv(HERE / "inventories.csv", inventory)
     campaign.save(HERE / "mean_inventories.json", means)
-    # 4070 is a separately labelled proxy control, not the ramped4005 specimen.
-    obs = campaign.read_csv(HERE / "data/white_4070_tem.csv")
-    controls = sorted(s for s in by["coarsening"] if s.startswith("4070_"))
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 3.1), layout="constrained")
-    axes[0].scatter(
-        [float(r["T_K"]) for r in obs],
-        [float(r["radius_nm"]) for r in obs],
-        marker="s",
-        c=MEASURED,
-        label="White4070 TEM",
-    )
-    axes[1].scatter(
-        [float(r["T_K"]) for r in obs],
-        [float(r["number_m3"]) for r in obs],
-        marker="s",
-        c=MEASURED,
-    )
-    for model, color, marker in [("legacy", LEGACY, "o"), ("coarsening", NEW, "^")]:
-        values = [by[model][s]["states"]["end"] for s in controls]
-        axes[0].scatter(
-            [r["T"] for r in values],
-            [r["Rb"] * 1e9 for r in values],
-            c=color,
-            marker=marker,
-            label=MODEL_LABELS[model] + " proxy",
-        )
-        axes[1].scatter(
-            [r["T"] for r in values], [r["Nb"] for r in values], c=color, marker=marker
-        )
-    axes[0].set(xlabel="Temperature (K)", ylabel="Small-bubble radius (nm)")
-    axes[1].set(
-        xlabel="Temperature (K)", ylabel=r"Small-bubble number (m$^{-3}$)", yscale="log"
-    )
-    for ax in axes:
-        ax.grid(alpha=0.2)
-    fig.legend(
-        *axes[0].get_legend_handles_labels(),
-        loc="outside upper center",
-        ncol=3,
-        frameon=False,
-    )
-    save(fig, figdir / "06_preramp_4070")
     zoomed = []
     for sample in samples:
         r = by["coarsening"][sample]
@@ -375,7 +333,7 @@ def plot_all(results, observations):
     lines = [
         "# White coarsening regression — Nicodemo 2026",
         "",
-        "38 ramp histories; six4070 unramped proxies. Same fixed inputs and physical yield for the new model and legacy controls. "
+        "38 ramp histories using experimental data reported by Barani 2020. Same fixed inputs and physical yield for the new model and legacy controls. "
         "Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. "
         "No published Barani intergranular values are available in this table.",
         "",
@@ -407,9 +365,9 @@ def plot_all(results, observations):
         "",
         "![Inventories](figures/05_gas_before_after.png)",
         "",
-        "![Preramp](figures/06_preramp_4070.png)",
+        "The dislocation-density correlation was refitted to White 2006 data that cannot be shown. "
+        "A comparison with pre-ramp data was also performed; those data and the corresponding figure are not distributed.",
         "",
-        "The4070 inputs are constant-temperature dose proxies. The small-radius scale is retained but the native density defect persists. "
         "Two of40 ramp histories are unavailable; local4163 histories omit the41 h hold listed in Barani Table3.",
         "",
         "## Individual histories",
@@ -456,7 +414,8 @@ def plot_all(results, observations):
             source_sha256={str(p.relative_to(ROOT)): campaign.sha(p) for p in sources},
             input_sha256={
                 str(p.relative_to(HERE)): campaign.sha(p)
-                for p in sorted((HERE / "inputs").rglob("*"))
+                for sample in sorted(samples)
+                for p in sorted((HERE / "inputs" / sample).iterdir())
                 if p.is_file()
             },
             figures={
