@@ -14,6 +14,19 @@ namespace coarsening
         {
             return std::cbrt(std::max(0., 3 * v / (4 * pi)));
         }
+        // #COARSENING: Carnahan-Starling pressure and the effective Xe diameter
+        // from Barani 2020, Eqs. (10)-(11). The bubble volume remains Omega*(n+nv).
+        double gasPressure(double atoms, double volume, double temperature)
+        {
+            if (atoms <= 0. || volume <= 0.)
+                return 0.;
+            const double diameter = 4.45e-10 * (.8542 - .03996 * std::log(temperature / 231.2));
+            const double packing  = pi * diameter * diameter * diameter * atoms / (6 * volume);
+            if (!std::isfinite(packing) || packing < 0. || packing >= 1.)
+                throw std::runtime_error("Coarsening Carnahan-Starling packing fraction outside [0,1)");
+            const double Z = (1 + packing + packing * packing - packing * packing * packing) / std::pow(1 - packing, 3);
+            return atoms * kB * temperature / volume * Z;
+        }
     }  // namespace
     // #COARSENING
     State initialState(unsigned modes)
@@ -83,7 +96,7 @@ namespace coarsening
         if (x >= 1.)
             throw std::runtime_error("Coarsening bubble exceeds Wigner-Seitz cell");
         const double zeta     = 10 * x * (1 + std::pow(x, 3)) / (-std::pow(x, 6) + 5 * x * x - 9 * x + 5);
-        const double pressure = atoms * kB * e.temperature / volume, peq = 1.4 / R - e.stress;
+        const double pressure = gasPressure(atoms, volume, e.temperature), peq = 1.4 / R - e.stress;
         return 2 * pi * vacancyDiffusivity(e.temperature, p) * delta / (kB * e.temperature * zeta) *
                std::max(pressure - peq, 0.);
     }
@@ -100,7 +113,7 @@ namespace coarsening
         if (s.largeNumber > 0. && o.largeSwelling > 0.)
         {
             o.largeRadius         = radius(o.largeSwelling / s.largeNumber);
-            o.pressure            = m[2] * kB * e.temperature / o.largeSwelling;
+            o.pressure            = gasPressure(m[2], o.largeSwelling, e.temperature);
             o.equilibriumPressure = 1.4 / o.largeRadius - e.stress;
         }
         if (o.rho > 0. && s.activeFraction > 0.)

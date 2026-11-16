@@ -80,8 +80,8 @@ namespace coarsening
             const double ad = resolution(o.largeRadius, middle.fissionRate);
             const double bb = 4 * pi * D * (o.bulkRadius + .21e-9) * s.bulkNumber;
             const double bd = s.largeNumber > 0. ? 4 * pi * D * o.largeRadius * s.largeNumber + o.lineCapture : 0.;
-            // Same bulk number and gas-source closure as native SCIANTIX: no artificial
-            // -2nu/+2nu monomer source and no gas phi. Gas and Nb closures are separate.
+            // Native bulk closure: nucleation enters the bubble number only;
+            // atomic inventories exchange gas through trapping and re-solution.
             s.bulkNumber      = (s.bulkNumber + h * 50 * middle.fissionRate) / (1 + h * ab);
             const double loss = initial[2] >= 2 * s.largeNumber ? ad * numberCorrection(initial[2], s.largeNumber) : 0.;
             s.largeNumber /= 1 + h * loss;
@@ -294,7 +294,7 @@ void Simulation::IntraGranularBubbleCoarsening()
         throw std::runtime_error("Stable gas yield must remain .27");
     for (const std::string name : {"Diffusivity", "Resolution rate", "Trapping rate", "Nucleation rate"})
         if (std::abs(scaling_factors[name].getValue() - 1.) > 1e-12)
-            throw std::runtime_error("Coarsening model6 requires unit native scaling: " + name);
+            throw std::runtime_error("Coarsening model4 requires unit native scaling: " + name);
     auto s                   = initialState(n_modes);
     s.bulkNumber             = sciantix_variable["Intragranular bubble concentration"].getInitialValue();
     s.largeNumber            = sciantix_variable["Coarsening dislocation concentration"].getInitialValue();

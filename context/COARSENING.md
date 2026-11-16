@@ -35,7 +35,14 @@ homogenized diffusion average does not independently derive a local sink flux;
 the pipe term in the line-capture rate scales approximately as `rho²`.
 
 Vacancy mobility is `3*7.12e-7 exp[-4.72eV/(kBT)] m²/s`, without a separate
-temperature gate. Pressure is ideal with `V=Omega*(n+nv)`, `Omega=4.09e-29 m³`;
+temperature gate. Dislocation bubbles use the Carnahan–Starling pressure
+`P=n*kB*T/V * (1+eta+eta²-eta³)/(1-eta)³`, with
+`eta=pi*dHS³*n/(6*V)` and `dHS=4.45e-10*(0.8542-0.03996*ln(T/231.2)) m`
+(Barani 2020, Eqs. 10–11). The same pressure drives vacancy uptake and is reported
+in diagnostics. The volume remains `V=Omega*(n+nv)`, `Omega=4.09e-29 m³`;
+`n` and `nv` are gas atoms and vacancies per bubble. The effective Xe diameter is
+used for stable Xe+Kr together; this is not a mixture-specific EOS. Packing outside
+`[0,1)` is rejected without clipping. There is one pressure law, with no EOS selector.
 `Peq=2*gamma/R-stress`, `gamma=0.7 J/m²`. Uptake uses only positive overpressure.
 Pure merging conserves gas and total vacancy inventory. There is no emission law.
 
@@ -79,8 +86,10 @@ may use `SCIANTIX_TIME_STEPS` and `SCIANTIX_COARSENING_TOLERANCE`; these do not
 select different physical laws. Kernel tolerance defaults to 2e-5.
 
 `K`, the thermal window and effective mobility magnitude were constrained using
-White data and rounded; they are not independently measured constants. The
-density correlation was refitted to White 2006 data that cannot be shown.
+White data and rounded; they are not independently measured constants. Density,
+site and mobility parameters are retained without refitting after the
+Carnahan–Starling pressure update. The density correlation was refitted to White
+2006 data that cannot be shown.
 A comparison with pre-ramp data was also performed; those data and the
 corresponding figure are not distributed. Endpoint agreement is calibration,
 not independent validation. The narrow predicted number dispersion remains a
@@ -110,19 +119,22 @@ No fabricated Barani GB values or time curves are used.
 
 ## Cleanup verification
 
-The clean port reproduces all 38 selected Hart endpoints (R,N,IG swelling)
-exactly. The original 113 SCIANTIX gold comparisons pass unchanged. Kernel tests
-cover conservation, full density derivatives, access memory, pure-merging
+The selected-model endpoint references and White figures are regenerated with
+Carnahan–Starling pressure.
+The original 113 SCIANTIX gold comparisons pass unchanged. Kernel tests
+cover the dense and dilute EOS limits, pressure/uptake consistency, packing-domain
+rejection, conservation, full density derivatives, access memory, pure-merging
 vacancy conservation and refinement. Separate-process native restarts are
 byte-identical before, during and after recruitment. All three scaling factors,
 both density options, old-file defaults and rejection of obsolete coarsening
 selectors are checked by `run.py --check --verify --no-plots`, also run in CI.
 
 On four representative cases, doubling the outer resolution and tightening the
-adaptive tolerance changes R by at most 0.0019%, N 0.00022%, and IG swelling 0.0034%.
+adaptive tolerance changes R by at most 0.0027%, N 0.00035%, and IG swelling 0.0033%.
 The preramp adaptive/legacy inventory difference is at most 0.032 percentage
-points; on 4005-A it decreases from 0.0313 to 0.0159 under refinement. Physical
-equivalence of the bulk limit does not imply bitwise equality of two solvers.
+points; on 4005-A it decreases from 0.0313 to 0.0159 under refinement. Full numerical
+checks are recorded in `regression/White_Coarsening/verification.json` (generated locally).
+Physical equivalence of the bulk limit does not imply bitwise equality of two solvers.
 `clang-format18` is applied before committing; the upstream auto-format action
 remains enabled. The regression gallery is generated and versioned only as
 300 dpi PNG files, with the model labelled Nicodemo 2026.

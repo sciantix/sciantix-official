@@ -51,8 +51,45 @@ int main(int argc, char** argv)
           (thermalKFraction(1850.001) - thermalKFraction(1849.999)) / .002,
           1e-9,
           "Thermal K derivative");
-    Parameters   p;
-    Environment  cold{1176., 4.14e18, -.2e6, 8.55e-6, 20.};
+    Parameters  p;
+    Environment cold{1176., 4.14e18, -.2e6, 8.55e-6, 20.};
+    // The hard-sphere correction raises dense-gas pressure and tends to the
+    // ideal-gas limit at low packing. Uptake must use the same EOS as diagnostics.
+    auto eos                   = initialState();
+    eos.largeNumber            = 1e18;
+    eos.gas[2][0]              = 1e24;
+    eos.vacancies              = 1e24;
+    auto eosEnvironment        = cold;
+    eosEnvironment.temperature = 2080.;
+    const auto   dense         = observe(eos, eosEnvironment, p);
+    const double ideal         = eos.gas[2][0] * 1.380649e-23 * eosEnvironment.temperature / dense.largeSwelling;
+    require(dense.pressure > ideal, "Carnahan-Starling dense-gas pressure exceeds ideal pressure");
+    eosEnvironment.stress = 1.4 / dense.largeRadius - .5 * (dense.pressure + ideal);
+    require(vacancyRate(1e6, 1e6, eos.largeNumber, eosEnvironment, p) > 0.,
+            "Vacancy uptake uses the Carnahan-Starling overpressure");
+    eosEnvironment.stress = 1.4 / dense.largeRadius - 2 * dense.pressure;
+    require(vacancyRate(1e6, 1e6, eos.largeNumber, eosEnvironment, p) == 0.,
+            "No vacancy uptake below the Carnahan-Starling equilibrium pressure");
+    auto dilute              = eos;
+    dilute.largeNumber       = 1e9;
+    dilute.gas[2][0]         = 1e15;
+    const auto   lowPacking  = observe(dilute, cold, p);
+    const double diluteIdeal = dilute.gas[2][0] * 1.380649e-23 * cold.temperature / lowPacking.largeSwelling;
+    close(lowPacking.pressure / diluteIdeal, 1., 3e-9, "Carnahan-Starling dilute limit");
+    auto singular        = cold;
+    singular.temperature = 1.;
+    auto packed          = eos;
+    packed.vacancies     = 0.;
+    bool invalidPacking  = false;
+    try
+    {
+        observe(packed, singular, p);
+    }
+    catch (const std::runtime_error&)
+    {
+        invalidPacking = true;
+    }
+    require(invalidPacking, "Invalid Carnahan-Starling packing is rejected without clipping");
     const double bulk = diffusivity(cold), capture = captureDiffusivity(cold, p);
     const double pipe = 7.74e-6 * std::exp(-1.21e-19 / (1.380649e-23 * cold.temperature));
     require(capture >= bulk && capture <= pipe, "Hart mixture bounds");
@@ -130,5 +167,5 @@ int main(int argc, char** argv)
         rejected = true;
     }
     require(rejected, "Invalid scaling rejected");
-    std::cout << "Coarsening conservation, access memory, density and refinement passed\n";
+    std::cout << "Coarsening EOS, conservation, access memory, density and refinement passed\n";
 }

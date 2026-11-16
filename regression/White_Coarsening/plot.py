@@ -337,6 +337,11 @@ def plot_all(results, observations):
         "Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. "
         "No published Barani intergranular values are available in this table.",
         "",
+        "The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, "
+        "with the same pressure driving vacancy uptake. The volume remains V=Omega*(n+nv); "
+        "site, density and mobility parameters are retained without refitting. "
+        "The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.",
+        "",
         "![Merit](figures/00_merit_all.png)",
         "",
         "|Model|R MAPE|N MAPE|IG swelling MAPE|GB swelling MAPE|",
@@ -372,7 +377,7 @@ def plot_all(results, observations):
         "",
         "## Individual histories",
         "",
-        "Pressure and vacancies are undefined until the large population exists. Experimental post-test points are separated from the "
+        "Pressure uses the Carnahan–Starling EOS. Pressure and vacancies are undefined until the large population exists. Experimental post-test points are separated from the "
         "time axis, without assigning a measurement timestamp. No Barani time curves are included. Long histories have an early-ramp "
         "zoom and an additional full-history figure; both show the actual final references.",
         "",
@@ -404,13 +409,28 @@ def plot_all(results, observations):
             "src/models/DislocationDensity.C",
             "include/models/IntraGranularBubbleCoarsening.h",
             "include/models/DislocationDensity.h",
+            "regression/White_Coarsening/run.py",
+            "regression/White_Coarsening/plot.py",
+            "regression/White_Coarsening/verify.py",
         )
     ]
     campaign.save(
         HERE / "manifest.json",
         dict(
             official_base="2344575b7d246d02205f503b541b74f914f5f6b3",
-            physical_model="Nicodemo2026, Kmax3e6,1800–1950K, Hart b=.385nm, Dv3bulk, y=.27",
+            physical_model="Nicodemo2026, Carnahan-Starling, V=Omega*(n+nv), Kmax3e6,1800–1950K, Hart b=.385nm, Dv3bulk, y=.27",
+            pressure_eos=dict(
+                name="Carnahan-Starling",
+                effective_species="Xe for combined stable Xe/Kr",
+                packing_domain="0 <= eta < 1; no clipping",
+            ),
+            binary_sha256=sorted({r["binary_sha256"] for r in results}),
+            outer_steps=sorted({r["steps"] for r in results}),
+            relative_tolerance=sorted({r["tolerance"] for r in results}),
+            template_sha256={
+                name: campaign.sha(HERE / name)
+                for name in ("input_settings.txt", "input_scaling_factors.txt")
+            },
             source_sha256={str(p.relative_to(ROOT)): campaign.sha(p) for p in sources},
             input_sha256={
                 str(p.relative_to(HERE)): campaign.sha(p)

@@ -2,11 +2,13 @@
 
 38 ramp histories using experimental data reported by Barani 2020. Same fixed inputs and physical yield for the new model and legacy controls. Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. No published Barani intergranular values are available in this table.
 
+The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, with the same pressure driving vacancy uptake. The volume remains V=Omega*(n+nv); site, density and mobility parameters are retained without refitting. The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.
+
 ![Merit](figures/00_merit_all.png)
 
 |Model|R MAPE|N MAPE|IG swelling MAPE|GB swelling MAPE|
 |---|---:|---:|---:|---:|
-|Nicodemo 2026|39.18%|149.44%|167.52%|177.28%|
+|Nicodemo 2026|41.43%|148.05%|187.72%|177.28%|
 |SCIANTIX legacy|98.05%|3133748.42%|92.26%|179.42%|
 |Barani 2020|54.48%|140.98%|254.73%|not tabulated|
 
@@ -20,7 +22,7 @@ Two of40 ramp histories are unavailable; local4163 histories omit the41 h hold l
 
 ## Individual histories
 
-Pressure and vacancies are undefined until the large population exists. Experimental post-test points are separated from the time axis, without assigning a measurement timestamp. No Barani time curves are included. Long histories have an early-ramp zoom and an additional full-history figure; both show the actual final references.
+Pressure uses the Carnahan–Starling EOS. Pressure and vacancies are undefined until the large population exists. Experimental post-test points are separated from the time axis, without assigning a measurement timestamp. No Barani time curves are included. Long histories have an early-ramp zoom and an additional full-history figure; both show the actual final references.
 
 - [4000-A](figures/histories/4000-A.png)
 - [4000-B](figures/histories/4000-B.png)
