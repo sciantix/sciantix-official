@@ -26,13 +26,15 @@ cubes of random pores that have the size distribution SCIANTIX sees, with its sc
 
 | step | state |
 |---|---|
-| option 4 in the C++, with its Python transcription and the NFIR regression case | done; transcription and C++ agree to $2\times10^{-7}$ over 10 429 rows |
+| option 4 in the C++ and the NFIR regression case | done; its Python transcription agreed to $2\times10^{-7}$ over 10 429 rows and was removed on 17/11 (the gold of the case is the check) |
 | design of the MMM runs: 3 factors, Latin hypercube of 20 runs + the reference run NFIR | done (`mmm_inputs/`) |
 | polydisperse MMM (`test-polybubble`): one pressure per pore, search radius per pore, AMG, split mesh | done |
-| tests of the RVE on run NFIR: cube size, mesh rule, mesh size, search distance δ | done: 10 cubes of 30 µm, three mesh rules, three mesh sizes, two δ |
-| $\hat s$ of run NFIR as SCIANTIX needs it (log-normal per class) and open-loop replay of the anneal | [TBC, FUTURE] done (`mmm_outputs/shat_NFIR.txt`); $\sigma_R$ = 219 MPa matches the Kr-85 release |
+| tests of the RVE on run NFIR: cube size, mesh rule, mesh size, search distance δ | done: 10 cubes of 30 µm, three mesh rules, four mesh sizes, two δ |
+| $\hat s$ of run NFIR as SCIANTIX needs it (log-normal per class) | [TBC, FUTURE] done (`mmm_surrogate.py <run_NFIR>` prints the classes); the open-loop replay of the anneal ($\sigma_R$ ≈ 219–224 MPa) was removed on 17/11 (section 9.8) |
 | Latin hypercube: geometry | 20 cubes written at unit pressure (`.geo`) and 20 with the class pressures; **gmsh running on Pleiades (10/11)**; nothing solved yet |
-| surrogate over the 20 runs, table in the C++ | not started |
+| surrogate over the 20 runs (unit and pk), its metrics | done 17/11 (section 9.9) |
+| surrogate in the C++ (closed loop), $\sigma_R$ on NFIR | done 17/11: option 4 reads `input_hbs_shat.txt`; $\sigma_R$ = 237 MPa (unit), 222 MPa (pk), cases `test_UO2HBS_frag_mmm_unit/_pk` (section 9.10) |
+| $\sigma_R$ on a second test (Hiernaut 2008) | not started |
 
 **Decisions taken.**
 
@@ -42,6 +44,7 @@ cubes of random pores that have the size distribution SCIANTIX sees, with its sc
 | P2 meshes need `Mesh.HighOrderOptimize`; `inverted_elements.py` only on the cubes `run_gmsh.sh` flags | inverted curved elements stop the solver|
 | preconditioner BoomerAMG instead of diagonal scaling | 18–54 PCG iterations whatever the mesh, against 1355 on the single-bubble mesh |
 | mesh graded next to the pores (0.15 → 0.45 µm), finer next to the pores below 0.45 µm (`graded_rfine0.45`) | same class means (≤ 0.10 %) and FGR (≤ 0.27 %) as the uniform 0.15 µm mesh at 1/3 of the cost (275 against 811 core-hours for 10 cubes); the uniform mesh needs twice the memory | 
+| mesh size 0.15 µm next to the pores (16/11) | against the 0.106 µm mesh the class means of the verdict move by ≤ 1.15 % and $x_c$ of the FGR by ≤ 1 %; against h → 0 the error is ≈ 2–3.5 %, always an overestimate of ŝ and nearly the same in every class, so it mostly rescales $\sigma_R$, not the shape of the FGR curve; the 0.106 µm mesh has 2.6 × the vertices (section 9.4) |
 | search distance δ = 0.15 µm = distMin/2 (`-dl 0.15`) instead of 0.3 µm | with δ = distMin, 5 % of the pores took their maximum on the wall of a neighbour |
 | [TBC] statistical outputs only (class means, log-normal per class, FGR), never the identity of single pores | mesh noise per pore ≈ 1 % median, 4 % at the 95th percentile: 15 % of the first pores to break change with the mesh, the statistics do not | 
 
@@ -57,11 +60,14 @@ Three repositories and one results folder, all under `~/mmm`.
 ~/mmm/
 ├── sciantix-official/utilities/HBFF/      (this folder; branch development/HBSformation-EC)
 │   ├── README.md                 this report
-│   ├── pore_distribution.py      Python transcription of option 4, checks, figures, design of the MMM runs, replay
-│   ├── runHBFF.sh                build + regression case + transcription check + figures
+│   ├── pore_distribution.py      pore classes of option 4, figures, design of the MMM runs
+│   ├── runHBFF.sh                build + regression case against its gold + figures
 │   ├── mmm_inputs/               run_NFIR.txt, run_R00…R19.txt, index.txt   (written by pore_distribution.py)
-│   ├── mmm_surrogate.py          pores.csv of a run → log-normal of s_hat per class
-│   ├── mmm_outputs/              shat_NFIR.txt, shat_NFIR.png
+│   ├── mmm_surrogate.py          pores.csv of a run → log-normal of s_hat per class (printed, plot); --fit: from the
+│   │                             pores.csv of the runs, surrogate, its metrics, the file for SCIANTIX
+│   ├── calibrate_sigma_r.py      sigma_R of the s_hat of MMM on the NFIR anneal, closed loop (SCIANTIX runs)
+│   ├── mmm_outputs/              surrogate_unit/pk.txt/png, surrogate_unit/pk_sciantix.txt (input_hbs_shat.txt),
+│   │                             calibration_nfir.txt/png
 │   ├── data/                     measured pores (Noirot 2014, Dowek 2021)
 │   ├── figures/                  classes_*.png, mmm_*.png (png are git-ignored in this repository)
 │   ├── abstract_MRS_HBFF/, presentation/      abstract and slides (not updated with this report)
@@ -87,7 +93,7 @@ Three repositories and one results folder, all under `~/mmm`.
 │       └── npoint.py             n-point probabilities, intact chords (fragment size)
 ├── build/                         CMake build tree: executables and script copies only
 ├── results/                       MMM results (since 10/11/2026; before, inside the build tree)
-│   ├── test_rve_side30_mesh0.15_graded_rfine0.45_delta0.15/run_NFIR/     the latest: 10 cubes + 2 mesh variants
+│   ├── test_rve_side30_mesh0.15_graded_rfine0.45_delta0.15/run_NFIR/     the latest: 10 cubes + 3 mesh variants
 │   └── archive/                   side 10; side 30 with δ = 0.3; uniform / notuniform (zip); transfers from the cluster
 ├── archive/                       old cheat sheets and scripts (not in any repository)
 ├── env.sh                         environment of MMM on PC-EC
@@ -108,9 +114,10 @@ Three repositories and one results folder, all under `~/mmm`.
 | 7 | RVE analysis | `plot_bubbles.py ROOT` | 2 + 6 | `mesh_test`, `rve_size`, `rve_fgr` (.txt, .png); exit 1 if the cube is not an RVE or the mesh is not fine enough |
 | 8 | per-pore analysis | `break_order.py ROOT` | 2 + 6 | `pores.csv` (one row per pore: the interface with SCIANTIX), `break_order.txt/png` |
 | 9 | comparisons | `mesh_compare.py REF OTHER`, `npoint.py ROOT` | 2 + 6, job logs | `mesh_compare.txt/png`, `npoint.txt/png` |
-| 10 | reduction [TBC] | `mmm_surrogate.py ROOT` (HBFF) | `pores.csv`, `index.txt` | `mmm_outputs/shat_<id>.txt`: u = ln(R/R_V), μ, σ of ln ŝ per class |
-| 11 | use  [TBC] | `pore_distribution.py` (`section_mmm_replay`) | `shat_NFIR.txt`, `output.txt` of the NFIR case | open-loop replay, `figures/classes_fgr_nfir_mmm.png` |
-| 12 | C++  [TBC] | `src/models/HighBurnupStructureFragmentation.C`, l. 483 | — | not done: "the MMM table of s_hat enters here" |
+| 10 | reduction, check of one run | `mmm_surrogate.py ROOT` (HBFF) | `pores.csv`, `index.txt` | printed: u = ln(R/R_V), μ, σ of ln ŝ per class, closure, cubes per run; `mmm_outputs/shat_<id>.png` |
+| 11 | surrogate | `mmm_surrogate.py --fit LHS run_NFIR` (HBFF) | `pores.csv` of the runs (the reduction of 10), `index.txt` | `surrogate_unit.txt/png`, `surrogate_pk.txt/png`, `surrogate_<load>_sciantix.txt`: leave one run out, baselines, noise, learning curve (section 9.9) |
+| 12 | C++ | `src/models/HighBurnupStructureFragmentation.C` (option 4) | `input_hbs_shat.txt` in the folder of the case (= `surrogate_<load>_sciantix.txt`) | b*_i of every class from the surrogate, closed loop; without the file the mean field of J19 |
+| 13 | $\sigma_R$ | `calibrate_sigma_r.py` (HBFF) | `surrogate_<load>_sciantix.txt`, inputs of the J19 case of NFIR | `calibration_nfir.txt/png`; the calibrated file in `regression/hbs_nfir/test_UO2HBS_frag_mmm_<load>/` |
 
 ROOT is a run folder holding `side<L>_seed<NN>` (one cube per seed) and `side<L>_seed01_<variant>` (the pores of seed 1 on another mesh). The folder name carries the choices: side, mesh size next to the pores, mesh rule, δ.
 
@@ -140,11 +147,11 @@ Regression case `regression/hbs_nfir/test_UO2HBS_frag_j19damage`: the NFIR disc 
 disc, an unknown of the case), unloading, then the measured anneal to 1200 °C at $P_h=0$, with formation model 1
 (Barani 2020) and porosity model 3. Gates:
 
-1. gold file: `python3 -m regression.runner --hbs_nfir.j19damage`;
-2. transcription: `python3 utilities/HBFF/pore_distribution.py` replays the case and compares C++ and Python at every step (it also rewrites `mmm_inputs/`: see the warning in section 11.4);
+1. gold files: `python3 -m regression.runner --hbs_nfir.j19damage` (and `--hbs_nfir.mmm_unit`, `--hbs_nfir.mmm_pk`: the same inputs with the ŝ of MMM, section 9.10). Without `input_hbs_shat.txt` the J19 case is identical byte by byte to its gold of before the MMM criterion (checked 17/11);
+2. until 17/11, a transcription: `pore_distribution.py` replayed the case and compared C++ and Python at every step (agreement $2\times10^{-7}$). Removed on 17/11 so that the equations of option 4 are written once, in the C++; `pore_distribution.py` now checks only its `STATES` against `output.txt` (it also rewrites `mmm_inputs/`: see the warning in section 11.4);
 3. options 1, 2, 3 do not use the classes: their outputs are identical byte by byte with and without option 4.
 
-`./utilities/HBFF/runHBFF.sh` does 1 and 2 and draws the figures (choices BUILD, RUN, GOLD at its top).
+`./utilities/HBFF/runHBFF.sh` does 1 on the three cases, the check of `STATES` and the figures (choices BUILD, RUN, GOLD at its top).
 
 ### 3.2 Equations
 
@@ -176,7 +183,7 @@ as a pair: the stress measure and the strength calibrated with it.
 | pair | $\hat s$ | $\sigma_R$ | $\mathrm dP_{cr}/\mathrm dP_h=1+1/\hat s$ | status |
 |---|---|---|---|---|
 | mean field, J19 Eq. 22 **[P]** | $\xi/(1-\xi)$ = 0.12 at ξ = 0.11, the same for all the pores | 21 MPa | ≈ 9.5 | in the code |
-| MMM **[P]** | per pore; run NFIR: mean 1.18–1.28 per class, 5th–95th percentile 0.89–1.77 | 275 MPa in D5.2 (monodisperse); 219 MPa fits the NFIR release with our table | ≈ 1.8 | table of run NFIR done, not in the code |
+| MMM **[P]** | per pore; run NFIR: mean 1.18–1.28 per class, 5th–95th percentile 0.89–1.77; over the hypercube: surrogate of (ξ, s, u), or (ξ, s, $\bar\eta$, u) with the class pressures | 275 MPa in D5.2 (monodisperse); on the NFIR release, closed loop: 237 MPa (unit), 222 MPa (pk) (section 9.10) | ≈ 1.8 | in the code with `input_hbs_shat.txt` in the folder of the case (17/11) |
 
 The two pairs put the first ruptures at nearly the same pressure without confinement (J19: every class at 165 MPa;
 MMM with 275 MPa: FGR 5 % at 168 MPa, 50 % at 225 MPa, 90 % at 281 MPa, `mmm_surrogate.py`) and differ by a factor 5 in
@@ -189,6 +196,12 @@ $$b^*_i=1-\Phi\!\left(\frac{\ln t_i-\mu_i}{\sigma_i}\right),\qquad t_i=\frac{\si
 \quad(b^*_i=0\ \text{if the denominator}\le0)$$
 
 For $\sigma_i\to0$ it is the step of the mean-field pair. For $\xi\ge0.29$ (percolation, J19) every class is open.
+In the C++ (with `input_hbs_shat.txt`) $\mu_i,\sigma_i$ come from the surrogate of `mmm_surrogate.py --fit`, evaluated
+at the 7 classes of an MMM run of the current state (the nodes grouped in $x$ at the edges $-2.5\ldots2.5$, $R_k$ the
+radius of their mean volume, $u_k=\ln(R_k/R_V)$), i.e. where it was fitted, and interpolated linearly in $u$ on the 81
+nodes, constant beyond the end classes; the inputs $(\xi, s, \bar\eta, u)$ are clipped to the range of the runs. The
+file carries $\sigma_R$ and test points that SCIANTIX evaluates when it reads it (it stops if they differ by more than
+$10^{-9}$).
 Each class relaxes to it, $\beta_i\leftarrow\beta_i+\max(b^*_i-\beta_i,0)(1-e^{-\Delta t/\tau})$, $\tau=2$ s **[?]**, and
 
 $$D=\sum_iw_i\beta_i,\qquad G=\frac{\sum_iw_in_i\beta_i}{\sum_iw_in_i}$$
@@ -208,7 +221,7 @@ $d=\min(2R_{WS}/D,\ 500\ \mu\text{m})$. It is a spacing of cracks, a fragment si
 
 | symbol | value | tag | source |
 |---|---|---|---|
-| $\hat s$, $\sigma_R$ | $\xi/(1-\xi)$, 21 MPa | [P] | J19 Eq. 22, Table 4; to be replaced by the MMM table and its $\sigma_R$ |
+| $\hat s$, $\sigma_R$ | $\xi/(1-\xi)$, 21 MPa; with `input_hbs_shat.txt` the MMM surrogate and its $\sigma_R$ | [P] | J19 Eq. 22, Table 4; MMM: sections 9.9, 9.10 |
 | closure exponent $a$ | 2 | [?] | gas density ∝ 1/R |
 | $\xi_{perc}$ | 0.29 | [P] | J19 §2.3.2 |
 | $\tau$ | 2 s | [?] | J19 Table 3 (borrowed) |
@@ -366,6 +379,7 @@ inverted element can leave the solver converging with a wrong stress (9.1). `run
 
 | mesh | vertices | P2 tetrahedra | unknowns | PCG iterations |
 |---|---|---|---|---|
+| graded 0.106–0.318 (seed 1, mesh test) | 6.36 M | 35.85 M | 149.6 M | 31 |
 | graded 0.15–0.45, rfine 0.45 (10 cubes) | 2.465–2.470 M | 13.37–13.40 M | 56.9–57.1 M | 27–54 |
 | graded 0.212–0.636 (seed 1) | 1.00 M | 5.19 M | 22.7 M | 51 |
 | graded 0.3–0.9 (seed 1) | 0.40 M | 1.93 M | 8.8 M | 31 |
@@ -440,7 +454,8 @@ processes, 27 M with 512, 55 M with 1024. (The side-30 graded cube: 532 GB measu
 
 **Do not refine in MMM a split mesh.** `-r k` with `-pm 1` gives wrong stresses (maxima inside the matrix, up to
 +77 % on some pores of `side10_seed01_meshdouble_refinement`), while `-pm 0 -r 1` matches the gmsh mesh of the same
-size; cause not found. On the cluster the `_refinement` folders are skipped.
+size; cause not found. On the cluster the `_refinement` folders are skipped, and `run_mmm.sh` no longer passes `-r`
+(17/11).
 
 ---
 
@@ -498,7 +513,7 @@ Coarser meshes give a higher ŝ, so on the small pores (R/h < 2 with one size) t
 
 ### 9.3 Search distance δ: 0.3 → 0.15 µm (10/11)
 
-Same meshes (same split files), only `-dl` changes (`delta_compare.txt`, made with `mesh_compare.py --labels … --name delta_compare --no-cost`).
+Same meshes (same split files), only `-dl` changes (`delta_compare.txt`, made with `mesh_compare.py` and, at its top, `LABELS`, `NAME = "delta_compare"`, `COST = False`).
 
 | class R (µm) | share of volume | ŝ mean, δ = 0.3 | ŝ mean, δ = 0.15 | change |
 |---|---|---|---|---|
@@ -523,10 +538,10 @@ side set by class 1.70: 73 → 56 µm. With δ = 0.3, 4.8 % of the pores had the
 > ```bash
 > cd ~/mmm/mm-opera-hpc/polydispersebubble/scripts/      # or the copy in ~/mmm/build/polydispersebubble
 > R=~/mmm/results
+> # at the top of mesh_compare.py: LABELS = ("delta = 0.3 um", "delta = 0.15 um"), NAME = "delta_compare", COST = False
 > python3 mesh_compare.py \
 >     $R/archive/test_rve_side30_mesh0.15_graded_rfine0.45/run_NFIR \
->     $R/test_rve_side30_mesh0.15_graded_rfine0.45_delta0.15/run_NFIR \
->     --labels "delta = 0.3 um" "delta = 0.15 um" --name delta_compare --no-cost
+>     $R/test_rve_side30_mesh0.15_graded_rfine0.45_delta0.15/run_NFIR
 > ```
 >
 > It ends with exit code 1 and "delta = 0.15 um can NOT replace delta = 0.3 um (tolerance 2 %)": that is the verdict
@@ -538,28 +553,43 @@ shell (≈ 0.145 µm) towards a small neighbour at ≈ distMin; bound of the eff
 (1 % at 90 %). The true maxima are within 0.013 µm of the wall (99th percentile), so δ = 0.05 µm would remove the
 residual. **δ = 0.15 µm was chosen for the hypercube** and is set in both run scripts.
 
-### 9.4 Mesh size: 0.3 / 0.212 / 0.15 µm on seed 1 (`mesh_test.txt`)
+### 9.4 Mesh size: 0.3 / 0.212 / 0.15 / 0.106 µm on seed 1 (`mesh_test.txt`)
 
-The graded rule at three sizes in the ratio √2, the same 1867 pores; change of the class means against the 0.15 mesh:
+The graded rule at four sizes in the ratio √2, the same 1867 pores. The 0.106 µm cube (6.36 M
+vertices, 150 M unknowns; split 32 min and 38.7 GB on one node, MMM 114 s on 512 processes of 2 cores, 2.47 GB per
+process) is taken as reference. Change of the class means against the 0.106 mesh:
 
 | mesh next to the pores | 0.219 | 0.311 | 0.436 | 0.610 | 0.852 | 1.192 | 1.702 | all | per pore: median, largest |
 |---|---|---|---|---|---|---|---|---|---|
-| 0.212 µm | +1.66 | +0.59 | +0.95 | +1.30 | +1.29 | +1.73 | +1.75 | +1.20 % | 1.76 %, 20.7 % |
-| 0.3 µm | +4.05 | +3.00 | +2.49 | +2.37 | +2.95 | +4.12 | +7.65 | +2.72 % | 3.44 %, 41.4 % |
+| share of the pore volume | 0.0 % | 0.5 % | 5.2 % | 22.3 % | 38.4 % | 26.2 % | 7.4 % | 100 % | |
+| 0.15 µm (the runs) | +0.63 | +1.39 | +1.15 | +0.89 | +0.94 | +0.90 | +0.08 | +0.99 % | 1.22 %, 7.9 % |
+| 0.212 µm | +2.30 | +1.99 | +2.11 | +2.20 | +2.24 | +2.65 | +1.84 | +2.20 % | 2.35 %, 20.6 % |
+| 0.3 µm | +4.70 | +4.43 | +3.67 | +3.28 | +3.91 | +5.06 | +7.74 | +3.73 % | 4.06 %, 41.8 % |
+| observed order on 0.106 / 0.15 / 0.212 | –¹ | –² | –² | 1.13 | 0.96 | 1.91 | –¹ | 0.59 | |
+
+¹ 11 pores: the two steps are within the noise of the class mean (1.702: 0.08 ± 0.42 % and 1.75 ± 1.78 %, two
+standard errors). ² The step from 0.15 to 0.106 is larger than the one from 0.212 to 0.15 ($d_2/d_1$ = 0.43 and 0.84,
+while an order $p$ needs $d_2/d_1 = \sqrt2^{\,p} > 1$): not yet asymptotic.
 
 ![mesh test](figures/mmm_mesh_test.png)
 
-> `mesh_test.png` (`plot_bubbles.py`): change of the class means of ŝ on the two coarser meshes against the 0.15 µm mesh, with the ±2 % tolerance. 
+> `mesh_test.png` (`plot_bubbles.py`): change of the class means of ŝ on the three coarser meshes against the 0.106 µm mesh, with the ±2 % tolerance. 
 
-All the changes are positive (ŝ decreases with refinement) but the decrease does not slow down as a second-order
-method would: observed orders 0.7–1.4, class 0.610 not yet asymptotic, so `plot_bubbles.py` refuses the Richardson
-extrapolation. The classes of the verdict move by at most 1.75 % from 0.212 to 0.15 µm (tolerance 2 %: passed);
-the **error of the 0.15 mesh itself is not measured**, estimated +1.5 … +5 % (ŝ overestimated). FGR: $x_c$ moves by
-−0.5 % (onset) to −1.6 % (50–90 %) from 0.212 to 0.15. Part of the error is first order by construction: the
-quantity is a maximum over Gauss points, and the point sits ≈ 0.04 h from the wall.
+Every class decreases monotonically with refinement: a coarse mesh overestimates ŝ. The classes of the verdict
+(≥ 5 % of the pore volume) move by at most **1.15 % from 0.15 to 0.106 µm** (tolerance 2 %: passed), against 1.75 %
+from 0.212 to 0.15. Richardson on the three finest sizes works on the three large classes (87 % of the pore volume),
+with orders 1.0–1.9: there the 0.15 mesh is 1.9–3.4 % above the extrapolated value. It does not work on 0.436 and
+1.702 (notes above), so `plot_bubbles.py` keeps the 0.106 mesh as the reference and prints the reason per class. With
+one order for the whole verdict, the 0.15 mesh is 2.3 % (order 2) to 3.9 % (order 1) above the limit h → 0, the
+0.106 mesh 1.15 to 2.8 %. FGR of seed 1: $x_c$ of the 0.15 mesh is 0.3 % (5 %), 1.0 % (10 %) and 0.8–0.9 %
+(20–95 %) below that of the 0.106 mesh. An order ≈ 1 is expected: the quantity is a maximum over Gauss points, and
+the point sits ≈ 0.04 h from the wall. Per pore the change from 0.15 to 0.106 is 1.2 % in median and up to 7.9 %,
+more than the shift of the class means: a new mesh moves every pore a little.
 
-A bias common to all the pores is absorbed by the calibration of $\sigma_R$; what matters for the surrogate is that
-it is the same in all the runs, which the rule scaled on the pore radius is meant to give.
+The error is nearly the same in every class of the verdict (0.9–1.15 % against 0.106), so it mostly rescales ŝ. A
+bias common to all the pores is absorbed by the calibration of $\sigma_R$; what matters for the surrogate is that it
+is the same in all the runs, which the rule scaled on the pore radius is meant to give. **0.15 µm is kept for the
+hypercube** (decision 4, Section 10): the 0.106 mesh has 2.6 × the vertices.
 
 ### 9.5 Size of the RVE (`rve_size.txt`, `rve_fgr.txt`)
 
@@ -614,10 +644,11 @@ The levels below 5 % are outside the verdict (the tail of the first pores).
 - With `mmm_surrogate.py` (bootstrap over the cubes): one cube gives μ of ln ŝ within 0.11 and σ within 0.07 on the
   main classes (0.036 and 0.023 with ten), and the critical load of every FGR level within 1.2–1.9 %.
 
-### 9.6 ŝ per class and which pores break first (`break_order.txt`, `shat_NFIR.txt`)
+### 9.6 ŝ per class and which pores break first (`break_order.txt`, `mmm_surrogate.py <run_NFIR>`)
 
 In every class ŝ is closer to a log-normal than to a normal (Kolmogorov–Smirnov 0.03–0.10 against 0.06–0.13). The
-table SCIANTIX reads, `mmm_outputs/shat_NFIR.txt`:
+classes of run NFIR, printed by `mmm_surrogate.py <run_NFIR>` (SCIANTIX reads the surrogate of all the runs, section 9.10;
+these classes are the reference that the surrogate predicts, section 9.9):
 
 | R (µm) | u = ln(R/R_V) | share | pores | μ | σ | mean | q05 | q50 | q95 |
 |---|---|---|---|---|---|---|---|---|---|
@@ -681,7 +712,12 @@ radius $(1+k)R$, $k$ a free parameter for the cracked zone.
 > path of the intact phase at the FGR levels and the mean intact chords (number- and length-weighted) against the
 > fraction of broken pores, for cracked zones (1 + k) R, with the SCIANTIX fragment size for comparison.
 
-### 9.8 SCIANTIX with the MMM table: open-loop replay of the NFIR anneal (`section_mmm_replay`, run again on 10/11)
+### 9.8 SCIANTIX with the MMM table: open-loop replay of the NFIR anneal (removed on 17/11)
+
+**Removed on 17/11/2026**, with `section_mmm_replay` and `mmm_surrogate.py --replay` (which had added the unit and pk
+surrogates on 12/11: $\sigma_R$ = 222.6 and 223.9 MPa, rms distance of the release curve 9.9 and 6.4 points, 20 % of
+the steps outside the hypercube). Open loop, and it needed the equations of the C++ written a second time in Python.
+Kept as a record: $\sigma_R$ was recalibrated in closed loop on 17/11, with the surrogate in the C++ (section 9.10).
 
 The table of run NFIR is used whatever the ξ and s of the SCIANTIX state, and the venting does not act back on the
 state (open loop). Release of the transient in % of the gas produced; measured Kr-85: 29.8 %.
@@ -707,24 +743,111 @@ So $\sigma_R$ = 275 MPa of D5.2 (monodisperse pores at the measured pressure) gi
 here; 219 MPa matches its final value. This is a fit of one number on one test with the *modelled* pore state (0.7
 times the measured gas density), not a validation.
 
+### 9.9 Surrogate over the hypercube: how good it is (`mmm_outputs/surrogate_unit.txt`, `surrogate_pk.txt`, 17/11)
+
+20 runs × 1 cube of 30 µm (graded mesh 0.15 µm, `R_FINE` 0.45, δ = 0.15), solved for both loads by 12/11; 138
+classes with ≥ 3 pores per load. `mmm_surrogate.py --fit` predicts every run with the surrogate fitted on the other 19
+(leave one run out) and compares the load $x=p_{ref}/\sigma_R$ at FGR 5–90 % and the largest difference of the FGR curve:
+
+| | unit (ξ, s, u) | pk (ξ, s, $\bar\eta$, u) |
+|---|---|---|
+| surrogate: error of x, rms / worst | 1.72 % / −5.2 % (R01) | 5.99 % / +23.9 % (R05) |
+| largest difference of the FGR curve, rms / worst | 3.7 / 9.5 points (R01) | 7.7 / 17.5 points (R17) |
+| linear trend only (no Gaussian process): error of x, rms | 4.07 % | 16.5 % |
+| no state (μ, σ against u only: one table for every state): error of x, rms | 19.8 % | 26.6 % |
+| noise of the tables (pores of the classes of one cube): x, rms | 0.85 % | 1.38 % |
+| error above the noise, $\sqrt{\mathrm{rms}^2-\mathrm{noise}^2}$ | 1.49 % | 5.83 % |
+| skill against no state, $1-\mathrm{mse}/\mathrm{mse}_{\text{no state}}$ | 0.992 | 0.949 |
+| errors within 2 predicted std (95 % if the spread is right); rms of error/std | 85 %; 1.30 | 82 %; 1.54 |
+| learning curve: rms of x with 8 / 11 / 14 / 17 / 19 runs fitted | 2.7 / 2.3 / 1.8 / 2.5 / 1.7 % | 10.1 / 9.9 / 6.8 / 6.9 / 6.0 % |
+| run NFIR (10 cubes, outside the design): error of x | ≤ 0.26 % | no pk run of NFIR |
+
+- **Noise floor.** A table of one cube is itself noisy, so a surrogate right on average still misses it. The noise of
+  every run comes from the pores of its classes ($\mathrm{var}\,\mu_k=\sigma_k^2/n_k$, $\mathrm{var}\ln\sigma_k=1/(2(n_k-1))$)
+  carried to x by Monte Carlo. On run NFIR it gives 0.7–0.9 % for one cube, against 0.6–1.0 % measured between its 10
+  cubes: the estimate holds.
+- **unit.** The state matters (one table for every state misses x by 20 %, the trend alone by 4 %); the surrogate is
+  1.5 % above the noise. The worst runs are the sparse ones (R01, R17, R13, ξ ≤ 0.04: fewest pores, largest noise).
+  The learning curve is nearly flat from 11 runs on (the point at 17 rests on 3 predicted runs per draw): more unit
+  runs would gain little, more cubes in the sparse runs would lower their noise.
+- **pk.** Four inputs on 20 runs: 6 % above the noise, worst on R05 (+24 % at FGR 5 %), R04 (+13 %) and R17 (−15 %
+  at 50 %). The learning curve still falls (10 → 6 %): more pk runs will help. The approximate superposition of the
+  two maxima (item 7) is inside these tables.
+- **Spread.** The Gaussian process underestimates its error by 30–50 % (85 and 82 % within 2 std instead of 95 %):
+  its white noise is independent per class while the classes of a run err together, and the uncertainty of the trend
+  is left out. Its std is not yet an error bar.
+- **Inputs** (block 5 of the files, surrogate of all the runs). unit: μ grows with ξ (+0.19 per standard deviation of
+  ξ over the runs) and hardly with s (+0.001); s acts on σ (+0.12 on ln σ). pk: μ depends on the class (+0.36 per
+  standard deviation of u, −0.02 in unit), since the pressure of the class enters ŝ; $\bar\eta$ acts on σ only
+  (+0.09 on ln σ).
+
+The leave-one-run-out numbers are those of 12/11 (same rms at every level): the new blocks are added to the same fit.
+
+![surrogate unit](mmm_outputs/surrogate_unit.png)
+
+> `surrogate_unit.png` and `surrogate_pk.png` (`mmm_surrogate.py --fit`): top, μ and σ of the classes predicted
+> against the tables and the error of x against ξ (leave one run out); bottom, per run the error of the surrogate,
+> of the trend alone and of one table for every state against the noise of the table, the learning curve, and the
+> error against the std the Gaussian process predicts.
+
+### 9.10 SCIANTIX with the ŝ of MMM, closed loop: $\sigma_R$ on the NFIR anneal (`calibration_nfir.txt`, 17/11)
+
+Option 4 reads the surrogate of section 9.9 (`input_hbs_shat.txt`, exported by `mmm_surrogate.py --fit`) and the
+venting acts back on the state: closed loop. `calibrate_sigma_r.py` runs SCIANTIX on the inputs of the J19 case of NFIR
+for a scan of $\sigma_R$ and takes the $\sigma_R$ of the least rms distance of the release curve from the Kr-85
+measurement (at the measured times); the $\sigma_R$ of the measured final release is given for comparison. Release of
+the transient in % of the gas produced; measured: 29.8 % at the end, 10 % of it at 1293 K and 50 % at 1426 K.
+
+| case | $\sigma_R$ (MPa) | release | rms (points) | D | G | T at 10 % / 50 % of the release (K) |
+|---|---|---|---|---|---|---|
+| J19 mean field | 21 | 41.9 % | 19.9 | 0.709 | 0.522 | 771 / 1113 |
+| MMM unit, least rms | **236.8** | 23.3 % | 7.6 | 0.462 | 0.294 | 828 / 1198 |
+| MMM unit, final release | 217.3 | 29.8 % | 9.9 | 0.553 | 0.376 | 800 / 1176 |
+| MMM pk, least rms | **222.2** | 26.2 % | **4.4** | 0.456 | 0.328 | 1146 / 1353 |
+| MMM pk, final release | 218.3 | 29.9 % | 5.5 | 0.504 | 0.374 | 1140 / 1349 |
+| measured (Kr-85) | | 29.8 % | | | | 1293 / 1426 |
+
+- **pk fits the shape, unit does not.** With pk the two $\sigma_R$ (curve and final value) agree within 4 MPa and the
+  curve is 4.4 points from the data; with unit they differ by 20 MPa and the release starts 465 K too early (10 of its
+  23 % are out before the measured release begins, at 68 min): the class pressures delay the rupture of the small
+  pores, which the unit ŝ breaks first.
+- **Still early, and it stops at the peak.** pk reaches 10 % and 50 % of its release 150 K and 70 K before the
+  measurement (2.9 % is out at 68 min). The measured release goes from 14 to 29 % between 90 and 96 min, across the
+  peak of temperature (94 min); pk follows it up to the peak and stops at 26 % (least rms), with nothing after it.
+- **Sensitivity.** The release falls fast with $\sigma_R$: pk from 50 % at 200 MPa to 9 % at 250 MPa (unit: 37 % to 20 %).
+- **Inside the hypercube.** At the calibrated $\sigma_R$ no row of the heat-up (gas retained ≥ 1 %) has its state
+  (ξ, s, $\bar\eta$) outside the range of the runs: SCIANTIX never clips it (the open loop clipped 20 % of the steps).
+- **Against the open loop** (section 9.8): 219–224 MPa there, 218–237 MPa here; at 275 MPa the release is 14.0 %
+  (unit) and 3.5 % (pk) against 16.3 % open loop with the table of run NFIR.
+- One test, one parameter: the calibrated $\sigma_R$ is a fit, not a validation (decision 7). It also absorbs the
+  modelled pore state (0.7 times the measured gas density, L11) and the gas balance of item 11.
+
+The regression cases `regression/hbs_nfir/test_UO2HBS_frag_mmm_unit` and `_mmm_pk` hold these $\sigma_R$ (least rms)
+and their gold (17/11).
+
+![calibration](mmm_outputs/calibration_nfir.png)
+
+> `calibration_nfir.png` (`calibrate_sigma_r.py`): top, the release of the anneal (J19, MMM unit and pk at the
+> calibrated $\sigma_R$, Kr-85 measured) and D, G on the heat-up; bottom, the rms distance of the release curve and the
+> final release against $\sigma_R$ (scan and search points).
+
 ---
 
 ## 10. How to proceed
 
-Status of the hypercube on 10/11/2026: `Merope/mmm_files/lhs_side30_mesh0.15_graded_rfine0.45/` holds, for R00–R19,
-one unit cube (seed 1: pores, `.geo`, summary) and its pk twin; gmsh is running on the other PC; nothing is split or
-solved. `run_mmm.sh` and the batch script of the cluster already find any `bubbles_<name>.txt` and follow
-`mesh_case.txt`, so they run both loads without changes.
+Status of the hypercube on 17/11/2026: R00–R19 are solved for both loads (one cube of seed 1 each, by 12/11),
+reduced and fitted from their `pores.csv` (section 9.9); the surrogate is in the C++ and $\sigma_R$ is calibrated on the
+NFIR anneal in closed loop (section 9.10). Next: more pk runs, and a second test for $\sigma_R$ (decision 7).
 
 | # | decision | options | what the results say | recommendation |
 |---|---|---|---|---|
-| 1 | **Load of the hypercube runs** | (a) unit only: ŝ depends on (ξ, s), 2 factors; (b) unit + pk ("plan B"): ŝ with the class pressures, 3 factors (ξ, s, $\bar\eta$) | The pk cubes cost one more MMM job on the same split (≈ 22 core-h each), no mesh. With $a=2$ the class pressures of run NFIR span 54–7647 MPa: the neighbours' load is far from uniform, so (a) may miss a first-order effect. But (b) is not ready: the superposition of the two maxima (unit run and pk run) is approximate, `mmm_surrogate.py` and the criterion $b^*_i$ are written for one pressure | Run both loads (the cost is small), build the surrogate on unit first, and use pk on run NFIR to measure how much the class pressures change the FGR curve before investing in (b) |
+| 1 | **Load of the hypercube runs** | (a) unit only: ŝ depends on (ξ, s), 2 factors; (b) unit + pk ("plan B"): ŝ with the class pressures, 3 factors (ξ, s, $\bar\eta$) | The pk cubes cost one more MMM job on the same split (≈ 22 core-h each), no mesh. With $a=2$ the class pressures of run NFIR span 54–7647 MPa: the neighbours' load is far from uniform, so (a) may miss a first-order effect. Both loads solved (12/11) and fitted: unit 1.7 % rms on x (noise 0.85 %), pk 6.0 % (four inputs on 20 runs, learning curve still falling); the superposition of the two maxima stays approximate (item 7) | 17/11: go on with both into the C++, pk as a trial of the whole chain; more pk runs afterwards (by doubling the hypercube, decision 2) |
 | 2 | **Cubes per run** | 1 cube per run (20 cubes) or more seeds for the wide runs | FGR 5–95 %: one 30 µm cube gives ≈ 2–6 % (the 1.4–4.3 % estimated for 10–90 % by scaling run NFIR with the number of pores, times 3.5/2.6 for the 5 % level; not recomputed run by run): just above 5 % at the 5 % level for the runs with the fewest pores (R01, R17, R13). The largest class with ≥ 5 % of the volume needs more for 5 %: R13 11 cubes, R05 7, R09 6, R11 5, NFIR/R04 4, R00/R03 3 | 1 cube per run, pass the per-class noise ($2D$, from the number of pores of the class) to the fit; add seeds only where the surrogate shows it needs them. Densify by doubling the hypercube (new runs appended), **not** by raising `MMM_RUNS`, which rewrites the whole design |
 | 3 | **δ** | keep 0.15 µm, or 0.05 µm | residual at 0.15: ≤ 6 % on class 1.70, ≤ 0.5–1 % on the FGR | keep 0.15 for the hypercube (chosen 10/11); δ only needs a new MMM job on the same split if it is revisited. In dense runs 38 % of the pores have a gap < 0.35 µm (17 % in NFIR): keep δ < distMin/2 |
-| 4 | **Error of the 0.15 µm mesh** | (a) accept; (b) fourth mesh at 0.106 µm on seed 1 (≈ 7 M vertices: gmsh on the big PC, split ≈ 40 GB, MMM with 2 cores per process); (c) change the quantity (stress on the wall, or an average over a small volume, instead of the maximum over Gauss points) | not asymptotic at 0.15; estimated +1.5 … +5 %, mostly common to all the pores | (a) for the hypercube, since a common bias goes into $\sigma_R$; (b) once, before publishing numbers of ŝ; if 0.610 still moves by ≈ 1.4 %, go to (c) |
+| 4 | **Error of the 0.15 µm mesh** | (a) accept; (b) fourth mesh at 0.106 µm on seed 1 (6.36 M vertices, split 38.7 GB, MMM with 2 cores per process); (c) change the quantity (stress on the wall, or an average over a small volume, instead of the maximum over Gauss points) | (b) done 16/11 (section 9.4): from 0.15 to 0.106 µm the classes of the verdict move by ≤ 1.15 %, $x_c$ of the FGR by ≤ 1 %; against h → 0 ≈ 2–3.5 % (Richardson on the large classes, orders 1.0–1.9; not possible on 0.436 and on the classes of 11 pores), always an overestimate and nearly the same in every class | **taken 16/11: (a)**, 0.15 µm for the hypercube, the common bias goes into $\sigma_R$; (c) only if absolute values of ŝ must be quoted to better than ≈ 3 % |
 | 5 | **distMin** | keep 0.3 µm; or one sensitivity run (0.2, 0.4 µm) on NFIR | the onset of the release is made by pores at gaps ≈ distMin; D5.2 never tested it; the hypercube keeps 0.3 µm while $R_V$ is fixed, so distMin/$R_V$ is constant in the design but not in SCIANTIX (0.75 $R_V$ at the modelled radius) | one sensitivity on run NFIR (2 × 1 cube, ≈ 55 core-h) before the surrogate is frozen; report the onset (FGR < 10 %) as uncertain meanwhile |
-| 6 | **Surrogate** | Gaussian process of μ and σ of ln ŝ on (ξ, s, u) [+ $\bar\eta$ with plan B], tabulated on a regular grid for a linear interpolation in the C++ | on run NFIR μ varies by 0.07 and σ by 0.06 over the classes: a smooth, weak dependence on u; the 7 log-normals reproduce the FGR within 4.4 points | as planned in `mmm_surrogate.py`; entry point `HighBurnupStructureFragmentation.C` l. 483–552 (the step `broken` becomes $b^*_i$); the Python transcription already has it (`broken_fraction`) |
-| 7 | **$\sigma_R$** | 275 (D5.2) or recalibrated | 219 MPa fits the NFIR release in open loop | recalibrate after the surrogate, in closed loop, and on more than one test (Hiernaut 2008 is digitised in `regression/hbs_hiernaut`) |
+| 6 | **Surrogate** | Gaussian process of μ and σ of ln ŝ on (ξ, s, u) [+ $\bar\eta$ with plan B], tabulated on a regular grid for a linear interpolation in the C++ | on run NFIR μ varies by 0.07 and σ by 0.06 over the classes: a smooth, weak dependence on u; the 7 log-normals reproduce the FGR within 4.4 points | **taken 17/11**: the Gaussian process is evaluated in the C++ (no grid: SCIANTIX uses the model the metrics of section 9.9 describe), from `input_hbs_shat.txt` written by `mmm_surrogate.py --fit`, with test points checked at reading; the criterion is written only in the C++ (the Python transcription was removed on 17/11) |
+| 7 | **$\sigma_R$** | 275 (D5.2) or recalibrated | closed loop on NFIR (17/11, section 9.10): 236.8 MPa (unit, rms 7.6 points), 222.2 MPa (pk, rms 4.4); pk gets the shape, unit starts 450 K early | a second test before any claim: Hiernaut 2008 (digitised in `regression/hbs_hiernaut`, no option 4 case yet), the inner and outer parts with their ξ |
 | 8 | **Fragment size** | keep $d=2R_{WS}/D$, or use the MMM geometry | SCIANTIX's $d$ corresponds to a cracked zone ≈ $R_{WS}$; broken pores are grouped | redo `npoint.py` with δ = 0.15; test $k_i$ = gap/R from `pores.csv` (no free parameter) |
 
 Order proposed: finish the meshes → line `To check` of `run_gmsh.sh` (if not 0, `inverted_elements.py` on the flagged cubes; the dense runs R14, R00, R18, R19 are the likely ones) → split + unit runs on the cluster
@@ -765,7 +888,7 @@ It needs mfem-mgis@master. Edit the scripts in `mm-opera-hpc/polydispersebubble/
 | `mfront: command not found`, TFEL or MFEMMGIS not found | environment not loaded | same |
 | `invalid --jobserver-auth` | MFront built with `-j` | build `lib-elasticity-poly` without `-j` first |
 
-### 11.3 RVE test or hypercube, from the pores to the tables
+### 11.3 RVE test or hypercube, from the pores to the classes
 
 ```bash
 cd ~/mmm/Merope/mmm_files
@@ -777,13 +900,13 @@ python3 inverted_elements.py <cube folder>            # only if run_gmsh.sh ends
 
 cd ~/mmm/build/polydispersebubble
 bash run_mmm.sh ~/mmm/Merope/mmm_files/<folder>       # this PC: copies the cubes to ~/mmm/results/<folder>, solves the unsolved ones
-                                                      # NPROC=8 POST=0 bash run_mmm.sh <cubes> [<results>]
+                                                      # NPROC, POST, -dl: constants at the top of run_mmm.sh
 R=~/mmm/results/<folder>/run_<id>
 python3 plot_bubbles.py $R                            # mesh_test, rve_size, rve_fgr; exit 1 = not an RVE or mesh not fine (not a crash)
 python3 break_order.py $R                             # pores.csv, break_order.txt/png
-python3 mesh_compare.py <reference ROOT> <other ROOT> # two meshes of the same cubes; two δ: add --labels A B --name delta_compare --no-cost
-python3 npoint.py $R [RAYS]                           # ≈ 10 min at 1e5 lines per cube
-python3 ~/mmm/sciantix-official/utilities/HBFF/mmm_surrogate.py $R    # mmm_outputs/shat_<id>.txt/png
+python3 mesh_compare.py <reference ROOT> <other ROOT> # two meshes of the same cubes; two δ: LABELS, NAME, COST at its top (9.3)
+python3 npoint.py $R                                  # ≈ 10 min at RAYS = 1e5 lines per cube (constant at its top)
+python3 ~/mmm/sciantix-official/utilities/HBFF/mmm_surrogate.py $R    # classes of the run (printed), mmm_outputs/shat_<id>.png
 ```
 
 Cubes already listed in `cubes.txt` are kept: more seeds or a mesh size added to `MESH_SIZES` add their cubes only.
@@ -799,8 +922,15 @@ inverted elements (`inverted_elements.py`), then `-v 1` and `-li 20000`.
 ### 11.4 SCIANTIX side
 
 ```bash
-cd ~/mmm/sciantix-official && ./utilities/HBFF/runHBFF.sh     # build, NFIR case against its gold, transcription check, figures
+cd ~/mmm/sciantix-official && ./utilities/HBFF/runHBFF.sh     # build, NFIR cases against their gold, STATES against output.txt, figures
+python3 utilities/HBFF/mmm_surrogate.py --fit LHS RUN_NFIR     # metrics (9.9) and mmm_outputs/surrogate_<load>_sciantix.txt (≈ 3.5 min)
+python3 utilities/HBFF/calibrate_sigma_r.py                    # sigma_R on NFIR (9.10, ≈ 3 min with 4 runs at a time; needs build/sciantix.x)
+python3 -m regression.runner --hbs_nfir.mmm_unit --hbs_nfir.mmm_pk --mode-gold 1   # their gold, after a check
 ```
+`LHS` is the tree of the hypercube (`unit/` and `pk/`, with `run_<id>/pores.csv`; `analyse_lhs.sh` calls `--fit` on
+it), `RUN_NFIR` the run folder of the RVE test (its classes are the test of the surrogate).
+`calibrate_sigma_r.py` writes the calibrated `input_hbs_shat.txt` into the two MMM cases; their gold is left to the
+runner. The runner always uses `build/sciantix.x`: build first.
 **Warning:** `pore_distribution.py` (called by `runHBFF.sh`) rewrites `mmm_inputs/` at every run. With the same
 settings the files are identical; if `MMM_RUNS`, `MMM_SEED`, `MMM_CLASSES` or `MMM_FACTORS` change, the design of all
 the runs changes and the cubes already made no longer match (`merope_pore_pressure.py` and `set_pressures.py` detect
@@ -840,20 +970,20 @@ Found while writing this report (10/11/2026). "Fixed" = changed in the working t
 | # | what | where | effect | status |
 |---|---|---|---|---|
 | 1 | The cluster jobs of the latest results ran with 2 cores per process (1024 cores, 8 nodes), while the batch script and the documents said 512 cores on 4 nodes | batch files in the results | the documented cost was half the real one | fixed in the script (private) and in the numbers of section 8 |
-| 2 | `delta_compare.txt/png` was an output of `mesh_compare.py` used to compare two δ on the same meshes: its labels said "mesh" and carried the folder names, which squeezed the axes of the figure until it was unreadable, and its cost line (493 against 275 core-hours) counted both MMM jobs of every cube | results folder, `scripts/mesh_compare.py` | misleading table, broken figure | fixed: `mesh_compare.py REF OTHER --labels A B --name delta_compare --no-cost`; table and figure regenerated on 10/11 (same numbers). Its block "5. Cost" is still printed and still counts both jobs for δ = 0.15; the verdict line "can NOT replace" only means that the two δ differ by more than 2 % |
+| 2 | `delta_compare.txt/png` was an output of `mesh_compare.py` used to compare two δ on the same meshes: its labels said "mesh" and carried the folder names, which squeezed the axes of the figure until it was unreadable, and its cost line (493 against 275 core-hours) counted both MMM jobs of every cube | results folder, `scripts/mesh_compare.py` | misleading table, broken figure | fixed: `mesh_compare.py REF OTHER --labels A B --name delta_compare --no-cost` (since 17/11: `LABELS`, `NAME`, `COST` at the top of the script); table and figure regenerated on 10/11 (same numbers). Its block "5. Cost" (block 4 since 17/11) is still printed and still counts both jobs for δ = 0.15; the verdict line "can NOT replace" only means that the two δ differ by more than 2 % |
 | 3 | The batch files and logs inside the latest folder carry the path `…_delta0.1/` (the folder was renamed to `_delta0.15` after the runs); `delta_compare.txt`, `rve_*.txt`, `mesh_test.txt` carry the path of the build tree where they were made | results folder | none on the numbers; the runs really used `-dl 0.15` (checked in the logs: `--delta 0.15`) | left as records |
 | 4 | The latest folder holds, in every cube, the logs of two MMM jobs: `-dl 0.3` (09:25) and `-dl 0.15` (10:45); the outputs are those of the second | results folder | `mesh_compare.py` doubles the MMM cost there (item 2) | noted |
-| 5 | Mesh convergence not shown: Richardson not possible, class 0.610 not monotone; error of the 0.15 µm mesh not measured | `mesh_test.txt` | ŝ overestimated by an estimated 1.5–5 % | open (section 10, decision 4) |
+| 5 | Mesh convergence not shown: Richardson not possible, class 0.610 not monotone; error of the 0.15 µm mesh not measured | `mesh_test.txt` | ŝ overestimated by an estimated 1.5–5 % | measured 16/11 with a fourth mesh at 0.106 µm (section 9.4): ≤ 1.15 % against it, ≈ 2–3.5 % against h → 0; accepted (decision 4) |
 | 6 | Residual of the search distance at δ = 0.15: 39 pores take the maximum at the edge of the shell | `break_order.py` on the latest folder | class 1.70 up to 6 % too high | open, accepted (decision 3) |
-| 7 | Plan B: the zero-stress correction of the pk runs adds two maxima (pk run and unit run) that are not at the same point (`plot_bubbles.py` prints their distance), never tried on a solved cube; `mmm_surrogate.py`, `shat_<run>.txt` and the criterion $b^*_i$ assume one pressure in all the pores | `plot_bubbles.py`, `mmm_surrogate.py`, `pore_distribution.py` | the pk runs cannot be reduced for SCIANTIX yet | open (decision 1) |
-| 8 | `shat_NFIR.txt`, `rve_fgr.txt` and `mmm_surrogate.py` quote $\sigma_R$ = 275 MPa, calibrated in D5.2 on monodisperse pores at the measured pressure | headers and `SIGMA_R_MMM` | with our table 275 MPa gives 16.3 % release instead of 29.8 %; 219 MPa fits | open (decision 7) |
-| 9 | `-r k` with `-pm 1` gives wrong stresses (up to +77 %) | `test-polybubble` / mfem-mgis restart mode | refinement in MMM unusable on the cluster | open, cause not found; the script skips those folders |
+| 7 | Plan B: the zero-stress correction of the pk runs adds two maxima (pk run and unit run) that are not at the same point (`plot_bubbles.py` prints their distance), never tried on a solved cube; `mmm_surrogate.py`, `shat_<run>.txt` and the criterion $b^*_i$ assume one pressure in all the pores | `plot_bubbles.py`, `mmm_surrogate.py`, `pore_distribution.py` | the pk runs cannot be reduced for SCIANTIX yet | 12/11: pk runs solved and reduced (`shat_pk_R<nn>.txt`, column `ln_p_rel`), maxima 0–0.84 µm apart in median; 17/11: fitted (section 9.9); the superposition stays approximate, accepted for the trial of the chain (decision 1) |
+| 8 | `shat_NFIR.txt`, `rve_fgr.txt` and `mmm_surrogate.py` quote $\sigma_R$ = 275 MPa, calibrated in D5.2 on monodisperse pores at the measured pressure | headers and `SIGMA_R_MMM` | with our table 275 MPa gives 16.3 % release instead of 29.8 %; 219 MPa fits | calibrated 17/11 in closed loop on NFIR: 236.8 MPa (unit), 222.2 MPa (pk), section 9.10; 275 MPa stays in the headers and figures as the value of D5.2. A second test is still missing (decision 7) |
+| 9 | `-r k` with `-pm 1` gives wrong stresses (up to +77 %) | `test-polybubble` / mfem-mgis restart mode | refinement in MMM unusable on the cluster | open, cause not found; the cluster script skips those folders, `run_mmm.sh` no longer passes `-r` (17/11) |
 | 10 | The MMM log prints 2.78 M "vertices" where the mesh has 2.47 M | `print_mesh_information`, `-pm 1` | none (shared vertices summed over the parts) | explained (section 6) |
-| 11 | SCIANTIX gas columns do not close on the NFIR case: "Xe in HBS pores" is 2.1 × "Xe produced in HBS"; the release of the transient is 0.799 × the vented fraction (the replay uses this factor from the C++) | `output.txt` of the case | the release of the replay relies on an empirical factor | open, to understand in the C++ |
-| 12 | The open-loop replay uses the table of run NFIR (ξ = 0.114, s = 0.36) for a SCIANTIX state with ξ = 0.12–0.13, s = 0.24–0.25 | `section_mmm_replay` | the fitted $\sigma_R$ is indicative | by design until the surrogate exists |
+| 11 | SCIANTIX gas columns do not close on the NFIR case: "Xe in HBS pores" is 2.1 × "Xe produced in HBS"; the release of the transient is 0.799 × the vented fraction (the replay, removed on 17/11, used this factor) | `output.txt` of the case | the release of the replay relied on an empirical factor | open, to understand in the C++ before $\sigma_R$ is calibrated on the release |
+| 12 | The open-loop replay uses the table of run NFIR (ξ = 0.114, s = 0.36) for a SCIANTIX state with ξ = 0.12–0.13, s = 0.24–0.25 | `section_mmm_replay` | the fitted $\sigma_R$ is indicative | closed: the replay was removed on 17/11 |
 | 13 | This README pointed to `README_HBFFmodel.md` (deleted on 20/10) and to `figures/mmm_design.png`, which does not exist | old README; `presentation/mmm_roadmap.tex` l. ≈ 200 includes `mmm_design.png`, `classes_moment_errors.png`, `classes_heatup.png`, none in `figures/` | the roadmap slides do not compile from a clean tree | README fixed; slides not touched (as asked) |
 | 14 | The slides of 14/10 quote an older state (s = 0.33, $R_V$ = 0.35 µm, ξ = 0.105, release "39 % of the measured") against the current gold (s = 0.24, $R_V$ = 0.40 µm, ξ = 0.130, release 41.9 % against 29.8 % measured, i.e. 1.4 times) | `presentation/mmm_roadmap.tex` | slides out of date | not touched |
-| 15 | Defaults pointing to old cases: `run_mmm.sh` (side-10 folder inside the build), `plot_bubbles.py` ROOT (`test_rve_side10`) | `scripts/` | a run without arguments worked on old data | fixed: `run_mmm.sh CUBES [RESULTS]`, default ROOT = latest results |
+| 15 | Defaults pointing to old cases: `run_mmm.sh` (side-10 folder inside the build), `plot_bubbles.py` ROOT (`test_rve_side10`) | `scripts/` | a run without arguments worked on old data | fixed: `run_mmm.sh CUBES [RESULTS]` (since 17/11 `run_mmm.sh CUBES`, results always in `~/mmm/results/<name>`), default ROOT = latest results |
 | 16 | The same in the Mérope scripts: `run_gmsh.sh` has an absolute `GMSH=/home/ecappellari/.local/bin/gmsh` and a default folder that is not on this PC; `generate()` writes by default in `mmm_inputs/<run>_seed_…`; the docstring of `merope_pore_pressure.py` cites an old cheat sheet; `test_rve.py` looks for the run files in a `../mmm_inputs` that no longer exists (fallback) | `Merope/mmm_files/` | none while the arguments are given | **left untouched on purpose** while gmsh runs on the other PC; to fix afterwards |
 | 17 | Results lived inside the CMake build tree; the build folder had hand-edited, older copies of `plot_bubbles.py`, `break_order.py`, `run_mmm*.sh`, three scripts deleted from the repository, and no `set_pressures.py` | `~/mmm/build/polydispersebubble` | `rm -rf build` would have erased the results; the latest tables were made with the older copies | fixed: results in `~/mmm/results`; build refreshed. The tables were recomputed with the current scripts on a copy: **identical numbers**, only the wording of two header lines differs |
 | 18 | `pores.csv` of the latest folder was written by the older `break_order.py` (22 columns); the current one writes 26 (`p_MPa`, `p_ref_MPa`, `s_hat_1`, `max_shift_um`) | results folder | none: same values in the 22 common columns, same `shat_NFIR.txt` | fixed on 11/11: `break_order.py` rerun, `pores.csv` now has the 26 columns |
@@ -863,6 +993,11 @@ Found while writing this report (10/11/2026). "Fixed" = changed in the working t
 | 22 | `*.png` is git-ignored in sciantix-official, so the figures of this report are not versioned; `mmm_outputs/` and `mmm_surrogate.py` are untracked | `.gitignore` l. 98 | figures missing on a fresh clone | open |
 | 23 | Mérope places the integer part of the expected pores per class | `summary_*.txt` | porosity 0.1131 against 0.1138; largest class 7.4 % of the volume instead of 7.8 % | by construction of the RSA call; noted in the tables |
 | 24 | The search of the maximum is not periodic: for a pore cut by a face of the cube (12.4 % of the pores; 28 % of class 1.70 µm) only the points on the side of its centre are searched, not the part of its wall that re-enters from the opposite face | `src/Bubble.cxx`, per-pore search (distance to the centre without periodic images) | the maximum of those pores can be missed. Measured on the latest results: class means of the cut pores against the others −0.1 … +0.8 % (not significant), class 1.70: −3.6 % ± 6.0 % (31 pores) | open: found on 10/11 while writing; small, but a periodic distance in the search would remove it |
+| 25 | The mesh test of `plot_bubbles.py` said "class means not monotone in the size" when a Richardson fit failed, also when the means were monotone but the steps did not shrink (0.610 on 10/11), and it required the fit on the classes out of the verdict too | `scripts/plot_bubbles.py` | misleading reason; a class of 0.5 % of the volume could block the extrapolation | fixed 16/11: the reason is printed per class (not monotone, finer step too large or too small, steps within the noise of the class mean), the fit is required on the classes of the verdict only, and without it the error of the two finest meshes is estimated with an order 1 and 2 |
+| 26 | The scripts of `polydispersebubble/scripts/` had grown with options and branches used once or never (several sides per folder, refinement in MMM, σ instead of ŝ without `sig_hydro.txt`, command-line options) | `scripts/` | long scripts, hard to read | fixed 17/11: functions called once written where they are called, one folder as argument (two for `mesh_compare.py`), the other settings as constants at the top with the values used so far; cubes without ŝ are skipped with a message, one side per folder. Checked on copies of the results and of the hypercube: same tables, `pores.csv` and figures (bit for bit), apart from the column "mesh" and the line on `EXTRA_SIDES` of `mesh_test.txt`/`rve_size.txt`. Also dropped: block 4 of `mesh_compare.txt` (the mesh variants of each folder, already in `mesh_test.txt`; the cost is now block 4), and `plot_bubbles.py` on every run of `analyse_lhs.sh` (`PLOT = 0`: one cube per run) |
+| 27 | The Python transcription of option 4 (`rupture_step`, `replay`, `check`) and the open-loop replays (`section_mmm_replay`, `mmm_surrogate.py --replay`) wrote the equations of the C++ a second time | `pore_distribution.py`, `mmm_surrogate.py`, `runHBFF.sh` | every change of the criterion had to be made and checked on both sides | removed 17/11 (closed loop in the C++ instead); `runHBFF.sh` keeps the gold of the case and the check of `STATES`. `figures/classes_fgr_nfir_mmm.png` is left as the record of section 9.8; `mmm_outputs/replay_nfir.txt/png` deleted 17/11 (replaced by `calibration_nfir.txt/png`, section 9.10) |
+| 28 | `regression/hbs_nfir/plot.py` imports `read_output` from `pore_distribution.py`, which on 16/11 had been moved inside `main()` | `regression/hbs_nfir/plot.py` l. 34 | `plot.py`, the last step of `runHBFF.sh`, stopped at the import | fixed 17/11: `read_output` is a function again |
+| 29 | `mmm_surrogate.py` wrote a table per run (`mmm_outputs/shat_<run>.txt`, rounded to 6 digits) that only its own `--fit` read back | `mmm_surrogate.py`, `analyse_lhs.sh` | 41 files to keep in step with the `pores.csv` of the runs | removed 17/11: `--fit LHS RUN_NFIR` reads the `pores.csv` (same classes, differences ≤ 5e-6 = the rounding; metrics of 9.9 unchanged to the last digit printed). The MMM regression cases keep the surrogate fitted on the tables (μ, σ at their test points within 4e-6 and 2e-5): they change at the next `calibrate_sigma_r.py` |
 
 ---
 

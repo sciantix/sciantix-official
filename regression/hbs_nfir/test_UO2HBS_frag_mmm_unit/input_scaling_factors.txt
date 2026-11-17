@@ -1,0 +1,18 @@
+1.0
+# scaling factor - resolution rate
+1.0
+# scaling factor - trapping rate
+1.0
+# scaling factor - nucleation rate
+1.0
+# scaling factor - diffusivity
+1.0
+# scaling factor - temperature
+1.0
+# scaling factor - fission rate
+1.0
+# scaling factor - diffusion-based release (Cappellari et al., JNM, (2025, under review), 1 = Low release, 2 = Mean production, 3 = Saturation threshold at 50% fractional coverage)
+1.0
+# scaling factor - helium production rate
+1.0
+# scaling factor - dummy
