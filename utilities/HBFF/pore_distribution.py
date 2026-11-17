@@ -28,9 +28,7 @@ This script
         -   width of the radii, 
         -   packing fraction
     
-4.  replays option 4 on the NFIR case (NFIR_CASE, when its output.txt is available) against the C++ and draws its
-    rupture and release figures.
-
+4.  draws the rupture and release figures of the NFIR case of option 4 from its output.txt (NFIR_CASE).
 Reference papers that will be cited in the following:
     -   K. Kulacsy, J. Nucl. Mater. 466 (2015) 409.             = K15
     -   L.O. Jernkvist, EPJ Nucl. Sci. Technol. 5 (2019) 11.    = J19
@@ -76,8 +74,6 @@ NFIR_BURNUP = 103.5  # (GWd/tHM) burnup of the NFIR disc
 # Model choices
 N_CLASSES, SPAN = 81, 4.0  # nodes at ln R = ln R_median +/- 4 s
 A_CLOSURE = 2.0  # closure exponent of the gas per class, n_i ~ R_i^a (2: gas density ~ 1/R, 3: uniform pressure)
-TAU = 2.0  # (s) J19 Table 3 (interconnection and microcracking modes; J19 rupture is instantaneous)
-R_MIN_EVAL, XI_MAX_EVAL = 1.0e-7, 0.35  # validity window of the criterion, on the mean pore
 # Design of the MMM runs
 MMM_CLASSES = 7  # classes of an input
 MMM_RUNS, MMM_SEED = 20, 1  # runs of the Latin hypercube and its seed
@@ -98,8 +94,8 @@ MMM_STATE = "NFIR, end of base irradiation" # geometry before the transient
 # These states are copied by hand: states_agree() compares them with output.txt, update them if the output changes.
 # They do NOT enter the MMM runs (mmm_inputs/run_*.txt), except for T of MMM_STATE, an input of the history that sets
 # the scale p_bar only: the run NFIR is the measured disc (nfir_disc(), NFIR_GAS_VOLUME) and the hypercube is the fixed
-# box MMM_FACTORS around R_V of the disc. A change of the SCIANTIX output moves the SCIANTIX points of the figures and
-# the replay of option 4, not the runs; check only that the new states still fall inside MMM_FACTORS.
+# box MMM_FACTORS around R_V of the disc. A change of the SCIANTIX output moves the SCIANTIX points of the figures,
+# not the runs; check only that the new states still fall inside MMM_FACTORS.
 
 STATES = {
     "NFIR, end of base irradiation": {"T": 903.15, "Ph": 70.0e6, "xi": 0.1304, "Np": 4.924e17, "V": 2.649e-19, "n": 1.199e9, "var": 3.698e17},
@@ -228,54 +224,7 @@ def broken(d, T, xi, Ph):
     p = pore_pressure(d["n"], d["V"], T)
     return stress_concentration(xi) * (p - 2.0 * GAMMA / d["R"] - Ph) >= SIGMA_R + Ph
 
-# Stress concentration factor of MMM: instead of one s_hat for all the classes, the distribution of s_hat
-# of the pores of every class of an MMM run at unit pressure (mmm_surrogate.py, mmm_outputs/shat_<run>.txt):
-#     ln s_hat ~ normal(mu(u), sig(u)),   u = ln(R / R_V),
-# so that a class breaks in part, 
-#     b*_i = P(s_hat >= t_i) = 1 - Phi((ln t_i - mu) / sig), t_i = (sigma_R + P_h) / (p_i - 2 gamma / R_i - P_h). 
-# mu and sig are linear in u between the classes of the run and constant beyond them. 
-# s_hat of MMM pairs with the sigma_R of MMM (D5.2, 275 MPa for one pore size, to recalibrate). 
-# One run only (NFIR): the table does not follow xi and s of the state; the Latin hypercube will give mu, sig as functions of (xi, s, u).
-MMM_SHAT_TABLE = os.path.join(HERE, "mmm_outputs", "shat_NFIR.txt")
-SIGMA_R_MMM = 275.0e6  # (Pa) OperaHPC D5.2
-
-def rupture_step(beta, V, n_ret, var_ret, S1, S2, T, xi, Ph, R_mean, dt, a=A_CLOSURE, criterion=None):
-    """Transcription of HighBurnupStructureFragmentation.C.
-        -   n_ret, var_ret: retained moments of n ('Xe atoms per HBS pore' and its variance); 
-        -   S1, S2: retained fractions of the first and second moment, 
-                    so that the unvented moments are n_ret / S1 and (var_ret + n_ret^2) / S2.
-    Returns beta, D* = sum w beta, G* = sum w n beta / sum w n, and the factors f1, f2 by which the venting of the
-    step reduces the two retained moments. criterion: None for the mean field of J19, or the MMM criterion of
-    broken_fraction()."""
-    n_u = n_ret / S1
-    valid = R_mean >= R_MIN_EVAL and 0.0 < xi < XI_MAX_EVAL
-    if not valid or n_u <= 0.0 or V <= 0.0:
-        return beta, 0.0, 0.0, 1.0, 1.0
-    var_u = max((var_ret + n_ret**2) / S2 - n_u**2, 0.0)
-    d = build(radius_of(V), n_u, var_u, T, a)
-    w, n_i = d["w"], d["n"]
-    kept_old, kept2_old = np.sum(w * n_i * (1.0 - beta)), np.sum(w * n_i**2 * (1.0 - beta))
-
-    if criterion is None: # b*_i of every class: 0 or 1 with the mean field of J19 
-        b_star = broken(d, T, xi, Ph).astype(float)
-    elif xi >= XI_PERC: # For xi >= 0.29 every class is open
-        b_star = np.ones(N_CLASSES)
-    else: # the share of the pores of the class above the threshold with an MMM criterion
-        net = pore_pressure(d["n"], d["V"], T) - 2.0 * GAMMA / d["R"] - Ph
-        R_V = np.cbrt(np.sum(d["w"] * d["R"] ** 3))
-        u = np.log(d["R"] / R_V)
-        # the table of one run whatever the state, or the surrogate over the hypercube at the state (xi, s, eta_bar):
-        # criterion["surrogate"](d, T, xi) gives u, mu, sig on the classes of an MMM run of that state (mmm_surrogate.py)
-        table = criterion["surrogate"](d, T, xi) if "surrogate" in criterion else criterion["table"]
-        mu, sig = np.interp(u, table["u"], table["mu"]), np.interp(u, table["u"], table["sig"])
-        t = (criterion["sigma_R"] + Ph) / np.where(net > 0.0, net, 1.0)
-        b_star = np.where(net > 0.0, ndtr((mu - np.log(t)) / sig), 0.0)
-
-    beta = beta + np.maximum(b_star - beta, 0.0) * (1.0 - np.exp(-dt / TAU))
-    kept_new, kept2_new = np.sum(w * n_i * (1.0 - beta)), np.sum(w * n_i**2 * (1.0 - beta))
-    f1 = kept_new / kept_old if kept_old > 0.0 else 1.0
-    f2 = kept2_new / kept2_old if kept2_old > 0.0 else 1.0
-    return beta, np.sum(w * beta), np.sum(w * n_i * beta) / n_u, f1, f2
+# The s_hat of MMM (mmm_surrogate.py: log-normal per class, from the Latin hypercube) replaces this pair in the C++.
 
 def porosity_per_bin(xi, R_V, s, edges):
     """Porosity in the bins of pore diameter `edges` (m) of a log-normal of ln R with the porosity xi, the radius of
@@ -760,31 +709,28 @@ def pore_radius_figure(cases, n_classes=MMM_CLASSES):
     savefig(fig, "mmm_pore_radius.png")
 
 # %% ------------------------------------------------------------------------------------------------------------------
-# Replay of option 4 on a SCIANTIX case
-# [TBC]
+# The NFIR case of option 4: its output.txt
 
-def time_steps(case_dir, n_rows):
-    """Time step (s) of every row of output.txt."""
-    t_in = np.loadtxt(os.path.join(case_dir, "input_history.txt"))[:, 0]
-    n_steps = 100.0
-    with open(os.path.join(case_dir, "input_settings.txt")) as fh:
-        for line in fh:
-            if "Number_of_time_steps_per_interval" in line:
-                n_steps = float(line.split("#")[0])
-    dt, t = [0.0], t_in[0]
-    while t < t_in[-1]:
-        lower = upper = 0.0
-        for j in range(len(t_in) - 1):
-            if t_in[j] <= t < t_in[j + 1]:
-                lower, upper = t_in[j], t_in[j + 1]
-        step = (upper - lower) / n_steps
-        if t + step > upper:
-            step = upper - t
-        dt.append(step * 3600.0)
-        t += step
-    if len(dt) != n_rows:
-        raise SystemExit(f"time loop gives {len(dt)} rows, output.txt has {n_rows}")
-    return np.array(dt)
+def read_output(path):
+    """Columns of output.txt used here, by name; 'beta' is the (rows, 81) array of the broken fractions.
+    Also used by regression/hbs_nfir/plot.py."""
+    with open(path) as fh:
+        names = [n.split(" (")[0].strip() for n in fh.readline().rstrip("\n").split("\t") if n.strip()]
+    keys = ["Time", "Temperature", "Fission rate", "Hydrostatic stress", "Fission gas release", "Restructured volume fraction",
+            "HBS porosity", "HBS pore density",
+            "HBS pore volume", "HBS pore radius", "Xe atoms per HBS pore", "Xe atoms per HBS pore - variance",
+            "HBS fragmented fraction", "HBS burst release fraction", "HBS gas retention fraction",
+            "HBS gas retention fraction - second moment"]
+    classes_ = [f"HBS broken fraction - class {i}" for i in range(N_CLASSES)]
+    missing = [k for k in keys + classes_ if k not in names]
+    if missing:
+        raise SystemExit(f"{path}: not an output of iHighBurnupStructureFragmentation = 4 (no column '{missing[0]}')")
+    data = np.loadtxt(path, skiprows=1, usecols=[names.index(k) for k in keys + classes_])
+    out = {k: data[:, i] for i, k in enumerate(keys)}
+    out["beta"] = data[:, len(keys):]
+    for k in ("HBS gas retention fraction", "HBS gas retention fraction - second moment"):
+        out[k] = np.where(out[k] > 0.0, out[k], 1.0)  # 0 before the first step of the model
+    return out
 
 def state_of_row(o, k):
     """The state of row k of output.txt in the format of STATES: a row holds the retained moments and S, S_2 after the
@@ -813,55 +759,6 @@ def states_agree(o, tol=1.0e-3):
     if worst > tol:
         print(f"STATES is stale (more than {tol:.0e}), the states of the output:\n" + "\n".join(lines))
     return worst <= tol
-
-def replay(o, criterion=None):
-    """The recursion of option 4 on the history of the NFIR case, with the criterion of rupture_step: per row D, G, S,
-    S_2 and the broken fractions beta (rows, 81). Every step starts from the unvented moments of the C++ (n / S and
-    (Var + n^2) / S_2 of the same row): with another criterion than that of the C++ the replay is open loop, the
-    venting does not act back on the state."""
-    rows = len(o["Time"])
-    dt = time_steps(NFIR_CASE, rows)
-    beta, S1, S2, D, G = np.zeros(N_CLASSES), 1.0, 1.0, 0.0, 0.0
-    out = {"D": np.zeros(rows), "G": np.zeros(rows), "S": np.ones(rows), "S_2": np.ones(rows), "beta": np.zeros((rows, N_CLASSES))}
-    for k in range(1, rows):
-        alpha_old, alpha = o["Restructured volume fraction"][k - 1], o["Restructured volume fraction"][k]
-        dilution = alpha_old / alpha if alpha > alpha_old > 0.0 else 1.0
-        if dilution < 1.0:  # [R] the vented fractions 1 - S and 1 - S_2 are diluted like the broken fractions
-            S1, S2 = 1.0 - (1.0 - S1) * dilution, 1.0 - (1.0 - S2) * dilution
-        beta, d_star, g_star, f1, f2 = rupture_step(
-            beta * dilution, o["HBS pore volume"][k], o["Xe atoms per HBS pore"][k], o["Xe atoms per HBS pore - variance"][k],
-            o["HBS gas retention fraction"][k], o["HBS gas retention fraction - second moment"][k], o["Temperature"][k],
-            o["HBS porosity"][k], -o["Hydrostatic stress"][k] * 1.0e6, o["HBS pore radius"][k], dt[k], criterion=criterion)
-        D, G = max(D * dilution, d_star), max(G * dilution, g_star)
-        S1, S2 = S1 * f1, S2 * f2
-        out["D"][k], out["G"][k], out["S"][k], out["S_2"][k], out["beta"][k] = D, G, S1, S2, beta
-    return out
-
-def check(o, tol=1.0e-6):
-    """Replays the recursion of option 4 on the history of the NFIR case and compares D, G, S, S_2 and the broken
-    fraction of every class with its output o. A row of output.txt holds the retained moments and S, S_2 after the
-    venting of the step: the unvented moments are n / S and (Var + n^2) / S_2 of the same row. The state read from
-    output.txt has 7 digits, so the agreement is not to round-off: tol [N] is above the digits of the file.
-    Returns 0 if every difference is within tol and STATES agrees with the output; 1 otherwise."""
-    rows = len(o["Time"])
-    r = replay(o)
-    err, row = {}, {}
-    for name, mine, theirs in (("D", r["D"], o["HBS fragmented fraction"]), ("G", r["G"], o["HBS burst release fraction"]),
-                               ("S", r["S"], o["HBS gas retention fraction"]),
-                               ("S_2", r["S_2"], o["HBS gas retention fraction - second moment"])):
-        diff = np.abs(mine[1:] - theirs[1:])
-        err[name], row[name] = diff.max(), int(np.argmax(diff)) + 1
-    diff = np.max(np.abs(r["beta"][1:] - o["beta"][1:]), axis=1)
-    err["beta_i"], row["beta_i"] = diff.max(), int(np.argmax(diff)) + 1
-    print(f"\n== replay of option 4 on {os.path.relpath(NFIR_CASE, os.path.join(HERE, '..', '..'))} ({rows} rows) ==")
-    print("largest |python - sciantix|: " + ", ".join(f"{name} {err[name]:.1e}" for name in err) + f" (tol {tol:.0e})")
-    ok = max(err.values()) <= tol
-    if not ok:
-        for name in err:
-            print(f"max |{name}: python - sciantix| = {err[name]:.2e}  (row {row[name]}, T = {o['Temperature'][row[name]]:.1f} K)")
-        print(f"the transcription and the C++ differ by more than {tol:.0e}")
-    ok = states_agree(o) and ok
-    return 0 if ok else 1
 
 def transient_start(o):
     """Row at which the out-of-pile transient starts: the first one without fissions after the base irradiation."""
@@ -929,93 +826,6 @@ def fgr_figure(o):
     print(f"release at the end of the transient: {release[-1]:.2f} % of the gas produced; D = {o['HBS fragmented fraction'][-1]:.4f}, "
           f"G = {o['HBS burst release fraction'][-1]:.4f}, 1 - S = {1.0 - o['HBS gas retention fraction'][-1]:.4f}")
 
-def burst_gas(o, k0):
-    """c of the transient of the C++: release - release(k0) = c (S(k0) - S), the share of the gas produced that the
-    HBS pores hold (in the anneal the release is the venting of the pores only), and the largest deviation from it."""
-    release = o["Fission gas release"][k0:] - o["Fission gas release"][k0]
-    vented = o["HBS gas retention fraction"][k0] - o["HBS gas retention fraction"][k0:]
-    c = release[-1] / vented[-1] if vented[-1] > 0.0 else np.nan
-    return c, float(np.max(np.abs(release - c * vented)))
-
-def release_with(o, r, k0, c):
-    """Release of the transient (fraction of the gas produced) of the NFIR case with the venting of the replay r:
-    c (S_r(k0) - S_r). The columns 'Xe in HBS pores' and 'Xe produced' of the output do not close the balance (the pores
-    hold 2.1 times 'Xe produced in HBS' at the start of the anneal), so c is taken from the C++ (burst_gas)."""
-    return c * (r["S"][k0] - r["S"][k0:])
-
-def section_mmm_replay(o, sigma_scan=(150e6, 200e6, 250e6, 275e6, 300e6, 350e6, 400e6)):
-    """Option 4 on the NFIR case with the s_hat of MMM (MMM_SHAT_TABLE) instead of the mean field of J19, against the
-    C++ (J19) and the Kr-85 release of the anneal: D, G on the heat-up and the release of the transient, open loop
-    (replay()). A scan of sigma_R gives the value that matches the measured release at the end of the anneal."""
-    if not os.path.exists(MMM_SHAT_TABLE):
-        print(f"\nno {MMM_SHAT_TABLE}: python3 mmm_surrogate.py <run folder of MMM> writes it")
-        return
-
-    """u = ln(R / R_V), mu and sig of ln s_hat per class of an MMM run (rows R, u, share, pores, mu, sig, ...)."""
-    data = np.atleast_2d(np.loadtxt(MMM_SHAT_TABLE))
-    order = np.argsort(data[:, 1])
-    table = {"u": data[order, 1], "mu": data[order, 4], "sig": data[order, 5], "path": MMM_SHAT_TABLE}
-
-    k0 = transient_start(o)
-    minutes = (o["Time"][k0:] - o["Time"][k0]) * 60.0
-    cum = np.loadtxt(os.path.join(NFIR_CASE, "..", "data", "CumulativeRelease.txt"), delimiter=";", comments="#", skiprows=2,
-                     encoding="utf-8")
-    c, off = burst_gas(o, k0)
-    # the table of run NFIR whatever the xi and s of the state; the venting does not act back on the state
-    print(f"\n== option 4 with the s_hat of MMM ({os.path.relpath(MMM_SHAT_TABLE, HERE)}), open loop on the NFIR case ==")
-    if off > 1e-3:
-        print(f"release of the transient = c (S(k0) - S) with c = {c:.4f} from the C++: largest deviation {100 * off:.1e} % "
-              "of the gas produced")
-    j19 = 100.0 * (o["Fission gas release"][k0:] - o["Fission gas release"][k0])
-    print(f"J19 (C++): D = {o['HBS fragmented fraction'][-1]:.4f}, G = {o['HBS burst release fraction'][-1]:.4f}, "
-          f"release of the transient {j19[-1]:.2f} %; measured (Kr-85) {cum[-1, 1]:.2f} %")
-    runs = {}
-    for sigma_R in sigma_scan:
-        r = replay(o, {"table": table, "sigma_R": sigma_R})
-        r["release"] = 100.0 * release_with(o, r, k0, c)
-        runs[sigma_R] = r
-    final = np.array([runs[sr]["release"][-1] for sr in sigma_scan])
-    print("release of the transient (%) for sigma_R = " + ", ".join(f"{sr / 1e6:.0f}" for sr in sigma_scan) + " MPa: "
-          + ", ".join(f"{v:.1f}" for v in final))
-    fit = None
-    if np.all(np.diff(final) < 0) and final[-1] <= cum[-1, 1] <= final[0]:
-        # secant from the two values of the scan around the measured release
-        j = int(np.nonzero(final >= cum[-1, 1])[0][-1])
-        pts = [(sigma_scan[j], final[j]), (sigma_scan[j + 1], final[j + 1])]
-        for _ in range(3):
-            (s1, f1), (s2, f2) = pts[-2], pts[-1]
-            fit = s2 + (cum[-1, 1] - f2) * (s2 - s1) / (f2 - f1)
-            runs[fit] = replay(o, {"table": table, "sigma_R": fit})
-            runs[fit]["release"] = 100.0 * release_with(o, runs[fit], k0, c)
-            pts.append((fit, runs[fit]["release"][-1]))
-        print(f"sigma_R that gives the measured release at the end of the anneal: {fit / 1e6:.0f} MPa (replay: "
-              f"{runs[fit]['release'][-1]:.2f} %)")
-    else:
-        print("the measured release at the end is outside the scan of sigma_R: no fit")
-
-    T = o["Temperature"]
-    heat = slice(k0, k0 + int(np.argmax(T[k0:])) + 1)
-    fig, ax = plt.subplots(1, 2, figsize=(12.5, 4.6))
-    ax[0].plot(T[heat], o["HBS fragmented fraction"][heat], color=ORANGE, lw=1.6, label="D, J19 (C++)")
-    ax[0].plot(T[heat], o["HBS burst release fraction"][heat], color=ORANGE, lw=1.6, ls="--", label="G, J19 (C++)")
-    shown = [(SIGMA_R_MMM, BLUE)] + ([(fit, GREEN)] if fit else [])
-    for sigma_R, color in shown:
-        r = runs[sigma_R]
-        ax[0].plot(T[heat], r["D"][heat], color=color, lw=1.6, label=f"D, MMM, $\\sigma_R$ = {sigma_R / 1e6:.0f} MPa")
-        ax[0].plot(T[heat], r["G"][heat], color=color, lw=1.6, ls="--", label=f"G, MMM, $\\sigma_R$ = {sigma_R / 1e6:.0f} MPa")
-    ax[0].set(xlabel="T (K)", ylabel="fraction", ylim=(0, 1), title="Broken pores (D, number) and their gas (G) on the heat-up")
-    ax[1].plot(minutes, j19, color=ORANGE, lw=1.6, label="SCIANTIX, J19 mean field")
-    for sigma_R, color in shown:
-        ax[1].plot(minutes, runs[sigma_R]["release"], color=color, lw=1.6,
-                   label=f"MMM $\\hat s$, $\\sigma_R$ = {sigma_R / 1e6:.0f} MPa" + (" (fitted)" if sigma_R == fit else " (D5.2)"))
-    ax[1].plot(cum[:, 0], cum[:, 1], "o", ms=3, mfc="none", color="k", label="NFIR, Noirot et al., 2014 (Kr-85)")
-    ax[1].set(xlabel="time from the start of the transient (min)", ylabel="release (% of the gas produced)",
-              title="Release of the anneal (MMM: open loop)")
-    for a in ax:
-        a.grid(True, color=GRID)
-        a.legend(frameon=False, fontsize=8)
-    savefig(fig, "classes_fgr_nfir_mmm.png")
-
 
 # %% ------------------------------------------------------------------------------------------------------------------
 # Main
@@ -1035,33 +845,14 @@ def main():
     pore_radius_figure(cases, MMM_CLASSES)
     output = os.path.join(NFIR_CASE, "output.txt")
     if not os.path.exists(output):
-        print(f"\nno {output}: run the NFIR case for its replay and its rupture and release figures")
+        print(f"\nno {output}: run the NFIR case for its rupture and release figures")
         print_figures()
         return 0
 
-    # Columns of output.txt used here, by name; 'beta' is the (rows, 81) array of the broken fractions. 
-    with open(output) as fh:
-        names = [n.split(" (")[0].strip() for n in fh.readline().rstrip("\n").split("\t") if n.strip()]
-    keys = ["Time", "Temperature", "Fission rate", "Hydrostatic stress", "Fission gas release", "Restructured volume fraction",
-            "HBS porosity", "HBS pore density",
-            "HBS pore volume", "HBS pore radius", "Xe atoms per HBS pore", "Xe atoms per HBS pore - variance",
-            "HBS fragmented fraction", "HBS burst release fraction", "HBS gas retention fraction",
-            "HBS gas retention fraction - second moment"]
-    classes_ = [f"HBS broken fraction - class {i}" for i in range(N_CLASSES)]
-    missing = [k for k in keys + classes_ if k not in names]
-    if missing:
-        raise SystemExit(f"{output}: not an output of iHighBurnupStructureFragmentation = 4 (no column '{missing[0]}')")
-    data = np.loadtxt(output, skiprows=1, usecols=[names.index(k) for k in keys + classes_])
-    out = {k: data[:, i] for i, k in enumerate(keys)}
-    out["beta"] = data[:, len(keys):]
-    for k in ("HBS gas retention fraction", "HBS gas retention fraction - second moment"):
-        out[k] = np.where(out[k] > 0.0, out[k], 1.0)  # 0 before the first step of the model
-    o = out
-
-    status = check(o)
+    o = read_output(output)
+    status = 0 if states_agree(o) else 1
     rupture_figure(o)
     fgr_figure(o)
-    section_mmm_replay(o)
     print_figures()
     return status
 

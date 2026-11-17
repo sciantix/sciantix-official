@@ -46,18 +46,14 @@
 //   L1 [R]  the pressure is uniform over the pore classes in option 3; in option 4 it follows the closure
 //           n_i ~ R_i^a, a gas density ~ R^(a - 3): a = 2 is a density ~ 1/R (for an ideal gas a pressure ~ 1/R,
 //           the shape of the punching overpressure of K15 and J19), a = 3 a uniform pressure.
-//   L2 [R]  options 1, 2, 3: the venting scales the gas by (1 - dG) and its variance by the square, as if every pore
-//           lost the same fraction of its gas. Option 4 vents the broken classes only.
+//   L2 [R]  options 1, 2, 3: the venting scales the gas by (1 - dG) and its variance by the square, as if every pore lost the same fraction of its gas. Option 4 vents the broken classes only.
 //   L3 [E]  options 1, 3, 4 use the hard-sphere EoS of the porosity model; option 2 uses van der Waals in place of
 //           Ronchi. Ronchi (1981) gives the EoS as a table (T, V) -> P to be interpolated (Kulacsy 3.1.2), not a
 //           closed form: pending digitisation of that table, van der Waals stays as the documented deviation.
 //   L4 [?]  the fragments are equiaxed; HBS fragments are acicular (NEA/CSNI/R(2016)16, 3.1.3).
 //   L5 [?]  no lower bound on the fragment size (a 40 um HBS fragment does not fragment further at 1300 C).
 //   L6 [N]  D and G are cumulative maxima.
-//   L7 [?]  option 2 starts the transient at the first step in which the fission rate falls, and keeps the state of
-//           the step before as the reference (T_ss, P_h,ss); if the fission rate falls below 1 % of that value and
-//           later returns above 50 % of it, the power-off was an outage and the reference state is tracked again. A
-//           power step-down that never reaches 1 % is read as the transient start for the rest of the history.
+//   L7 [?]  option 2 starts the transient at the first step in which the fission rate falls, and keeps the state of the step before as the reference (T_ss, P_h,ss); if the fission rate falls below 1 % of that value and later returns above 50 % of it, the power-off was an outage and the reference state is tracked again. A power step-down that never reaches 1 % is read as the transient start for the rest of the history.
 //   L8 [?]  the porosity model relaxes the vented pores (capillary shrinkage; with partial venting the survivors
 //           lose gas).
 //   L9 [?]  the criteria act only for a mean pore radius of at least 0.1 um and a porosity below 0.35; the window
@@ -75,8 +71,10 @@
 //           structure, no cladding strain, no real T and P_h traces.
 //   L15 [?] no heating-rate dependence except the relaxation time of option 4; only the HBS is fragmented.
 //   L16 [?] option 4: the closure exponent a is not determined by the SCIANTIX moments and sets which classes break;
-//           the stress concentration factor is the mean-field one of J19 (porosity only, no dependence on the
-//           class and no scatter) until the MMM tables exist; the relaxation time tau = 2 s is borrowed from the
+//           without input_hbs_shat.txt the stress concentration factor is the mean-field one of J19 (porosity only,
+//           no dependence on the class and no scatter); with it, the s_hat of MMM is a surrogate of RVE runs at zero
+//           macroscopic stress (P_h enters through the net pressure only), its inputs are clipped to the range of
+//           the runs, and its sigma_R is calibrated on the NFIR anneal; the relaxation time tau = 2 s is borrowed from the
 //           J19 interconnection and microcracking modes (J19 rupture is instantaneous); the pores do not interact
 //           after a break; the classes keep their rank in the size distribution while the moments evolve, and the
 //           unvented moments follow the retained ones in proportion between two steps.
@@ -85,8 +83,178 @@
 
 #include <algorithm>
 #include <cmath>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
+
+
+namespace
+{
+// s_hat of MMM for option 4 [P] [N]: the surrogate over the Latin hypercube of utilities/HBFF/mmm_surrogate.py --fit, read from input_hbs_shat.txt in the folder of the case. Without that file option 4 keeps the mean field of J19. In every class of pores ln s_hat ~ normal(mu, sig), with mu and ln sig = f(z), z_d = (x_d - mean_d) / std_d, the inputs x_d (xi, s, eta_bar, u) clipped to the range of the runs:
+//    f(z) = beta_0 + sum_d beta_d z_d + scale * amplitude2 * sum_j alpha_j exp(-0.5 sum_d ((z_d - z_jd) / length_d)^2)
+// (linear trend + Gaussian process with an RBF kernel). The file carries sigma_R (Pa), which pairs with this s_hat.
+struct ShatFunction
+{
+    std::vector<double> beta, length, points, alpha;  // points: one row of the standardised inputs per point
+    double              scale = 0.0, amplitude2 = 0.0;
+
+    double operator()(const std::vector<double>& z) const
+    {
+        const std::size_t d     = z.size();
+        double            trend = beta[0], gp = 0.0;
+        for (std::size_t k = 0; k < d; ++k)
+            trend += beta[k + 1] * z[k];
+        for (std::size_t j = 0; j < alpha.size(); ++j)
+        {
+            double r2 = 0.0;
+            for (std::size_t k = 0; k < d; ++k)
+            {
+                const double t = (z[k] - points[j * d + k]) / length[k];
+                r2 += t * t;
+            }
+            gp += alpha[j] * std::exp(-0.5 * r2);
+        }
+        return trend + scale * amplitude2 * gp;
+    }
+};
+
+struct ShatSurrogate
+{
+    bool                     active  = false;
+    double                   sigma_r = 0.0;  // (Pa)
+    std::vector<std::string> inputs;         // names, among xi, s, eta_bar, u
+    std::vector<double>      mean, spread, lower, upper;
+    ShatFunction             mu, ln_sig;
+
+    // mu and sig of ln s_hat at the inputs x (in the order of `inputs`), clipped to the range of the runs if clip
+    void predict(std::vector<double> x, bool clip, double& mu_out, double& sig_out) const
+    {
+        std::vector<double> z(x.size());
+        for (std::size_t k = 0; k < x.size(); ++k)
+        {
+            if (clip)
+                x[k] = std::min(std::max(x[k], lower[k]), upper[k]);
+            z[k] = (x[k] - mean[k]) / spread[k];
+        }
+        mu_out  = mu(z);
+        sig_out = std::exp(ln_sig(z));
+    }
+};
+
+// Read once, at the first call: input_hbs_shat.txt is the file mmm_surrogate.py writes (keywords and numbers; '#' starts
+// a comment). Its test points are evaluated here and the run stops if they do not give the mu and sig of the file.
+const ShatSurrogate& shat_surrogate()
+{
+    static ShatSurrogate surrogate;
+    static bool          read = false;
+    if (read)
+        return surrogate;
+    read = true;
+
+    const std::string name = "input_hbs_shat.txt";
+    std::ifstream     file(TestPath + name);
+    if (!file)
+        return surrogate;
+
+    std::vector<std::string> tokens;
+    std::string              line, token;
+    while (std::getline(file, line))
+    {
+        std::istringstream words(line.substr(0, line.find('#')));
+        while (words >> token)
+            tokens.push_back(token);
+    }
+    std::size_t at   = 0;
+    auto        fail = [&](const std::string& what)
+    { ErrorMessages::Fatal(__FILE__, name + ": " + what + " (token " + std::to_string(at) + ")"); };
+    auto word = [&](const std::string& expected)
+    {
+        if (at >= tokens.size() || tokens[at] != expected)
+            fail("expected '" + expected + "'");
+        ++at;
+    };
+    auto number = [&]()
+    {
+        if (at >= tokens.size())
+            fail("the file ends too early");
+        std::istringstream value_stream(tokens[at]);
+        double             value = 0.0;
+        if (!(value_stream >> value))
+            fail("not a number: '" + tokens[at] + "'");
+        ++at;
+        return value;
+    };
+    auto numbers = [&](std::size_t count)
+    {
+        std::vector<double> values(count);
+        for (double& value : values)
+            value = number();
+        return values;
+    };
+
+    word("sigma_R");
+    surrogate.sigma_r = number();
+    word("inputs");
+    const std::size_t d = std::size_t(number());
+    for (std::size_t k = 0; k < d; ++k)
+    {
+        if (at >= tokens.size())
+            fail("the file ends too early");
+        const std::string input = tokens[at++];
+        if (input != "xi" && input != "s" && input != "eta_bar" && input != "u")
+            fail("unknown input '" + input + "'");
+        surrogate.inputs.push_back(input);
+    }
+    word("mean");
+    surrogate.mean = numbers(d);
+    word("std");
+    surrogate.spread = numbers(d);
+    word("lower");
+    surrogate.lower = numbers(d);
+    word("upper");
+    surrogate.upper = numbers(d);
+    for (const std::string output : {"mu", "lnsig"})
+    {
+        ShatFunction& f = output == "mu" ? surrogate.mu : surrogate.ln_sig;
+        word("output");
+        word(output);
+        word("beta");
+        f.beta = numbers(d + 1);
+        word("scale");
+        f.scale = number();
+        word("amplitude2");
+        f.amplitude2 = number();
+        word("length");
+        f.length = numbers(d);
+        word("points");
+        const std::size_t n_points = std::size_t(number());
+        for (std::size_t j = 0; j < n_points; ++j)
+        {
+            const std::vector<double> row = numbers(d + 1);
+            f.points.insert(f.points.end(), row.begin(), row.end() - 1);
+            f.alpha.push_back(row.back());
+        }
+    }
+    word("tests");
+    const std::size_t n_tests = std::size_t(number());
+    for (std::size_t j = 0; j < n_tests; ++j)
+    {
+        const std::vector<double> x     = numbers(d);
+        const double              mu    = number();
+        const double              sig   = number();
+        double                    mu_cpp, sig_cpp;
+        surrogate.predict(x, false, mu_cpp, sig_cpp);
+        if (std::abs(mu_cpp - mu) > 1.0e-9 * (1.0 + std::abs(mu)) || std::abs(sig_cpp / sig - 1.0) > 1.0e-9)
+            fail("test point " + std::to_string(j) + " gives mu, sig = " + std::to_string(mu_cpp) + ", " +
+                 std::to_string(sig_cpp) + " instead of " + std::to_string(mu) + ", " + std::to_string(sig));
+    }
+    if (at != tokens.size())
+        fail("unexpected text after the test points");
+    surrogate.active = true;
+    return surrogate;
+}
+}  // namespace
 
 void Simulation::HighBurnupStructureFragmentation()
 {
@@ -106,8 +274,7 @@ void Simulation::HighBurnupStructureFragmentation()
 
     Matrix fuel_(matrices["UO2HBS"]);
 
-    // New restructured material is intact [R]: when the restructured volume fraction alpha grows, what is broken is
-    // diluted by alpha_old / alpha.
+    // New restructured material is intact [R]: when the restructured volume fraction alpha grows, what is broken is diluted by alpha_old / alpha.
     const double alpha_old = sciantix_variable["Restructured volume fraction"].getInitialValue();
     const double alpha     = sciantix_variable["Restructured volume fraction"].getFinalValue();
     const double dilution  = (alpha > alpha_old && alpha_old > 0.0) ? alpha_old / alpha : 1.0;
@@ -116,13 +283,12 @@ void Simulation::HighBurnupStructureFragmentation()
     double retention_old = sciantix_variable["HBS gas retention fraction"].getInitialValue() > 0.0
                                ? sciantix_variable["HBS gas retention fraction"].getInitialValue()
                                : 1.0;
-    // option 4: retained fraction of the second moment of n, and the factors by which the venting of this step
-    // reduces the two retained moments
     double retention2_old    = sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue() > 0.0
                                    ? sciantix_variable["HBS gas retention fraction - second moment"].getInitialValue()
                                    : 1.0;
     double vent_first_moment = 1.0, vent_second_moment = 1.0;
-    // option 4: the vented fractions 1 - S and 1 - S_2 are sums over the broken classes, diluted like them [R]
+
+    // option 4: the vented shares of the moments, 1 - S and 1 - S_2, are diluted as the broken classes [R]
     if (option == 4 && dilution < 1.0)
     {
         retention_old  = 1.0 - (1.0 - retention_old) * dilution;
@@ -138,20 +304,17 @@ void Simulation::HighBurnupStructureFragmentation()
     const double varn =
         sciantix_variable["Xe atoms per HBS pore - variance"].getFinalValue() / (retention_old * retention_old);
 
-    // Pore pressure [R], hard-sphere (Carnahan-Starling) EoS of HighBurnupStructurePorosity.C:
-    //  p_g = n k_B T Z(eta) / V_p,   Z = (1 + eta + eta^2 - eta^3) / (1 - eta)^3,   eta = min(n v_Xe(T) / V_p, 0.65)
-    //  v_Xe = (pi/6) d_Xe^3,   d_Xe = 4.45e-10 [0.8542 - 0.03996 ln(T / 231.2)] m
-    //  n = Xe atoms per pore, V_p = pore volume.
-    const double xe_diameter   = 4.45e-10 * (0.8542 - 0.03996 * std::log(T / 231.2));
-    const double xe_volume     = M_PI / 6.0 * std::pow(xe_diameter, 3.0);
+    // Pore pressure [R], hard-sphere (Carnahan-Starling) EoS
+    const double xe_diameter   = 4.45e-10 * (0.8542 - 0.03996 * std::log(T / 231.2)); // (m)
+    const double xe_volume     = M_PI / 6.0 * std::pow(xe_diameter, 3.0); // (m3)
     const double eta_cap       = 0.65;  // cap of the hard-sphere packing fraction
-    auto         hard_sphere_Z = [](double eta)
+    auto         hard_sphere_Z = [](double eta) // Z(eta)
     { return (1.0 + eta + eta * eta - eta * eta * eta) / std::pow(1.0 - eta, 3.0); };
     auto pore_pressure = [&](double atoms, double volume)
     {
         if (volume <= 0.0 || atoms <= 0.0)
             return 0.0;
-        const double eta = std::min(atoms * xe_volume / volume, eta_cap);
+        const double eta = std::min(atoms * xe_volume / volume, eta_cap); // adimensional
         return atoms * boltzmann_constant * T * hard_sphere_Z(eta) / volume;
     };
     const double pg = pore_pressure(n, V);
@@ -159,10 +322,12 @@ void Simulation::HighBurnupStructureFragmentation()
     // last-cycle reference state of K15: it stops updating at the transient start [?] L7
     double T_ss  = sciantix_variable["HBFF reference temperature"].getInitialValue();
     double Ph_ss = sciantix_variable["HBFF reference hydrostatic pressure"].getInitialValue();
-    // HBFF transient flag: 0 = the reference state is tracked; F_ref > 0 = transient since the step in which the
-    // fission rate fell from F_ref; -F_ref = the fission rate is also below 1 % of F_ref (power off). If the power then
-    // returns above 50 % of F_ref the power-off was an outage, not the transient, and the reference state is tracked
-    // again. The fission rate carries a relative noise of about 1e-9 where the history changes T or P_h at constant
+    // HBFF transient flag: 
+    //      0         = the reference state is tracked; 
+    //      F_ref > 0 = transient since the step in which the fission rate fell from F_ref; 
+    //      -F_ref    = the fission rate is also below 1 % of F_ref (power off). 
+    //                  If the power then returns above 50 % of F_ref the reference state is tracked again. 
+    // The fission rate carries a relative noise of about 1e-9 where the history changes T or P_h at constant
     // power: the 1 % and 50 % thresholds are not sensitive to it, the start test (any fall) is.
     double transient = sciantix_variable["HBFF transient flag"].getInitialValue();
     if (option == 2)
@@ -178,8 +343,7 @@ void Simulation::HighBurnupStructureFragmentation()
         if (transient == 0.0)
         {
             const bool start = fission_rate < fission_rate_old;
-            // first step in which the fission rate falls: the reference state is the last one at full power, whether
-            // the history switches the fission rate off in one step or ramps it down together with the temperature
+            // first step in which the fission rate falls: the reference state is the last one at full power, whether the history switches the fission rate off in one step or ramps it down together with the temperature
             if (start)
                 transient = fission_rate_old;
             if (!start || T_ss == 0.0)
@@ -194,14 +358,13 @@ void Simulation::HighBurnupStructureFragmentation()
     sciantix_variable["HBFF transient flag"].setFinalValue(transient);
 
     // [?] validity window of the criteria
-    const double r_min_eval = 1.0e-7;  // (m) K15 covers 0.1 to 2 um; nanometric nuclei are not the micron pores
-    const double xi_max_eval =
-        0.35;  // (/) MATPRO strength vanishes at xi = 0.38; HBS porosity saturates below 0.3 (J19)
+    const double r_min_eval = 1.0e-7;  // (m) K15 covers 0.1 to 2 um;
+    const double xi_max_eval = 0.35;  // (/) MATPRO strength vanishes at xi = 0.38; HBS porosity saturates below 0.3 (J19)
     const bool state_valid = (R >= r_min_eval && xi > 0.0 && xi < xi_max_eval);
 
-    // Parameter definition: each option resolves the instantaneous criterion into (D*, G*), the pore-number and
-    // gas-weighted fractions broken this step (0 outside the validity window, or before option 2's transient starts).
+    // Parameter definition: each option resolves the instantaneous criterion into (D*, G*), the pore-number and gas-weighted fractions broken this step (0 outside the validity window, or before option 2's transient starts).
     double      d_star = 0.0, g_star = 0.0;
+
     std::string reference;
 
     switch (option)
@@ -211,10 +374,9 @@ void Simulation::HighBurnupStructureFragmentation()
             // Option 1: Jernkvist (2019) [P]
             // J19 Eq. 22 = J20 Eq. 7 with phi_2 -> phi_3.
             //
-            // Force balance across the plane (Olander 1997, J20 Eq. 7) with the areal fraction replaced by the porosity
-            //   xi and the far-field stress by -P_h (J19 Eq. 22):
-            //     P_cr = P_s + [ sigma_hbs^cr (1 - xi) + P_h ] / xi,      sigma_hbs^cr = 21 MPa (J19 Table 4).
-            //
+            // Force balance across the plane (Olander 1997, J20 Eq. 7) with the areal fraction replaced by the porosity xi and the far-field stress by -P_h (J19 Eq. 22):
+            //     P_cr = P_s + [ sigma_hbs^cr (1 - xi) + P_h ] / xi,      
+            //     sigma_hbs^cr = 21 MPa (J19 Table 4).
             // The rupture releases the whole population.
             // Rupture when p_g >= P_cr on the mean pore: D* = G* = 1.
             reference = ": Jernkvist (2019), EPJ Nucl. Sci. Technol. 5, 11, Eq. 22";
@@ -223,7 +385,7 @@ void Simulation::HighBurnupStructureFragmentation()
             {
                 // [P] J19 Table 4
                 const double sigma_hbs_cr = 21.0e6;  // (Pa)
-                const double p_cr         = 2.0 * fuel_.getSurfaceTension() / R + (sigma_hbs_cr * (1.0 - xi) + Ph) / xi;
+                const double p_cr = 2.0 * fuel_.getSurfaceTension() / R + (sigma_hbs_cr * (1.0 - xi) + Ph) / xi;
 
                 if (pg >= p_cr)
                 {
@@ -237,15 +399,17 @@ void Simulation::HighBurnupStructureFragmentation()
         case 2:
         {
             // Option 2: Kulacsy (2015) [P]
-            //  Before the transient every class of radius r is at the dislocation punching pressure (K15 Eq. 3, 12-14):
+            // Before the transient every class of radius r is at the dislocation punching pressure (K15 Eq. 3, 12-14):
             //     p_0(r) = P_h,ss + 2 gamma_ss / r + G b / r
             //  T_ss and P_h,ss are the last-cycle state; the gas per class n_i follows from p_0 with the EoS at T_ss.
             //  Stress and strength (K15 Eq. 7, 11, 15):
-            //     sigma_t = p_i - (3/2 P_h + 2 gamma(T, xi) / r),   gamma(T, xi) = 0.41 (0.85 - 1.4e-4 T) (1 -
-            //     xi)^4.025 N/m sigma_f(T, xi) = 170 MPa exp(-191.34 / min(T, 1000)) sqrt(1 - 2.62 xi) (MATPRO FFRACS)
+            //     sigma_t = p_i - (3/2 P_h + 2 gamma(T, xi) / r),   
+            //     gamma(T, xi) = 0.41 (0.85 - 1.4e-4 T) (1 - xi)^4.025 N/m 
+            //     sigma_f(T, xi) = 170 MPa exp(-191.34 / min(T, 1000)) sqrt(1 - 2.62 xi) (MATPRO FFRACS)
             //  Classes are log-normal with median exp(-0.5) um and sigma_lnr = 0.356 (K15 Table 2).
             //  The classes below the smallest stable pore do not exist. With w_i the renormalised weights:
-            //     D* = sum_i w_i [sigma_t,i > sigma_f],      G* = sum_i w_i n_i [sigma_t,i > sigma_f] / sum_i w_i n_i.
+            //     D* = sum_i w_i [sigma_t,i > sigma_f],      
+            //     G* = sum_i w_i n_i [sigma_t,i > sigma_f] / sum_i w_i n_i.
             reference = ": Kulacsy (2015), J. Nucl. Mater. 466, 409";
 
             if (state_valid && transient != 0.0)
@@ -330,9 +494,7 @@ void Simulation::HighBurnupStructureFragmentation()
                         // [P] K15 Eq. 11 (N/m)
                         const double kulacsyGamma = 0.41 * (0.85 - 1.4e-4 * T) * std::pow(1.0 - xi, 4.025);
                         // K15 Eq. 7, 1.0 factor on the net pressure; J20 gives 1/2 for a spherical pore [E]
-                        // J20: "we note that Kulacsy used the rupture criterion in Eq. (5) in her recent study on rim
-                        // zone fragmentation during LOCA (Kulacsy, 2015). She assumed that the overpressurized rim zone
-                        // pores were spherical, but obviously used F1 = 1 instead of the correct value F1 = 1_2."
+                        // J20: "we note that Kulacsy used the rupture criterion in Eq. (5) in her recent study on rim zone fragmentation during LOCA (Kulacsy, 2015). She assumed that the overpressurized rim zone pores were spherical, but obviously used F1 = 1 instead of the correct value F1 = 1_2."
                         const double sigma_t = p_i - 2.0 * kulacsyGamma / radii[i] - 1.5 * Ph;
                         gas_sum += weight * n_i;
 
@@ -357,9 +519,7 @@ void Simulation::HighBurnupStructureFragmentation()
             // Option 3: LEFM [P] penny crack, [R] capillarity, [?] interaction factor
             // Penny-shaped crack of radius R under the pore pressure (IR57, J20 Eq. 8):
             //     P_cr(R) = P_h + 2 gamma / R + (1 / (2 Y)) sqrt( pi E G_hbs / ((1 - nu^2) R) )
-            // IR57/J20 Eq. 8 is derived for a flat penny-shaped crack (R1, R2 -> infinity), so it has no capillary
-            // term. A real pore is closer to a filled cavity than to a flat crack, so the capillary pressure 2 gamma /
-            // R is added;
+            // IR57/J20 Eq. 8 is derived for a flat penny-shaped crack (R1, R2 -> infinity), so it has no capillary term. A real pore is closer to a filled cavity than to a flat crack, so the capillary pressure 2 gamma / R is added;
             //  P_cr decreases with R: the pores with R >= R_c, P_cr(R_c) = p_g, break (bisection on R_c).
             // With z = ln(R_c / R_mean) / sigma_lnR:
             //   D* = (1/2) erfc(z / sqrt(2))
@@ -369,13 +529,10 @@ void Simulation::HighBurnupStructureFragmentation()
 
             if (state_valid && pg > 0.0)
             {
-                // G_hbs is fitted on the NFIR Kr-85 release (OHP Fig. 9, 29.8 % at 1200 C) [?]; with the bulk 2 J/m2 of
-                // SetMatrix.C the criterion gives hundreds of MPa and cannot break the pores (J20: the local G is below
-                // the bulk G).
+                // G_hbs is fitted on the NFIR Kr-85 release (OHP Fig. 9, 29.8 % at 1200 C) [?]; with the bulk 2 J/m2 of SetMatrix.C the criterion gives hundreds of MPa and cannot break the pores (J20: the local G is below the bulk G).
                 const double g_hbs = 0.055;  // (J/m2)
 
-                // The interaction factor Y (J20 gives F3 in [2, 2.61] for a similar geometry dependence in the Harwell
-                // criterion, Eq. 9) is left at 1, unfitted [?]:
+                // The interaction factor Y (J20 gives F3 in [2, 2.61] for a similar geometry dependence in the Harwell criterion, Eq. 9) is left at 1, unfitted [?]:
                 const double y_factor = 1.0;
 
                 // [R] UO2HBS elastic modulus of SetMatrix.C (Pa), recomputed here from the current xi, T, Bu:
@@ -404,8 +561,7 @@ void Simulation::HighBurnupStructureFragmentation()
                         }
                         const double r_c = std::sqrt(lo * hi);
 
-                        //   Pore classes [R] [N]. SCIANTIX keeps two moments of n (mean n and Var(n)); the radius is
-                        //   log-normal, R ~ n^(1/3):
+                        //   Pore classes [R] [N]. SCIANTIX keeps two moments of n (mean n and Var(n)); the radius is log-normal, R ~ n^(1/3):
                         //     CV_R = sqrt(Var(n)) / (3 n),   sigma_lnR = sqrt(ln(1 + CV_R^2)),
                         double sigma_lnR = 0.0;
                         if (n > 0.0 && varn > 0.0)
@@ -437,35 +593,18 @@ void Simulation::HighBurnupStructureFragmentation()
 
         case 4:
         {
-            // Option 4: rupture per pore class, progressive [R] [P] [?] (utilities/HBFF/README.md)
-            //  Classes [R] [N]. SCIANTIX carries the mean pore volume V, the mean Xe atoms per pore n and Var(n).
-            //  The radius is log-normal on 81 nodes x_i in [-4, 4] with number weights w_i ~ exp(-x_i^2 / 2):
-            //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),
-            //  so that sum_i w_i V_i = V for any width s. The gas is shared among the classes as
-            //     n_i = n R_i^a / sum_j w_j R_j^a,   a = 2 [?]
-            //  i.e. a gas density n_i / V_i ~ R_i^(a - 3): ~ 1/R for a = 2 (for an ideal gas a pressure ~ 1/R, the
-            //  shape of the punching overpressure of K15 and J19; the hard-sphere pressure is steeper), uniform for a
-            //  = 3. s is the root of sum_i w_i (n_i - n)^2 = Var(n) on the nodes. V, n and Var(n) hold on the classes.
-            //  Pressure per class: hard-sphere EoS on (n_i, V_i).
-            //  Rupture of class i: first principal stress at the pore wall above the rupture stress (OHP 2.2.2),
-            //     s_hat (p_i - 2 gamma / R_i - P_h) >= sigma_R + P_h,
-            //  s_hat the stress concentration factor per unit net pressure. s_hat and sigma_R come as a pair: here
-            //  the mean-field pair of J19 Eq. 22 [P], s_hat = xi / (1 - xi) and sigma_R = sigma_hbs^cr = 21 MPa, the
-            //  same for all classes. For xi >= 0.29 every class is open [E] (J19 vents only the excess over c_dp / R).
-            //  Progressive rupture [?]: each class carries its broken fraction beta_i,
-            //     beta_i <- beta_i + max(b*_i - beta_i, 0) (1 - exp(-dt / tau)),   tau = 2 s,
-            //  b*_i = 1 if the class meets the criterion (J19 Table 3 gives tau = 2 s to the interconnection and
-            //  microcracking modes; its rupture mode is instantaneous).
-            //     D = sum_i w_i beta_i,   G = sum_i w_i n_i beta_i / sum_i w_i n_i.
-            //  Venting [R]: the gas leaves the broken classes only. The retained first and second moment of n are
-            //  sum_i w_i n_i (1 - beta_i) and sum_i w_i n_i^2 (1 - beta_i); S and S_2 are their ratios to the unvented
-            //  ones, so that the criterion sees the unvented moments n / S and (Var(n) + n^2) / S_2.
-            //  Dilution [R]: new restructured material is intact, in every class: beta_i, 1 - S and 1 - S_2 are
-            //  multiplied by alpha_old / alpha when alpha grows.
-            reference = ": pore classes from the SCIANTIX moments; rupture per class with the mean-field stress "
-                        "concentration factor of Jernkvist (2019), EPJ Nucl. Sci. Technol. 5, 11, Eq. 22; progressive "
-                        "rupture as GrainBoundaryMicroCracking";
+            // Option 4: rupture per pore class, progressive [R] [P] [?] (utilities/HBFF/README.md, section 3). The
+            // venting of the broken classes and the dilution of the retained moments are applied after the switch.
+            const ShatSurrogate& mmm = shat_surrogate();
+            reference = mmm.active
+                            ? ": pore classes from the SCIANTIX moments; rupture per class with the stress concentration "
+                              "factor of the micromechanics (MMM surrogate of input_hbs_shat.txt); progressive rupture as "
+                              "GrainBoundaryMicroCracking"
+                            : ": pore classes from the SCIANTIX moments; rupture per class with the mean-field stress "
+                              "concentration factor of Jernkvist (2019), EPJ Nucl. Sci. Technol. 5, 11, Eq. 22; "
+                              "progressive rupture as GrainBoundaryMicroCracking";
 
+            // broken fraction beta_i of each class; new restructured material is intact [R]: beta_i x alpha_old / alpha
             std::vector<double> beta(HBFF_N_CLASSES);
             for (int i = 0; i < HBFF_N_CLASSES; ++i)
                 beta[i] =
@@ -473,35 +612,38 @@ void Simulation::HighBurnupStructureFragmentation()
 
             if (state_valid && pg > 0.0)
             {
-                const double sigma_r     = 21.0e6;  // (Pa) [P] J19 Table 4, pairs with the mean-field s_hat
-                const double xi_perc     = 0.29;    // (/) [P] J19, percolation of the HBS pores
+                // (Pa) [P] J19 Table 4, pairs with the mean-field s_hat; with the s_hat of MMM, the sigma_R of its file
+                const double sigma_r     = mmm.active ? mmm.sigma_r : 21.0e6;
+                const double xi_perc     = 0.29;    // (/) [P] J19, percolation of the HBS pores: every class open above
                 const double tau_rupture = 2.0;     // (s) [?]
                 const double a_closure   = 2.0;     // (/) [?] gas per class n_i ~ R_i^a
                 const double class_span  = 4.0;     // [N] nodes at ln R = ln R_median +/- 4 s
                 const double gamma       = fuel_.getSurfaceTension();
 
-                // [P] mean-field stress concentration factor of J19 Eq. 22; the MMM table of s_hat enters here
+                // [P] mean-field stress concentration factor per unit net pressure of J19 Eq. 22, the same for all the classes (without input_hbs_shat.txt)
                 const double s_hat = xi / (1.0 - xi);
 
+                // SCIANTIX carries the mean pore volume V, the mean Xe atoms per pore n and Var(n).
+                // Classes [N]: the radius is log-normal on 81 nodes x_i in [-4, 4]
                 std::vector<double> x(HBFF_N_CLASSES), w(HBFF_N_CLASSES);
                 double              w_norm = 0.0;
                 for (int i = 0; i < HBFF_N_CLASSES; ++i)
                 {
                     x[i] = -class_span + (2.0 * class_span) * i / (HBFF_N_CLASSES - 1);
-                    w[i] = std::exp(-0.5 * x[i] * x[i]);
+                    w[i] = std::exp(-0.5 * x[i] * x[i]); // number weights w_i ~ exp(-x_i^2 / 2)
                     w_norm += w[i];
                 }
                 for (double& weight : w)
                     weight /= w_norm;
 
-                // unvented second moment of n, from the retained one [R]
+                // The criterion sees the unvented moments [R]: n / S (n above) and (Var(n) + n^2) / S_2 - n^2, with S and S_2 the retained shares of the first and second moment
                 const double n_retained   = sciantix_variable["Xe atoms per HBS pore"].getFinalValue();
                 const double var_retained = sciantix_variable["Xe atoms per HBS pore - variance"].getFinalValue();
                 const double var_unvented =
                     std::max((var_retained + n_retained * n_retained) / retention2_old - n * n, 0.0);
 
-                // [N] width s: CV^2 of n on the nodes, sum w e^(2 a s x) / (sum w e^(a s x))^2 - 1, grows with s.
-                // Bisection between 0 and an upper bound doubled from the value of the continuous log-normal.
+                // [N] width s: the root of sum_i w_i (n_i - n)^2 = Var(n) on the nodes, so that V, n and Var(n) hold on the classes. CV^2 of n on the nodes, sum w e^(2 a s x) / (sum w e^(a s x))^2 - 1, grows with s:
+                // bisection between 0 and an upper bound doubled from the value of the continuous log-normal.
                 auto cv2_on_nodes = [&](double s)
                 {
                     double m1 = 0.0, m2 = 0.0;
@@ -531,6 +673,10 @@ void Simulation::HighBurnupStructureFragmentation()
                     sigma = 0.5 * (s_lo + s_hi);
                 }
 
+                // Radius and gas of the classes:
+                //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),
+                // so that sum_i w_i V_i = V for any width s, and
+                //     n_i = n R_i^a / sum_j w_j R_j^a,   a = 2 [?]
                 double volume_norm = 0.0, gas_norm = 0.0;
                 for (int i = 0; i < HBFF_N_CLASSES; ++i)
                 {
@@ -539,7 +685,61 @@ void Simulation::HighBurnupStructureFragmentation()
                 }
                 const double r_median = std::cbrt(3.0 * V / (4.0 * M_PI) / volume_norm);
 
+                // Progressive rupture [?]: each class relaxes towards b*_i with the time constant tau_rupture
                 const double relax = 1.0 - std::exp(-physics_variable["Time step"].getFinalValue() / tau_rupture);
+
+                // s_hat of MMM [P] [N] (with input_hbs_shat.txt): ln s_hat of the pores of a class ~ normal(mu, sig).
+                // mu and sig come from the surrogate (shat_surrogate() above) at the 7 classes of an MMM run of this
+                // state, where the surrogate was fitted, and are interpolated linearly in u = ln(R / R_V) on the
+                // nodes, constant beyond the end classes.
+                std::vector<double> mu_node(HBFF_N_CLASSES, 0.0), sig_node(HBFF_N_CLASSES, 1.0);
+                if (mmm.active)
+                {
+                    const int           mmm_classes = 7;
+                    const double        r_v         = std::cbrt(3.0 * V / (4.0 * M_PI));
+                    const double        eta_bar     = n * xe_volume / V;
+                    std::vector<double> u_class(mmm_classes), mu_class(mmm_classes), sig_class(mmm_classes);
+                    for (int k = 0; k < mmm_classes; ++k)
+                    {
+                        // nodes of MMM class k: x in [k - 3.5, k - 2.5], half of a node on an inner edge; R of the
+                        // class from its mean volume
+                        const double lo = k - 3.5, hi = k - 2.5;  // edges in x; the end classes are open
+                        double       weight = 0.0, volume = 0.0;
+                        for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                        {
+                            double share = 0.0;
+                            if (std::abs(x[i] - lo) < 1.0e-6 && k > 0)
+                                share = 0.5;
+                            else if (std::abs(x[i] - hi) < 1.0e-6 && k < mmm_classes - 1)
+                                share = 0.5;
+                            else if ((k == 0 || x[i] > lo) && (k == mmm_classes - 1 || x[i] < hi))
+                                share = 1.0;
+                            weight += w[i] * share;
+                            volume += w[i] * share * 4.0 / 3.0 * M_PI * std::pow(r_median * std::exp(sigma * x[i]), 3.0);
+                        }
+                        u_class[k] = std::log(std::cbrt(3.0 * volume / weight / (4.0 * M_PI)) / r_v);
+
+                        // inputs of the surrogate by name, clipped to the range of the runs by predict()
+                        std::vector<double> inputs;
+                        for (const std::string& input : mmm.inputs)
+                            inputs.push_back(input == "xi"      ? xi
+                                             : input == "s"     ? sigma
+                                             : input == "eta_bar" ? eta_bar
+                                                                  : u_class[k]);
+                        mmm.predict(inputs, true, mu_class[k], sig_class[k]);
+                    }
+                    for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                    {
+                        const double u_i = std::log(r_median * std::exp(sigma * x[i]) / r_v);
+                        int          k   = 0;
+                        while (k < mmm_classes - 2 && u_i > u_class[k + 1])
+                            ++k;
+                        const double span = u_class[k + 1] - u_class[k];
+                        const double f    = span > 0.0 ? std::min(std::max((u_i - u_class[k]) / span, 0.0), 1.0) : 0.5;
+                        mu_node[i]        = mu_class[k] + f * (mu_class[k + 1] - mu_class[k]);
+                        sig_node[i]       = sig_class[k] + f * (sig_class[k + 1] - sig_class[k]);
+                    }
+                }
 
                 double gas_broken = 0.0, kept_old = 0.0, kept_new = 0.0, kept2_old = 0.0, kept2_new = 0.0;
                 for (int i = 0; i < HBFF_N_CLASSES; ++i)
@@ -547,22 +747,43 @@ void Simulation::HighBurnupStructureFragmentation()
                     const double r_i = r_median * std::exp(sigma * x[i]);
                     const double v_i = 4.0 / 3.0 * M_PI * std::pow(r_i, 3.0);
                     const double n_i = n * std::exp(a_closure * sigma * x[i]) / gas_norm;
-                    const double p_i = pore_pressure(n_i, v_i);
+                    const double p_i = pore_pressure(n_i, v_i);  // [R] hard-sphere EoS on (n_i, V_i)
 
-                    const bool broken = xi >= xi_perc || s_hat * (p_i - 2.0 * gamma / r_i - Ph) >= sigma_r + Ph;
+                    // Rupture of class i: first principal stress at the pore wall above the rupture stress (OHP 2.2.2),
+                    //     s_hat (p_i - 2 gamma / R_i - P_h) >= sigma_R + P_h.
+                    // b*_i, the share of the class that meets it: 1 for xi >= xi_perc [E] (J19 vents only the excess
+                    // over c_dp / R); 0 or 1 with the mean field of J19; with the s_hat of MMM
+                    //     b*_i = Phi((mu_i - ln t_i) / sig_i),   t_i = (sigma_R + P_h) / (p_i - 2 gamma / R_i - P_h),
+                    // and 0 if the net pressure is not positive.
+                    const double net    = p_i - 2.0 * gamma / r_i - Ph;
+                    double       b_star = 0.0;
+                    if (xi >= xi_perc)
+                        b_star = 1.0;
+                    else if (!mmm.active)
+                        b_star = s_hat * net >= sigma_r + Ph ? 1.0 : 0.0;
+                    else if (net > 0.0)
+                        b_star = sigma_r + Ph <= 0.0
+                                     ? 1.0
+                                     : 0.5 * std::erfc(-(mu_node[i] - std::log((sigma_r + Ph) / net)) /
+                                                       (sig_node[i] * std::sqrt(2.0)));
 
+                    // beta_i <- beta_i + max(b*_i - beta_i, 0) (1 - exp(-dt / tau)): a broken pore never heals.
+                    // Retained first and second moment of n, sum_i w_i n_i (1 - beta_i) and
+                    // sum_i w_i n_i^2 (1 - beta_i), before and after the rupture of this step
                     kept_old += w[i] * n_i * (1.0 - beta[i]);
                     kept2_old += w[i] * n_i * n_i * (1.0 - beta[i]);
-                    if (broken)
-                        beta[i] += (1.0 - beta[i]) * relax;
+                    beta[i] += std::max(b_star - beta[i], 0.0) * relax;
                     kept_new += w[i] * n_i * (1.0 - beta[i]);
                     kept2_new += w[i] * n_i * n_i * (1.0 - beta[i]);
 
+                    // D = sum_i w_i beta_i,   G = sum_i w_i n_i beta_i / sum_i w_i n_i   (sum_i w_i n_i = n)
                     d_star += w[i] * beta[i];
                     gas_broken += w[i] * n_i * beta[i];
                 }
                 g_star = gas_broken / n;
 
+                // Venting [R]: the gas leaves the broken classes only; the factors f_1, f_2 of the retained moments
+                // are applied after the switch
                 if (kept_old > 0.0)
                     vent_first_moment = kept_new / kept_old;
                 if (kept2_old > 0.0)

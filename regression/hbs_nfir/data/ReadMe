@@ -6,6 +6,9 @@ Fragmentation model - test
     -   http://dx.doi.org/10.1016/j.jnucmat.2013.12.002 
 
 Base irradiation of the cases (test_UO2HBS_frag_<option>)
+-   test_UO2HBS_frag_mmm_unit and _mmm_pk: the inputs of _j19damage plus input_hbs_shat.txt, the s_hat of MMM (unit or
+    pk load) with its sigma_R calibrated on the Kr-85 release of this anneal (utilities/HBFF/calibrate_sigma_r.py):
+    they are fitted on these data, not validated by them.
 -   [?] Confining stress: not reported for the disc. It rises linearly from 0 to 70 MPa (compression) over the base irradiation, as in regression/hbs; temperature 903 K, 2e19 fiss/m3/s, 38000 h; the anneal then starts with the stress released.
 
 Fuel properties
