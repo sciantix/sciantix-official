@@ -1,0 +1,60 @@
+# Surrogate of s_hat, load pk (python3 mmm_surrogate.py --fit pk): mu and ln sig of ln s_hat per class against (xi, s, eta_bar, u), linear trend + Gaussian process
+# 20 runs of the hypercube, 138 classes with at least 3 pores
+#
+# == 1. Leave one run out: every run predicted by the surrogate fitted on the others, against its own table ==
+# - d_mu, d_lnsig: largest difference over the classes with >= 5 % of the pore volume (main) and over all the classes
+# - x_<level>: error (%) of x = p_ref / sigma_R at that level of FGR, rebuilt with the shares of the run
+# - dFGR: largest difference of the FGR curve over x (points of FGR)
+# - noise: rms over the levels of the noise of x of the table (pores of its classes, %); std: the spread of x the surrogate predicts for the table (its Gaussian process + the noise of the table, %)
+#   run      xi       s  eta_bar  d_mu_main  d_mu_all  d_lnsig_main  d_lnsig_all    x_5%   x_10%   x_25%   x_50%   x_75%   x_90%   dFGR  noise    std
+    R00  0.1680  0.3738   0.1329     0.0620    0.0694        0.1667       0.2943   -0.41   -1.06   -2.27   -2.83   -3.80   -5.16   5.40   1.00   4.52
+    R01  0.0240  0.1702   0.1144     0.1182    0.1182        0.2796       0.2796   -2.29   -2.72   -3.87   -5.62   -7.30   -7.81   9.44   1.60   3.78
+    R02  0.1200  0.2258   0.1976     0.0726    0.0888        0.0506       0.7809   -2.37   -2.40   -2.64   -2.77   -2.84   -2.96   4.91   0.70   1.25
+    R03  0.1440  0.2997   0.0589     0.0306    0.0306        0.4748       0.4748    0.26    0.28    0.71    1.15    1.21    0.89   2.80   0.56   1.85
+    R04  0.1360  0.3367   0.2254     0.2877    0.2877        0.5300       1.1309   13.40   14.98   17.22   13.03   10.59    9.14  15.21   1.50   4.63
+    R05  0.0640  0.4107   0.1699     0.2552    0.2552        0.4179       0.4179   23.94   23.91   11.21    7.56    4.47    0.34   8.33   3.64   6.27
+    R06  0.0560  0.0962   0.1884     0.1110    0.1110        0.0785       0.2448    6.63    6.53    6.41    6.35    6.27    6.06  12.53   0.79   2.74
+    R07  0.0880  0.2627   0.1514     0.0161    0.0311        0.1081       0.2423    1.38    0.95    1.08    1.15    1.08    0.63   1.85   0.97   1.44
+    R08  0.1280  0.1148   0.1236     0.0034    0.0185        0.0484       0.1582    0.26    0.27    0.23    0.13   -0.00   -0.19   0.52   0.38   0.88
+    R09  0.0720  0.3183   0.1421     0.0234    0.0234        0.1269       0.1554    0.48   -0.73   -0.79   -0.19    0.97    2.34   1.38   1.37   1.85
+    R10  0.0800  0.0778   0.0681     0.0191    0.0191        0.0816       0.0816   -0.60   -0.72   -0.87   -0.93   -0.86   -0.67   2.25   0.56   3.24
+    R11  0.1040  0.3923   0.0774     0.0742    0.0742        0.2795       0.3290   -3.43   -4.49   -4.83   -5.41   -4.86   -3.12   9.26   1.26   3.24
+    R12  0.1120  0.1333   0.0959     0.0210    0.0210        0.0312       0.1897   -0.16   -0.20   -0.23   -0.21   -0.18   -0.18   0.54   0.46   0.98
+    R13  0.0400  0.3552   0.1051     0.0780    0.0780        0.1139       0.2622    0.37   -0.65    0.45    2.18    2.14    1.67   2.65   2.43   3.93
+    R14  0.1760  0.1887   0.1791     0.0399    0.0399        0.0699       0.2796    3.34    3.39    3.20    3.05    2.86    2.65   7.52   0.38   2.82
+    R15  0.0960  0.1517   0.2161     0.0684    0.0684        0.0965       0.6327    1.75    1.62    1.61    1.78    2.04    2.18   3.42   0.64   2.20
+    R16  0.0480  0.2073   0.0496     0.0575    0.0785        0.1069       0.4360    2.82    3.63    4.60    5.10    4.50    2.81   8.65   1.11   3.95
+    R17  0.0320  0.2813   0.2069     0.1989    0.4514        0.5138       1.6631   -8.86  -12.35  -17.19  -14.66  -13.67  -10.43  17.48   2.21   4.82
+    R18  0.1600  0.2443   0.0866     0.0144    0.0171        0.0569       0.5497   -0.95   -0.67   -0.38   -0.23    0.04    0.37   0.77   0.40   1.47
+    R19  0.1520  0.0593   0.1606     0.0166    0.0166        0.1055       0.1527   -1.72   -1.58   -1.40   -1.30   -1.26   -1.23   4.49   0.28   2.17
+#   rms                              0.1111    0.1447        0.2478       0.5745    6.81    7.28    6.52    5.51    5.00    4.28   7.68   1.38   3.24
+# worst                                                                            23.94   23.91   17.22  -14.66  -13.67  -10.43  17.48
+#   run                                                                              R05     R05     R04     R17     R17     R17    R17
+#
+# == 2. Performance over the 20 runs and the 6 levels of FGR (leave one run out) ==
+# x: error of x = p_ref / sigma_R at the levels (%), rms and worst; dFGR: largest difference of the FGR curve over x, rms over the runs and worst (points)
+# trend only: the linear trend in the same inputs, no Gaussian process; no state: mu and sig against u only, i.e. one table for every state of the pores
+# model                           rms_x_%  worst_x_%  rms_dFGR  worst_dFGR
+  surrogate                          5.99      23.94      7.68       17.48
+  trend only                        16.53      77.20     19.41       39.67
+  no state (u only)                 26.61      73.25     40.47       71.60
+  noise of the tables                1.38       5.02
+# error of the surrogate above the noise of the tables, sqrt(rms^2 - noise^2): 5.83 %
+# skill against no state, 1 - mse / mse_no_state: 0.949 (1: exact, 0: no better than one table for every state)
+# spread predicted against the error: |error| < 2 std for 82 % of the (run, level) pairs (95 % if the spread is right), rms of error / std = 1.54 (1 if right)
+#
+# == 3. Learning curve: fitted on m runs drawn at random (5 draws; m = 19: leave one run out), the other runs predicted ==
+#   m  draws  rms_x_%  min_x_%  max_x_%  rms_dFGR
+    8      5    10.12     7.82    13.71     15.24
+   11      5     9.94     6.07    13.59     10.97
+   14      5     6.75     3.52     9.77     10.61
+   17      5     6.91     3.50    10.61      9.76
+   19      1     5.99     5.99     5.99      7.68
+#
+# == 5. Inputs of the surrogate of all the runs ==
+# trend: change of mu (or ln sig) per standard deviation of the input over the runs; length: correlation length of the Gaussian process in standard deviations of the input (0.3 and 30 are the bounds: 30 = no structure beyond the trend); amplitude, white: standard deviations of the Gaussian process and of the scatter between runs that the inputs do not explain
+#                      xi        s  eta_bar        u  amplitude    white
+  mu trend         0.1451   0.0400  -0.0032   0.3623
+  mu length          3.63     3.35     3.71     1.78     0.4578   0.0042
+  lnsig trend     -0.1160   0.1495   0.0933   0.6285
+  lnsig length       4.08     2.86     2.09     1.81     0.7767   0.0322
