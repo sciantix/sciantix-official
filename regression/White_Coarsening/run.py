@@ -151,10 +151,6 @@ def summarize(path, history, model):
         )
 
     states = {name: state(i) for name, i in phases.items()}
-    if model == "coarsening":
-        pre = phases["pre"]
-        assert np.all(md[: pre + 1] == 0)
-        assert np.all(t["Coarsening active fraction (/)"][: pre + 1] == 0)
     assert abs(t["Time (h)"][-1] - h[-1, 0]) < 1e-6
     return dict(states=states, onset_h=onset, max_balance=balance)
 

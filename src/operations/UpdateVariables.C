@@ -143,11 +143,11 @@ void Simulation::update(double Sciantix_variables[],
         Sciantix_variables[181] = sciantix_variable["Dislocation density"].getFinalValue();
         Sciantix_variables[182] = sciantix_variable["Xe in dislocation bubbles"].getFinalValue();
         Sciantix_variables[183] = sciantix_variable["Kr in dislocation bubbles"].getFinalValue();
-        Sciantix_variables[184] = sciantix_variable["Coarsening active fraction"].getFinalValue();
+        Sciantix_variables[184] = 0.;  // #COARSENING: reserved former capture-activation slot.
         Sciantix_variables[185] = sciantix_variable["Dislocation density rate"].getFinalValue();
         Sciantix_variables[186] = sciantix_variable["Dislocation density interval rate"].getFinalValue();
-        Sciantix_variables[187] = sciantix_variable["Coarsening cumulative recruited bubbles"].getFinalValue();
-        Sciantix_variables[188] = sciantix_variable["Coarsening cumulative recruited gas"].getFinalValue();
+        Sciantix_variables[187] = sciantix_variable["Coarsening cumulative nucleated bubbles"].getFinalValue();
+        Sciantix_variables[188] = sciantix_variable["Coarsening packing fraction"].getFinalValue();
         Sciantix_variables[189] = sciantix_variable["Coarsening projected production"].getFinalValue();
         Sciantix_variables[190] = sciantix_variable["Coarsening diffused gas"].getFinalValue();
     }

@@ -18,11 +18,16 @@ def verify_model(binary, jobs):
     for sample in sorted({r["sample"] for r in rows}):
         a, b = (by[sample, m]["states"]["pre"] for m in ("coarsening", "legacy"))
         e = {k: abs(a[k] / b[k] - 1) for k in ("Rb", "Nb")}
-        assert max(e.values()) < 3e-4, (sample, e)
-        # The adaptive cold kernel and the legacy outer-step solver approach
-        # the same bulk limit; require small differences and refine below.
+        # The requested ungated line capture is a physical model change.
+        # Record its pre-ramp discrepancy; agreement with legacy is no longer
+        # a numerical invariant. Zero-K and refinement controls remain below.
         e["pool_pp"] = max(abs(a[k] - b[k]) for k in campaign.POOLS)
-        assert e["pool_pp"] < 0.05, (sample, a, b)
+        e["S"] = abs(a["S"] / b["S"] - 1)
+        assert a["N"] >= 0 and a["R"] >= 0 and 0 <= a["dislocations"] <= 100
+        trace = campaign.output(here / by[sample, "coarsening"]["trace"])
+        packing = trace["Coarsening packing fraction (/)"]
+        assert np.min(packing) >= 0 and np.max(packing) <= 0.25 + 1e-12
+        e["max_ytilde"] = float(np.max(packing))
         pre_errors.append(e)
     refined_jobs = [
         (s, m)
@@ -53,7 +58,17 @@ def verify_model(binary, jobs):
         )
         for k in campaign.POOLS
     )
-    assert pre_fine < pre_coarse, ("Preramp convergence", pre_fine, pre_coarse)
+    # Refinement must converge to the model's actual cold population, rather
+    # than forcing the physical difference from legacy to zero.
+    pre_refinement = {
+        k: abs(
+            model_fine["states"]["pre"][k]
+            / by["4005-A", "coarsening"]["states"]["pre"][k]
+            - 1
+        )
+        for k in ("Rb", "Nb", "R", "N", "S")
+    }
+    assert max(pre_refinement.values()) < 5e-4, ("Preramp refinement", pre_refinement)
     checks = {}
     for label, scales in [
         ("K_zero", (0.0, 1.0, 1.0)),
@@ -69,9 +84,17 @@ def verify_model(binary, jobs):
         }[label]
         assert np.all(t[key] == 0), (label, key)
         checks[label] = dict(check=key, all_zero=True)
+        if label == "K_zero":
+            legacy = by["4005-A", "legacy"]["states"]["pre"]
+            bulk_limit = {
+                k: abs(r["states"]["pre"][k] / legacy[k] - 1) for k in ("Rb", "Nb", "S")
+            }
+            assert max(bulk_limit.values()) < 1e-3, ("Zero-K bulk limit", bulk_limit)
+            checks[label]["native_bulk_limit_relative"] = bulk_limit
     fixed = campaign.run(binary, "4005-A", "coarsening", 200, 2e-5, density=0)
     t = campaign.output(here / fixed["trace"])
     assert np.all(t["Dislocation density (m/m3)"] == 4e13)
+    assert np.all(t["Coarsening dislocation concentration (bub/m3)"] == 0.0)
     checks["density_zero"] = dict(constant_m2=4e13)
     # Old files may omit the density selector and all three new factors.
     with tempfile.TemporaryDirectory(prefix="coarsening-optional-input-") as temporary:
@@ -174,9 +197,13 @@ def verify_model(binary, jobs):
             assert checkpoint.read_bytes() == full.read_bytes(), split
             restart.append(dict(split=split, identical_bytes=True))
     return dict(
-        preramp_max_relative={k: max(r[k] for r in pre_errors) for k in ("Rb", "Nb")},
+        preramp_max_relative={
+            k: max(r[k] for r in pre_errors) for k in ("Rb", "Nb", "S")
+        },
         preramp_max_pool_pp=max(r["pool_pp"] for r in pre_errors),
-        preramp_4005A_convergence_pp=dict(coarse=pre_coarse, fine=pre_fine),
+        max_ytilde=max(r["max_ytilde"] for r in pre_errors),
+        preramp_4005A_legacy_difference_pp=dict(coarse=pre_coarse, fine=pre_fine),
+        preramp_4005A_refinement=pre_refinement,
         refinement=refinement,
         scaling_and_selectors=checks,
         restart=restart,

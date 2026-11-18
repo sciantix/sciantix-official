@@ -63,8 +63,10 @@ Use `iIntraGranularBubbleBehavior=4` with `iDiffusionSolver=2`. The complete
 [White settings file](../regression/White_Coarsening/input_settings.txt) is a
 working configuration for stable Xe/Kr in UO2. The model fixes Carnahan–Starling
 pressure and `Vd=nd*omega(T)+nv*Omega`, with `omega(T)=2*pi*dHS(T)^3/3`;
-there are no pressure or volume switches. Former coarsening model numbers 5 and 6
-are unsupported.
+there are no alternative coarsening pressure, volume or transport switches.
+The selected constants are `K=1.6e6 m^-1`, line-capture `D=3 Dbulk`, and
+vacancy `Dv=30 Dvbulk`, with vacancy uptake above 1500 K. The three trailing
+coarsening scaling factors multiply these selected defaults.
 
 After the four optional NUS entries (indices 25–28), index 29 is
 `iDislocationDensity`: 1 selects the Nicodemo 2026 density correlation and is the

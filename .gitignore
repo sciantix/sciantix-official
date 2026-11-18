@@ -117,7 +117,7 @@ regression/nus/studies/runs/
 !/context/dislocation_density/figures/*.png
 # Regression figures are PNG-only; exclude any SVGs left by older generators.
 /regression/White_Coarsening/figures/**/*.svg
-# Editable density-fit SVGs are regenerated locally.
+# Ignore stale vector outputs; maintained density-fit figures are PNG-only.
 /context/dislocation_density/figures/*.svg
 /regression/White_Coarsening/results.json
 /regression/White_Coarsening/verification.json

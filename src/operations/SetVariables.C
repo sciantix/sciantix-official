@@ -110,16 +110,14 @@ void Simulation::setVariables(int    Sciantix_options[],
             "Xe in dislocation bubbles", "(at/m3)", Sciantix_variables[182], Sciantix_variables[182], 1));
         sciantix_variable.push(SciantixVariable(
             "Kr in dislocation bubbles", "(at/m3)", Sciantix_variables[183], Sciantix_variables[183], 1));
-        sciantix_variable.push(
-            SciantixVariable("Coarsening active fraction", "(/)", Sciantix_variables[184], Sciantix_variables[184], 1));
         sciantix_variable.push(SciantixVariable(
             "Dislocation density rate", "(m^-2 s^-1)", Sciantix_variables[185], Sciantix_variables[185], 1));
         sciantix_variable.push(SciantixVariable(
             "Dislocation density interval rate", "(m^-2 s^-1)", Sciantix_variables[186], Sciantix_variables[186], 1));
         sciantix_variable.push(SciantixVariable(
-            "Coarsening cumulative recruited bubbles", "(bub/m3)", Sciantix_variables[187], Sciantix_variables[187], 1));
+            "Coarsening cumulative nucleated bubbles", "(bub/m3)", Sciantix_variables[187], Sciantix_variables[187], 1));
         sciantix_variable.push(SciantixVariable(
-            "Coarsening cumulative recruited gas", "(at/m3)", Sciantix_variables[188], Sciantix_variables[188], 1));
+            "Coarsening packing fraction", "(/)", Sciantix_variables[188], Sciantix_variables[188], 1));
         sciantix_variable.push(SciantixVariable(
             "Coarsening projected production", "(at/m3)", Sciantix_variables[189], Sciantix_variables[189], 1));
         sciantix_variable.push(SciantixVariable(

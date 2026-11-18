@@ -22,7 +22,7 @@
 #include <cmath>
 #include <stdexcept>
 
-// #COARSENING: three implicit gas equations, vacancy uptake, recruitment and
+// #COARSENING: three implicit gas equations, vacancy uptake, density-driven births and
 // coalescence use one adaptive integration throughout the irradiation history.
 namespace coarsening
 {
@@ -44,46 +44,41 @@ namespace coarsening
                     a.burnup + f * (b.burnup - a.burnup)};
         }
         // #COARSENING
-        double numberCorrection(double gas, double number)
-        {
-            return number > 0. ? 1 / std::max(1., gas / number - 1.) : 0.;
-        }
-        // #COARSENING
         State step(const State&       old,
                    double             h,
                    const Environment& a,
                    const Environment& b,
                    const Parameters&  p,
-                   double             thermalRate)
+                   bool               nonCoolingHistory)
         {
             State        s      = old;
             const auto   middle = interpolate(a, b, .5);
             const double rho0   = dislocation_density::correlation(a.burnup, a.temperature, p.densityModel);
             const double rho1   = dislocation_density::correlation(b.burnup, b.temperature, p.densityModel);
-            // The physical driver rate is fixed over the containing history interval.
-            // Re-estimating it from tiny adaptive differences amplifies roundoff.
-            s.activeFraction = std::max(old.activeFraction, thermalKFraction(std::max(a.temperature, b.temperature)));
-            // The true signed rho change is retained. Only positive generation creates
-            // sites; heating recovery is not silently converted into positive births.
-            const bool   formation = middle.fissionRate > 0. && thermalRate >= -1e-6;
-            const double newLength = formation ? std::max(0., rho1 - rho0) : 0.;
-            const double requested = p.K * (.5 * (rho0 + rho1) * std::max(0., s.activeFraction - old.activeFraction) +
-                                            .5 * (old.activeFraction + s.activeFraction) * newLength);
-            recruit(s, requested);
+            // Integrate the positive full density change during irradiation.
+            // The algebraic cooling rebound is not new irradiation damage.
+            const bool   formation = middle.fissionRate > 0. && nonCoolingHistory;
+            const double born      = formation ? p.K * std::max(0., rho1 - rho0) : 0.;
+            s.largeNumber += born;
+            s.cumulativeBirths += born;
             const auto   initial  = average(s);
             const double initialQ = s.vacancies;
             const auto   o        = observe(s, middle, p);
             const double D        = diffusivity(middle);
             // Keep native Turnbull small-bubble disappearance/return throughout the
-            // history. Only the additional large population uses gradual Setyawan loss.
+            // history. Large-bubble gas uses Setyawan return without atomic phi.
             const double ab = 2 * pi * 6e-6 * std::pow(o.bulkRadius + 1e-9, 2) * middle.fissionRate;
             const double ad = resolution(o.largeRadius, middle.fissionRate);
             const double bb = 4 * pi * D * (o.bulkRadius + .21e-9) * s.bulkNumber;
             const double bd = s.largeNumber > 0. ? 4 * pi * D * o.largeRadius * s.largeNumber + o.lineCapture : 0.;
             // Native bulk closure: nucleation enters the bubble number only;
             // atomic inventories exchange gas through trapping and re-solution.
-            s.bulkNumber      = (s.bulkNumber + h * 50 * middle.fissionRate) / (1 + h * ab);
-            const double loss = initial[2] >= 2 * s.largeNumber ? ad * numberCorrection(initial[2], s.largeNumber) : 0.;
+            s.bulkNumber = (s.bulkNumber + h * 50 * middle.fissionRate) / (1 + h * ab);
+            // Atomic return and effective bubble disappearance are distinct.
+            // Phi appears only in the number sink. Removed cavities return Qv
+            // proportionally to the matrix; this is an explicit volume closure.
+            const double occupancy = s.largeNumber > 0. ? initial[2] / s.largeNumber : 0.;
+            const double loss      = occupancy >= 2. ? ad / std::max(1., occupancy - 1.) : 0.;
             s.largeNumber /= 1 + h * loss;
             s.vacancies /= 1 + h * loss;
             for (unsigned i = 0; i < s.gas[0].size(); ++i)
@@ -172,41 +167,18 @@ namespace coarsening
             compare(a.bulkNumber, b.bulkNumber, 1.);
             compare(a.largeNumber, b.largeNumber, 1.);
             compare(a.vacancies, b.vacancies, 1e10);
-            compare(a.activeFraction, b.activeFraction, 1e-12);
             return error;
         }
     }  // namespace
 
-    // #COARSENING
-    double recruit(State& s, double requested)
-    {
-        if (requested < 0. || !std::isfinite(requested))
-            throw std::invalid_argument("Invalid requested recruitment");
-        const double born = std::min(requested, s.bulkNumber);
-        if (born <= 0.)
-            return 0.;
-        const double fraction   = born / s.bulkNumber;
-        double       movedTotal = 0.;
-        for (unsigned i = 0; i < s.gas[1].size(); ++i)
-        {
-            const double moved = s.gas[1][i] * fraction;
-            s.gas[1][i] -= moved;
-            s.gas[2][i] += moved;
-            movedTotal += moved;
-        }
-        s.bulkNumber -= born;
-        s.largeNumber += born;
-        s.cumulativeBirths += born;
-        s.cumulativeRecruitedGas += movedTotal;
-        return born;
-    }
     // #COARSENING
     Statistics evolve(State& s, double duration, const Environment& a, const Environment& b, const Parameters& p)
     {
         if (!std::isfinite(duration) || duration < 0. || !std::isfinite(p.relativeTolerance) ||
             !(p.relativeTolerance > 0.) || !std::isfinite(p.K) || p.K < 0. ||
             !std::isfinite(p.lineDiffusivityMultiplier) || p.lineDiffusivityMultiplier < 0. ||
-            !std::isfinite(p.vacancyDiffusivityMultiplier) || p.vacancyDiffusivityMultiplier < 0.)
+            !std::isfinite(p.vacancyDiffusivityMultiplier) || p.vacancyDiffusivityMultiplier < 0. ||
+            !std::isfinite(p.vacancyActivationTemperature) || p.vacancyActivationTemperature < 0.)
             throw std::invalid_argument("Invalid coarsening parameters");
         for (const auto& e : {a, b})
             if (!std::isfinite(e.temperature) || e.temperature <= 0. || !std::isfinite(e.fissionRate) ||
@@ -214,19 +186,27 @@ namespace coarsening
                 e.grainRadius <= 0. || !std::isfinite(e.burnup) || e.burnup < 0.)
                 throw std::invalid_argument("Invalid coarsening environment");
         Statistics stats;
+        // Fresh B=0 histories start with rho=Nd=0; no Nd=K*rho seed is imposed.
+        // A finite-burnup start needs its physical initial population or restart.
         if (duration == 0.)
             return stats;
-        const double thermalRate = (b.temperature > a.temperature)
-                                       ? (b.temperature - a.temperature) / duration
-                                       : std::min(0., (b.temperature - a.temperature) / duration);
-        double       t = 0., h = duration;
+        double t = 0., h = duration;
         while (t < duration)
         {
-            h               = std::min(h, duration - t);
+            h = std::min(h, duration - t);
+            // Resolve the hard vacancy gate at its exact history crossing.
+            if (b.temperature != a.temperature)
+            {
+                const double crossing =
+                    duration * (p.vacancyActivationTemperature - a.temperature) / (b.temperature - a.temperature);
+                if (crossing > t + 1e-13 * std::max(1., duration) && crossing < t + h)
+                    h = crossing - t;
+            }
             const auto left = interpolate(a, b, t / duration), right = interpolate(a, b, (t + h) / duration);
-            State      full    = step(s, h, left, right, p, thermalRate);
-            State      half    = step(s, .5 * h, left, interpolate(a, b, (t + .5 * h) / duration), p, thermalRate);
-            half               = step(half, .5 * h, interpolate(a, b, (t + .5 * h) / duration), right, p, thermalRate);
+            const bool nonCoolingHistory = b.temperature >= a.temperature;
+            State      full              = step(s, h, left, right, p, nonCoolingHistory);
+            State      half = step(s, .5 * h, left, interpolate(a, b, (t + .5 * h) / duration), p, nonCoolingHistory);
+            half = step(half, .5 * h, interpolate(a, b, (t + .5 * h) / duration), right, p, nonCoolingHistory);
             const double error = discrepancy(full, half, p.relativeTolerance);
             if (error <= 1.)
             {
@@ -298,15 +278,13 @@ void Simulation::IntraGranularBubbleCoarsening()
     for (const std::string name : {"Diffusivity", "Resolution rate", "Trapping rate", "Nucleation rate"})
         if (std::abs(scaling_factors[name].getValue() - 1.) > 1e-12)
             throw std::runtime_error("Coarsening model4 requires unit native scaling: " + name);
-    auto s                   = initialState(n_modes);
-    s.bulkNumber             = sciantix_variable["Intragranular bubble concentration"].getInitialValue();
-    s.largeNumber            = sciantix_variable["Coarsening dislocation concentration"].getInitialValue();
-    s.vacancies              = sciantix_variable["Coarsening vacancy concentration"].getInitialValue();
-    s.activeFraction         = sciantix_variable["Coarsening active fraction"].getInitialValue();
-    s.cumulativeBirths       = sciantix_variable["Coarsening cumulative recruited bubbles"].getInitialValue();
-    s.cumulativeRecruitedGas = sciantix_variable["Coarsening cumulative recruited gas"].getInitialValue();
-    s.projectedProduction    = sciantix_variable["Coarsening projected production"].getInitialValue();
-    s.diffusedGas            = sciantix_variable["Coarsening diffused gas"].getInitialValue();
+    auto s                = initialState(n_modes);
+    s.bulkNumber          = sciantix_variable["Intragranular bubble concentration"].getInitialValue();
+    s.largeNumber         = sciantix_variable["Coarsening dislocation concentration"].getInitialValue();
+    s.vacancies           = sciantix_variable["Coarsening vacancy concentration"].getInitialValue();
+    s.cumulativeBirths    = sciantix_variable["Coarsening cumulative nucleated bubbles"].getInitialValue();
+    s.projectedProduction = sciantix_variable["Coarsening projected production"].getInitialValue();
+    s.diffusedGas         = sciantix_variable["Coarsening diffused gas"].getInitialValue();
     const double pi = std::acos(-1.), projection = -std::sqrt(8 / pi) / (4 * pi / 3);
     for (int i = 0; i < n_modes; ++i)
     {
@@ -374,13 +352,12 @@ void Simulation::IntraGranularBubbleCoarsening()
     set("Coarsening dislocation radius", o.largeRadius);
     set("Coarsening vacancies per bubble", s.largeNumber > 0. ? s.vacancies / s.largeNumber : 0.);
     set("Coarsening pressure", o.pressure);
+    set("Coarsening packing fraction", o.packingFraction);
     set("Coarsening equilibrium pressure", o.equilibriumPressure);
     set("Coarsening dislocation swelling", o.largeSwelling);
     set("Coarsening bulk swelling", o.bulkSwelling);
     set("Coarsening line trapping rate", o.lineCapture);
-    set("Coarsening active fraction", s.activeFraction);
-    set("Coarsening cumulative recruited bubbles", s.cumulativeBirths);
-    set("Coarsening cumulative recruited gas", s.cumulativeRecruitedGas);
+    set("Coarsening cumulative nucleated bubbles", s.cumulativeBirths);
     set("Coarsening projected production", s.projectedProduction);
     set("Coarsening diffused gas", s.diffusedGas);
 }
@@ -402,8 +379,8 @@ void Simulation::CoarseningDiagnostics()
     sciantix_variable["Dislocation density rate"].setFinalValue(tangent);
     sciantix_variable["Dislocation density interval rate"].setFinalValue(
         intervalRate(B0, T0, B1, T1, dt, p.densityModel));
-    // Before activation, expose native bulk inventories without changing them.
-    if (sciantix_variable["Coarsening active fraction"].getFinalValue() == 0.)
+    // With no dislocation sites, expose native bulk inventories without changing them.
+    if (sciantix_variable["Coarsening dislocation concentration"].getFinalValue() == 0.)
     {
         sciantix_variable["Coarsening bulk swelling"].setFinalValue(
             sciantix_variable["Intragranular gas bubble swelling"].getFinalValue());

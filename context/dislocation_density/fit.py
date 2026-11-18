@@ -62,9 +62,65 @@ def density(B, T, model):
 
 
 def save(fig, name):
-    for ext in ("png", "svg"):
+    for ext in ("png",):
         fig.savefig(ROOT / "figures" / f"{name}.{ext}", dpi=300, bbox_inches="tight")
     plt.close(fig)
+
+
+def model_figure(fn):
+    """Curve-only two-panel layout; no restricted observations or fit ranges."""
+    plt.rcParams.update(
+        {
+            "font.size": 10,
+            "axes.labelsize": 10,
+            "axes.titlesize": 10,
+            "xtick.labelsize": 9,
+            "ytick.labelsize": 9,
+            "legend.fontsize": 9,
+            "text.color": "black",
+            "axes.labelcolor": "black",
+            "xtick.color": "black",
+            "ytick.color": "black",
+        }
+    )
+    fig, axes = plt.subplots(1, 2, figsize=(7.1, 3.7), layout="constrained")
+    colors = ("#2468a2", "#d88b24", "#bb403b", "#4d8b60")
+    styles = ("-", "--", "-.", ":")
+    burnup = np.linspace(0.1, 120, 600)
+    temperature = np.linspace(600, 2600, 650)
+    for T, color, style in zip((900, 1100, 1200, 1400), colors, styles):
+        axes[0].plot(
+            burnup, fn(burnup, T), color=color, ls=style, lw=1.5, label=f"{T} K"
+        )
+    for B, color, style in zip((5, 20, 50, 90), colors, styles):
+        axes[1].plot(
+            temperature,
+            fn(B, temperature) / 1e15,
+            color=color,
+            ls=style,
+            lw=1.5,
+            label=rf"$B={B}$ GWd tHM$^{{-1}}$",
+        )
+    axes[0].set(
+        xlim=(0, 120),
+        ylim=(1e12, 3e15),
+        yscale="log",
+        xlabel=r"Burnup (GWd tHM$^{-1}$)",
+        ylabel=r"$\rho_d$ (m$^{-2}$)",
+    )
+    axes[1].set(
+        xlim=(600, 2600),
+        ylim=(0, None),
+        xlabel="Temperature (K)",
+        ylabel=r"$\rho_d$ ($10^{15}$ m$^{-2}$)",
+    )
+    for ax, title in zip(axes, ("a)", "b)")):
+        ax.set_title(title, loc="left", pad=10)
+        ax.grid(which="both", alpha=0.16)
+        ax.legend(
+            loc="upper center", bbox_to_anchor=(0.5, -0.22), ncol=2, frameon=False
+        )
+    return fig, axes
 
 
 def main():
@@ -110,30 +166,18 @@ def main():
         report["cpp_python_max_relative_error"] = max(errors)
         assert max(errors) < 1e-13
     (ROOT / "refit_verification.json").write_text(json.dumps(report, indent=2) + "\n")
-    plt.rcParams.update({"font.size": 11, "svg.fonttype": "none"})
-    temps = np.arange(900, 1501, 100)
-    colors = plt.colormaps["viridis"](np.linspace(0.05, 0.95, len(temps)))
-    bb = np.linspace(1, 100, 300)
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=True, layout="constrained")
-    for temp, color in zip(temps, colors):
-        mask = T == temp
-        axes[0].scatter(B[mask], 10 ** y[mask], s=12, color=color, alpha=0.6)
-        for ax, fn in zip(axes, [veshchunov, nicodemo]):
-            ax.plot(bb, fn(bb, temp), color=color, label=f"{temp} K")
-    for ax, title in zip(
-        axes, ["Veshchunov 2009: Fig.5 refit", "Nicodemo 2026: adapted from 900 K"]
-    ):
-        ax.axhline(4e13, color="#b55c25", ls="--", label="Barani 2020: fixed")
-        ax.set(
-            yscale="log",
-            xlabel="Burnup (GWd/tU)",
-            title=title,
-            ylim=(1e12, 2e15),
-            xlim=(0, 100),
-        )
-        ax.grid(alpha=0.25, which="both")
-    axes[0].set_ylabel(r"Dislocation density (m$^{-2}$)")
-    axes[1].legend(fontsize=8, ncol=2)
+    fig, axes = model_figure(veshchunov)
+    low, high = float(T.min()), float(T.max())
+    axes[1].axvspan(low, high, color="#86b69b", alpha=0.2, zorder=-1)
+    axes[1].text(
+        (low + high) / 2,
+        0.97,
+        "Fit range",
+        transform=axes[1].get_xaxis_transform(),
+        ha="center",
+        va="top",
+        fontsize=9,
+    )
     save(fig, "fig5_fits")
     inputs = [
         Path(__file__),

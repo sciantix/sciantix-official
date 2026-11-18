@@ -15,7 +15,7 @@ ROOT = campaign.ROOT
 NEW, LEGACY, BARANI, MEASURED = "#2379b5", "#888888", "#c44e52", "#222222"
 MODEL_LABELS = {
     "coarsening": "Nicodemo 2026",
-    "legacy": "SCIANTIX legacy",
+    "legacy": "SCIANTIX single-size",
     "Barani_table4": "Barani 2020",
 }
 POOL_COLORS = ("#4c78a8", "#f2cf5b", "#e45756", "#64b5b4", "#80579b")
@@ -29,6 +29,12 @@ POOL_LABELS = (
 plt.rcParams.update(
     {
         "font.size": 10,
+        "text.color": "black",
+        "axes.labelcolor": "black",
+        "axes.titlecolor": "black",
+        "xtick.color": "black",
+        "ytick.color": "black",
+        "legend.labelcolor": "black",
         "axes.labelsize": 10,
         "axes.titlesize": 10,
         "xtick.labelsize": 9,
@@ -44,159 +50,163 @@ def save(fig, path):
     plt.close(fig)
 
 
-def history(result, observation, folder, full=False):
-    """Published experimental endpoints have no invented measurement timestamp."""
+def ordered_legend(ax):
+    handles, labels = ax.get_legend_handles_labels()
+    priority = {
+        MODEL_LABELS[k]: i
+        for i, k in enumerate(("legacy", "Barani_table4", "coarsening"))
+    }
+    order = sorted(
+        range(len(labels)), key=lambda i: (priority.get(labels[i], len(priority)), i)
+    )
+    return [handles[i] for i in order], [labels[i] for i in order]
+
+
+def figure7_history(result, observation, folder, zoom=False):
+    """Physical axes with post-test observations in the radius/swelling panel."""
+    from matplotlib.ticker import ScalarFormatter, MaxNLocator
+
+    def top(default, *values):
+        finite = np.concatenate([np.asarray(v).ravel() for v in values])
+        actual = (
+            float(np.max(finite[np.isfinite(finite)]))
+            if np.any(np.isfinite(finite))
+            else 0.0
+        )
+        if actual <= default:
+            return default
+        scale = 10.0 ** np.floor(np.log10(actual))
+        return np.ceil(1.05 * actual / scale * 2.0) / 2.0 * scale
+
+    def scientific(ax, exponent):
+        formatter = ScalarFormatter(useMathText=True)
+        formatter.set_powerlimits((exponent, exponent))
+        formatter.set_useOffset(False)
+        ax.yaxis.set_major_formatter(formatter)
+        ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
+
     sample = result["sample"]
-    t = campaign.output(HERE / result["trace"])
-    onset = result["onset_h"]
-    x = t["Time (h)"] - onset
-    end = float(x[-1])
-    zoom = end > 8 and not full
-    right = min(1.5, end) if zoom else end * 1.02
+    trace = campaign.output(HERE / result["trace"])
+    time = trace["Time (h)"] - result["onset_h"]
+    end = float(time[-1])
+    right = min(1.5, end) if zoom else end
     left = -min(0.05, 0.1 * right)
-    mask = (x >= left) & (x <= right)
-    alive = t["Coarsening dislocation concentration (bub/m3)"] > 0
-    fig = plt.figure(figsize=(8.3, 6.3))
-    gs = fig.add_gridspec(
-        3,
-        2,
-        width_ratios=(5.2, 1.15),
-        height_ratios=(0.55, 1.15, 1.15),
-        hspace=0.18,
-        wspace=0.48,
+    first = max(0, int(np.searchsorted(time, left)) - 1)
+    selected = slice(first, int(np.searchsorted(time, right, side="right")))
+    x = time[selected]
+    radius = trace["Coarsening dislocation radius (m)"][selected]
+    alive = radius > 0.0
+    pressure = np.where(alive, trace["Coarsening pressure (Pa)"][selected], np.nan)
+    equilibrium = np.where(
+        alive, trace["Coarsening equilibrium pressure (Pa)"][selected], np.nan
     )
-    aT, aP, aR = [fig.add_subplot(gs[i, 0]) for i in range(3)]
-    nAxis = aP.twinx()
-    sAxis = aR.twinx()
-    h = np.loadtxt(HERE / "inputs" / sample / "input_history.txt")
-    aT.plot(h[:, 0] - onset, h[:, 1], color=NEW, lw=1.3)
-    aP.plot(
-        x[mask],
-        np.where(alive, t["Coarsening pressure (Pa)"] / 1e6, np.nan)[mask],
-        c=NEW,
-        lw=1.4,
+    vacancies = np.where(
+        alive, trace["Coarsening vacancies per bubble (vac/bub)"][selected], np.nan
     )
-    aP.plot(
-        x[mask],
-        np.where(alive, t["Coarsening equilibrium pressure (Pa)"] / 1e6, np.nan)[mask],
-        c=NEW,
-        lw=0.9,
-        ls=":",
-    )
+    swelling = 100.0 * trace["Intragranular gas bubble swelling (/)"][selected]
+    measured_radius = float(observation["radius_exp_nm"]) * 1e-9
+    measured_swelling = float(observation["swelling_exp_pct"])
+
+    fig = plt.figure(figsize=(8.6, 7.5), layout="constrained")
+    gs = fig.add_gridspec(3, 1, height_ratios=(0.5, 1.45, 1.45), hspace=0.08)
+    aT = fig.add_subplot(gs[0, :])
+    aP = fig.add_subplot(gs[1, :])
+    aR = fig.add_subplot(gs[2, 0])
+    nAxis, sAxis = aP.twinx(), aR.twinx()
+
+    aT.plot(x, trace["Temperature (K)"][selected], color="black", ls="--", lw=1.1)
+    aT.set_ylabel("Temperature (K)")
+    aP.plot(x, pressure, color=NEW, lw=1.5, label="Bubble at dislocation pressure")
+    aP.plot(x, equilibrium, color=".35", lw=1.1, ls=":", label="Equilibrium pressure")
     nAxis.plot(
-        x[mask],
-        np.where(alive, t["Coarsening vacancies per bubble (vac/bub)"] / 1e7, np.nan)[
-            mask
-        ],
-        c=NEW,
-        lw=1.3,
+        x,
+        vacancies,
+        color=BARANI,
+        lw=1.5,
         ls="--",
+        label="Vacancies per bubble at dislocations",
     )
-    aR.plot(
-        x[mask],
-        np.where(alive, t["Coarsening dislocation radius (m)"] * 1e9, np.nan)[mask],
-        c=NEW,
-        lw=1.4,
-    )
-    aR.plot(
-        x[mask],
-        t["Intragranular bubble radius (m)"][mask] * 1e9,
-        c=".5",
-        ls=":",
-        lw=0.9,
-    )
-    sAxis.plot(
-        x[mask],
-        100 * t["Intragranular gas bubble swelling (/)"][mask],
-        c=NEW,
-        lw=1.3,
-        ls="--",
-    )
-    sAxis.plot(
-        x[mask],
-        100 * t["Coarsening dislocation swelling (/)"][mask],
-        c=NEW,
-        lw=0.9,
-        ls=":",
-    )
-    for ax in (aT, aP, aR):
-        ax.axvspan(left, 0, color=".92", zorder=-2)
-        ax.axvline(0, c=".6", ls=":", lw=0.7)
-        ax.grid(alpha=0.16)
-        ax.set_xlim(left, right)
-    for ax in (aT, aP):
-        ax.tick_params(axis="x", labelbottom=False)
-    aT.set_ylabel("T (K)")
-    aP.set_ylabel("Pressure (MPa), solid")
-    nAxis.set_ylabel(r"$n_v$ ($10^7$ vacancies/bubble), dashed", fontsize=9)
-    aR.set_ylabel("Radius (nm), solid")
-    sAxis.set_ylabel("Total swelling (%), dashed", fontsize=9)
-    for ax in (aP, nAxis, aR, sAxis):
-        ax.set_ylim(bottom=0)
-    aR.set_xlabel(
-        "Time from first ramp onset (h)" + (" — early-ramp zoom" if zoom else "")
-    )
-    final = result["states"]["end"]
-    pre = result["states"]["pre"]
-    rr = [final["R"] * 1e9, float(observation["radius_exp_nm"])]
-    ss = [final["S"], float(observation["swelling_exp_pct"])]
-    aR.set_ylim(
-        0, max(float(np.max(t["Coarsening dislocation radius (m)"] * 1e9)), *rr) * 1.16
-    )
-    sAxis.set_ylim(
-        0,
-        max(float(np.max(100 * t["Intragranular gas bubble swelling (/)"])), *ss)
-        * 1.16,
-    )
-    point = fig.add_subplot(gs[2, 1])
-    pointS = point.twinx()
-    for i, (color, marker) in enumerate([(NEW, "o"), (MEASURED, "s")]):
-        point.scatter(-0.12 + i * 0.24, rr[i], c=color, marker=marker, s=24)
-        pointS.scatter(0.88 + i * 0.24, ss[i], c=color, marker=marker, s=24)
-    point.set(
-        xlim=(-0.5, 1.5),
-        ylim=aR.get_ylim(),
-        xticks=(0, 1),
-        xticklabels=("R", "S"),
-        title="Post-test",
-    )
-    pointS.set_ylim(sAxis.get_ylim())
-    point.tick_params(axis="y", left=False, labelleft=False)
-    pointS.set_ylabel("Swelling (%)", fontsize=9)
-    point.set_xlabel("Final observations", fontsize=9)
-    note = fig.add_subplot(gs[:2, 1])
-    note.axis("off")
-    note.text(
-        0,
-        0.95,
-        f'PRERAMP\nRb = {pre["Rb"]*1e9:.3f} nm\nNd = 0\nP, nv undefined\n\n'
-        f'FINAL STATE\nt = {end:.3f} h\nNd = {final["N"]:.2e} m⁻³\n\n'
-        f'Dislocation gas\n{pre["dislocations"]:.1f}% → {final["dislocations"]:.1f}%',
-        transform=note.transAxes,
-        va="top",
-        fontsize=9,
-    )
-    title = sample + (
-        " — early ramps; observations refer to the full history" if zoom else ""
-    )
-    fig.suptitle(title, y=1.02, fontsize=11)
-    fig.legend(
-        handles=[
-            Line2D([], [], c=NEW, label=MODEL_LABELS["coarsening"]),
-            Line2D([], [], ls="", marker="s", c=MEASURED, label="White measurements"),
-        ],
-        loc="upper center",
-        bbox_to_anchor=(0.5, 0.995),
+    aP.set_ylabel("Pressure (Pa)")
+    nAxis.set_ylabel("Vacancies per bubble")
+    aP.set_ylim(0.0, top(1e8, pressure, equilibrium))
+    nAxis.set_ylim(0.0, top(2.5e7, vacancies))
+    scientific(aP, 8)
+    scientific(nAxis, 7)
+    handles, labels = aP.get_legend_handles_labels()
+    other_h, other_l = nAxis.get_legend_handles_labels()
+    aP.legend(
+        handles + other_h,
+        labels + other_l,
+        loc="lower left",
+        bbox_to_anchor=(0.0, 1.09),
         ncol=2,
         frameon=False,
+        fontsize=8,
     )
-    fig.subplots_adjust(left=0.09, right=0.91, bottom=0.13, top=0.91)
-    note = "Dotted: Peq, bulk radius and large-bubble swelling. Grey: preramp. Final references have no assigned timestamp."
-    if sample.startswith("4163"):
-        note += " Local input omits the41 h hold of Barani Table3."
-    fig.text(0.5, 0.012, note, ha="center", fontsize=7.5, wrap=True)
-    save(fig, folder / (sample + ("_full" if full else "")))
-    return zoom
+
+    aR.plot(x, radius, color=NEW, lw=1.5, label="Calculated bubble radius")
+    sAxis.plot(
+        x, swelling, color=BARANI, lw=1.5, ls="--", label="Calculated gaseous swelling"
+    )
+    reference_time = min(end, right)
+    aR.scatter(
+        reference_time,
+        measured_radius,
+        marker="s",
+        color=NEW,
+        zorder=5,
+        s=28,
+        label="Experimental bubble radius",
+    )
+    sAxis.scatter(
+        reference_time,
+        measured_swelling,
+        marker="o",
+        color=BARANI,
+        zorder=5,
+        s=28,
+        label="Experimental gaseous swelling",
+    )
+    radius_top = top(8e-8, radius, measured_radius)
+    swelling_top = top(10.0, swelling, measured_swelling)
+    aR.set(ylim=(0.0, radius_top), ylabel="Bubble radius (m)")
+    sAxis.set(ylim=(0.0, swelling_top), ylabel="Gaseous swelling (%)")
+    if zoom and end > right:
+        aR.text(
+            0.98,
+            0.03,
+            "Post-test references at right edge",
+            transform=aR.transAxes,
+            ha="right",
+            va="bottom",
+            fontsize=7,
+        )
+    scientific(aR, -8)
+    handles, labels = aR.get_legend_handles_labels()
+    for ax in (sAxis,):
+        h, l = ax.get_legend_handles_labels()
+        handles += h
+        labels += l
+    aR.legend(
+        handles,
+        labels,
+        loc="lower left",
+        bbox_to_anchor=(0.0, 1.09),
+        ncol=2,
+        frameon=False,
+        fontsize=8,
+    )
+    for ax in (aT, aP, aR):
+        ax.set_xlim(left, right * 1.015)
+        ax.axvspan(left, 0.0, color=".94", zorder=-2)
+        ax.axvline(0.0, color=".5", ls=":", lw=0.6)
+        ax.grid(alpha=0.15)
+    for ax in (aT, aP):
+        ax.tick_params(axis="x", labelbottom=False)
+    aR.set_xlabel("Time from first ramp onset (h)")
+    fig.suptitle(sample, fontsize=11)
+    filename = sample + ("_ramp" if zoom else "")
+    save(fig, folder / filename)
 
 
 def plot_all(results, observations):
@@ -236,7 +246,7 @@ def plot_all(results, observations):
         x = np.array([float(measured[s][obs]) for s in samples])
         all_y = []
         for model, color, label in [
-            ("legacy", LEGACY, "SCIANTIX legacy"),
+            ("legacy", LEGACY, MODEL_LABELS["legacy"]),
             ("coarsening", NEW, MODEL_LABELS["coarsening"]),
         ]:
             y = np.array([by[model][s]["states"]["end"][key] * scale for s in samples])
@@ -279,17 +289,27 @@ def plot_all(results, observations):
     for ax, c in zip(axes.flat, config):
         panel(ax, c)
     fig.legend(
-        *axes[0, 0].get_legend_handles_labels(),
+        *ordered_legend(axes[0, 0]),
         loc="outside upper center",
         ncol=3,
         frameon=False,
     )
-    save(fig, figdir / "00_merit_all")
+    save(fig, figdir / "0_merit_all")
+    fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.8), layout="constrained")
+    for ax, c in zip(axes, config[:3]):
+        panel(ax, c)
+    fig.legend(
+        *ordered_legend(axes[0]),
+        loc="outside upper center",
+        ncol=3,
+        frameon=False,
+    )
+    save(fig, figdir / "1_merit_three")
     for i, c in enumerate(config, 1):
         fig, ax = plt.subplots(figsize=(4.6, 4.5), layout="constrained")
         panel(ax, c)
-        ax.legend(loc="best", fontsize=8)
-        save(fig, figdir / f"0{i}_merit_{c[0]}")
+        ax.legend(*ordered_legend(ax), loc="best", fontsize=8)
+        save(fig, figdir / f"{i + 1}_merit_{c[0]}")
     campaign.save(HERE / "metrics.json", metrics)
     # Percent produced locally, not an integral rod release fraction.
     inventory = []
@@ -316,20 +336,69 @@ def plot_all(results, observations):
         ax.set_axisbelow(True)
     axes[-1].set_xticks(range(38), samples, rotation=65, ha="right", fontsize=8)
     fig.legend(
-        *axes[0].get_legend_handles_labels(),
+        *ordered_legend(axes[0]),
         loc="outside upper center",
         ncol=5,
         frameon=False,
     )
-    save(fig, figdir / "05_gas_before_after")
+    save(fig, figdir / "6_gas_before_after")
     campaign.write_csv(HERE / "inventories.csv", inventory)
     campaign.save(HERE / "mean_inventories.json", means)
+    # End-of-history inventories for every sample; no averaging across samples.
+    fig, axes = plt.subplots(
+        2, 1, figsize=(13.8, 6.0), sharex=True, layout="constrained"
+    )
+    end_inventory = []
+    for ax, model in zip(axes, ("coarsening", "legacy")):
+        bottom = np.zeros(len(samples))
+        for pool, label, color in zip(campaign.POOLS, POOL_LABELS, POOL_COLORS):
+            y = np.array([by[model][s]["states"]["end"][pool] for s in samples])
+            ax.bar(
+                range(len(samples)),
+                y,
+                bottom=bottom,
+                width=0.86,
+                color=color,
+                label=label,
+            )
+            bottom += y
+        assert np.max(abs(bottom - 100.0)) < 1e-3
+        for sample in samples:
+            state = by[model][sample]["states"]["end"]
+            end_inventory.append(
+                dict(
+                    sample=sample,
+                    model=MODEL_LABELS[model],
+                    time_h=state["time_h"],
+                    produced_atoms_m3=state["produced"],
+                    **{p: state[p] for p in campaign.POOLS},
+                )
+            )
+        ax.set(
+            ylim=(0, 100),
+            ylabel="Gas / local produced (%)",
+            title=MODEL_LABELS[model] + " — end of history",
+        )
+        ax.grid(axis="y", alpha=0.15)
+        ax.set_axisbelow(True)
+    axes[-1].set_xticks(
+        range(len(samples)), samples, rotation=65, ha="right", fontsize=9
+    )
+    fig.legend(
+        *ordered_legend(axes[0]),
+        loc="outside upper center",
+        ncol=5,
+        frameon=False,
+    )
+    save(fig, figdir / "7_gas_end_all_cases")
+    campaign.write_csv(HERE / "inventories_end_all_cases.csv", end_inventory)
     zoomed = []
     for sample in samples:
         r = by["coarsening"][sample]
-        if history(r, measured[sample], figdir / "histories"):
+        figure7_history(r, measured[sample], figdir / "Detailed_ramps")
+        if r["states"]["end"]["time_h"] - r["onset_h"] > 8.0:
             zoomed.append(sample)
-            history(r, measured[sample], figdir / "histories", full=True)
+            figure7_history(r, measured[sample], figdir / "Detailed_ramps", zoom=True)
     lines = [
         "# White coarsening regression — Nicodemo 2026",
         "",
@@ -340,13 +409,19 @@ def plot_all(results, observations):
         "The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, "
         "with the same pressure driving vacancy uptake. The volume is V=n*omega(T)+nv*Omega, "
         "where omega(T)=2*pi*dHS(T)^3/3 is the additive hard-sphere gas co-volume; "
-        "site, density and mobility parameters are retained without refitting. "
+        "K=1.6e+06 m^-1 is constant, with nu_d=K*positive full density generation during irradiation, excluding cooling rebound. "
+        "Fresh Nd starts at zero. Bulk-based line supply (D_capture=3 D_bulk) and direct trapping are not temperature-gated. "
+        "Atomic re-solution has no phi; effective number disappearance and coalescence reduce Nd. "
+        "Vacancy uptake requires T>=1500 K and positive CS overpressure; Dv is 30 times the bulk vacancy diffusivity, with an explicitly calibrated effective prefactor. "
+        "The density uses the frozen Veshchunov-White refit documented in context/dislocation_density. Parameters are globally selected closures, not independently measured constants. "
         "The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.",
+        "The line-supply factor and vacancy mobility are calibrated globally on the 38 histories. "
+        "Pre-ramp agreement and gas partitions are diagnostics; numerical verification is not a claim of physical validation.",
         "",
         "The temperature dependence of this reference co-volume also enters geometric overlap and coalescence. "
         "It increases on cooling without creating gas or vacancies; mechanical equilibrium is not imposed.",
         "",
-        "![Merit](figures/00_merit_all.png)",
+        "![Merit](figures/0_merit_all.png)",
         "",
         "|Model|R MAPE|N MAPE|IG swelling MAPE|GB swelling MAPE|",
         "|---|---:|---:|---:|---:|",
@@ -372,7 +447,14 @@ def plot_all(results, observations):
         "White SEM primarily resolves the large population. All gas fractions are normalized to local stable Xe+Kr production; "
         "means across 38 locations are arithmetic diagnostics, not integral rod FGR.",
         "",
-        "![Inventories](figures/05_gas_before_after.png)",
+        "![Inventories](figures/6_gas_before_after.png)",
+        "",
+        "![Current 4005-A history](figures/Detailed_ramps/4005-A.png)",
+        "",
+        "Detailed_ramps contains a full-history figure for every sample. Pressure is in Pa, radius in m, "
+        "vacancies are counted per dislocation bubble, and swelling is total intragranular swelling in percent. "
+        "All text is black. Axis maxima start at 1e8 Pa, 2.5e7 vacancies/bubble, 8e-8 m and10% and expand "
+        "when a calculated or experimental value exceeds them. The temperature is shown separately.",
         "",
         "The dislocation-density correlation was refitted to White 2006 data that cannot be shown. "
         "A comparison with pre-ramp data was also performed; those data and the corresponding figure are not distributed.",
@@ -381,15 +463,15 @@ def plot_all(results, observations):
         "",
         "## Individual histories",
         "",
-        "Pressure uses the Carnahan–Starling EOS. Pressure and vacancies are undefined until the large population exists. Experimental post-test points are separated from the "
-        "time axis, without assigning a measurement timestamp. No Barani time curves are included. Long histories have an early-ramp "
-        "zoom and an additional full-history figure; both show the actual final references.",
+        "Pressure uses the Carnahan–Starling EOS. Pressure is undefined for initially empty sites. Experimental post-test points are plotted at the end of the "
+        "history in the radius/swelling panel. In early-ramp zooms, final observations appear at the right edge as references, not as measurements at that time. No Barani time curves are included. Long histories have an early-ramp "
+        "zoom in addition to the full-history figure; both show the actual final references.",
         "",
     ]
     for s in samples:
-        line = f"- [{s}](figures/histories/{s}.png)"
+        line = f"- [{s}](figures/Detailed_ramps/{s}.png)"
         if s in zoomed:
-            line += f" ([full history](figures/histories/{s}_full.png))"
+            line += f" ([early-ramp zoom](figures/Detailed_ramps/{s}_ramp.png))"
         lines.append(line)
     lines += [
         "",
@@ -422,11 +504,19 @@ def plot_all(results, observations):
         HERE / "manifest.json",
         dict(
             official_base="2344575b7d246d02205f503b541b74f914f5f6b3",
-            physical_model="Nicodemo2026, Carnahan-Starling, V=n*omega(T)+nv*Omega, omega=B2=2*pi*dHS^3/3, Kmax3e6,1800–1950K, Hart b=.385nm, Dv3bulk, y=.27",
+            physical_model="Exploratory Nicodemo2026 density-driven nucleation, constant K1.6e+06, ungated Dcapture=3Dbulk, CS/co-volume, reciprocal Eq9 geometry, Dv=30Dvbulk with 1500K vacancy gate, y=.27",
+            site_closure=dict(
+                K_per_m=1600000,
+                initial="Nd=0 for fresh full histories; no automatic seed",
+                source="K*positive density generation during irradiation, excluding cooling rebound",
+                number_loss="coalescence and alpha_d*phi_d*Nd; phi only in number loss, proportional vacancy return",
+                capture="ungated calibrated matrix supply L=3; no chi activation",
+            ),
             pressure_eos=dict(
                 name="Carnahan-Starling",
                 effective_species="Xe for combined stable Xe/Kr",
                 packing_domain="0 <= eta < 1; no clipping",
+                physical_inventory_bound="0<=eta<=1/4 for V=n*u+nv*Omega and nonnegative stocks",
             ),
             volume_closure=dict(
                 dislocation_bubbles="n*omega(T)+nv*Omega; omega(T)=2*pi*dHS(T)^3/3",

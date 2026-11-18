@@ -45,12 +45,6 @@ int main(int argc, char** argv)
               1e-6,
               "Full burnup density derivative");
     }
-    require(thermalKFraction(1800.) == 0. && thermalKFraction(1950.) == 1. && thermalKFraction(1875.) == .5,
-            "Compact thermal K");
-    close(thermalKFractionDerivative(1850.),
-          (thermalKFraction(1850.001) - thermalKFraction(1849.999)) / .002,
-          1e-9,
-          "Thermal K derivative");
     Parameters  p;
     Environment cold{1176., 4.14e18, -.2e6, 8.55e-6, 20.};
     // The hard-sphere correction raises dense-gas pressure and tends to the
@@ -70,6 +64,22 @@ int main(int argc, char** argv)
     eosEnvironment.stress = 1.4 / dense.largeRadius - 2 * dense.pressure;
     require(vacancyRate(1e6, 1e6, eos.largeNumber, eosEnvironment, p) == 0.,
             "No vacancy uptake below the Carnahan-Starling equilibrium pressure");
+    // Independent dilute-sphere Fick flux, rather than a copy of the cell formula.
+    auto isolated                    = initialState();
+    isolated.largeNumber             = 1e6;
+    isolated.gas[2][0]               = 1e12;
+    auto isolatedEnvironment         = cold;
+    isolatedEnvironment.temperature  = 2080.;
+    isolatedEnvironment.stress       = 0.;
+    const auto   isolatedObservation = observe(isolated, isolatedEnvironment, p);
+    const double isolatedFlux = 4 * std::acos(-1.) * vacancyDiffusivity(2080., p) * isolatedObservation.largeRadius *
+                                (isolatedObservation.pressure - isolatedObservation.equilibriumPressure) /
+                                (1.380649e-23 * 2080.);
+    require(isolatedFlux > 0., "Dilute-sphere test has positive overpressure");
+    close(vacancyRate(0., 1e6, isolated.largeNumber, isolatedEnvironment, p) / isolatedFlux,
+          1.,
+          1e-4,
+          "Vacancy cell law tends to isolated-sphere Fick flux");
     auto dilute              = eos;
     dilute.largeNumber       = 1e9;
     dilute.gas[2][0]         = 1e15;
@@ -96,11 +106,10 @@ int main(int argc, char** argv)
         invalidPacking = true;
     }
     require(invalidPacking, "Invalid Carnahan-Starling packing is rejected without clipping");
-    const double bulk = diffusivity(cold), capture = captureDiffusivity(cold, p);
-    const double pipe = 7.74e-6 * std::exp(-1.21e-19 / (1.380649e-23 * cold.temperature));
-    require(capture >= bulk && capture <= pipe, "Hart mixture bounds");
-    auto scaled                      = p;
-    scaled.lineDiffusivityMultiplier = 2.;
+    const double capture = captureDiffusivity(cold, p);
+    require(capture > 0. && std::isfinite(capture), "Positive finite line supply without an activation gate");
+    auto scaled = p;
+    scaled.lineDiffusivityMultiplier *= 2.;
     close(captureDiffusivity(cold, scaled) / capture, 2., 1e-14, "Independent gas mobility scale");
     scaled = p;
     scaled.vacancyDiffusivityMultiplier *= 2.;
@@ -109,24 +118,33 @@ int main(int argc, char** argv)
           1e-14,
           "Independent vacancy mobility scale");
     auto s = initialState();
-    evolve(s, 1000., cold, cold, p);
-    require(s.bulkNumber > 0. && s.largeNumber == 0. && average(s)[2] == 0.,
-            "Native bulk limit before thermal recruitment");
+    evolve(s, 0., cold, cold, p);
+    require(s.largeNumber == 0. && s.cumulativeBirths == 0., "No implicit Nd seed at a finite-burnup start");
+    require(average(s)[2] == 0. && s.vacancies == 0. && observe(s, cold, p).largeSwelling == 0.,
+            "Empty structural sites create no gas, vacancies or swelling");
+    evolve(s, 0., cold, cold, p);
+    require(s.largeNumber == 0., "Repeated initialization creates no bubbles");
+    auto fresh   = cold;
+    fresh.burnup = 0.;
+    evolve(s, 1000., fresh, cold, p);
+    require(s.bulkNumber > 0. && s.largeNumber > 0. && average(s)[2] > 0.,
+            "Positive density generation creates cold bubbles");
     const auto m = average(s);
     close(m[0] + m[1] + m[2] + s.diffusedGas, s.projectedProduction, 1e-11, "Accepted source and escape balance");
-    auto seeded         = s;
-    seeded.vacancies    = 1e20;
-    const double before = average(seeded)[1];
-    recruit(seeded, 1e19);
-    const auto after = average(seeded);
-    close(after[1] + after[2], before, 1e-13, "Recruitment transfers existing gas");
-    close(seeded.bulkNumber + seeded.largeNumber, s.bulkNumber, 1e-13, "Recruitment reclassifies existing bubbles");
-    require(seeded.vacancies == 1e20, "Recruitment creates no vacancies");
+    auto returning        = initialState();
+    returning.largeNumber = returning.cumulativeBirths = 1e19;
+    returning.gas[2][0]                                = 1e22;
+    returning.vacancies                                = 1e24;
+    auto noGrowth                                      = p;
+    noGrowth.K = noGrowth.lineDiffusivityMultiplier = noGrowth.vacancyDiffusivityMultiplier = 0.;
+    evolve(returning, 1000., cold, cold, noGrowth);
+    require(average(returning)[2] < 1e22, "Gas re-solution remains active in cold dislocation bubbles");
+    require(returning.largeNumber < 1e19 && returning.vacancies < 1e24,
+            "Effective bubble disappearance returns the associated vacancy inventory");
     // Pure growth-driven merging at F=0 and zero vacancy mobility must retain Qv.
     auto merging                                 = initialState();
     merging.bulkNumber                           = 1e24;
     merging.largeNumber                          = 1e19;
-    merging.activeFraction                       = 1.;
     merging.vacancies                            = 1e24;
     merging.gas[0][0]                            = 1e25;
     merging.gas[2][0]                            = 1e23;
@@ -171,14 +189,15 @@ int main(int argc, char** argv)
     close(oc.largeSwelling / of.largeSwelling, 1., .002, "Swelling tolerance refinement");
     const double births = coarse.cumulativeBirths;
     evolve(coarse, 60., hot, cold, p);
+    const double afterCooling = coarse.cumulativeBirths;
     evolve(coarse, 60., cold, hot, p);
-    require(coarse.activeFraction == 1. && coarse.cumulativeBirths == births,
-            "No cooling or repeated-temperature reseeding");
+    require(afterCooling == births && coarse.cumulativeBirths == afterCooling,
+            "Cooling rebound and repeated heating do not nucleate new bubbles");
     auto off     = initialState();
     auto noSites = p;
     noSites.K    = 0.;
     evolve(off, 60., cold, hot, noSites);
-    require(off.largeNumber == 0. && average(off)[2] == 0., "Zero K scale disables recruitment conservatively");
+    require(off.largeNumber == 0. && average(off)[2] == 0., "Zero K scale disables dislocation trapping conservatively");
     bool rejected = false;
     try
     {
@@ -191,5 +210,16 @@ int main(int argc, char** argv)
         rejected = true;
     }
     require(rejected, "Invalid scaling rejected");
-    std::cout << "Coarsening EOS, conservation, access memory, density and refinement passed\n";
+    close(gasOnlyObservation.packingFraction, .25, 1e-14, "Physical ytilde upper bound");
+    require(dense.packingFraction < .25 && dense.packingFraction > 0., "Vacancies reduce ytilde");
+    require(vacancyRate(0., 1e6, 1e18, cold, p) == 0., "Vacancy threshold blocks cold uptake only");
+    double previousVacancyDiffusivity = 0.;
+    for (double T : {800., 1500., 2080., 2500.})
+    {
+        const double value = vacancyDiffusivity(T, p);
+        require(std::isfinite(value) && value > previousVacancyDiffusivity,
+                "Positive vacancy mobility increases with temperature");
+        previousVacancyDiffusivity = value;
+    }
+    std::cout << "Coarsening EOS, conservation, density-driven nucleation, vacancy gate and refinement passed\n";
 }
