@@ -52,6 +52,7 @@ REGISTRY = [
     ("oxidation",    "verification", "test_oxidation",    "test_UO2_oxidation", (), None),
     ("vercors",      "verification", "test_vercors5",     "", (), None),
     ("gpr",          "verification", "test_gpr",          "test_GPR", (), None),
+    ("nus",          "verification", "test_nus",          "test_N",   (), None),  # test_NewSolver, test_NUS_*
 
     ("baker",    "validation", "baker",    "test_Baker",   (), None),
     ("cornell",  "validation", "cornell",  "test_Cornell", (), None),

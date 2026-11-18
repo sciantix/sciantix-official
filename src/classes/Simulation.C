@@ -31,7 +31,8 @@ void Simulation::initialize(int                            Sciantix_options[],
                             double                         Sciantix_scaling_factors[],
                             double                         Sciantix_diffusion_modes[],
                             double                         Sciantix_thermochemistry[],
-                            const ThermochemistrySettings* Sciantix_thermochemistry_settings)
+                            const ThermochemistrySettings* Sciantix_thermochemistry_settings,
+                            double                         Sciantix_diffusion_modes_NUS[])
 {
     setVariables(Sciantix_options,
                  Sciantix_history,
@@ -39,7 +40,8 @@ void Simulation::initialize(int                            Sciantix_options[],
                  Sciantix_scaling_factors,
                  Sciantix_diffusion_modes,
                  Sciantix_thermochemistry,
-                 Sciantix_thermochemistry_settings);
+                 Sciantix_thermochemistry_settings,
+                 Sciantix_diffusion_modes_NUS);
     setFissionProducts();
     setMatrix();
     setSystem();
@@ -82,6 +84,8 @@ void Simulation::execute()
     FissionProductProduction();
 
     FissionProductDecay();
+
+    GrainBoundarySource();
 
     IntraGranularBubbleBehavior();
 

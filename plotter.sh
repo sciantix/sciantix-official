@@ -61,4 +61,8 @@ echo "=== Running cross-group parity plots ==="
 python3 validation/parity_by_topic.py
 
 echo ""
+echo "=== Running NUS plot ==="
+python3 verification/test_nus/plot.py
+
+echo ""
 echo "=== Done ==="

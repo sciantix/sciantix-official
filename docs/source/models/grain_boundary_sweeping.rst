@@ -8,6 +8,12 @@ that swept volume is removed from the intragranular inventory.
 
 The implementation follows ``Simulation::GrainBoundarySweeping()``.
 
+.. note::
+
+   Sweeping is applied to the **helium** mode blocks only: the xenon and krypton
+   intragranular modes are deliberately left untouched. This is a physical choice,
+   not an omission, and the mode-block indices listed below reflect it.
+
 Activation and options
 ----------------------
 
@@ -78,6 +84,7 @@ In the implementation this is applied via:
 
 and the set of modes updated depends on the diffusion solver selection:
 
-- ``iDiffusionSolver = 1``: updates the mode block starting at ``6*40`` (one equation set).
-- ``iDiffusionSolver = 2``: updates the mode blocks starting at ``7*40`` and ``8*40`` (two equation sets).
+- ``iDiffusionSolver = 1``: updates the mode block starting at ``6*40``, i.e. helium in grain.
+- ``iDiffusionSolver = 2``: updates the mode blocks starting at ``7*40`` and ``8*40``, i.e.
+  helium in intragranular solution and in bubbles.
 - ``iDiffusionSolver = 3``: no sweeping update is applied in this routine.

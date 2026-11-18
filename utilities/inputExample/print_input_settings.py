@@ -7,7 +7,7 @@ This is a python script to write the SCIANTIX default input file "input_settings
 with open('input_settings.txt', 'w') as file:
     file.write('1    #    iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))\n')
     file.write('1    #    iFissionProductDiffusivity (0= constant value, 1= Turnbull et al. (1988))\n')
-    file.write('1    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)\n')
+    file.write('1    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis, 4= generalized SDA with non-uniform source, Zayat et al.)\n')
     file.write('1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))\n')
     file.write('1    #    iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))\n')
     file.write('1    #    iTrappingRate (0= constant value, 1= Ham (1958))\n')
@@ -28,3 +28,7 @@ with open('input_settings.txt', 'w') as file:
     file.write('0    #    iStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)\n')
     file.write('0    #    iBubbleDiffusivity (0= not considered, 1= volume diffusivity)\n')
     file.write('0    #    iDensification (0= not considered, 1= P. Van Uffelen PhD thesis (2002))\n')
+    file.write('0    #    iNUSOutput (0= visualization disabled, 1= write the source and initial-condition shapes (iDiffusionSolver = 4 only))\n')
+    file.write('0    #    iNUSAnimation (0= visualization disabled, 1= write the time-resolved source shape (requires iNUSOutput = 1))\n')
+    file.write('0    #    iNonSym (0= sphere, 1= implantation geometry (iDiffusionSolver = 4 only))\n')
+    file.write('0    #    iGrainBoundaryResolution (0= off, 1= grain-boundary re-solution as a localized source in the outer shell (iDiffusionSolver = 4 only))\n')

@@ -39,10 +39,14 @@ void callSciantix(int                            Sciantix_options[],
                            Sciantix_scaling_factors,
                            Sciantix_diffusion_modes,
                            Sciantix_thermochemistry,
-                           Sciantix_thermochemistry_options);
+                           Sciantix_thermochemistry_options,
+                           ::Sciantix_diffusion_modes_NUS);
     simulation->execute();
 
-    simulation->update(Sciantix_variables, Sciantix_diffusion_modes, Sciantix_thermochemistry);
+    // The TU coupling exposes the uniform-source interface only; the NUS mode array is the
+    // global one and stays untouched when iDiffusionSolver != 4.
+    simulation->update(
+        Sciantix_variables, Sciantix_diffusion_modes, Sciantix_thermochemistry, ::Sciantix_diffusion_modes_NUS);
 }
 
 void getSciantixOptions(int    Sciantix_options[],

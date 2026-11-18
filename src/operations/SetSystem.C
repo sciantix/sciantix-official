@@ -24,28 +24,28 @@ void Simulation::setSystem()
     switch ((int)input_variable["iFuelMatrix"].getValue())
     {
         case 0:
-            sciantix_system.push(
-                Xe_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(
-                Kr_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(
-                He_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(
-                Xe133_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe_in_UO2(
+                matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(Kr_in_UO2(
+                matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(He_in_UO2(
+                matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(Xe133_in_UO2(
+                matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
 #if !defined(COUPLING_TU)
             // Kr85m diffusion modes (blocks 12-14) are not tracked by TRANSURANUS.
-            sciantix_system.push(
-                Kr85m_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Kr85m_in_UO2(
+                matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
 #endif
             break;
 
         case 1:
-            sciantix_system.push(
-                Xe_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe_in_UO2(
+                matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
 #if !defined(COUPLING_TU)
             // Xe-in-HBS diffusion modes (blocks 15-17) are not tracked by TRANSURANUS.
-            sciantix_system.push(
-                Xe_in_UO2HBS(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe_in_UO2HBS(
+                matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
 #endif
             break;
 
@@ -92,7 +92,8 @@ System Xe_in_UO2(SciantixArray<Matrix>&           matrices,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
-                 SciantixArray<InputVariable>&    scaling_factors)
+                 SciantixArray<InputVariable>&    scaling_factors,
+                 std::vector<Source>&             sources_input)
 {
     System system_;
 
@@ -120,6 +121,30 @@ System Xe_in_UO2(SciantixArray<Matrix>&           matrices,
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
+    // Non-uniform source (NUS) counterparts: skipped unless the NUS solver is selected,
+    // since they read the radial source profile, which is loaded only in that case.
+    if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
+    {
+        system_.setProductionRateNUS(
+            1, input_variable, sciantix_variable, scaling_factors, history_variable, sources_input);
+        system_.setFissionGasDiffusivityNUS(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                            sciantix_variable,
+                                            history_variable,
+                                            scaling_factors,
+                                            sources_input);
+        system_.setResolutionRateNUS(int(input_variable["iResolutionRate"].getValue()),
+                                     sciantix_variable,
+                                     history_variable,
+                                     scaling_factors,
+                                     matrices,
+                                     sources_input);
+        system_.setNucleationRateNUS(int(input_variable["iNucleationRate"].getValue()),
+                                     history_variable,
+                                     sciantix_variable,
+                                     scaling_factors,
+                                     sources_input);
+    }
+
     return system_;
 }
 
@@ -128,7 +153,8 @@ System Xe_in_UO2HBS(SciantixArray<Matrix>&           matrices,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
-                    SciantixArray<InputVariable>&    scaling_factors)
+                    SciantixArray<InputVariable>&    scaling_factors,
+                    std::vector<Source>&             sources_input)
 {
     System system_;
 
@@ -147,6 +173,17 @@ System Xe_in_UO2HBS(SciantixArray<Matrix>&           matrices,
     system_.setTrappingRate(99, sciantix_variable, scaling_factors);
     system_.setNucleationRate(99, history_variable, scaling_factors);
 
+    // Non-uniform source (NUS) counterparts: skipped unless the NUS solver is selected,
+    // since they read the radial source profile, which is loaded only in that case.
+    if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
+    {
+        system_.setProductionRateNUS(
+            5, input_variable, sciantix_variable, scaling_factors, history_variable, sources_input);
+        system_.setFissionGasDiffusivityNUS(5, sciantix_variable, history_variable, scaling_factors, sources_input);
+        system_.setResolutionRateNUS(99, sciantix_variable, history_variable, scaling_factors, matrices, sources_input);
+        system_.setNucleationRateNUS(99, history_variable, sciantix_variable, scaling_factors, sources_input);
+    }
+
     return system_;
 }
 
@@ -155,7 +192,8 @@ System Kr_in_UO2(SciantixArray<Matrix>&           matrices,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
-                 SciantixArray<InputVariable>&    scaling_factors)
+                 SciantixArray<InputVariable>&    scaling_factors,
+                 std::vector<Source>&             sources_input)
 {
     System system_;
 
@@ -183,6 +221,30 @@ System Kr_in_UO2(SciantixArray<Matrix>&           matrices,
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
+    // Non-uniform source (NUS) counterparts: skipped unless the NUS solver is selected,
+    // since they read the radial source profile, which is loaded only in that case.
+    if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
+    {
+        system_.setProductionRateNUS(
+            1, input_variable, sciantix_variable, scaling_factors, history_variable, sources_input);
+        system_.setFissionGasDiffusivityNUS(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                            sciantix_variable,
+                                            history_variable,
+                                            scaling_factors,
+                                            sources_input);
+        system_.setResolutionRateNUS(int(input_variable["iResolutionRate"].getValue()),
+                                     sciantix_variable,
+                                     history_variable,
+                                     scaling_factors,
+                                     matrices,
+                                     sources_input);
+        system_.setNucleationRateNUS(int(input_variable["iNucleationRate"].getValue()),
+                                     history_variable,
+                                     sciantix_variable,
+                                     scaling_factors,
+                                     sources_input);
+    }
+
     return system_;
 }
 
@@ -191,7 +253,8 @@ System He_in_UO2(SciantixArray<Matrix>&           matrices,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
-                 SciantixArray<InputVariable>&    scaling_factors)
+                 SciantixArray<InputVariable>&    scaling_factors,
+                 std::vector<Source>&             sources_input)
 {
     System system_;
 
@@ -225,6 +288,30 @@ System He_in_UO2(SciantixArray<Matrix>&           matrices,
     system_.setBubbleDiffusivity(
         int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
 
+    // Non-uniform source (NUS) counterparts: skipped unless the NUS solver is selected,
+    // since they read the radial source profile, which is loaded only in that case.
+    if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
+    {
+        system_.setProductionRateNUS(int(input_variable["iHeliumProductionRate"].getValue()),
+                                     input_variable,
+                                     sciantix_variable,
+                                     scaling_factors,
+                                     history_variable,
+                                     sources_input);
+        system_.setHeliumDiffusivityNUS(int(input_variable["iHeDiffusivity"].getValue()), history_variable);
+        system_.setResolutionRateNUS(int(input_variable["iResolutionRate"].getValue()),
+                                     sciantix_variable,
+                                     history_variable,
+                                     scaling_factors,
+                                     matrices,
+                                     sources_input);
+        system_.setNucleationRateNUS(int(input_variable["iNucleationRate"].getValue()),
+                                     history_variable,
+                                     sciantix_variable,
+                                     scaling_factors,
+                                     sources_input);
+    }
+
     return system_;
 }
 
@@ -233,7 +320,8 @@ System Xe133_in_UO2(SciantixArray<Matrix>&           matrices,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
-                    SciantixArray<InputVariable>&    scaling_factors)
+                    SciantixArray<InputVariable>&    scaling_factors,
+                    std::vector<Source>&             sources_input)
 {
     System system_;
 
@@ -261,6 +349,30 @@ System Xe133_in_UO2(SciantixArray<Matrix>&           matrices,
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
+    // Non-uniform source (NUS) counterparts: skipped unless the NUS solver is selected,
+    // since they read the radial source profile, which is loaded only in that case.
+    if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
+    {
+        system_.setProductionRateNUS(
+            1, input_variable, sciantix_variable, scaling_factors, history_variable, sources_input);
+        system_.setFissionGasDiffusivityNUS(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                            sciantix_variable,
+                                            history_variable,
+                                            scaling_factors,
+                                            sources_input);
+        system_.setResolutionRateNUS(int(input_variable["iResolutionRate"].getValue()),
+                                     sciantix_variable,
+                                     history_variable,
+                                     scaling_factors,
+                                     matrices,
+                                     sources_input);
+        system_.setNucleationRateNUS(int(input_variable["iNucleationRate"].getValue()),
+                                     history_variable,
+                                     sciantix_variable,
+                                     scaling_factors,
+                                     sources_input);
+    }
+
     return system_;
 }
 
@@ -269,7 +381,8 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
-                    SciantixArray<InputVariable>&    scaling_factors)
+                    SciantixArray<InputVariable>&    scaling_factors,
+                    std::vector<Source>&             sources_input)
 {
     System system_;
 
@@ -296,6 +409,30 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
                               matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    // Non-uniform source (NUS) counterparts: skipped unless the NUS solver is selected,
+    // since they read the radial source profile, which is loaded only in that case.
+    if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
+    {
+        system_.setProductionRateNUS(
+            1, input_variable, sciantix_variable, scaling_factors, history_variable, sources_input);
+        system_.setFissionGasDiffusivityNUS(int(input_variable["iFissionProductDiffusivity"].getValue()),
+                                            sciantix_variable,
+                                            history_variable,
+                                            scaling_factors,
+                                            sources_input);
+        system_.setResolutionRateNUS(int(input_variable["iResolutionRate"].getValue()),
+                                     sciantix_variable,
+                                     history_variable,
+                                     scaling_factors,
+                                     matrices,
+                                     sources_input);
+        system_.setNucleationRateNUS(int(input_variable["iNucleationRate"].getValue()),
+                                     history_variable,
+                                     sciantix_variable,
+                                     scaling_factors,
+                                     sources_input);
+    }
 
     return system_;
 }

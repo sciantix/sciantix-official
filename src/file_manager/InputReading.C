@@ -16,6 +16,7 @@
 
 #include "InputReading.h"
 #include "MainVariables.h"
+#include "SourceHandler.h"
 #include "ThermochemistrySettings.h"
 
 #include <algorithm>
@@ -219,7 +220,9 @@ void InputReading(int    Sciantix_options[],
                   std::vector<double>&      Systempressure_input,
                   std::vector<double>&      OMratio_input,
                   double&                   Time_end_h,
-                  double&                   Time_end_s)
+                  double&                   Time_end_s,
+                  std::vector<Source>&      sources_input,
+                  std::vector<Source>&      initial_distribution)
 {
     /**
      * Besides reading the input files, this routine writes input_check.txt, which reports every
@@ -270,6 +273,30 @@ void InputReading(int    Sciantix_options[],
     Sciantix_options[23] = ReadOneSetting("iDensification", settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", settings, input_check);
     Sciantix_options[25] = ReadOneSetting("iThermochimica", settings, input_check);
+    // [26] is iThermochimicaOuterNode, set per node by the coupled code (not read from file)
+
+    // Generalised spectral diffusion (GSD) with non-uniform source (NUS). Absent from the
+    // settings file they read back as zero, which is the inactive value for all four.
+    Sciantix_options[27] = ReadOneSetting("iNUSOutput", settings, input_check);
+    Sciantix_options[28] = ReadOneSetting("iNUSAnimation", settings, input_check);
+    Sciantix_options[29] = ReadOneSetting("iNonSym", settings, input_check);
+    Sciantix_options[30] = ReadOneSetting("iGrainBoundaryResolution", settings, input_check);
+
+    visualization = Sciantix_options[27];
+    animation     = Sciantix_options[28];
+    iNonSym       = Sciantix_options[29];
+
+    // The radial source profile is mandatory only for the NUS solver; loading it unconditionally
+    // would abort every case that does not ship a non_uniform_source.txt.
+    if (Sciantix_options[2] == 4)
+    {
+        loadSourcesFromFile("non_uniform_source.txt", sources_input);
+        loadICFromFile("initial_distribution.txt", initial_distribution, ICfile);
+    }
+    else
+    {
+        ICfile = false;
+    }
 
     {
         const NamedInput& ic = initial_conditions;

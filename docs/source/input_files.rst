@@ -72,7 +72,7 @@ The file contains one integer flag per model. Each flag selects a model option: 
      - 0 = constant value; 1 = :ref:`Turnbull et al. (1988) <ref-turnbull1988>`; 2 = Matzke (1980); 3 = :ref:`Turnbull and Beyer (2010) <ref-turnbull2010>`; 4 = Ronchi (2007); 5 = UO\ :sub:`2` HBS; 7 = amorphous Cr-doped UO\ :sub:`2`, Owen et al. (2023); 8 and 10 = Cr-doped UO\ :sub:`2`, :ref:`Nicodemo et al. (2024) <ref-nicodemo2024>`; 9 = Cr-doped UO\ :sub:`2`, Cooper et al. (2021); 99 = zero diffusivity (test option)
      - :doc:`models/gas_diffusion`
    * - ``iDiffusionSolver``
-     - 1 = spectral diffusion solver (SDA) with quasi-stationary hypothesis; 2 = SDA without quasi-stationary hypothesis
+     - 1 = spectral diffusion solver (SDA) with quasi-stationary hypothesis; 2 = SDA without quasi-stationary hypothesis; 4 = generalized SDA with non-uniform source (NUS), Zayat et al.; requires ``non_uniform_source.txt`` (see :ref:`input-nus`)
      - :doc:`models/gas_diffusion`, :doc:`solvers`
    * - ``iIntraGranularBubbleBehavior``
      - 0 = constant bubble concentration and radius; 1 = :ref:`Pizzocri et al. (2018) <ref-pizzocri2018>`; 2 = :ref:`White and Tucker (1983) <ref-white1983>`; 3 = annealing and helium behaviour (similarity ratio); 99 = no intragranular bubbles
@@ -140,6 +140,18 @@ The file contains one integer flag per model. Each flag selects a model option: 
    * - ``iDensification``
      - 0 = not considered; 1 = fit from :ref:`Van Uffelen (2002) <ref-vanuffelen2002>`
      - :doc:`models/densification`
+   * - ``iNUSOutput``
+     - 0 = no output; 1 = write the source and initial-condition shapes. Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
+   * - ``iNUSAnimation``
+     - 0 = no output; 1 = write the time-resolved source shape (requires ``iNUSOutput = 1``). Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
+   * - ``iNonSym``
+     - 0 = spherical grain; 1 = implantation geometry (source on a fraction of the sphere). Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
+   * - ``iGrainBoundaryResolution``
+     - 0 = off; 1 = grain-boundary re-solution as a localized source in the outer shell of the grain. Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
 
 Remarks:
 
@@ -216,6 +228,42 @@ This optional file lets the user select model parameters and set a multiplicativ
     1.0    # sf_grain_boundary_energy (scaling factor - grain-boundary energy)
     1.0    # sf_fabricated_porosity (scaling factor - fabricated porosity)
     1.0    # sf_cs_production (scaling factor - Cs production)
+
+.. _input-nus:
+
+Non-uniform source files (``iDiffusionSolver = 4``)
+---------------------------------------------------
+
+The generalized spectral diffusion solver reads two further files from the case folder. They are not read with the other solvers.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 15 55
+
+   * - File
+     - Required
+     - Content
+   * - ``non_uniform_source.txt``
+     - yes, with ``iDiffusionSolver = 4``
+     - Radial profile of the gas source, one line per instant. A missing file stops the run.
+   * - ``initial_distribution.txt``
+     - optional
+     - Radial profile of the initial concentration, one line per block of diffusion modes. Absent, the initial condition is uniform.
+
+Each line describes a piecewise-linear profile :math:`S(r) = A_i r + B_i` over the regions of the grain:
+
+.. code-block:: text
+
+    <time (h)>  #  <r_0/a> <r_1/a> ... <r_n/a>  #  <A_1> ... <A_n>  #  <B_1> ... <B_n>
+
+The region bounds are normalised to the grain radius :math:`a` (from 0 to 1, one value more than the coefficients), while the profile is evaluated at the radius in m: :math:`B_i` is in fiss/(m³·s) and :math:`A_i` in fiss/(m⁴·s). Between two instants the profile is interpolated linearly. For example, a uniform source of 1e20 fiss/(m³·s) that rises to 3.5e20 in the outer 2 % of the grain at 5500 h:
+
+.. code-block:: text
+
+    0    # 0 0.98 1 # 0 0 # 1e20 1e20
+    5500 # 0 0.98 1 # 0 0 # 1e20 3.5e20
+
+The NUS cases in ``verification/test_nus/`` are templates for both files.
 
 .. _output-files:
 
