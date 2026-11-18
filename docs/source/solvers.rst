@@ -94,5 +94,5 @@ Linear Algebra
 
 The ``Solver`` class provides utility methods for linear algebra, such as:
 
-- **Laplace**: Solves systems of linear equations of size NxN using Cramer's rule / Laplace expansion (optimized for N=2 and N=3).
+- **Laplace**: Solves systems of linear equations of size NxN using Cramer's rule / Laplace expansion (optimised for N=2 and N=3).
 - **Dot Product**: Computes dot products for 1D vectors and 2D matrices.

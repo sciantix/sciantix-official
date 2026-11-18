@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,7 +18,7 @@
 #define MAIN_VARIABLES_H
 
 #include "Source.h"
-
+#include "ThermochemistrySettings.h"
 #include <fstream>
 #include <vector>
 
@@ -40,14 +40,24 @@ constexpr int SCIANTIX_HISTORY_SIZE         = 20;
 constexpr int SCIANTIX_VARIABLES_SIZE       = 300;
 constexpr int SCIANTIX_SCALING_FACTORS_SIZE = 20;
 constexpr int N_DIFFUSION_MODES             = 40;
-constexpr int N_MODE_BLOCKS                 = 18;
+// TRANSURANUS only tracks 12 of the 18 mode-blocks (Xe, Kr, He, Xe133);
+// Kr85m and Xe-in-HBS are standalone-SCIANTIX-only
+// (see SetSystem.C and Simulation.h's getDiffusionModes* guards).
+#if defined(COUPLING_TU)
+constexpr int N_MODE_BLOCKS = 12;
+#else
+constexpr int N_MODE_BLOCKS = 18;
+#endif
 constexpr int SCIANTIX_DIFFUSION_MODES_SIZE = N_MODE_BLOCKS * N_DIFFUSION_MODES;
+constexpr int SCIANTIX_THERMOCHEMISTRY_SIZE = 300;
 
-extern int    Sciantix_options[SCIANTIX_OPTIONS_SIZE];
-extern double Sciantix_history[SCIANTIX_HISTORY_SIZE];
-extern double Sciantix_variables[SCIANTIX_VARIABLES_SIZE];
-extern double Sciantix_scaling_factors[SCIANTIX_SCALING_FACTORS_SIZE];
-extern double Sciantix_diffusion_modes[SCIANTIX_DIFFUSION_MODES_SIZE];
+extern int                      Sciantix_options[SCIANTIX_OPTIONS_SIZE];
+extern double                   Sciantix_history[SCIANTIX_HISTORY_SIZE];
+extern double                   Sciantix_variables[SCIANTIX_VARIABLES_SIZE];
+extern double                   Sciantix_scaling_factors[SCIANTIX_SCALING_FACTORS_SIZE];
+extern double                   Sciantix_diffusion_modes[SCIANTIX_DIFFUSION_MODES_SIZE];
+extern double                   Sciantix_thermochemistry[SCIANTIX_THERMOCHEMISTRY_SIZE];
+extern ThermochemistrySettings* Sciantix_thermochemistry_settings;
 
 // Companion mode array used by the non-uniform-source (NUS) spectral solver.
 extern double Sciantix_diffusion_modes_NUS[SCIANTIX_DIFFUSION_MODES_SIZE];
@@ -66,15 +76,21 @@ extern int                 Temperature_input_points;
 extern int                 Fissionrate_input_points;
 extern int                 Hydrostaticstress_input_points;
 extern int                 Stempressure_input_points;
+extern int                 Systempressure_input_points;
+extern int                 OMratio_input_points;
 extern std::vector<double> Time_temperature_input;
 extern std::vector<double> Time_fissionrate_input;
 extern std::vector<double> Time_hydrostaticstress_input;
 extern std::vector<double> Time_steampressure_input;
+extern std::vector<double> Time_systempressure_input;
+extern std::vector<double> Time_OMratio_input;
 extern std::vector<double> Time_input;
 extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
+extern std::vector<double> Systempressure_input;
+extern std::vector<double> OMratio_input;
 extern std::vector<Source> sources_input;
 extern std::vector<Source> sources_interp;
 extern std::vector<Source> sources_correct;

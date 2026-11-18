@@ -23,6 +23,8 @@ The model uses:
 Model activation
 ----------------
 
+The radioactive gases (Xe-133 and Kr-85m) are always computed; ``iRadioactiveFissionGas`` only selects whether they are written to the output (see :ref:`input_settings.txt <input-settings>`).
+
 The model is applied to each gas system satisfying:
 
 - the decay rate is greater than zero,

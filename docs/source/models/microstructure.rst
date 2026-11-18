@@ -7,6 +7,11 @@ are needed by other models, namely the **lattice parameter** and the
 an empirical correlation for the lattice parameter and propagates this change
 to the density.
 
+Activation and option flag
+--------------------------
+
+The fuel matrix is selected by ``iFuelMatrix`` (UO\ :sub:`2`, UO\ :sub:`2` with HBS or MOX; see :ref:`input_settings.txt <input-settings>`); this page describes the properties computed for the UO\ :sub:`2` matrix.
+
 Reference
 ---------
 

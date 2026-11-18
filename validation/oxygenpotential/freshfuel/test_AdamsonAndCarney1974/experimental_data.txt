@@ -1,0 +1,6 @@
+# Table 8.6. Selected data on oxygen potential for MOX fuels – Data source: (Adamson and Carney, 1974)
+Temperature Pu/M ratio O/M ratio Burn-up μ(O2)
+K % %FIMA kJ/mol
+1623 15 2,071 0 -161,3
+1773 15 2,050 0 -159,6
+1773 15 2,046 0 -159,6

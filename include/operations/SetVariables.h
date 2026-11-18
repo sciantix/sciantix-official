@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,6 +22,8 @@
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"
+#include "ThermochemistrySettings.h"
+#include "ThermochemistryVariable.h"
 
 /**
  * @brief Include-only header for the variable set-up stage.

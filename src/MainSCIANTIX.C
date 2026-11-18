@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,6 +24,7 @@
 #include "TimeStepCalculation.h"
 #include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 
 using namespace std;
@@ -34,6 +35,37 @@ using namespace std;
  * @param time_step_number The total number of time steps executed during the simulation.
  */
 void logExecutionTime(double timer, int time_step_number, std::ofstream& Execution_file);
+
+#ifndef SCIANTIX_VERSION
+#define SCIANTIX_VERSION "unknown"
+#endif
+
+/**
+ * @brief Prints the command-line usage and the expected input files (sciantix.x --help).
+ */
+void printHelp()
+{
+    std::cout << "SCIANTIX " << SCIANTIX_VERSION << "\n"
+              << "\n"
+              << "Usage: sciantix.x [INPUT_DIRECTORY]\n"
+              << "\n"
+              << "Runs a SCIANTIX simulation with the input files in INPUT_DIRECTORY\n"
+              << "(default: the current directory). Results are written to output.txt\n"
+              << "in the same directory.\n"
+              << "\n"
+              << "Required input files:\n"
+              << "  input_settings.txt                  model and solver options\n"
+              << "  input_initial_conditions.txt        initial conditions\n"
+              << "  input_history.txt                   time history of the operating conditions\n"
+              << "\n"
+              << "Optional input files:\n"
+              << "  input_scaling_factors.txt           parameter scaling factors (default: 1)\n"
+              << "  input_thermochemistry_settings.txt  read only when thermochemistry is enabled\n"
+              << "\n"
+              << "Options:\n"
+              << "  -h, --help                          show this help and exit\n"
+              << "  -v, --version                       show the version and exit\n";
+}
 
 /**
  * @brief Main entry point for the SCIANTIX program.
@@ -57,15 +89,42 @@ void logExecutionTime(double timer, int time_step_number, std::ofstream& Executi
  * - release of radioactive fission gases
  * The validation database is accessible in the *regression* folder.
  * @param argc Number of command-line arguments.
- * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the
- * input file.
+ * @param argv Array of command-line arguments: the options -h/--help and -v/--version, in any
+ * position, and at most one input directory.
  * @return Returns 0 upon successful completion of the program.
  */
 int main(int argc, char** argv)
 {
     clock_t timer;
 
-    if (argc < 2)
+    std::string input_directory;
+    for (int i = 1; i < argc; ++i)
+    {
+        const std::string arg = argv[i];
+        if (arg == "-h" || arg == "--help")
+        {
+            printHelp();
+            return 0;
+        }
+        if (arg == "-v" || arg == "--version")
+        {
+            std::cout << "SCIANTIX " << SCIANTIX_VERSION << std::endl;
+            return 0;
+        }
+        if (arg.size() > 1 && arg[0] == '-')
+        {
+            std::cerr << "sciantix.x: unknown option '" << arg << "'. Use --help for the usage." << std::endl;
+            return 1;
+        }
+        if (!input_directory.empty())
+        {
+            std::cerr << "sciantix.x: only one input directory can be given. Use --help for the usage." << std::endl;
+            return 1;
+        }
+        input_directory = arg;
+    }
+
+    if (input_directory.empty())
     {
         std::cerr << "Using current directory." << std::endl;
         std::cout << "Use ./sciantix.x ../input_path/ in the working directory" << std::endl;
@@ -73,7 +132,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        TestPath = argv[1];
+        TestPath = input_directory;
         if (TestPath.back() != '/')
         {
             TestPath += '/';
@@ -83,12 +142,16 @@ int main(int argc, char** argv)
     InputReading(Sciantix_options,
                  Sciantix_variables,
                  Sciantix_scaling_factors,
+                 Sciantix_thermochemistry,
+                 Sciantix_thermochemistry_settings,
                  Input_history_points,
                  Time_input,
                  Temperature_input,
                  Fissionrate_input,
                  Hydrostaticstress_input,
                  Steampressure_input,
+                 Systempressure_input,
+                 OMratio_input,
                  Time_end_h,
                  Time_end_s,
                  sources_input,
@@ -97,15 +160,22 @@ int main(int argc, char** argv)
     Initialization(Sciantix_history,
                    Sciantix_variables,
                    Sciantix_diffusion_modes,
+                   Sciantix_thermochemistry,
                    Sciantix_diffusion_modes_NUS,
                    Temperature_input,
                    Fissionrate_input,
                    Hydrostaticstress_input,
-                   Steampressure_input);
+                   Steampressure_input,
+                   Systempressure_input,
+                   OMratio_input);
 
     std::string outputPath = TestPath + "output.txt";
 
     remove(outputPath.c_str());
+
+    std::string thermo_outputPath = TestPath + "thermochemistry_output.txt";
+    remove(thermo_outputPath.c_str());
+    remove((TestPath + "phase_sublattice_composition.txt").c_str());
 
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
@@ -128,12 +198,18 @@ int main(int argc, char** argv)
         Sciantix_history[8]  = static_cast<double>(Time_step_number);
         Sciantix_history[9]  = Sciantix_history[10];
         Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
+        Sciantix_history[11] = Sciantix_history[12];
+        Sciantix_history[12] = InputInterpolation(Time_h, Time_input, Systempressure_input, Input_history_points);
+        Sciantix_history[13] = Sciantix_history[14];
+        Sciantix_history[14] = InputInterpolation(Time_h, Time_input, OMratio_input, Input_history_points);
 
         Sciantix(Sciantix_options,
                  Sciantix_history,
                  Sciantix_variables,
                  Sciantix_scaling_factors,
                  Sciantix_diffusion_modes,
+                 Sciantix_thermochemistry,
+                 Sciantix_thermochemistry_settings,
                  Sciantix_diffusion_modes_NUS);
 
         dTime_h = TimeStepCalculation(Input_history_points, Time_h, Time_input, Number_of_time_steps_per_interval);

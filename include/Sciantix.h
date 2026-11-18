@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,17 +32,21 @@
  * model.
  * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the
  * simulation.
+ * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
+ * @param Sciantix_thermochemistry_settings Thermochemistry module settings.
  *
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
  *
  */
-void Sciantix(int    Sciantix_options[],
-              double Sciantix_history[],
-              double Sciantix_variables[],
-              double Sciantix_scaling_factors[],
-              double Sciantix_diffusion_modes[],
-              double Sciantix_diffusion_modes_NUS[]);
+void Sciantix(int                            Sciantix_options[],
+              double                         Sciantix_history[],
+              double                         Sciantix_variables[],
+              double                         Sciantix_scaling_factors[],
+              double                         Sciantix_diffusion_modes[],
+              double                         Sciantix_thermochemistry[],
+              const ThermochemistrySettings* Sciantix_thermochemistry_settings,
+              double                         Sciantix_diffusion_modes_NUS[]);
 
 #endif  // SCIANTIX_H

@@ -1,0 +1,39 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
+//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
+//     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
+//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   >   <    //
+//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //
+//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //
+//                                                                                  //
+//  Originally developed by D. Pizzocri & T. Barani                                 //
+//                                                                                  //
+//  Version: 2.5                                                                    //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
+//                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef SET_FISSION_PRODUCTS_H
+#define SET_FISSION_PRODUCTS_H
+
+#include "FissionProducts.h"
+#include "SciantixArray.h"
+/**
+ * @brief Sets up the fission product properties in the simulation.
+ *
+ * This function initializes and maps properties for fission products
+ * used in the simulation. Each fission product is set up with specific attributes
+ * and divided by its chemical behavior.
+ * Each fission product is mapped for easy access throughout the simulation.
+ *
+ * @author G. Zullo
+ * @author F. Bastien
+ * @author E. Cappellari
+ */
+void SetGasFPs(SciantixArray<FissionProducts>& gas_fp);
+void SetVolatileFPs(SciantixArray<FissionProducts>& volatile_fp);
+void SetMetallicFPs(SciantixArray<FissionProducts>& metallic_fp);
+void SetCeramicFPs(SciantixArray<FissionProducts>& ceramic_fp);
+
+#endif  // SET_FISSION_PRODUCTS_H

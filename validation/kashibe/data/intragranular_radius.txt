@@ -1,0 +1,3 @@
+# Intragranular bubble radius (m), Kashibe et al. (1993)
+test_Kashibe1993_23	1.1e-09
+test_Kashibe1993_44	1.95e-09

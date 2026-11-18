@@ -24,6 +24,8 @@ The gas production routine is invoked for all defined gas systems each time
 step. Systems with a zero production rate will not change but are still
 processed consistently by the loop.
 
+The production rate of helium is selected by ``iHeliumProductionRate``. Helium is always computed; ``iHelium`` only selects whether it is written to the output. The options of both flags are listed in :ref:`input_settings.txt <input-settings>`.
+
 Outputs
 -------
 

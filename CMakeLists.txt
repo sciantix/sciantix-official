@@ -7,20 +7,15 @@
 # by setting this file as startup element.
 # More information here: (https://learn.microsoft.com/it-it/cpp/build/configure-cmake-debugging-sessions?view=msvc-170)
 #
-# Author: G. Zullo (giovanni.zullo@polimi.it)
+# Author: G. Zullo (giovanni.zullo@polimi.it), E. Cappellari (elisa.cappellari@polimi.it)
 
 cmake_minimum_required(VERSION 3.10)
 
-if(APPLE)
-    message(STATUS "Configuring on macOS, setting custom compilers...")
-    set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
-    set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
-else()
-    message(STATUS "Not on macOS, using default compilers.")
-endif()
+# The compiler is found by CMake (default: c++ in the PATH, i.e. Apple Clang on macOS).
+# To use another one: cmake -S . -B build -DCMAKE_CXX_COMPILER=g++-15 (or CXX=g++-15 cmake ...).
 
 # Name of the project created / existent in visual studio
-project(sciantix)
+project(sciantix VERSION 2.5)
 
 # Function to add all subdirectories of a given path to include directories
 function(add_subdirectory_includes root_dir)
@@ -41,10 +36,32 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra)
+    # No fused multiply-add contraction (default on ARM64, e.g. Apple Silicon): keeps the results
+    # identical across platforms, so that the gold files of the testing suite apply everywhere.
+    add_compile_options(-ffp-contract=off)
 endif()
 
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
+
+# Optional coupling with OpenCalphad:
+# auto-detected if a "opencalphad-for-sciantix" directory has been built with Allmake.sh --oc next to this repository, e.g.
+#   workspace/
+#   |-- sciantix-official/
+#   `-- opencalphad-for-sciantix/
+# Override with -DCOUPLING_OC=ON/OFF to force it on or off regardless of detection.
+if(EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc.a" AND
+   EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc-gb.a")
+    set(COUPLING_OC_DEFAULT ON)
+else()
+    set(COUPLING_OC_DEFAULT OFF)
+endif()
+option(COUPLING_OC "Enable OpenCalphad coupling" ${COUPLING_OC_DEFAULT})
+if(COUPLING_OC)
+    message(STATUS "OpenCalphad coupling enabled")
+else()
+    message(STATUS "OpenCalphad coupling disabled (built ../opencalphad-for-sciantix libraries not found and COUPLING_OC not forced ON)")
+endif()
 
 # Include CTest
 include(CTest)
@@ -58,6 +75,11 @@ add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 # Include source files
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
 
+# OCUtilsCoupling.C links directly against OpenCalphad's compiled OCASI libraries.
+if(NOT COUPLING_OC)
+    list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/coupling/OCUtilsCoupling.C)
+endif()
+
 # Set custom object file directory (to have all object files in the obj directory)
 set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 
@@ -65,12 +87,25 @@ set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 if(COUPLING_TU)
     add_library(sciantix STATIC ${SOURCES})
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
+    if(COUPLING_OC)
+        target_compile_definitions(sciantix PRIVATE USE_OPENCALPHAD)
+    endif()
 else()
     add_executable(sciantix ${SOURCES})
+    if(COUPLING_OC)
+        target_compile_definitions(sciantix PRIVATE USE_OPENCALPHAD)
+        target_link_libraries(sciantix
+            ${PROJECT_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc.a
+            ${PROJECT_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc-gb.a
+            gfortran quadmath gomp)
+    endif()
     if (UNIX)
         set(CMAKE_EXECUTABLE_SUFFIX ".x")
     endif()
 endif()
+
+# Version printed by sciantix.x --version (set in project() above)
+target_compile_definitions(sciantix PRIVATE SCIANTIX_VERSION="${PROJECT_VERSION}")
 
 # Unit tests (run with: ctest --test-dir build)
 if(BUILD_TESTING AND NOT COUPLING_TU)
@@ -81,6 +116,37 @@ if(BUILD_TESTING AND NOT COUPLING_TU)
         ${PROJECT_SOURCE_DIR}/src/MainVariables.C
     )
     add_test(NAME unit_tests COMMAND unit_tests)
+    set_tests_properties(unit_tests PROPERTIES LABELS "unit")
+
+    # Verification and validation tests: one CTest test per group of testing/runner.py
+    # (run with: ctest --test-dir build -L verification, or -L validation)
+    # Keep these lists in sync with REGISTRY in testing/runner.py
+    find_program(PYTHON3_EXECUTABLE NAMES python3 python)
+    if(PYTHON3_EXECUTABLE)
+        set(TESTING_GROUPS_verification
+            mox-po2 openPorosity powerPulse oxidation vercors gpr nus)
+        set(TESTING_GROUPS_validation
+            baker cornell white kashibe talip chromium contact hbs jog
+            oxygenpotential-freshfuel oxygenpotential-burnup)
+        foreach(suite verification validation)
+            foreach(group ${TESTING_GROUPS_${suite}})
+                add_test(NAME ${suite}_${group}
+                    COMMAND ${PYTHON3_EXECUTABLE} -m testing.runner --${group}
+                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+                set_tests_properties(${suite}_${group} PROPERTIES
+                    LABELS "${suite}"
+                    ENVIRONMENT "SCIANTIX_BUILD_DIR=${CMAKE_BINARY_DIR}")
+            endforeach()
+        endforeach()
+    else()
+        message(WARNING "python3 not found: verification and validation tests will not be registered with CTest")
+    endif()
+
+    # GNU-style "make check": build everything, then run the full test suite
+    add_custom_target(check
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        DEPENDS sciantix unit_tests
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
 
 # Copy all object files in obj directory by using a custom command

@@ -1,0 +1,59 @@
+Metadata-Version: 2.4
+Name: csred
+Version: 0.1.0
+Summary: Cesium radial redistribution helper for SCIANTIX
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.24
+Provides-Extra: test
+Requires-Dist: pytest>=7; extra == "test"
+
+# csred
+
+Small Python helper package for calculating radial cesium-production scaling factors for SCIANTIX.
+
+## Scope
+
+The package includes
+
+- a cylindrical radial mesh (`CylinderGeometry`)
+- a polynomial radial temperature profile (`PolynomialProfile`)
+- a radial Arrhenius Cs redistribution model (`CsRedCylinder`)
+- helpers for finite-volume radial averages
+
+The model treats Cs as a mobile species whose observed radial concentration in
+solid fuel is approximated by
+
+N(r) = A * exp(-Q* / (R T(r)))
+
+where Q* is the effective heat of transport and T(r) is the local radial fuel temperature. The package normalizes this Arrhenius shape so the area-integrated Cs inventory is conserved, then returns the local multiplier needed by SCIANTIX.
+
+sf_cs_production(r) = redistributed Cs inventory / locally produced Cs inventory
+
+The default value is Q* = -57 kJ/mol, so the normalized thermal shape enriches
+the cooler outer part of the fuel.
+
+
+## Main Example
+
+Run from this directory:
+
+```bash
+python3 examples/PHENIXpins.py
+```
+
+The script prints the radial positions, local temperatures, and the final
+`sf_cs_production` array. It does not write SCIANTIX input files; copy the
+printed factors manually into the cases where you want to apply them.
+
+## Install
+
+```bash
+pip install -e .
+```
+
+## Test
+
+```bash
+pytest
+```

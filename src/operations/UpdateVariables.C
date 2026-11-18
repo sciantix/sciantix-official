@@ -8,13 +8,14 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "ThermochemistryManifest.h"
 
 std::map<int, std::string> update_sciantix_variable = {
     {0, "Grain radius"},
@@ -101,6 +102,38 @@ std::map<int, std::string> update_sciantix_variable = {
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"},
+    {101, "Cs produced"},
+    {102, "Cs in grain"},
+    {103, "Cs in intragranular solution"},
+    {104, "Cs in intragranular bubbles"},
+    {105, "Cs at grain boundary"},
+    {106, "Cs released"},
+    {107, "Cs reacted"},
+    {108, "Intragranular Cs atoms per bubble"},
+    {109, "Intergranular Cs atoms per bubble"},
+#if defined(COUPLING_TU)
+    {110, "Cs in the gap"},
+#endif
+    // Non-volatile FPs
+    {130, "Mo produced"},
+    {131, "Mo in solution"},
+    {132, "Mo reacted"},
+    {133, "Ba produced"},
+    {134, "Ba in solution"},
+    {135, "Ba reacted"},
+    {136, "Tc produced"},
+    {137, "Tc in solution"},
+    {138, "Tc reacted"},
+    {139, "Ru produced"},
+    {140, "Ru in solution"},
+    {141, "Ru reacted"},
+    {142, "Rh produced"},
+    {143, "Rh in solution"},
+    {144, "Rh reacted"},
+    {145, "Pd produced"},
+    {146, "Pd in solution"},
+    {147, "Pd reacted"},
+    // Chromium
     {150, "Chromium content"},
     {151, "Lattice parameter"},
     {152, "Theoretical density"},
@@ -111,10 +144,23 @@ std::map<int, std::string> update_sciantix_variable = {
     {157, "Chromia solution"},
     {158, "Chromia precipitate"},
     {160, "Diffusion coefficient"},
+    // Matrix
+    {161, "U content"},
+    {162, "O content"},
+    {163, "Pu content"},
+    {164, "Fuel oxygen potential"},
+    {166, "O available content"},
+    {171, "Pu238"},
+    {172, "Pu239"},
+    {173, "Pu240"},
+    {174, "Pu241"},
+    {175, "Pu242"},
+    {177, "q"},
 };
 
 void Simulation::update(double Sciantix_variables[],
                         double Sciantix_diffusion_modes[],
+                        double Sciantix_thermochemistry[],
                         double Sciantix_diffusion_modes_NUS[])
 {
     for (int i = 0; i < n_modes; ++i)
@@ -131,5 +177,17 @@ void Simulation::update(double Sciantix_variables[],
          it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
+    }
+
+    if (thermochemistry_variable.empty())
+        return;
+
+    for (auto& variable : thermochemistry_variable)
+    {
+        Sciantix_thermochemistry[variable.getIndex()] = variable.getFinalValue();
+
+        const int density_index = variable.getIndex() + thermochemistry_density_offset;
+        if (density_index < SCIANTIX_THERMOCHEMISTRY_SIZE)
+            Sciantix_thermochemistry[density_index] = variable.getTheoreticalDensity();
     }
 }

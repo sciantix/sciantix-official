@@ -18,6 +18,8 @@ The diffusion model runs at every time step; the solver is chosen with the
 no disabling value: any other setting is a fatal error and aborts the run. To
 suppress diffusion, set a null diffusivity instead (``iFissionGasDiffusivity = 99``).
 
+The diffusivity of the fission gases is selected by ``iFissionProductDiffusivity`` and that of helium by ``iHeDiffusivity``. The options of these flags are listed in :ref:`input_settings.txt <input-settings>`.
+
 Inputs
 ------
 

@@ -8,36 +8,41 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
-#include <chrono>
-#include <iostream>
+
+Simulation* Simulation::instance = nullptr;
 
 Simulation* Simulation::getInstance()
 {
-    static Simulation instance;
-    return &instance;
+    if (instance == nullptr)
+        instance = new Simulation;
+    return instance;
 }
 
-void Simulation::initialize(int    Sciantix_options[],
-                            double Sciantix_history[],
-                            double Sciantix_variables[],
-                            double Sciantix_scaling_factors[],
-                            double Sciantix_diffusion_modes[],
-                            double Sciantix_diffusion_modes_NUS[])
+void Simulation::initialize(int                            Sciantix_options[],
+                            double                         Sciantix_history[],
+                            double                         Sciantix_variables[],
+                            double                         Sciantix_scaling_factors[],
+                            double                         Sciantix_diffusion_modes[],
+                            double                         Sciantix_thermochemistry[],
+                            const ThermochemistrySettings* Sciantix_thermochemistry_settings,
+                            double                         Sciantix_diffusion_modes_NUS[])
 {
     setVariables(Sciantix_options,
                  Sciantix_history,
                  Sciantix_variables,
                  Sciantix_scaling_factors,
                  Sciantix_diffusion_modes,
+                 Sciantix_thermochemistry,
+                 Sciantix_thermochemistry_settings,
                  Sciantix_diffusion_modes_NUS);
-    setGas();
+    setFissionProducts();
     setMatrix();
     setSystem();
     setGPVariables(Sciantix_options, Sciantix_history, Sciantix_variables);
@@ -53,33 +58,40 @@ void Simulation::execute()
     Densification();
 #endif
 
-    GapPartialPressure();
-
-    UO2Thermochemistry();
-
-    StoichiometryDeviation();
+    // FUEL MICROSTRUCTURE
 
     HighBurnupStructureFormation();
 
     HighBurnupStructurePorosity();
 
-    Microstructure();
+    GrainGrowth();
+
+    // FUEL CHEMISTRY
 
     ChromiumSolubility();
 
-    GrainGrowth();
+#if !defined(COUPLING_TU)
+    GapPartialPressure();
+
+    UO2Thermochemistry();
+#endif
+    StoichiometryDeviation();
+
+    // FISSION PRODUCT BEHAVIOR
 
     GrainBoundarySweeping();
 
-    GasProduction();
+    FissionProductProduction();
 
-    GasDecay();
+    FissionProductDecay();
 
     GrainBoundarySource();
 
     IntraGranularBubbleBehavior();
 
-    GasDiffusion();
+    IntragranularDiffusion();
+
+    SetPhaseDiagram();
 
     GrainBoundaryMicroCracking();
 
@@ -87,5 +99,9 @@ void Simulation::execute()
 
     InterGranularBubbleBehavior();
 
-    GasRelease();
+    FissionProductRelease();
+
+    // GAP BEHAVIOUR
+
+    JOGFormation();
 }

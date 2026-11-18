@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,10 +34,13 @@
 void Initialization(double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],
+                    double              Sciantix_thermochemistry[],
                     double              Sciantix_diffusion_modes_NUS[],
                     std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,
-                    std::vector<double> Steampressure_input);
+                    std::vector<double> Steampressure_input,
+                    std::vector<double> Systempressure_input,
+                    std::vector<double> OMratio_input);
 
 #endif  // INITIALIZATION_H

@@ -1,0 +1,36 @@
+---
+title: SCIANTIX() diagram
+---
+%%{init: {"themeVariables": {"fontSize": "20px"}} }%%
+flowchart TB
+    C_BEGIN(["BEGIN"])
+    setVariables["SET VARIABLES"]
+    setGPVariables["SET GP VARIABLES"]
+    setFissionProducts["SET FISSION PRODUCTS"]
+    setMatrix["SET FUEL MATRIX"]
+    setSystem["SET SYSTEM"]
+    execute["SIMULATION EXECUTION"]
+    update["UPDATE VARIABLES"]
+    output[/"OUTPUT"/]
+    C_END(["END"])
+
+    C_BEGIN --> setVariables --> setGPVariables --> setFissionProducts --> setMatrix --> setSystem --> execute --> update --> output --> C_END
+
+    setGPVariables_note["optional: data-driven<br/>property correlations"]
+    setGPVariables --> setGPVariables_note
+    setFissionProducts_note["gas: Xe, Kr, He<br/>volatile: Cs<br/>metallic: Mo, Pd, Ru, Rh, Tc<br/>ceramic: Ba"]
+    setFissionProducts --> setFissionProducts_note
+    setMatrix_note["UO2, Cr-doped UO2, MOX"]
+    setMatrix --> setMatrix_note
+    setSystem_note["Fission products in fuel matrix"]
+    setSystem --> setSystem_note
+
+    classDef terminal fill:#E8C4BE,stroke:#7A1F1F,stroke-width:1.5px,color:#3a0d0d;
+    classDef process fill:#E8C4BE,stroke:#7A1F1F,stroke-width:1.5px,color:#3a0d0d;
+    classDef note fill:#F6E9D9,stroke:#7A1F1F,stroke-width:1px,color:#3a0d0d;
+    classDef highlight fill:#7A1F1F,stroke:#3a0d0d,stroke-width:2.5px,color:#ffffff;
+
+    class C_BEGIN,C_END terminal;
+    class setVariables,setGPVariables,setFissionProducts,setMatrix,setSystem,update,output process;
+    class execute highlight;
+    class setFissionProducts_note,setMatrix_note,setSystem_note,setGPVariables_note note;

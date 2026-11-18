@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,11 +24,17 @@
  *
  * @author G. Petrosillo
  * @author G. Zullo
+ * @author E. Cappellari
+ * @author C. Besio
  *
  */
 
 double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
                                     double                           temperature,
                                     SciantixArray<SciantixVariable>& sciantix_variable);
+
+double KatoThermochemicalModel(double                           stoichiometry_deviation,
+                               double                           temperature,
+                               SciantixArray<SciantixVariable>& sciantix_variable);
 
 #endif  // STOICHIOMETRY_DEVIATION_H

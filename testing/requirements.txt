@@ -1,0 +1,5 @@
+# Python packages required by the SCIANTIX testing suite (python3 -m testing.runner, ctest)
+# Install with: python3 -m pip install -r testing/requirements.txt
+numpy
+pandas
+matplotlib

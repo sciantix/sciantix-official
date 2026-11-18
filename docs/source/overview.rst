@@ -13,6 +13,8 @@ Currently, SCIANTIX is validated against experimental data for the following phe
 - **Helium behaviour**: Diffusion, solubility, and thermal re-solution of helium under annealing conditions
 - **High-burnup structure (HBS) formation**: Evolution of porosity at high burnups
 
+SCIANTIX is intended for nuclear fuel performance researchers, code developers, and advanced students working on mechanistic modelling of fission gas behaviour.
+
 SCIANTIX employs **physics-based rate-theory models** rather than empirical correlations, enabling better integration with lower-length scale calculations and improved predictive capability. The engineering-compatible design allows SCIANTIX to operate both as an independent tool for separate-effect calculations and as an embedded module within industrial fuel performance codes (FPCs) such as TRANSURANUS, FRAPCON/FRAPTRAN, and OFFBEAT.
 
 Conceptual Introduction
@@ -63,7 +65,7 @@ SCIANTIX is implemented in modern C++ (C++17 standard) with a fully object-orien
 
 **Core Components**
 
-The SCIANTIX codebase is organized into several primary modules:
+The SCIANTIX codebase is organised into several primary modules:
 
 1. **Classes** (`classes/`): Fundamental simulation objects
    
@@ -105,12 +107,15 @@ Workflow
 
 A typical SCIANTIX simulation follows these stages:
 
-1. **Initialization**
+1. **Initialisation**
    
-   - Read input files containing:
-     - Simulation settings (time stepping, convergence criteria)
-     - Scaling factors for model parameters
-     - Initial conditions (temperature history, burnup rate, fuel properties)
+   - Read the input files (see :doc:`input_files`):
+   
+     - model flags and optional time-step settings (``input_settings.txt``)
+     - the history of temperature, fission rate and hydrostatic stress (``input_history.txt``)
+     - the initial state of the grain and of the fuel (``input_initial_conditions.txt``)
+     - optional scaling factors for model parameters (``input_scaling_factors.txt``)
+   
    - Create and initialise simulation objects (matrix, gas species, systems)
    - Set up numerical solvers and time integrators
 
@@ -145,74 +150,12 @@ A typical SCIANTIX simulation follows these stages:
    - Generate output files with fuel properties and gas behaviour predictions
    - Store history information for subsequent time steps
 
-**Input Files Structure**
-
-SCIANTIX requires three main input files that define the simulation setup, history, and initial conditions:
-
-1. **input_settings.txt**: Model selection and solver configuration
-   
-   A single-column text file with integer flags selecting which physics models and numerical methods to use. Example structure:
-   
-   .. code-block:: text
-   
-       1    #    iGrainGrowth (0= no, 1= Ainscough, 2= Van Uffelen)
-       1    #    iFissionGasDiffusivity (0= constant, 1= Turnbull et al.)
-       1    #    iDiffusionSolver (1= SDA with quasi-stationarity, 2= without)
-       1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al.)
-       ...
-   
-   Each line contains an integer flag and a comment explaining the available options.
-
-2. **input_history.txt**: Time-dependent conditions
-   
-   A four-column text file defining the simulation history with linear interpolation between specified points:
-   
-   .. code-block:: text
-   
-       Time(h)    Temperature(K)    FissionRate(fiss/m³-s)    HydrostaticStress(MPa)
-       0          1273              1e19                      0
-       5500       1273              1e19                      0
-   
-   The code automatically interpolates between these rows using a fixed number of time steps.
-
-3. **input_initial_conditions.txt**: Physical parameters and initial state
-   
-   A structured text file with values followed by comments:
-   
-   .. code-block:: text
-   
-       5.0e-06
-       # initial grain radius (m)
-       0.0 0.0 0.0 0.0 0.0 0.0
-       # initial Xe (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
-       0.0 0.0 0.0 0.0 0.0 0.0
-       # initial Kr (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
-       0.0 0.0
-       # initial He (at/m³): produced, intragranular [+ in solution, in bubbles, grain boundary, released]
-       ...
-   
-   Each data line is followed by a comment line (starting with `#`) describing the parameters.
-
-4. **input_scaling_factors.txt** (Optional): Parameter adjustment
-   
-   A single-column text file with scaling factors applied to model parameters:
-   
-   .. code-block:: text
-   
-       1.0
-       # scaling factor - resolution rate
-       1.0
-       # scaling factor - trapping rate
-       1.0
-       # scaling factor - nucleation rate
-       ...
-
 **Input and Output**
 
-- **Inputs**: Temperature history, irradiation conditions, fuel properties, initial conditions, simulation settings, and optional parameter scaling factors
+- **Inputs**: SCIANTIX reads up to four plain-text files from the case folder, ``input_settings.txt`` (model selection), ``input_history.txt`` (temperature, fission rate and hydrostatic stress versus time), ``input_initial_conditions.txt`` (initial state, fuel properties) and the optional ``input_scaling_factors.txt``.
 - **Outputs**: Fission gas release fractions, swelling estimates, temperature-dependent accelerations, bubble densities, burnup-dependent phenomena
 
-For detailed input-file templates and examples, see the :doc:`examples` page and the utilities documentation at ``utilities/InputExplanation.md``.
+For the input-file format see :doc:`input_files`; for a worked example see :doc:`examples`.
 
 **Numerical Stability and Efficiency**
 
@@ -225,12 +168,12 @@ SCIANTIX employs several strategies to balance accuracy and computational effici
 
 **Validation**
 
-The code is validated against experimental data through a comprehensive regression testing suite covering:
+The code is validated against experimental data through a comprehensive testing suite covering:
 
 - Intragranular and intergranular swelling experiments
 - Helium behaviour under annealing
 - Fission gas release measurements
-- High-burnup structure characterization
+- High-burnup structure characterisation
 
 Further Reading
 ---------------
@@ -239,6 +182,7 @@ For detailed information on specific models, solvers, and usage, refer to:
 
 - :doc:`models`: Physics-based models implemented in SCIANTIX
 - :doc:`solvers`: Numerical solution methods and verification
-- :doc:`examples`: Practical examples and use cases
-- :doc:`regression`: Validation against experimental data
+- :doc:`input_files`: Structure of the input files and meaning of the model flags
+- :doc:`examples`: Step-by-step tutorial and use cases
+- :doc:`testing`: Verification and validation against experimental data
 - :doc:`api/index_api`: Application Programming Interface documentation

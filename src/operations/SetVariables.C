@@ -8,21 +8,24 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "MainVariables.h"
 #include "SetVariables.h"
 #include "Simulation.h"
 
-void Simulation::setVariables(int    Sciantix_options[],
-                              double Sciantix_history[],
-                              double Sciantix_variables[],
-                              double Sciantix_scaling_factors[],
-                              double Sciantix_diffusion_modes[],
-                              double Sciantix_diffusion_modes_NUS[])
+void Simulation::setVariables(int                            Sciantix_options[],
+                              double                         Sciantix_history[],
+                              double                         Sciantix_variables[],
+                              double                         Sciantix_scaling_factors[],
+                              double                         Sciantix_diffusion_modes[],
+                              double                         Sciantix_thermochemistry[],
+                              const ThermochemistrySettings* Sciantix_thermochemistry_settings,
+                              double                         Sciantix_diffusion_modes_NUS[])
 {
     // Input variable
     if (input_variable.empty())
@@ -34,6 +37,10 @@ void Simulation::setVariables(int    Sciantix_options[],
         }
     }
 
+    // iThermochimicaOuterNode varies every call in the coupling with TU
+    // (per radial node, set by FisPro3.f95).
+    input_variable["iThermochimicaOuterNode"].setValue(Sciantix_options[26]);
+
     // toOutput flags
     bool toOutputRadioactiveFG          = input_variable["iRadioactiveFissionGas"].getValue() != 0,
          toOutputVenting                = input_variable["iGrainBoundaryVenting"].getValue() != 0,
@@ -42,14 +49,20 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
-         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
+         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
+         toOutputPrescribedOMRatio      = input_variable["iStoichiometryDeviation"].getValue() == 9,
+         toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0,
+         toOutputMOX                    = input_variable["iFuelMatrix"].getValue() == 2;
 
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
     // History variable
-    std::vector<SciantixVariable> values =
-        initializeHistoryVariable(Sciantix_history, Sciantix_scaling_factors, toOutputStoichiometryDeviation);
+    std::vector<SciantixVariable> values = initializeHistoryVariable(Sciantix_history,
+                                                                     Sciantix_scaling_factors,
+                                                                     toOutputStoichiometryDeviation,
+                                                                     toOutputThermochimica,
+                                                                     toOutputPrescribedOMRatio);
 
     for (SciantixVariable initial_value : values)
     {
@@ -65,11 +78,30 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputGrainBoundary,
                                         toOutputHighBurnupStructure,
                                         toOutputStoichiometryDeviation,
-                                        toOutputChromiumContent);
+                                        toOutputChromiumContent,
+                                        toOutputThermochimica,
+                                        toOutputMOX);
 
     for (SciantixVariable initial_value : values)
     {
         sciantix_variable.push(initial_value);
+    }
+
+    thermochemistry_settings = Sciantix_thermochemistry_settings;
+
+    std::vector<ThermochemistryVariable> values_th;
+    if (toOutputThermochimica)
+    {
+        if (thermochemistry_manifest.empty())
+        {
+            thermochemistry_manifest = LoadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
+        }
+        values_th = initializeThermochemistryVariable(thermochemistry_manifest, Sciantix_thermochemistry);
+    }
+
+    for (ThermochemistryVariable initial_value : values_th)
+    {
+        thermochemistry_variable.push(initial_value);
     }
 
 #if defined(COUPLING_TU)

@@ -2,6 +2,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17748425.svg)](https://doi.org/10.5281/zenodo.17748425)
 ![CI](https://github.com/sciantix/sciantix-official/actions/workflows/pages.yml/badge.svg)
 ![paper](https://github.com/sciantix/sciantix-official/actions/workflows/paper.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 SCIANTIX is an open-source 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. 
 
@@ -14,7 +15,7 @@ Currently, SCIANTIX is validated against experimental data for:
 - Helium behavior and release under annealing conditions
 - High-burnup structure (HBS) formation and porosity evolution
 
-The validation database and regression suite are available in the `regression/` directory.
+The validation database and testing suite are available in the `verification/` and `validation/` directories.
 
 # Training
 
@@ -25,10 +26,16 @@ is maintained in a dedicated repository:
 
 # Installation
 
-Recommended requirements:
+Requirements to build SCIANTIX:
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
-- CMake ≥ 3.10
-- Python 3.8+ (for regression suite)
+- CMake ≥ 3.6
+
+Additional requirements to run the testing suite (not needed to build the code):
+- Python ≥ 3.8
+- NumPy, pandas and Matplotlib, installed with:
+  ```bash
+  python3 -m pip install -r testing/requirements.txt
+  ```
 
 ## Quick installation (Linux/WSL2)
 
@@ -39,18 +46,21 @@ Recommended requirements:
    ```
 2. **Build the code:**
    ```bash
-   ./Allmake.sh
+   mkdir -p build && cd build
+   cmake ..
+   make -j
    ```
    The compiled executable `sciantix.x` will be located in the `build/` directory.
+   To check that the build succeeded, run `./sciantix.x --version` (from `build/`).
 
-## Manual installation
+   For the optional OpenCalphad thermochemistry coupling (checked out as
+   `../opencalphad-for-sciantix`, next to this repository), build instead,
+   from the repository root, with:
+   ```bash
+   ./Allmake.sh --oc
+   ```
 
-If you prefer to build manually or need custom CMake flags:
-```bash
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
-```
+> **Shortcut:** `./Allmake.sh` runs exactly these CMake steps from the repository root, and `./Allclean.sh` removes `build/`, `obj/`, compiled binaries and Python caches.
 
 ## Windows installation
 The recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL2)](https://learn.microsoft.com/en-us/windows/wsl/install). Follow the Quick installation steps within your WSL terminal.
@@ -58,7 +68,7 @@ The recommended approach for Windows users is to use the [Windows Subsystem for 
 # Coupling with fuel performance codes
 To compile SCIANTIX as a static library for coupling with codes like TRANSURANUS:
 ```bash
-cd build
+mkdir -p build && cd build
 cmake -DCOUPLING_TU=ON ..
 make -j$(nproc)
 ```
@@ -69,9 +79,10 @@ Execute `sciantix.x` within the directory containing your input files, or provid
 ```bash
 ./build/sciantix.x [path_to_input_folder]
 ```
+Run `./build/sciantix.x --help` to list the expected input files.
 
 ### Input preparation
-Refer to the [Input File Explanation](utilities/InputExplanation.md) for detailed syntax.
+The format of the input files is described in the [Input Files](https://sciantix.github.io/sciantix-official/input_files.html) page of the documentation, and a step-by-step tutorial on a complete case is given in [Examples](https://sciantix.github.io/sciantix-official/examples.html).
 Generation scripts for template input files are available in `utilities/inputExample/`:
 ```bash
 python3 utilities/inputExample/print_input_settings.py
@@ -79,24 +90,49 @@ python3 utilities/inputExample/print_input_initial_conditions.py
 python3 utilities/inputExample/print_input_scaling_factors.py
 ```
 
-# Regression tests
+# Tests
 
-To verify the installation and physics:
+Test cases live in two top-level directories: 
+-  `verification/` (to test specific models) 
+-  `validation/` (to test comparison with experimental data)
+
+Unit, verification and validation tests are registered with CTest. From the `build/` directory:
 ```bash
-./runRegression.sh
+ctest --output-on-failure -j $(nproc)
 ```
-Alternatively, run the runner directly:
+or, equivalently, `make check`. Use `ctest -L unit`, `ctest -L verification` or `ctest -L validation` to run a single category, and `ctest -R validation_baker` to run a single test group.
+
+The testing runner can also be called directly from the repository root (no flags = run everything), e.g. to select individual cases or regenerate gold files:
 ```bash
-python3 -m regression.runner --all -j $(nproc)
+python3 -m testing.runner -j $(nproc)
 ```
+> **Shortcut:** `./runTesting.sh` performs a clean rebuild (`Allclean.sh` + `Allmake.sh`) and then runs the testing runner.
+
+Some groups use the OpenCalphad coupling; they're attempted on every run and degrade gracefully if it isn't built. 
+To require OpenCalphad instead, build with it and pass `--oc` to the runner, so any of these groups that still can't use it fails loudly instead of degrading:
+```bash
+./Allmake.sh --oc
+python3 -m testing.runner --oc
+```
+> **Shortcut:** `./runTesting.sh --oc` performs both steps after a clean rebuild.
 
 # Documentation
 
 Online documentation is available at [sciantix.github.io/sciantix-official](https://sciantix.github.io/sciantix-official/).
-To generate local Doxygen documentation:
+
+The online documentation is built with Sphinx, which runs Doxygen automatically to include the source-code API reference. To build it locally, install Doxygen and the Python packages in `docs/requirements.txt`, then run `make html` in `docs/`:
 ```bash
-doxygen Doxyfile
+sudo apt install doxygen
+python3 -m pip install -r docs/requirements.txt
+cd docs
+make html
 ```
+The HTML documentation is written to `docs/build/html/` (open `index.html`).
+
+# Support
+
+- **Questions, bug reports and feature requests:** open an issue on the [GitHub issue tracker](https://github.com/sciantix/sciantix-official/issues). Please include the output of `sciantix.x --version` and, for a bug, the input files of the case.
+- **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 # How to cite
 
@@ -168,3 +204,7 @@ Politecnico di Milano, Nuclear Engineering Division.
 
 Mini guide for the generalized spectral diffusion solver with non-uniform source:
 https://polimi365-my.sharepoint.com/:b:/g/personal/10884872_polimi_it/EUT-2KKVWdBNgbRhSLts3LYB44YjGkc51bAKPb6uTe0oHg?e=YH19AK
+
+# License
+
+SCIANTIX is released under the [MIT License](LICENSE).

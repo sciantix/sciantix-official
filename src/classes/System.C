@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,21 +58,65 @@ double System::getRadiusInLattice()
     return radius_in_lattice;
 }
 
-void System::setGas(Gas g)
+void System::setFissionProductCategory(FissionProducts fp, FissionProductCategory category)
 {
-    /// Member function to set the name of the gas in the matrix
-    gas = g;
+    fission_product          = fp;
+    fission_product_category = category;
 }
 
-Gas System::getGas()
+void System::setGas(FissionProducts g_fp)
 {
-    return gas;
+    setFissionProductCategory(g_fp, FissionProductCategory::Gas);
 }
 
-std::string System::getGasName()
+void System::setVolatileFP(FissionProducts v_fp)
 {
-    /// Member function to get the name of the gas in the matrix
-    return gas.getName();
+    setFissionProductCategory(v_fp, FissionProductCategory::Volatile);
+}
+
+void System::setMetallicFP(FissionProducts m_fp)
+{
+    setFissionProductCategory(m_fp, FissionProductCategory::Metallic);
+}
+
+void System::setCeramicFP(FissionProducts c_fp)
+{
+    setFissionProductCategory(c_fp, FissionProductCategory::Ceramic);
+}
+
+bool System::isGasFP()
+{
+    return fission_product_category == FissionProductCategory::Gas;
+}
+
+bool System::isVolatileFP()
+{
+    return fission_product_category == FissionProductCategory::Volatile;
+}
+
+bool System::isMetallicFP()
+{
+    return fission_product_category == FissionProductCategory::Metallic;
+}
+
+bool System::isCeramicFP()
+{
+    return fission_product_category == FissionProductCategory::Ceramic;
+}
+
+bool System::isGasOrVolatileFP()
+{
+    return isGasFP() || isVolatileFP();
+}
+
+FissionProducts System::getFissionProduct()
+{
+    return fission_product;
+}
+
+std::string System::getFissionProductName()
+{
+    return fission_product.getName();
 }
 
 void System::setMatrix(Matrix m)
@@ -136,12 +180,11 @@ void System::setBubbleDiffusivity(int                              input_value,
                  * Uffelen et al. JNM, 434 (2013) 287–29</a>.
                  */
 
-                double boltzmann_constant_ev = 8.62e-5;  // eV/K
                 double volume_self_diffusivity =
-                    3.0e-5 * exp(-4.5 / (boltzmann_constant_ev * history_variable["Temperature"].getFinalValue()));
+                    3.0e-5 * exp(-4.5 / (boltzmann_constant_eV * history_variable["Temperature"].getFinalValue()));
                 double bubble_radius = sciantix_variable["Intragranular bubble radius"].getInitialValue();
 
-                bubble_diffusivity = 3 * matrices["UO2"].getSchottkyVolume() * volume_self_diffusivity /
+                bubble_diffusivity = 3 * matrices[0].getSchottkyVolume() * volume_self_diffusivity /
                                      (4.0 * M_PI * pow(bubble_radius, 3.0));
             }
 
@@ -354,15 +397,16 @@ double System::getHeliumDiffusivityNUS()
 }
 //
 
-void System::setFissionGasDiffusivity(int                              input_value,
-                                      SciantixArray<SciantixVariable>& sciantix_variable,
-                                      SciantixArray<SciantixVariable>& history_variable,
-                                      SciantixArray<InputVariable>&    scaling_factors)
+void System::setFissionProductDiffusivity(int                              input_value,
+                                          SciantixArray<SciantixVariable>& sciantix_variable,
+                                          SciantixArray<SciantixVariable>& history_variable,
+                                          SciantixArray<InputVariable>&    scaling_factors,
+                                          SciantixArray<Matrix>&           matrices)
 {
     /**
-     * ### setFissionGasDiffusivity
+     * ### setFissionProductDiffusivity
      * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain
-     * is set according to the input_variable iFissionGasDiffusivity
+     * is set according to the input_variable iFissionProductDiffusivity
      *
      */
     switch (input_value)
@@ -370,12 +414,12 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 0:
         {
             /**
-             * @brief iFissionGasDiffusivity = 0 corresponds to a constant intra-granular
+             * @brief iFissionProductDiffusivity = 0 corresponds to a constant intra-granular
              * diffusivity value, equal to 7e-19 m^2/s.
              *
              */
 
-            reference += "iFissionGasDiffusivity: constant diffusivity (7e-19 m2/s).\n\t";
+            reference += "iFissionProductDiffusivity: constant diffusivity (7e-19 m2/s).\n\t";
             diffusivity = 7e-19;
             diffusivity *= scaling_factors["Diffusivity"].getValue();
 
@@ -385,14 +429,14 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 1:
         {
             /**
-             * @brief iFissionGasDiffusivity = 1 set the fission gas (xenon and krypton) single-atom
+             * @brief iFissionProductDiffusivity = 1 set the fission gas (xenon and krypton) single-atom
              * intragranular diffusivity equal to the expression in <a
              * href="../../references/pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et
              * al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, "
+            reference += "iFissionProductDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, "
                          "Sep 18-22.\n\t";
 
             double temperature  = history_variable["Temperature"].getFinalValue();
@@ -403,6 +447,14 @@ void System::setFissionGasDiffusivity(int                              input_val
             double d3 = 8.0e-40 * fission_rate;
 
             diffusivity = d1 + d2 + d3;
+
+            if (matrices[0].getName() == "MOX")
+            {
+                diffusivity *= 1.75;
+                reference += "MOX, scaling factor 1.75: Lanning, D. D., Beyer, C. E., & Geelhood, K. J. (2005). "
+                             "FRAPCON-3 Updates, Including Mixed Oxide Fuel Properties.\n\t";
+            }
+
             diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
@@ -411,13 +463,13 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 2:
         {
             /**
-             * @brief iFissionGasDiffusivity = 2 set the xenon effective intragranular diffusivity
+             * @brief iFissionProductDiffusivity = 2 set the xenon effective intragranular diffusivity
              * equal to the expression in <a href="../../references/pdf_link/Matzke_1980.pdf"
              * target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
+            reference += "iFissionProductDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
             diffusivity = 5.0e-08 * exp(-40262.0 / history_variable["Temperature"].getFinalValue());
             if (diffusivity < 1e-25)
                 diffusivity = 1e-25;
@@ -429,14 +481,14 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 3:
         {
             /**
-             * @brief iFissionGasDiffusivity = 3 set the xenon single-atom intragranular diffusivity
+             * @brief iFissionProductDiffusivity = 3 set the xenon single-atom intragranular diffusivity
              * equal to the expression in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf"
              * target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard
              * Fission Product Release Model</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Turnbull et al., (2010), Background and Derivation "
+            reference += "iFissionProductDiffusivity: Turnbull et al., (2010), Background and Derivation "
                          "of ANS-5.4 Standard Fission Product Release Model.\n\t";
 
             double temperature  = history_variable["Temperature"].getFinalValue();
@@ -455,13 +507,13 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 4:
         {
             /**
-             * @brief iFissionGasDiffusivity = 4 set the xenon single-atom intragranular diffusivity
+             * @brief iFissionProductDiffusivity = 4 set the xenon single-atom intragranular diffusivity
              * equal to the expression in <a href="../../references/pdf_link/Ronchi_2007.pdf"
              * target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
+            reference += "iFissionProductDiffusivity: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
 
             double temperature  = history_variable["Temperature"].getFinalValue();
             double fission_rate = history_variable["Fission rate"].getFinalValue();
@@ -695,24 +747,24 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 99:
         {
             /**
-             * @brief iFissionGasDiffusivity = 99 set the xenon single-atom intragranular
+             * @brief iFissionProductDiffusivity = 99 set the xenon single-atom intragranular
              * diffusivity to zero.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Test case: zero diffusion coefficient.\n\t";
+            reference += "iFissionProductDiffusivity: Test case: zero diffusion coefficient.\n\t";
             diffusivity = 0.0;
 
             break;
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iFissionGasDiffusivity", input_value);
+            ErrorMessages::Switch(__FILE__, "iFissionProductDiffusivity", input_value);
             break;
     }
 }
 
-double System::getFissionGasDiffusivity()
+double System::getFissionProductDiffusivity()
 {
     /// Member function to get the diffusivity of the isotope in the fuel matrix
     return diffusivity;
@@ -903,7 +955,7 @@ void System::setFissionGasDiffusivityNUS(int                              input_
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iFissionGasDiffusivity", input_value);
+            ErrorMessages::Switch(__FILE__, "iFissionProductDiffusivity", input_value);
             break;
     }
 }
@@ -970,8 +1022,8 @@ void System::setResolutionRate(int                              input_value,
              */
 
             reference += "iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.\n\t";
-            resolution_rate = 2.0 * M_PI * matrices["UO2"].getFissionFragmentRange() *
-                              pow(matrices["UO2"].getFissionFragmentInfluenceRadius() +
+            resolution_rate = 2.0 * M_PI * matrices[0].getFissionFragmentRange() *
+                              pow(matrices[0].getFissionFragmentInfluenceRadius() +
                                       sciantix_variable["Intragranular bubble radius"].getFinalValue(),
                                   2) *
                               history_variable["Fission rate"].getFinalValue();
@@ -1013,8 +1065,8 @@ void System::setResolutionRate(int                              input_value,
 
             /// irradiation_resolution_rate
             double irradiation_resolution_rate =
-                2.0 * M_PI * matrices["UO2"].getFissionFragmentRange() *
-                pow(matrices["UO2"].getFissionFragmentInfluenceRadius() +
+                2.0 * M_PI * matrices[0].getFissionFragmentRange() *
+                pow(matrices[0].getFissionFragmentInfluenceRadius() +
                         sciantix_variable["Intragranular bubble radius"].getFinalValue(),
                     2) *
                 history_variable["Fission rate"].getFinalValue();
@@ -1022,9 +1074,8 @@ void System::setResolutionRate(int                              input_value,
             /// compressibility_factor
             double helium_hard_sphere_diameter =
                 2.973e-10 * (0.8414 - 0.05 * log(history_variable["Temperature"].getFinalValue() / 10.985));  // (m)
-            double helium_volume_in_bubble =
-                matrices["UO2"].getOctahedralInterstitialSite();  // 7.8e-30, approximation of
-                                                                  // saturated nanobubbles
+            double helium_volume_in_bubble = matrices[0].getOctahedralInterstitialSite();  // 7.8e-30, approximation of
+                                                                                           // saturated nanobubbles
             double y = M_PI * pow(helium_hard_sphere_diameter, 3) / (6.0 * helium_volume_in_bubble);
             double compressibility_factor = (1.0 + y + pow(y, 2) - pow(y, 3)) / (pow(1.0 - y, 3));
 

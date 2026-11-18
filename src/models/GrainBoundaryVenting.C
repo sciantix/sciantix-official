@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -78,19 +78,21 @@ void Simulation::GrainBoundaryVenting()
 
         case 3:
         {
-            double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue());
+            double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue() *
+                                                scaling_factors["Fabricated porosity"].getValue());
             sciantix_variable["Open porosity"].setFinalValue(open_porosity);
 
             sciantix_variable["Intergranular venting probability"].setFinalValue(
                 athermalVentingFactor(open_porosity,
                                       2.0 / 3.0 * 3.14,
-                                      sciantix_variable["Fabrication porosity"].getFinalValue(),
+                                      sciantix_variable["Fabrication porosity"].getFinalValue() *
+                                          scaling_factors["Fabricated porosity"].getValue(),
                                       1.0 / 3.0 * 1.1 * 2.0 * sciantix_variable["Grain radius"].getFinalValue(),
                                       sciantix_variable["Burnup"].getFinalValue(),
                                       history_variable["Temperature"].getFinalValue(),
                                       history_variable["Fission rate"].getFinalValue()));
 
-            reference = ": None";
+            reference = ": Pagani et al., JNM, (2026)";
             break;
         }
 
@@ -109,13 +111,13 @@ void Simulation::GrainBoundaryVenting()
 
     for (auto& system : sciantix_system)
     {
-        if (system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                solver.Integrator(sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
-                                  -sciantix_variable["Intergranular venting probability"].getFinalValue(),
-                                  sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
-        }
+        if (!system.isGasOrVolatileFP() || system.getRestructuredMatrix() != 0)
+            continue;
+
+        sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
+            solver.Integrator(sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue(),
+                              -sciantix_variable["Intergranular venting probability"].getFinalValue(),
+                              sciantix_variable[system.getFissionProductName() + " at grain boundary"].getIncrement()));
     }
 }
 

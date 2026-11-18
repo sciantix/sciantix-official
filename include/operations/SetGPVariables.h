@@ -8,7 +8,7 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo, G. Nicodemo                                     //
 //                                                                                  //
@@ -22,6 +22,9 @@
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"
+#include <cmath>
+#include <fstream>
+#include <sstream>
 
 /**
  * @brief Include-only header for the Gaussian-process variable set-up.

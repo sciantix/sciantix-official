@@ -1,0 +1,10 @@
+# Python packages required to build the SCIANTIX HTML documentation (cd docs && make html)
+# Doxygen must also be installed (e.g. sudo apt install doxygen)
+# Install with: python3 -m pip install -r docs/requirements.txt
+sphinx
+furo
+myst-parser
+breathe
+exhale
+sphinx-design
+sphinx-copybutton

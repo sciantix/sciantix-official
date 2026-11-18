@@ -3,7 +3,7 @@ Grain Boundary Venting
 
 This model represents venting of gas from grain-boundary to the free
 volume (gap). 
-This is modeled either via a fractional coverage-driven sigmoid representing the interconnection of bubbles or via correlations linked to the fuel's open porosity. The venting strength is expressed through a **venting probability**, applied as a sink term to the grain-boundary gas inventories.
+This is modelled either via a fractional coverage-driven sigmoid representing the interconnection of bubbles or via correlations linked to the fuel's open porosity. The venting strength is expressed through a **venting probability**, applied as a sink term to the grain-boundary gas inventories.
 
 The implementation follows ``Simulation::GrainBoundaryVenting()``.
 

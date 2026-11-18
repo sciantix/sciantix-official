@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -63,10 +63,8 @@ void Simulation::Burnup()
     else
         sciantix_variable["Irradiation time"].setConstant();
 
-    if (sciantix_variable["U"].getFinalValue() > 0.0)
-        sciantix_variable["FIMA"].setFinalValue(solver.Integrator(sciantix_variable["FIMA"].getInitialValue(),
-                                                                  fR * 3.6e5 / sciantix_variable["U"].getFinalValue(),
-                                                                  sciantix_variable["Irradiation time"].getIncrement()));
-    else
-        sciantix_variable["FIMA"].setConstant();
+    sciantix_variable["FIMA"].setFinalValue(solver.Integrator(
+        sciantix_variable["FIMA"].getInitialValue(),
+        fR * 3.6e5 / (sciantix_variable["U"].getFinalValue() + sciantix_variable["Pu"].getFinalValue()),
+        sciantix_variable["Irradiation time"].getIncrement()));
 }

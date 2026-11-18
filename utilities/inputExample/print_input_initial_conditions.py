@@ -1,64 +1,31 @@
 """
 This is a python script to write the SCIANTIX default input file "input_initial_conditions.txt".
 
+Every entry is written as "<value(s)>  # <Key> (<description>)" and SCIANTIX looks it up by
+<Key>, so the order of the lines is irrelevant and an entry left out takes its default (0).
+See the Input Files page of the documentation:
+https://sciantix.github.io/sciantix-official/input_files.html
+
 @author G. Zullo
 
-The blocks are positional: they are written in the order in which InputReading.C consumes
-them, each value line followed by its comment line. Adding, removing or reordering a block
-here without doing the same there shifts every following block.
-
-Note that InputReading.C tolerates a file that stops early: the trailing blocks are then
-left at zero, because a failed extraction at end of file is not an error. That tolerance
-is why a missing block produces no diagnostic, so the count is asserted below instead.
 """
 
-# Number of blocks consumed by InputReading.C, from "Grain radius[0]" to "Chromium content".
-EXPECTED_BLOCKS = 14
-
-# (values, description) — one entry per block read by InputReading.C, in order
-INITIAL_CONDITIONS = [
-    ('5.0e-06',
-     'initial grain radius (m)'),
-    ('0.0\t0.0\t0.0\t0.0\t0.0\t0.0',
-     'initial Xe (at/m3) produced, intragranular, intragranular in solution, '
-     'intragranular in bubbles, grain boundary, released'),
-    ('0.0\t0.0\t0.0\t0.0\t0.0\t0.0',
-     'initial Kr (at/m3) produced, intragranular, intragranular in solution, '
-     'intragranular in bubbles, grain boundary, released'),
-    ('0.0\t0.0\t0.0\t0.0\t0.0\t0.0',
-     'initial He (at/m3) produced, intragranular, intragranular in solution, '
-     'intragranular in bubbles, grain boundary, released'),
-    ('0.0\t0.0',
-     'initial intragranular bubble concentration (bub/m3), radius (m)'),
-    ('0.0',
-     'initial fuel burn-up (MWd/kgUO2)'),
-    ('0.0',
-     'initial fuel effective burn-up (MWd/kgUO2)'),
-    ('0.0',
-     'initial irradiation time (h)'),
-    ('10641.0',
-     'initial fuel density (kg/m3)'),
-    ('0.0\t3.0\t0.0\t0.0\t97.0',
-     'initial U234 U235 U236 U237 U238 (% of heavy atoms) content'),
-    ('0.0\t0.0\t0.0\t0.0\t0.0\t0.0\t0.0',
-     'initial Xe133 (at/m3) produced, intragranular, intragranular in solution, '
-     'intragranular in bubbles, decayed, grain boundary, released'),
-    ('0.0\t0.0\t0.0\t0.0\t0.0\t0.0\t0.0',
-     'initial Kr85m (at/m3) produced, intragranular, intragranular in solution, '
-     'intragranular in bubbles, decayed, grain boundary, released'),
-    ('0.0',
-     'initial fuel stoichiometry deviation (/)'),
-    ('0.0',
-     'initial chromium content (ppm)'),
+entries = [
+    ("5.0e-06",                      "Grain_radius[0] (initial grain radius (m))"),
+    ("0.0 0.0 0.0 0.0 0.0 0.0",      "Initial_composition_Xe (initial Xe (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)"),
+    ("0.0 0.0 0.0 0.0 0.0 0.0",      "Initial_composition_Kr (initial Kr (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)"),
+    ("0.0 0.0 0.0 0.0 0.0 0.0",      "Initial_composition_He (initial He (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)"),
+    ("0.0 0.0",                      "Initial_intragranular_bubbles (initial intragranular bubble concentration (bub/m3), radius (m))"),
+    ("0.0",                          "Burn_up[0] (initial fuel burn-up (MWd/kgUO2))"),
+    ("0.0",                          "Effective_burn_up[0] (initial fuel effective burn-up (MWd/kgUO2))"),
+    ("0.0",                          "Irradiation_time[0] (initial irradiation time (h))"),
+    ("10641.0",                      "Fuel_density[0] (initial fuel density (kg/m3))"),
+    ("0.0 3.0 0.0 0.0 97.0",         "Initial_composition_U (initial U234 U235 U236 U237 U238 content (% of heavy atoms))"),
+    ("0.0 0.0 0.0 0.0 0.0 0.0 0.0",  "Initial_composition_Xe133 (initial Xe133 (at/m3): produced, intragranular, in solution, in bubbles, decayed, grain boundary, released)"),
+    ("0.0 0.0 0.0 0.0 0.0 0.0 0.0",  "Initial_composition_Kr85m (initial Kr85m (at/m3): produced, intragranular, in solution, in bubbles, decayed, grain boundary, released)"),
+    ("0.0",                          "Initial_stoichiometry_deviation[0] (initial fuel stoichiometry deviation (/))"),
 ]
 
-if len(INITIAL_CONDITIONS) != EXPECTED_BLOCKS:
-    raise ValueError(
-        f'{len(INITIAL_CONDITIONS)} blocks defined, but InputReading.C reads {EXPECTED_BLOCKS}: '
-        'a missing block is silently left at zero rather than reported'
-    )
-
 with open('input_initial_conditions.txt', 'w') as file:
-    for values, description in INITIAL_CONDITIONS:
-        file.write(f'{values}\n')
-        file.write(f'#\t{description}\n')
+    for values, comment in entries:
+        file.write(f"{values:<32}# {comment}\n")

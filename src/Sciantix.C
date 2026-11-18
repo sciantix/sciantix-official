@@ -8,20 +8,22 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Sciantix.h"
 
-void Sciantix(int    Sciantix_options[],
-              double Sciantix_history[],
-              double Sciantix_variables[],
-              double Sciantix_scaling_factors[],
-              double Sciantix_diffusion_modes[],
-              double Sciantix_diffusion_modes_NUS[])
+void Sciantix(int                            Sciantix_options[],
+              double                         Sciantix_history[],
+              double                         Sciantix_variables[],
+              double                         Sciantix_scaling_factors[],
+              double                         Sciantix_diffusion_modes[],
+              double                         Sciantix_thermochemistry[],
+              const ThermochemistrySettings* Sciantix_thermochemistry_options,
+              double                         Sciantix_diffusion_modes_NUS[])
 {
     Simulation* simulation = Simulation::getInstance();
 
@@ -30,11 +32,14 @@ void Sciantix(int    Sciantix_options[],
                            Sciantix_variables,
                            Sciantix_scaling_factors,
                            Sciantix_diffusion_modes,
+                           Sciantix_thermochemistry,
+                           Sciantix_thermochemistry_options,
                            Sciantix_diffusion_modes_NUS);
 
     simulation->execute();
 
-    simulation->update(Sciantix_variables, Sciantix_diffusion_modes, Sciantix_diffusion_modes_NUS);
+    simulation->update(
+        Sciantix_variables, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_diffusion_modes_NUS);
 
     simulation->output();
 }

@@ -13,6 +13,8 @@ The model is controlled by two main input options:
 - ``iGrainBoundaryBehaviour``: Selects the bubble evolution model.
 - ``iReleaseMode``: Selects the coalescence and release mechanism.
 
+The vacancy diffusivity along the grain boundaries, which drives the bubble growth, is selected by ``iGrainBoundaryVacancyDiffusivity``. The options of all these flags are listed in :ref:`input_settings.txt <input-settings>`.
+
 Inputs
 ------
 

@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+csred/__init__.py
+csred/constants.py
+csred/model.py
+csred/profiles.py
+csred.egg-info/PKG-INFO
+csred.egg-info/SOURCES.txt
+csred.egg-info/dependency_links.txt
+csred.egg-info/requires.txt
+csred.egg-info/top_level.txt
+tests/test_basic.py

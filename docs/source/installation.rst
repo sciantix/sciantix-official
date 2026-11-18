@@ -11,12 +11,21 @@ SCIANTIX requires the following minimum specifications:
   - GCC ≥ 9
   - Clang ≥ 10
 
-- **Build System**: CMake ≥ 3.10
+- **Build System**: CMake ≥ 3.6
+
+- **Testing suite only** (not needed to build SCIANTIX):
+
+  - Python ≥ 3.8
+  - NumPy, pandas and Matplotlib, listed in ``testing/requirements.txt``:
+
+    .. code-block:: bash
+
+        python3 -m pip install -r testing/requirements.txt
 
 - **Operating System**:
   
   - Ubuntu ≥ 20.04 (native)
-  - macOS Ventura
+  - macOS (Intel and Apple Silicon)
   - Windows 10/11 via Windows Subsystem for Linux 2 (WSL2)
 
 Obtaining the Code
@@ -76,9 +85,9 @@ To speed up compilation using multiple cores:
 
 .. code-block:: bash
 
-    make -jN
+    make -j
 
-where `N` is the number of cores to use (e.g., `make -j4` for 4 cores, or `make -j` to use all available cores).
+where `` is the number of cores to use (e.g., `make -j4` for 4 cores or `make -j` to use all available cores).
 
 **Step 5: Verify the Build**
 
@@ -87,6 +96,19 @@ After successful compilation, the executable `sciantix.x` will be located in the
 .. code-block:: bash
 
     ls -l build/sciantix.x
+
+macOS Installation
+------------------
+
+Install the Xcode command line tools (Apple Clang) and CMake, e.g. with `Homebrew <https://brew.sh>`_:
+
+.. code-block:: bash
+
+    xcode-select --install
+    brew install cmake
+
+Then follow the Linux steps from **Step 2**. CMake uses the default compiler (Apple Clang). To use another one,
+e.g. a GCC installed with Homebrew, pass it at configuration: ``cmake -DCMAKE_CXX_COMPILER=g++-15 ..``.
 
 Windows Installation (via WSL)
 -------------------------------
@@ -136,7 +158,7 @@ To build SCIANTIX as a static library for coupling with external fuel performanc
 
     make
 
-or with parallelization:
+or with parallelisation:
 
 .. code-block:: bash
 
@@ -183,48 +205,54 @@ Verification and Testing
 
 To verify that SCIANTIX is correctly installed and functioning:
 
-**Method 1: Run Regression Tests**
+**Method 1: Run Tests**
 
-The repository includes a comprehensive regression testing suite. From the repository root:
-
-.. code-block:: bash
-
-    python3 -m regression.runner --all -j $(nproc)
-
-or, equivalently, the wrapper that rebuilds first:
+The repository includes a comprehensive testing suite, registered with CTest together with the unit tests. From the ``build/`` directory:
 
 .. code-block:: bash
 
-    ./runRegression.sh
+    ctest --output-on-failure -j $(nproc)
 
-This executes all validation tests and compares results against established benchmarks. Successful completion indicates a correct installation.
+or, equivalently, ``make check``. The testing runner can also be called directly from the repository root:
+
+.. code-block:: bash
+
+    python3 -m testing.runner
+
+This executes all verification and validation tests and compares results against established benchmarks. Successful completion indicates a correct installation.
 
 **Method 2: Run a Single Example**
 
-Pass the directory of a single test case to the executable:
+Run a single simulation by passing the directory of one test case to the executable. From the repository root:
 
 .. code-block:: bash
 
-    ./build/sciantix.x regression/baker/test_Baker1977__1273K/
+    ./build/sciantix.x validation/baker/test_Baker1977__1273K/
 
-Check the output files to verify correct execution.
+The results are written to ``output.txt`` in the same directory. This check does not require Python.
 
 Generating Documentation
 ------------------------
 
-To generate the Doxygen source code documentation:
+The documentation (this website) is built with Sphinx. Building it also runs Doxygen automatically: Doxygen extracts the source-code documentation as XML, which the Breathe and Exhale Sphinx extensions turn into the API reference pages.
 
-.. code-block:: bash
-
-    doxygen
-
-This requires Doxygen to be installed:
+Building the documentation requires Doxygen and the Python packages listed in ``docs/requirements.txt``:
 
 .. code-block:: bash
 
     sudo apt install doxygen
+    python3 -m pip install -r docs/requirements.txt
 
-The generated documentation will be available in the `doxygen/` directory.
+Then, from the repository root:
+
+.. code-block:: bash
+
+    cd docs
+    make html
+
+The HTML documentation is written to ``docs/build/html/`` (open ``index.html``).
+
+Running ``doxygen Doxyfile`` from the repository root on its own produces only the standalone Doxygen output, in ``docs/doxygen/html/``. It is not needed before ``make html``.
 
 Troubleshooting
 ---------------
@@ -254,13 +282,14 @@ Verify your compiler supports C++17. Update your compiler if necessary:
     sudo apt update
     sudo apt install g++-9  # or later version
 
-**Python regression tests fail**
+**Testing suite cannot start** (e.g. ``ModuleNotFoundError: No module named 'numpy'``)
 
-Ensure Python 3 is installed:
+The testing suite needs Python ≥ 3.8 and the packages in ``testing/requirements.txt``:
 
 .. code-block:: bash
 
-    sudo apt install python3
+    sudo apt install python3 python3-pip
+    python3 -m pip install -r testing/requirements.txt
 
 For additional support, contact the SCIANTIX development team or open an issue on the GitHub repository.
 
@@ -271,12 +300,11 @@ After successful installation:
 
 1. Review the :doc:`overview` section for conceptual understanding
 2. Examine the :doc:`examples` for practical usage
-3. Run the :doc:`regression` tests to validate your installation
+3. Run the :doc:`testing` tests to validate your installation
 4. Refer to the :doc:`models` documentation for model details
-5. Check the :doc:`api/index_api` for API information
 
 Contributing & development workflow
------------------------------------
+----------------------------------
 
 Follow the repository `CONTRIBUTING.md` guidance when contributing changes
 to SCIANTIX. A concise development workflow is provided here for convenience:
@@ -291,12 +319,12 @@ to SCIANTIX. A concise development workflow is provided here for convenience:
 
 3. **Make small, focused commits** describing the changes you implemented.
 
-4. **Run regression tests** before opening a Pull Request to ensure no
+4. **Run the tests** before opening a Pull Request to ensure no
     regressions are introduced:
 
 .. code-block:: bash
 
-     python3 -m regression.runner --all -j $(nproc)
+     python3 -m testing.runner
 
 5. **Build the documentation locally** to verify formatting and links:
 
@@ -315,10 +343,11 @@ to SCIANTIX. A concise development workflow is provided here for convenience:
 7. **Pull Request checklist** (recommended):
 
 - Ensure the code compiles on the supported platforms (C++17).
-- Ensure regression tests pass (or failures are justified and documented).
+- Ensure tests pass (or failures are justified and documented).
 - Document new models, input options, and variables in Doxygen and the
   `docs/` directory.
 - Use clear commit messages and reference any related issue numbers.
 
 If you are unsure about the scope of a change, open an issue first to discuss
 the proposal with the maintainers.
+5. Check the :doc:`api/index_api` for API information

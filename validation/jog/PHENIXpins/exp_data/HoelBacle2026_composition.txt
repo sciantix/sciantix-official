@@ -1,0 +1,24 @@
+# Hoël-Bacle, A. (2026). Caractérisation en soutien à la modélisation du joint
+# oxyde-gaine et de la couche de corrosion interne de gaine dans le combustible
+# oxyde irradié en réacteur à neutrons rapides. PhD thesis, Université de Lille.
+# NNT: 2026ULILR009, HAL: tel-05760551. Table III-26, p. 169.
+#
+# JOG matrix composition of the NESTOR-3 pin (mean +- standard deviation, at.%).
+# Only compositions dominated by Cs, Ba, Mo and O are kept
+# (EPMA: (wCs+wBa+wMo+wO)/wtot >= 0.9; TEM-EDS: xCs+xBa+xMo+xO >= 90 at.%),
+# then averaged and renormalised to Cs+Ba+Mo+O = 100.
+# MA04 is biased towards Mo by the metallic Mo of large inclusions, which the
+# four-element filter cannot exclude: MA07 is the representative JOG matrix.
+Dataset,Element,Composition(at.%),Std(at.%)
+MA07 EPMA,Cs,15,4
+MA07 EPMA,Ba,11,3
+MA07 EPMA,Mo,20,6
+MA07 EPMA,O,54,9
+MA07 TEM-EDS,Cs,18,6
+MA07 TEM-EDS,Ba,10,5
+MA07 TEM-EDS,Mo,12,5
+MA07 TEM-EDS,O,60,9
+MA04 EPMA,Cs,5,4
+MA04 EPMA,Ba,9,6
+MA04 EPMA,Mo,43,15
+MA04 EPMA,O,43,14

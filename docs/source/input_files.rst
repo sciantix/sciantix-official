@@ -1,0 +1,275 @@
+Input Files
+===========
+
+A SCIANTIX case is a folder holding up to four plain-text input files. The code is run on the folder (``./sciantix.x <case_dir>/``) and writes its results into the same folder. A complete worked case is given in the :doc:`examples` tutorial; every case of ``verification/`` and ``validation/`` is a further template (see :doc:`testing`).
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 15 55
+
+   * - File
+     - Required
+     - Content
+   * - ``input_settings.txt``
+     - yes
+     - Specifies the models and numerical solvers used in the simulation.
+   * - ``input_history.txt``
+     - yes
+     - Includes the time (h), temperature (K), fission rate (fiss/m³-s), and hydrostatic stress (MPa) as a function of time.
+   * - ``input_initial_conditions.txt``
+     - yes
+     - Sets initial conditions for the simulation.
+   * - ``input_scaling_factors.txt``
+     - optional
+     - Multiplicative factors applied to selected model parameters
+
+``input_settings.txt``, ``input_initial_conditions.txt`` and ``input_scaling_factors.txt`` share one format. Every entry is a single line:
+
+.. code-block:: text
+
+    <value(s)>    #    <Key> [<comment>]
+
+where ``<...>`` marks a placeholder and ``[...]`` an optional part. SCIANTIX looks each entry up by its **key**, the first word after the ``#``. Therefore:
+
+- the order of the lines does not matter;
+- everything after the key is a free comment for the code user and is not parsed (by convention, a description in round brackets);
+- a line with nothing but blanks before the ``#`` is a comment line and is ignored, as are blank lines;
+- a line with a value but no key, a key given twice, or a key the code does not know stops the run with an error;
+- an entry that is left out takes its default: 0 in ``input_settings.txt`` and ``input_initial_conditions.txt``, 1.0 in ``input_scaling_factors.txt``.
+
+For example, in
+
+.. code-block:: text
+
+    # Models for intragranular gas behaviour
+    1    #    iFissionProductDiffusivity (Turnbull et al. (1988))
+
+the first line is a comment line, ``1`` is the value, ``iFissionProductDiffusivity`` the key and ``(Turnbull et al. (1988))`` a comment.
+
+.. note::
+
+   Earlier versions wrote the value and the ``#`` description on separate lines and used some setting names that are no longer accepted (e.g. ``iFissionGasDiffusivity``). Such files can be rewritten in the keyed format, with unchanged results, with
+   ``python3 utilities/inputExample/convert_to_named_inputs.py <case_dir> [<case_dir> ...]``.
+
+.. _input-settings:
+
+input_settings.txt
+------------------
+
+The file contains one integer flag per model. Each flag selects a model option: ``0`` generally switches the model off (or uses a constant value), higher integers select a correlation or a variant. The table lists the flags, their options and the page of the documentation that describes the selected model.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 27 43 30
+
+   * - Flag
+     - Options
+     - Model documentation
+   * - ``iGrainGrowth``
+     - 0 = no grain growth; 1 = :ref:`Ainscough et al. (1973) <ref-ainscough1973>`; 2 = :ref:`Van Uffelen et al. (2013) <ref-vanuffelen2013>`
+     - :doc:`models/grain_growth`
+   * - ``iFissionProductDiffusivity``
+     - 0 = constant value; 1 = :ref:`Turnbull et al. (1988) <ref-turnbull1988>`; 2 = Matzke (1980); 3 = :ref:`Turnbull and Beyer (2010) <ref-turnbull2010>`; 4 = Ronchi (2007); 5 = UO\ :sub:`2` HBS; 7 = amorphous Cr-doped UO\ :sub:`2`, Owen et al. (2023); 8 and 10 = Cr-doped UO\ :sub:`2`, :ref:`Nicodemo et al. (2024) <ref-nicodemo2024>`; 9 = Cr-doped UO\ :sub:`2`, Cooper et al. (2021); 99 = zero diffusivity (test option)
+     - :doc:`models/gas_diffusion`
+   * - ``iDiffusionSolver``
+     - 1 = spectral diffusion solver (SDA) with quasi-stationary hypothesis; 2 = SDA without quasi-stationary hypothesis; 4 = generalized SDA with non-uniform source (NUS), Zayat et al.; requires ``non_uniform_source.txt`` (see :ref:`input-nus`)
+     - :doc:`models/gas_diffusion`, :doc:`solvers`
+   * - ``iIntraGranularBubbleBehavior``
+     - 0 = constant bubble concentration and radius; 1 = :ref:`Pizzocri et al. (2018) <ref-pizzocri2018>`; 2 = :ref:`White and Tucker (1983) <ref-white1983>`; 3 = annealing and helium behaviour (similarity ratio); 99 = no intragranular bubbles
+     - :doc:`models/intragranular_bubble_behavior`
+   * - ``iResolutionRate``
+     - 0 = constant value; 1 = :ref:`Turnbull (1971) <ref-turnbull1971>`; 2 = Lösönen (2002); 3 = thermal resolution, :ref:`Cognini et al. (2021) <ref-cognini2021>`; 99 = no resolution
+     - :doc:`models/intragranular_bubble_behavior`
+   * - ``iTrappingRate``
+     - 0 = constant value; 1 = :ref:`Ham (1958) <ref-ham1958>`; 99 = no trapping
+     - :doc:`models/intragranular_bubble_behavior`
+   * - ``iNucleationRate``
+     - 0 = constant value; 1 = :ref:`Olander and Wongsawaeng (2006) <ref-olander2006>`; 99 = no nucleation
+     - :doc:`models/intragranular_bubble_behavior`
+   * - ``iOutput``
+     - 1 = default output files
+     - :ref:`output-files`
+   * - ``iGrainBoundaryVacancyDiffusivity``
+     - 0 = constant value; 1 = :ref:`Reynolds and Burton (1979) <ref-reynolds1979>`; 2 = :ref:`White (2004) <ref-white2004>`; 5 = UO\ :sub:`2` HBS, :ref:`Barani et al. (2022) <ref-barani2022>`
+     - :doc:`models/intergranular_bubble_behavior`
+   * - ``iGrainBoundaryBehaviour``
+     - 0 = no grain-boundary bubbles; 1 = :ref:`Pastore et al. (2013) <ref-pastore2013>`
+     - :doc:`models/intergranular_bubble_behavior`
+   * - ``iReleaseMode``
+     - 0 = coalescence by :ref:`White (2004) <ref-white2004>`, saturation threshold of the fractional coverage by :ref:`Pastore et al. (2013) <ref-pastore2013>`; 1 = coalescence by :ref:`Pastore et al. (2013) <ref-pastore2013>`, :ref:`Cappellari et al. (2025) <ref-cappellari2025>`
+     - :doc:`models/intergranular_bubble_behavior`, :doc:`models/grain_boundary_microcracking`
+   * - ``iGrainBoundaryMicroCracking``
+     - 0 = no model; 1 = :ref:`Barani et al. (2017) <ref-barani2017>`; 2 = :ref:`Cappellari et al. (2025) <ref-cappellari2025>`
+     - :doc:`models/grain_boundary_microcracking`
+   * - ``iGrainBoundaryVenting``
+     - 0 = no model; 1 = Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE; 2 = :ref:`Claisse and Van Uffelen (2015) <ref-claisse2015>`; 3 = :ref:`Pagani et al. (2026) <ref-pagani2026>`
+     - :doc:`models/grain_boundary_venting`
+   * - ``iGrainBoundarySweeping``
+     - 0 = no model; 1 = TRANSURANUS swept-volume model
+     - :doc:`models/grain_boundary_sweeping`
+   * - ``iFuelMatrix``
+     - 0 = UO\ :sub:`2`; 1 = UO\ :sub:`2` with HBS; 2 = MOX
+     - :doc:`models/microstructure`
+   * - ``iHighBurnupStructureFormation``
+     - 0 = no model; 1 = fraction of HBS-restructured volume, :ref:`Barani et al. (2020) <ref-barani2020>`
+     - :doc:`models/high_burnup_structure_formation`
+   * - ``iHighBurnupStructurePorosity``
+     - 0 = no HBS porosity evolution; 1 = HBS porosity evolution based on :ref:`Spino et al. (2006) <ref-spino2006>`
+     - :doc:`models/high_burnup_structure_porosity`
+   * - ``iRadioactiveFissionGas``
+     - 0 = no output; 1 = Xe-133 and Kr-85m written to the output. The radioactive gases are always computed; the flag only selects the output
+     - :doc:`models/gas_decay`
+   * - ``iHelium``
+     - 0 = no output; non-zero = helium written to the output. Helium is always computed; the flag only selects the output
+     - :doc:`models/gas_production`, :doc:`models/gas_diffusion`
+   * - ``iHeDiffusivity``
+     - 0 = constant value; 1 = limited lattice damage, :ref:`Luzzi et al. (2018) <ref-luzzi2018>`; 2 = significant lattice damage, :ref:`Luzzi et al. (2018) <ref-luzzi2018>`; 3 = :ref:`Talip et al. (2014) <ref-talip2014>`; 99 = zero diffusivity
+     - :doc:`models/gas_diffusion`
+   * - ``iHeliumProductionRate``
+     - 0 = zero production rate; 1 = helium from ternary fissions; 2 = linear with burnup, Cechet et al. (2021); 3 = constant production rate
+     - :doc:`models/gas_production`
+   * - ``iBubbleDiffusivity``
+     - 0 = not considered; 1 = volume diffusivity
+     - :doc:`models/intragranular_bubble_behavior`
+   * - ``iStoichiometryDeviation``
+     - 0 = not considered; 1 = :ref:`Cox et al. (1986) <ref-cox1986>`; 2 = :ref:`Bittel et al. (1969) <ref-bittel1969>`; 3 = :ref:`Abrefah et al. (1994) <ref-abrefah1994>`; 4 = :ref:`Imamura et al. (1997) <ref-imamura1997>`; 5 = Langmuir-based approach; 8 = prescribed O/M history. Further options are described in the model page.
+     - :doc:`models/stoichiometry_deviation`, :doc:`models/uo2_thermochemistry`, :doc:`models/gap_partial_pressure`
+   * - ``iChromiumSolubility``
+     - 0 = parameter set of :ref:`Riglet-Martial et al. (2014) <ref-rigletmartial2014>`; 1 = optimised coefficients. Values above 0 also activate the chromium outputs
+     - :doc:`models/chromium_solubility`
+   * - ``iDensification``
+     - 0 = not considered; 1 = fit from :ref:`Van Uffelen (2002) <ref-vanuffelen2002>`
+     - :doc:`models/densification`
+   * - ``iNUSOutput``
+     - 0 = no output; 1 = write the source and initial-condition shapes. Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
+   * - ``iNUSAnimation``
+     - 0 = no output; 1 = write the time-resolved source shape (requires ``iNUSOutput = 1``). Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
+   * - ``iNonSym``
+     - 0 = spherical grain; 1 = implantation geometry (source on a fraction of the sphere). Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
+   * - ``iGrainBoundaryResolution``
+     - 0 = off; 1 = grain-boundary re-solution as a localized source in the outer shell of the grain. Used only with ``iDiffusionSolver = 4``
+     - :ref:`input-nus`
+
+Remarks:
+
+- Each model page names the flags that control it; the options of every flag are listed only in this table.
+- Some validation cases use options that are not in the table (for instance ``iFissionProductDiffusivity = 6`` and ``90``, ``iStoichiometryDeviation = 6``). They are explained, together with the case that uses them, in :doc:`testing`.
+- An option value that does not exist for a flag stops the run with an error.
+- ``Number_of_time_steps_per_interval`` is an optional integer entry of ``input_settings.txt`` that sets the number of time steps between two rows of ``input_history.txt`` (see below). Absent, the default in ``src/MainVariables.C`` (100) applies.
+
+input_history.txt
+-----------------
+
+Input history defines the conditions imposed to the simulation in terms of duration of the simulated history (in hours, first column), local temperature (in K, second column), local fission rate density (in fission per cubic meter per second, third column), and local hydrostatic stress (in MPa, fourth column).
+It is a table without header, one row per history point, with four tab- or space-separated columns:
+
+.. code-block:: text
+
+    0       1273    1e19    0
+    5500    1273    1e19    0
+
+Between two rows the conditions vary linearly and the interval is divided into a fixed number of time steps (``Number_of_time_steps_per_interval``, defined in `input_settings.txt`).
+
+input_initial_conditions.txt
+----------------------------
+
+The file sets the initial state of the grain. An entry left out takes the value 0. Each entry if written must hold exactly the number of values in the table below, otherwise the run stops with an error.
+
+.. code-block:: text
+
+    5.0e-06                         # Grain_radius[0] (initial grain radius (m))
+    0.0 0.0 0.0 0.0 0.0 0.0         # Initial_composition_Xe (initial Xe (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)
+    0.0 0.0 0.0 0.0 0.0 0.0         # Initial_composition_Kr (initial Kr (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)
+    0.0 0.0 0.0 0.0 0.0 0.0         # Initial_composition_He (initial He (at/m3): produced, intragranular, in solution, in bubbles, grain boundary, released)
+    0.0 0.0                         # Initial_intragranular_bubbles (initial intragranular bubble concentration (bub/m3), radius (m))
+    0.0                             # Burn_up[0] (initial fuel burn-up (MWd/kgUO2))
+    0.0                             # Effective_burn_up[0] (initial fuel effective burn-up (MWd/kgUO2))
+    0.0                             # Irradiation_time[0] (initial irradiation time (h))
+    10641.0                         # Fuel_density[0] (initial fuel density (kg/m3))
+    0.0 3.0 0.0 0.0 97.0            # Initial_composition_U (initial U234 U235 U236 U237 U238 content (% of heavy atoms))
+    0.0 0.0 0.0 0.0 0.0 0.0 0.0     # Initial_composition_Xe133 (initial Xe133 (at/m3): produced, intragranular, in solution, in bubbles, decayed, grain boundary, released)
+    0.0 0.0 0.0 0.0 0.0 0.0 0.0     # Initial_composition_Kr85m (initial Kr85m (at/m3): produced, intragranular, in solution, in bubbles, decayed, grain boundary, released)
+    0.0                             # Initial_stoichiometry_deviation[0] (initial fuel stoichiometry deviation (/))
+
+
+Optional model parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Two model parameters can also be set per case in this file; when the entry is absent the value in round brackets is used.
+
+.. code-block:: text
+
+    2.5e13                          # Intergranular_bubble_concentration[0] (default = 2.0e13)
+    0.6                             # Surface_tension (default UO2 and HBS = 0.7, MOX = 0.626 )
+
+
+input_scaling_factors.txt
+-------------------------
+
+This optional file lets the user select model parameters and set a multiplicative scaling factor for each of them, for sensitivity or uncertainty studies without editing the code. A factor left out defaults to 1.0. ``sf_temperature`` and ``sf_fission_rate`` scale the corresponding columns of ``input_history.txt``; the other factors scale the model parameter they name.
+
+.. warning::
+
+   The code does not check the values of the scaling factors. They must be positive, and values far from 1 can move a model outside the range in which it was derived or validated. ``sf_diffusion_based_release`` is read but not used by any model in the current version.
+
+.. code-block:: text
+
+    1.0    # sf_resolution_rate (scaling factor - resolution rate)
+    1.0    # sf_trapping_rate (scaling factor - trapping rate)
+    1.0    # sf_nucleation_rate (scaling factor - nucleation rate)
+    1.0    # sf_diffusivity (scaling factor - diffusivity)
+    1.0    # sf_temperature (scaling factor - temperature)
+    1.0    # sf_fission_rate (scaling factor - fission rate)
+    1.0    # sf_diffusion_based_release (scaling factor - diffusion-based release)
+    1.0    # sf_helium_production_rate (scaling factor - helium production rate)
+    1.0    # sf_grain_boundary_energy (scaling factor - grain-boundary energy)
+    1.0    # sf_fabricated_porosity (scaling factor - fabricated porosity)
+    1.0    # sf_cs_production (scaling factor - Cs production)
+
+.. _input-nus:
+
+Non-uniform source files (``iDiffusionSolver = 4``)
+---------------------------------------------------
+
+The generalized spectral diffusion solver reads two further files from the case folder. They are not read with the other solvers.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 15 55
+
+   * - File
+     - Required
+     - Content
+   * - ``non_uniform_source.txt``
+     - yes, with ``iDiffusionSolver = 4``
+     - Radial profile of the gas source, one line per instant. A missing file stops the run.
+   * - ``initial_distribution.txt``
+     - optional
+     - Radial profile of the initial concentration, one line per block of diffusion modes. Absent, the initial condition is uniform.
+
+Each line describes a piecewise-linear profile :math:`S(r) = A_i r + B_i` over the regions of the grain:
+
+.. code-block:: text
+
+    <time (h)>  #  <r_0/a> <r_1/a> ... <r_n/a>  #  <A_1> ... <A_n>  #  <B_1> ... <B_n>
+
+The region bounds are normalised to the grain radius :math:`a` (from 0 to 1, one value more than the coefficients), while the profile is evaluated at the radius in m: :math:`B_i` is in fiss/(m³·s) and :math:`A_i` in fiss/(m⁴·s). Between two instants the profile is interpolated linearly. For example, a uniform source of 1e20 fiss/(m³·s) that rises to 3.5e20 in the outer 2 % of the grain at 5500 h:
+
+.. code-block:: text
+
+    0    # 0 0.98 1 # 0 0 # 1e20 1e20
+    5500 # 0 0.98 1 # 0 0 # 1e20 3.5e20
+
+The NUS cases in ``verification/test_nus/`` are templates for both files.
+
+.. _output-files:
+
+Output files
+------------
+
+Besides ``output.txt``, a run writes into the case folder ``input_check.txt`` (the flags and the values actually read, to check that the inputs were interpreted as intended), ``overview.txt`` (the model and reference selected for each phenomenon) and ``execution.txt`` (run information).
+
+For questions or problems with the input files, open an issue on the `GitHub issue tracker <https://github.com/sciantix/sciantix-official/issues>`_.
