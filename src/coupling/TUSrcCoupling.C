@@ -100,8 +100,8 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
         Sciantix_scaling_factors[7] = 1.0;
         Sciantix_scaling_factors[8] = 1.0;
     }
-    Sciantix_scaling_factors[9] =
-        1.0;  // sf_hbs_closure_exponent: option 4 is not available in the coupling // author: E.Cappellari, POLIMI-CEA 2026
+    Sciantix_scaling_factors[9] = 1.0;  // sf_hbs_closure_exponent: option 4 is not available in the coupling // author:
+                                        // E.Cappellari, POLIMI-CEA 2026
 
     input_check.close();
     input_settings.close();
