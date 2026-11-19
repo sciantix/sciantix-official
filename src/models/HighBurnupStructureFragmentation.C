@@ -70,7 +70,8 @@
 //   L14 [?] the IFA-650 cases are one rim point with a transient taken from another test: no radial or axial
 //           structure, no cladding strain, no real T and P_h traces.
 //   L15 [?] no heating-rate dependence except the relaxation time of option 4; only the HBS is fragmented.
-//   L16 [?] option 4: the closure exponent a is not determined by the SCIANTIX moments and sets which classes break;
+//   L16 [?] option 4: the closure exponent a is not determined by the SCIANTIX moments and sets which classes break
+//           (a = 2; 2 x sf_hbs_closure_exponent, optional entry of input_scaling_factors.txt);
 //           without input_hbs_shat.txt the stress concentration factor is the mean-field one of J19 (porosity only,
 //           no dependence on the class and no scatter); with it, the s_hat of MMM is a surrogate of RVE runs at zero
 //           macroscopic stress (P_h enters through the net pressure only), its inputs are clipped to the range of
@@ -616,7 +617,8 @@ void Simulation::HighBurnupStructureFragmentation()
                 const double sigma_r     = mmm.active ? mmm.sigma_r : 21.0e6;
                 const double xi_perc     = 0.29;    // (/) [P] J19, percolation of the HBS pores: every class open above
                 const double tau_rupture = 2.0;     // (s) [?]
-                const double a_closure   = 2.0;     // (/) [?] gas per class n_i ~ R_i^a
+                // (/) [?] gas per class n_i ~ R_i^a: a = 2 times sf_hbs_closure_exponent of input_scaling_factors.txt
+                const double a_closure   = 2.0 * scaling_factors["HBS closure exponent"].getValue();
                 const double class_span  = 4.0;     // [N] nodes at ln R = ln R_median +/- 4 s
                 const double gamma       = fuel_.getSurfaceTension();
 
@@ -676,7 +678,7 @@ void Simulation::HighBurnupStructureFragmentation()
                 // Radius and gas of the classes:
                 //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),
                 // so that sum_i w_i V_i = V for any width s, and
-                //     n_i = n R_i^a / sum_j w_j R_j^a,   a = 2 [?]
+                //     n_i = n R_i^a / sum_j w_j R_j^a,   a = 2 x sf_hbs_closure_exponent [?]
                 double volume_norm = 0.0, gas_norm = 0.0;
                 for (int i = 0; i < HBFF_N_CLASSES; ++i)
                 {

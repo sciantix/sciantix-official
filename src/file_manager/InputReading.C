@@ -392,6 +392,32 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[8] = 1.0;
     }
 
+    // author: E.Cappellari, POLIMI-CEA 2026
+    // Optional entry: "<value> # sf_hbs_closure_exponent", the scaling factor of the closure exponent a = 2 of
+    // iHighBurnupStructureFragmentation = 4 (gas per pore class n_i ~ R_i^a; 1.5 gives a = 3, the same pressure in
+    // every class). Looked up by name, as the optional entries of input_settings.txt, so that the files that do not
+    // declare it keep a = 2. It must be placed after the positional entries above, on one line.
+    Sciantix_scaling_factors[9] = 1.0;
+    {
+        std::ifstream sf_lookup(TestPath + "input_scaling_factors.txt", std::ios::in);
+        std::string   line;
+        while (std::getline(sf_lookup, line))
+        {
+            if (line.find("sf_hbs_closure_exponent") == std::string::npos)
+                continue;
+
+            std::istringstream line_stream(line);
+            double             value(0.0);
+            if (line_stream >> value && value > 0.0)
+                Sciantix_scaling_factors[9] = value;
+            else
+                ErrorMessages::Fatal("InputReading.C",
+                                     "malformed value for the optional input entry \"sf_hbs_closure_exponent\"");
+        }
+    }
+    input_check << "sf_hbs_closure_exponent = " << Sciantix_scaling_factors[9] << std::endl;
+    // end of author: E.Cappellari, POLIMI-CEA 2026
+
     input_check.close();
     input_settings.close();
     input_initial_conditions.close();

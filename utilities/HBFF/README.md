@@ -33,7 +33,7 @@ cubes of random pores that have the size distribution SCIANTIX sees, with its sc
 | $\hat s$ of run NFIR as SCIANTIX needs it (log-normal per class) | [TBC, FUTURE] done (`mmm_surrogate.py <run_NFIR>` prints the classes); the open-loop replay of the anneal ($\sigma_R$ ≈ 219–224 MPa) was removed on 17/11 (section 9.8) |
 | Latin hypercube: geometry | 20 cubes written at unit pressure (`.geo`) and 20 with the class pressures; **gmsh running on Pleiades (10/11)**; nothing solved yet |
 | surrogate over the 20 runs (unit and pk), its metrics | done 17/11 (section 9.9) |
-| surrogate in the C++ (closed loop), $\sigma_R$ on NFIR | done 17/11: option 4 reads `input_hbs_shat.txt`; $\sigma_R$ = 237 MPa (unit), 222 MPa (pk), cases `test_UO2HBS_frag_mmm_unit/_pk` (section 9.10) |
+| surrogate in the C++ (closed loop), $\sigma_R$ on NFIR | done 17/11: option 4 reads `input_hbs_shat.txt`; $\sigma_R$ = 237 MPa (unit), 222 MPa (pk), cases `test_UO2HBS_frag_mmm_unit/_pk` (section 9.10); 18/11: closure $a=3$ with the unit surrogate, no new MMM run: $\sigma_R$ = 188 MPa and the closest release curve so far (case `_mmm_unit_a3`) |
 | $\sigma_R$ on a second test (Hiernaut 2008) | not started |
 
 **Decisions taken.**
@@ -147,7 +147,7 @@ Regression case `regression/hbs_nfir/test_UO2HBS_frag_j19damage`: the NFIR disc 
 disc, an unknown of the case), unloading, then the measured anneal to 1200 °C at $P_h=0$, with formation model 1
 (Barani 2020) and porosity model 3. Gates:
 
-1. gold files: `python3 -m regression.runner --hbs_nfir.j19damage` (and `--hbs_nfir.mmm_unit`, `--hbs_nfir.mmm_pk`: the same inputs with the ŝ of MMM, section 9.10). Without `input_hbs_shat.txt` the J19 case is identical byte by byte to its gold of before the MMM criterion (checked 17/11);
+1. gold files: `python3 -m regression.runner --hbs_nfir.j19damage` (and `--hbs_nfir.mmm_unit`, `--hbs_nfir.mmm_pk`: the same inputs with the ŝ of MMM, section 9.10; `--hbs_nfir.mmm_unit_a3`: unit with $a=3$. The runner selects by substring, so `--hbs_nfir.mmm_unit` also runs `_mmm_unit_a3`). Without `input_hbs_shat.txt` the J19 case is identical byte by byte to its gold of before the MMM criterion (checked 17/11);
 2. until 17/11, a transcription: `pore_distribution.py` replayed the case and compared C++ and Python at every step (agreement $2\times10^{-7}$). Removed on 17/11 so that the equations of option 4 are written once, in the C++; `pore_distribution.py` now checks only its `STATES` against `output.txt` (it also rewrites `mmm_inputs/`: see the warning in section 11.4);
 3. options 1, 2, 3 do not use the classes: their outputs are identical byte by byte with and without option 4.
 
@@ -169,7 +169,9 @@ n_i=\bar n\,\frac{R_i^{a}}{\sum_jw_jR_j^{a}},\quad a=2\ \textbf{[?]}$$
 $\sum w_iV_i=\bar V$ and $\sum w_in_i=\bar n$ by construction; the width $s$ is the root of
 $\sum w_i(n_i-\bar n)^2=\mathrm{Var}(n)$. The closure exponent $a$ is not fixed by the moments: $a=2$ is a gas
 density $\propto1/R$ (the shape of the punching overpressure), $a=3$ a uniform pressure. Each class has its pressure
-$p_i=p_g(n_i,V_i,T)$.
+$p_i=p_g(n_i,V_i,T)$. In the C++ $a=2\times$`sf_hbs_closure_exponent`, an optional line `1.5 # sf_hbs_closure_exponent`
+after the nine entries of `input_scaling_factors.txt` (read by name, default 1; 1.5 gives $a=3$, 18/11). CV$_n$ on the
+nodes depends on $a\,s$ only, so $a$ also sets the width: $s(a{=}3)=\tfrac23\,s(a{=}2)$.
 
 **Rupture criterion.** Class $i$ breaks when the largest first principal stress at the pore wall exceeds the rupture
 stress (OperaHPC D5.2). The net pressure on the solid is $p_i-2\gamma/R_i-P_h$ and the elastic stress is $\hat s_i$
@@ -222,7 +224,7 @@ $d=\min(2R_{WS}/D,\ 500\ \mu\text{m})$. It is a spacing of cracks, a fragment si
 | symbol | value | tag | source |
 |---|---|---|---|
 | $\hat s$, $\sigma_R$ | $\xi/(1-\xi)$, 21 MPa; with `input_hbs_shat.txt` the MMM surrogate and its $\sigma_R$ | [P] | J19 Eq. 22, Table 4; MMM: sections 9.9, 9.10 |
-| closure exponent $a$ | 2 | [?] | gas density ∝ 1/R |
+| closure exponent $a$ | 2; 3 with `sf_hbs_closure_exponent` 1.5 | [?] | 2: gas density ∝ 1/R; 3: one pressure (section 9.10) |
 | $\xi_{perc}$ | 0.29 | [P] | J19 §2.3.2 |
 | $\tau$ | 2 s | [?] | J19 Table 3 (borrowed) |
 | $\gamma$ | 1.1 N/m | [R] | `SetMatrix.C`, UO2HBS |
@@ -248,7 +250,8 @@ temperature while the measured release starts at about 880 °C.
 
 ### 3.5 Limitations (short register)
 
-- the closure $n_i\propto R_i^a$ is a choice, not a measurement; it sets which classes break and how much gas they hold;
+- the closure $n_i\propto R_i^a$ is a choice, not a measurement; it sets which classes break and how much gas they hold
+  (and the width $s$); with the unit ŝ, $a=3$ fits the NFIR release better than $a=2$ (section 9.10), on one test;
 - hard-sphere EoS without attraction: pressure overestimated at low temperature (5 times at 20 °C at the NFIR density, equal at 1190 °C);
 - $\hat s$ in the code is the mean field; the MMM runs are unconfined and the same $\hat s$ is used under confinement;
 - no cascade: after a rupture the pressure of the broken pore is not removed from the load of its neighbours;
@@ -803,8 +806,10 @@ the transient in % of the gas produced; measured: 29.8 % at the end, 10 % of it 
 | J19 mean field | 21 | 41.9 % | 19.9 | 0.709 | 0.522 | 771 / 1113 |
 | MMM unit, least rms | **236.8** | 23.3 % | 7.6 | 0.462 | 0.294 | 828 / 1198 |
 | MMM unit, final release | 217.3 | 29.8 % | 9.9 | 0.553 | 0.376 | 800 / 1176 |
-| MMM pk, least rms | **222.2** | 26.2 % | **4.4** | 0.456 | 0.328 | 1146 / 1353 |
+| MMM pk, least rms | **222.2** | 26.2 % | 4.4 | 0.456 | 0.328 | 1146 / 1353 |
 | MMM pk, final release | 218.3 | 29.9 % | 5.5 | 0.504 | 0.374 | 1140 / 1349 |
+| MMM unit with $a=3$, least rms (18/11) | **188.3** | 27.7 % | **2.5** | 0.367 | 0.346 | 1257 / 1394 |
+| MMM unit with $a=3$, final release | 187.0 | 29.8 % | 3.1 | 0.394 | 0.373 | 1254 / 1393 |
 | measured (Kr-85) | | 29.8 % | | | | 1293 / 1426 |
 
 - **pk fits the shape, unit does not.** With pk the two $\sigma_R$ (curve and final value) agree within 4 MPa and the
@@ -821,9 +826,20 @@ the transient in % of the gas produced; measured: 29.8 % at the end, 10 % of it 
   (unit) and 3.5 % (pk) against 16.3 % open loop with the table of run NFIR.
 - One test, one parameter: the calibrated $\sigma_R$ is a fit, not a validation (decision 7). It also absorbs the
   modelled pore state (0.7 times the measured gas density, L11) and the gas balance of item 11.
+- **Closure $a=3$ with the unit ŝ** (18/11, `calibrate_sigma_r_a3.py`, `mmm_outputs/calibration_nfir_a3.txt`). With
+  $a=3$ every class has the same gas density, hence the same pressure: the load of the unit runs. The unit surrogate
+  is then the exact ŝ, $P_h$ a rescaling up to $2\gamma/R$, and a pk run would only be the unit run times $p$: no new
+  MMM run. Unit with $a=2$ is a hybrid (the class pressures in the criterion, one pressure for the neighbours in ŝ);
+  with $a=2$ only pk is consistent. Result: the closest curve so far, rms 2.5 points, 10 % and 50 % of the release
+  36 K and 32 K before the measurement, the two $\sigma_R$ within 1.3 MPa; on the heat-up $s$ = 0.159–0.163 (inside
+  the runs, no clipping). But: the release is about twice as steep in $\sigma_R$ as with pk (52 % at 175 MPa, 13 % at
+  200 MPa: the pores share one pressure and only the upper tail of ŝ breaks), it still stops at the peak (27.7 %),
+  the modelled width falls to 0.16 against 0.36 measured (0.25 with $a=2$), and $a=2$ has a physical reason (the
+  $1/R$ shape of the punching overpressure) that $a=3$ lacks. One test does not choose $a$ (decision 1).
 
 The regression cases `regression/hbs_nfir/test_UO2HBS_frag_mmm_unit` and `_mmm_pk` hold these $\sigma_R$ (least rms)
-and their gold (17/11).
+and their gold (17/11, made again on 18/11: section 12, item 30); `_mmm_unit_a3` holds the $\sigma_R$ of $a=3$
+(the inputs of the J19 case with `1.5 # sf_hbs_closure_exponent`).
 
 ![calibration](mmm_outputs/calibration_nfir.png)
 
@@ -831,17 +847,23 @@ and their gold (17/11).
 > calibrated $\sigma_R$, Kr-85 measured) and D, G on the heat-up; bottom, the rms distance of the release curve and the
 > final release against $\sigma_R$ (scan and search points).
 
+![calibration a = 3](mmm_outputs/calibration_nfir_a3.png)
+
+> `calibration_nfir_a3.png` (`calibrate_sigma_r_a3.py`): the same with unit and $a=3$, against the regression cases
+> unit and pk with $a=2$ at their $\sigma_R$ (dashed lines, squares).
+
 ---
 
 ## 10. How to proceed
 
 Status of the hypercube on 17/11/2026: R00–R19 are solved for both loads (one cube of seed 1 each, by 12/11),
 reduced and fitted from their `pores.csv` (section 9.9); the surrogate is in the C++ and $\sigma_R$ is calibrated on the
-NFIR anneal in closed loop (section 9.10). Next: more pk runs, and a second test for $\sigma_R$ (decision 7).
+NFIR anneal in closed loop (section 9.10). Next: a second test for $\sigma_R$ (decision 7); more pk runs only if
+$a=2$ is kept (decision 1, open since 18/11).
 
 | # | decision | options | what the results say | recommendation |
 |---|---|---|---|---|
-| 1 | **Load of the hypercube runs** | (a) unit only: ŝ depends on (ξ, s), 2 factors; (b) unit + pk ("plan B"): ŝ with the class pressures, 3 factors (ξ, s, $\bar\eta$) | The pk cubes cost one more MMM job on the same split (≈ 22 core-h each), no mesh. With $a=2$ the class pressures of run NFIR span 54–7647 MPa: the neighbours' load is far from uniform, so (a) may miss a first-order effect. Both loads solved (12/11) and fitted: unit 1.7 % rms on x (noise 0.85 %), pk 6.0 % (four inputs on 20 runs, learning curve still falling); the superposition of the two maxima stays approximate (item 7) | 17/11: go on with both into the C++, pk as a trial of the whole chain; more pk runs afterwards (by doubling the hypercube, decision 2) |
+| 1 | **Load of the hypercube runs** | (a) unit only: ŝ depends on (ξ, s), 2 factors; (b) unit + pk ("plan B"): ŝ with the class pressures, 3 factors (ξ, s, $\bar\eta$) | The pk cubes cost one more MMM job on the same split (≈ 22 core-h each), no mesh. With $a=2$ the class pressures of run NFIR span 54–7647 MPa: the neighbours' load is far from uniform, so (a) may miss a first-order effect. Both loads solved (12/11) and fitted: unit 1.7 % rms on x (noise 0.85 %), pk 6.0 % (four inputs on 20 runs, learning curve still falling); the superposition of the two maxima stays approximate (item 7). 18/11: the choice is the closure $a$. Unit is the exact ŝ for $a=3$ (one pressure), pk the consistent one for $a=2$; on NFIR $a=3$ + unit gives rms 2.5 points against 4.4 for $a=2$ + pk, $\sigma_R$ 188 against 222 MPa (section 9.10) | 17/11: go on with both into the C++, pk as a trial of the whole chain. **To discuss (18/11):** $a=3$ + unit (3 inputs, 1.7 %, no pk run, $P_h$ exact up to $2\gamma/R$) or $a=2$ + pk (4 inputs, more runs, approximate superposition); run both pairs on the second test (decision 7) before new pk runs (by doubling the hypercube, decision 2) |
 | 2 | **Cubes per run** | 1 cube per run (20 cubes) or more seeds for the wide runs | FGR 5–95 %: one 30 µm cube gives ≈ 2–6 % (the 1.4–4.3 % estimated for 10–90 % by scaling run NFIR with the number of pores, times 3.5/2.6 for the 5 % level; not recomputed run by run): just above 5 % at the 5 % level for the runs with the fewest pores (R01, R17, R13). The largest class with ≥ 5 % of the volume needs more for 5 %: R13 11 cubes, R05 7, R09 6, R11 5, NFIR/R04 4, R00/R03 3 | 1 cube per run, pass the per-class noise ($2D$, from the number of pores of the class) to the fit; add seeds only where the surrogate shows it needs them. Densify by doubling the hypercube (new runs appended), **not** by raising `MMM_RUNS`, which rewrites the whole design |
 | 3 | **δ** | keep 0.15 µm, or 0.05 µm | residual at 0.15: ≤ 6 % on class 1.70, ≤ 0.5–1 % on the FGR | keep 0.15 for the hypercube (chosen 10/11); δ only needs a new MMM job on the same split if it is revisited. In dense runs 38 % of the pores have a gap < 0.35 µm (17 % in NFIR): keep δ < distMin/2 |
 | 4 | **Error of the 0.15 µm mesh** | (a) accept; (b) fourth mesh at 0.106 µm on seed 1 (6.36 M vertices, split 38.7 GB, MMM with 2 cores per process); (c) change the quantity (stress on the wall, or an average over a small volume, instead of the maximum over Gauss points) | (b) done 16/11 (section 9.4): from 0.15 to 0.106 µm the classes of the verdict move by ≤ 1.15 %, $x_c$ of the FGR by ≤ 1 %; against h → 0 ≈ 2–3.5 % (Richardson on the large classes, orders 1.0–1.9; not possible on 0.436 and on the classes of 11 pores), always an overestimate and nearly the same in every class | **taken 16/11: (a)**, 0.15 µm for the hypercube, the common bias goes into $\sigma_R$; (c) only if absolute values of ŝ must be quoted to better than ≈ 3 % |
@@ -925,12 +947,13 @@ inverted elements (`inverted_elements.py`), then `-v 1` and `-li 20000`.
 cd ~/mmm/sciantix-official && ./utilities/HBFF/runHBFF.sh     # build, NFIR cases against their gold, STATES against output.txt, figures
 python3 utilities/HBFF/mmm_surrogate.py --fit LHS RUN_NFIR     # metrics (9.9) and mmm_outputs/surrogate_<load>_sciantix.txt (≈ 3.5 min)
 python3 utilities/HBFF/calibrate_sigma_r.py                    # sigma_R on NFIR (9.10, ≈ 3 min with 4 runs at a time; needs build/sciantix.x)
-python3 -m regression.runner --hbs_nfir.mmm_unit --hbs_nfir.mmm_pk --mode-gold 1   # their gold, after a check
+python3 utilities/HBFF/calibrate_sigma_r_a3.py                 # the same with a = 3, unit only (9.10): case _mmm_unit_a3, calibration_nfir_a3.*
+python3 -m regression.runner --hbs_nfir.mmm_unit --hbs_nfir.mmm_pk --mode-gold 1   # their gold, after a check (mmm_unit also selects mmm_unit_a3)
 ```
 `LHS` is the tree of the hypercube (`unit/` and `pk/`, with `run_<id>/pores.csv`; `analyse_lhs.sh` calls `--fit` on
 it), `RUN_NFIR` the run folder of the RVE test (its classes are the test of the surrogate).
-`calibrate_sigma_r.py` writes the calibrated `input_hbs_shat.txt` into the two MMM cases; their gold is left to the
-runner. The runner always uses `build/sciantix.x`: build first.
+`calibrate_sigma_r.py` writes the calibrated `input_hbs_shat.txt` into the two MMM cases, `calibrate_sigma_r_a3.py`
+into `_mmm_unit_a3` (with the line of `sf_hbs_closure_exponent`); their gold is left to the runner. The runner always uses `build/sciantix.x`: build first.
 **Warning:** `pore_distribution.py` (called by `runHBFF.sh`) rewrites `mmm_inputs/` at every run. With the same
 settings the files are identical; if `MMM_RUNS`, `MMM_SEED`, `MMM_CLASSES` or `MMM_FACTORS` change, the design of all
 the runs changes and the cubes already made no longer match (`merope_pore_pressure.py` and `set_pressures.py` detect
@@ -998,6 +1021,7 @@ Found while writing this report (10/11/2026). "Fixed" = changed in the working t
 | 27 | The Python transcription of option 4 (`rupture_step`, `replay`, `check`) and the open-loop replays (`section_mmm_replay`, `mmm_surrogate.py --replay`) wrote the equations of the C++ a second time | `pore_distribution.py`, `mmm_surrogate.py`, `runHBFF.sh` | every change of the criterion had to be made and checked on both sides | removed 17/11 (closed loop in the C++ instead); `runHBFF.sh` keeps the gold of the case and the check of `STATES`. `figures/classes_fgr_nfir_mmm.png` is left as the record of section 9.8; `mmm_outputs/replay_nfir.txt/png` deleted 17/11 (replaced by `calibration_nfir.txt/png`, section 9.10) |
 | 28 | `regression/hbs_nfir/plot.py` imports `read_output` from `pore_distribution.py`, which on 16/11 had been moved inside `main()` | `regression/hbs_nfir/plot.py` l. 34 | `plot.py`, the last step of `runHBFF.sh`, stopped at the import | fixed 17/11: `read_output` is a function again |
 | 29 | `mmm_surrogate.py` wrote a table per run (`mmm_outputs/shat_<run>.txt`, rounded to 6 digits) that only its own `--fit` read back | `mmm_surrogate.py`, `analyse_lhs.sh` | 41 files to keep in step with the `pores.csv` of the runs | removed 17/11: `--fit LHS RUN_NFIR` reads the `pores.csv` (same classes, differences ≤ 5e-6 = the rounding; metrics of 9.9 unchanged to the last digit printed). The MMM regression cases keep the surrogate fitted on the tables (μ, σ at their test points within 4e-6 and 2e-5): they change at the next `calibrate_sigma_r.py` |
+| 30 | The gold of `test_UO2HBS_frag_mmm_unit` and `_mmm_pk` (17/11) did not match the C++ of the commit: a clean build of HEAD (18/11) gives D up to 5e-5 (unit) and 6e-3 (pk) apart, relative, during the transient, the same final release to 1e-7; `_j19damage` matched | `regression/hbs_nfir/test_UO2HBS_frag_mmm_*/output_gold.txt` | the runner failed on both cases after a fresh build; the gold had been made with an older `build/sciantix.x` | fixed 18/11: gold made again with the current build, identical to the build of HEAD without the switch of $a$; $\sigma_R$ of 9.10 not recalibrated |
 
 ---
 

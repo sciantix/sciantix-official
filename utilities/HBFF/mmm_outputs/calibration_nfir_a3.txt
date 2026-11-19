@@ -1,0 +1,26 @@
+# Closure a = 3 with the unit s_hat of MMM, NFIR anneal in closed loop (python3 calibrate_sigma_r_a3.py)
+# SCIANTIX option 4 on the inputs of regression/hbs_nfir/test_UO2HBS_frag_j19damage, with input_hbs_shat.txt = mmm_outputs/surrogate_unit_sciantix.txt and 1.5 # sf_hbs_closure_exponent (a = 3)
+# release of the transient in % of the gas produced; measured Kr-85 at the end of the anneal: 29.83 %
+# rms: distance of the release curve from the measured one at the measured times (points of release); D, G: broken pores (number) and their gas at the end; T_10, T_50: T of the heat-up at 10 % and 50 % of the final release
+#
+# == 1. Scan, a = 3 ==
+# case             sigma_R  release_%     rms       D       G  T_10_K  T_50_K
+  J19                 21.0      41.91   19.85  0.7089  0.5224     771    1113
+  unit a=3           100.0      79.90   60.51  1.0000  1.0000     715     805
+  unit a=3           125.0      79.81   59.88  0.9988  0.9989     891    1007
+  unit a=3           150.0      76.75   51.94  0.9606  0.9605    1065    1207
+  unit a=3           175.0      52.52   22.54  0.6706  0.6570    1213    1361
+  unit a=3           200.0      12.61   12.79  0.1750  0.1580    1279    1405
+  unit a=3           225.0       1.88   21.46  0.0285  0.0235    1313    1418
+  unit a=3           250.0       0.22   22.77  0.0037  0.0028    1338    1428
+  unit a=3           300.0       0.00   22.95  0.0000  0.0000    1369    1439
+#
+# == 2. Calibrated, a = 3: sigma_R of the least rms of the curve, and the sigma_R of the measured final release; the regression cases (a = 2) at their sigma_R ==
+# case             sigma_R  release_%     rms       D       G  T_10_K  T_50_K
+  unit a=3 rms       188.3      27.66    2.51  0.3671  0.3463    1257    1394
+  unit a=3 final     187.0      29.81    3.11  0.3939  0.3731    1254    1393
+  unit a=2           236.8      23.26    7.62  0.4618  0.2939     828    1198
+  pk a=2             222.2      26.13    4.41  0.4559  0.3276    1146    1353
+#
+# == 3. Rows of the heat-up (gas retained >= 1 %) with the state outside the range of the runs of the surrogate, at the calibrated sigma_R, a = 3: SCIANTIX clips them ==
+  unit a=3         0.0 %   (s with a = 3 on these rows: 0.159-0.163; range of the runs 0.059-0.411)

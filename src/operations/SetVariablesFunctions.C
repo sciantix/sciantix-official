@@ -485,6 +485,7 @@ std::vector<std::string> getScalingFactorsNames()
         "Diffusion-based release",
         "Helium production rate",
         "Dummy",
+        "HBS closure exponent",  // author: E.Cappellari, POLIMI-CEA 2026
     };
 
     return names;
