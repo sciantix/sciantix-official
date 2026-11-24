@@ -1,0 +1,11 @@
+# Noirot et al., JNM 372 (2008) 318-339, Table 2: HBS bubbles at end of life, entries at 650 K only.
+# local burnup (GWd/t) | gas volume per atom (A^3/at) | pressure, Van der Waals EoS at 650 K (MPa) | fuel (0 = UO2 rim, 1 = MOX peripheral agglomerate)
+105 150 90 0
+120 170 70 0
+120 150 90 0
+100 185 55 1
+160 185 55 1
+180 175 65 1
+200 185 55 1
+220 170 65 1
+270 210 45 1

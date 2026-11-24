@@ -134,12 +134,12 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int                          
             // destroyed before gaining atoms). Substituted here by Xia 2022,
             // which delivers a mobility large enough to sustain nucleation.
             // Xia et al. (2022) https://www.mdpi.com/2075-4701/12/5/763
-            // delivers a fit of Cappia data through the full burnup range.
+            // Arrhenius fit of MD results for a Sigma5(310) GB (Xia 2022, Fig. 3a).
             grain_boundary_single_atom_diffusivity =
                 (2.0e-8 * exp(-1.4 / (8.62e-5 * history_variable["Temperature"].getFinalValue())));
 
-            reference += "GrainBoundarySingleAtomDiffusivity: Xia et al., Metals 12 (2022) 763, as calibrated by "
-                         "Frattini MSc thesis (2025).\n\t";
+            reference += "GrainBoundarySingleAtomDiffusivity: Xia et al., Metals 12 (2022) 763, Fig. 3a "
+                         "(Sigma5(310) grain boundary, D0 = 2.0e-8 m2/s, Ea = 1.4 eV).\n\t";
             break;
         }
 
