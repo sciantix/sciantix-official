@@ -669,8 +669,8 @@ void Simulation::HighBurnupStructureFragmentation()
                     std::max((var_retained + n_retained * n_retained) / retention2_old - n * n, 0.0);
 
                 // [N] width s: the root of sum_i w_i (n_i - n)^2 = Var(n) on the nodes, so that V, n and Var(n) hold on
-                // the classes. CV^2 of n on the nodes, sum w e^(2 a s x) / (sum w e^(a s x))^2 - 1, grows with s: bisection
-                // between 0 and an upper bound doubled from the value of the continuous log-normal.
+                // the classes. CV^2 of n on the nodes, sum w e^(2 a s x) / (sum w e^(a s x))^2 - 1, grows with s:
+                // bisection between 0 and an upper bound doubled from the value of the continuous log-normal.
                 auto cv2_on_nodes = [&](double s)
                 {
                     double m1 = 0.0, m2 = 0.0;
