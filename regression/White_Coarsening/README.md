@@ -1,9 +1,11 @@
 # White coarsening regression — Nicodemo 2026
 
-38 ramp histories using experimental data reported by Barani 2020. Same fixed inputs and physical yield for the new model and legacy controls. Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. No published Barani intergranular values are available in this table.
+The merit figures compare Nicodemo 2026, SCIANTIX single-size and the published Barani 2020 predictions against White measurements for 38 ramp histories. Barani 2020 supplies radius, density and intragranular swelling endpoints. The table does not supply intergranular swelling or gas inventories.
 
-The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, with the same pressure driving vacancy uptake. The volume is V=n*omega(T)+nv*Omega, where omega(T)=2*pi*dHS(T)^3/3 is the additive hard-sphere gas co-volume; K=1.6e+06 m^-1 is constant, with nu_d=K*positive full density generation during irradiation, excluding cooling rebound. Fresh Nd starts at zero. Bulk-based line supply (D_capture=3 D_bulk) and direct trapping are not temperature-gated. Atomic re-solution has no phi; effective number disappearance and coalescence reduce Nd. Vacancy uptake requires T>=1500 K and positive CS overpressure; Dv is 30 times the bulk vacancy diffusivity, with an explicitly calibrated effective prefactor. The density uses the frozen Veshchunov-White refit documented in context/dislocation_density. Parameters are globally selected closures, not independently measured constants. The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.
-The line-supply factor and vacancy mobility are calibrated globally on the 38 histories. Pre-ramp agreement and gas partitions are diagnostics; numerical verification is not a claim of physical validation.
+The regression template sets `iCoarseningLineCapture=1` for the Nicodemo cylindrical cell. The verification also exercises `0`, the Barani Eq. (6) line coefficient within the same coarsening solver.
+
+The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, with the same pressure driving vacancy uptake. The volume is V=n*omega(T)+nv*Omega, where omega(T)=2*pi*dHS(T)^3/3 is the additive hard-sphere gas co-volume; K=1.6e+06 m^-1 is constant, with nu_d=K*positive full density generation during irradiation, excluding cooling rebound. Fresh Nd starts at zero. A stationary cylindrical cell supplies the line capture, with near-core and bulk resistances in series. Direct trapping uses the bulk diffusivity and the capture radius R_d + 0.21 nm. Both paths remain active throughout the history. The model retains three-dimensional coalescence. Atomic re-solution has no phi; effective number disappearance and coalescence reduce Nd. Vacancy uptake requires T>=1500 K and positive CS overpressure; Dv is 30 times the bulk vacancy diffusivity, with an explicitly calibrated effective prefactor. The density uses the frozen Veshchunov-White refit documented in context/dislocation_density. Parameters are globally selected closures, not independently measured constants. The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.
+The fast region extends to 50b (19.25 nm) as a model assumption. The vacancy mobility uses the calibrated effective prefactor. Pre-ramp agreement and gas partitions are diagnostics.
 
 The temperature dependence of this reference co-volume also enters geometric overlap and coalescence. It increases on cooling without creating gas or vacancies; mechanical equilibrium is not imposed.
 
@@ -11,13 +13,15 @@ The temperature dependence of this reference co-volume also enters geometric ove
 
 |Model|R MAPE|N MAPE|IG swelling MAPE|GB swelling MAPE|
 |---|---:|---:|---:|---:|
-|Nicodemo 2026|41.33%|210.17%|163.20%|149.66%|
+|Nicodemo 2026|40.45%|206.10%|178.12%|145.44%|
 |SCIANTIX single-size|98.05%|3133748.42%|92.26%|179.42%|
 |Barani 2020|54.48%|140.98%|254.73%|not tabulated|
 
 IG swelling includes both populations; R and N describe the large population in the new model. White SEM primarily resolves the large population. All gas fractions are normalized to local stable Xe+Kr production; means across 38 locations are arithmetic diagnostics, not integral rod FGR.
 
 ![Inventories](figures/6_gas_before_after.png)
+
+[Radii before and after](figures/8_radii_before_after.png)
 
 ![Current 4005-A history](figures/Detailed_ramps/4005-A.png)
 

@@ -58,7 +58,8 @@ std::vector<std::string> getInputVariableNames()
                                       "iNUSAnimation",
                                       "iNonSym",
                                       "iGrainBoundaryResolution",
-                                      "iDislocationDensity"};  // #COARSENING
+                                      "iDislocationDensity",      // #COARSENING
+                                      "iCoarseningLineCapture"};  // #COARSENING
 
     return names;
 }

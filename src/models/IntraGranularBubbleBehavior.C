@@ -69,8 +69,11 @@ namespace coarsening
             // history. Large-bubble gas uses Setyawan return without atomic phi.
             const double ab = 2 * pi * 6e-6 * std::pow(o.bulkRadius + 1e-9, 2) * middle.fissionRate;
             const double ad = resolution(o.largeRadius, middle.fissionRate);
-            const double bb = 4 * pi * D * (o.bulkRadius + .21e-9) * s.bulkNumber;
-            const double bd = s.largeNumber > 0. ? 4 * pi * D * o.largeRadius * s.largeNumber + o.lineCapture : 0.;
+            // #COARSENING: finite gas–bubble encounter distance for both populations.
+            constexpr double captureOffset = .21e-9;
+            const double     bb            = 4 * pi * D * (o.bulkRadius + captureOffset) * s.bulkNumber;
+            const double     directCapture = 4 * pi * D * (o.largeRadius + captureOffset) * s.largeNumber;
+            const double     bd            = s.largeNumber > 0. ? directCapture + o.lineCapture : 0.;
             // Native bulk closure: nucleation enters the bubble number only;
             // atomic inventories exchange gas through trapping and re-solution.
             s.bulkNumber = (s.bulkNumber + h * 50 * middle.fissionRate) / (1 + h * ab);
@@ -175,10 +178,10 @@ namespace coarsening
     Statistics evolve(State& s, double duration, const Environment& a, const Environment& b, const Parameters& p)
     {
         if (!std::isfinite(duration) || duration < 0. || !std::isfinite(p.relativeTolerance) ||
-            !(p.relativeTolerance > 0.) || !std::isfinite(p.K) || p.K < 0. ||
-            !std::isfinite(p.lineDiffusivityMultiplier) || p.lineDiffusivityMultiplier < 0. ||
-            !std::isfinite(p.vacancyDiffusivityMultiplier) || p.vacancyDiffusivityMultiplier < 0. ||
-            !std::isfinite(p.vacancyActivationTemperature) || p.vacancyActivationTemperature < 0.)
+            !(p.relativeTolerance > 0.) || !std::isfinite(p.K) || p.K < 0. || !std::isfinite(p.lineCaptureMultiplier) ||
+            p.lineCaptureMultiplier < 0. || !std::isfinite(p.vacancyDiffusivityMultiplier) ||
+            p.vacancyDiffusivityMultiplier < 0. || !std::isfinite(p.vacancyActivationTemperature) ||
+            p.vacancyActivationTemperature < 0.)
             throw std::invalid_argument("Invalid coarsening parameters");
         for (const auto& e : {a, b})
             if (!std::isfinite(e.temperature) || e.temperature <= 0. || !std::isfinite(e.fissionRate) ||
@@ -259,9 +262,13 @@ void Simulation::IntraGranularBubbleCoarsening()
     const int  density = static_cast<int>(input_variable["iDislocationDensity"].getValue());
     if (density < 0 || density > 1)
         throw std::invalid_argument("iDislocationDensity must be 0 (constant) or 1 (Nicodemo2026)");
-    p.densityModel = static_cast<dislocation_density::Model>(density);
+    p.densityModel        = static_cast<dislocation_density::Model>(density);
+    const int lineCapture = static_cast<int>(input_variable["iCoarseningLineCapture"].getValue());
+    if (lineCapture < 0 || lineCapture > 1)
+        throw std::invalid_argument("iCoarseningLineCapture must be 0 (Barani2020) or 1 (Nicodemo2026)");
+    p.lineCaptureModel = static_cast<LineCaptureModel>(lineCapture);
     p.K *= scaling_factors["Coarsening K"].getValue();
-    p.lineDiffusivityMultiplier *= scaling_factors["Coarsening gas diffusivity"].getValue();
+    p.lineCaptureMultiplier *= scaling_factors["Coarsening gas diffusivity"].getValue();
     p.vacancyDiffusivityMultiplier *= scaling_factors["Coarsening vacancy diffusivity"].getValue();
     if (const char* raw = std::getenv("SCIANTIX_COARSENING_TOLERANCE"))
     {

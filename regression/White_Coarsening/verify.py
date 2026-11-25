@@ -96,7 +96,21 @@ def verify_model(binary, jobs):
     assert np.all(t["Dislocation density (m/m3)"] == 4e13)
     assert np.all(t["Coarsening dislocation concentration (bub/m3)"] == 0.0)
     checks["density_zero"] = dict(constant_m2=4e13)
-    # Old files may omit the density selector and all three new factors.
+    barani = campaign.run(binary, "4005-A", "coarsening", 200, 2e-5, line_capture=0)
+    trace = campaign.output(here / barani["trace"])
+    rho = trace["Dislocation density (m/m3)"]
+    active = rho > 0
+    temperature = trace["Temperature (K)"][active]
+    pipe = 7.74e-6 * np.exp(-1.21e-19 / (1.380649e-23 * temperature))
+    radius_ratio = 1 / (5 * 3.85e-10 * np.sqrt(np.pi * rho[active]))
+    expected = 2 * np.pi * rho[active] * pipe / (np.log(radius_ratio) - 0.6)
+    rate = trace["Coarsening line trapping rate (1/s)"]
+    np.testing.assert_allclose(rate[active], expected, rtol=1e-12, atol=0)
+    assert np.all(rate[~active] == 0)
+    checks["barani_line_capture"] = dict(
+        max_relative=float(np.max(np.abs(rate[active] / expected - 1)))
+    )
+    # Old files may omit both selectors and all three new factors.
     with tempfile.TemporaryDirectory(prefix="coarsening-optional-input-") as temporary:
         work = Path(temporary)
         campaign.prepare(work, "4005-A", "coarsening")
@@ -105,7 +119,7 @@ def verify_model(binary, jobs):
             "\n".join(
                 line
                 for line in settings.read_text().splitlines()
-                if "iDislocationDensity" not in line
+                if "iDislocationDensity" not in line and "iCoarseningLineCapture" not in line
             )
             + "\n"
         )
@@ -130,11 +144,12 @@ def verify_model(binary, jobs):
                 )
                 < 1e-12
             )
-        checks["optional_input_defaults"] = dict(density=1, all_new_factors=1)
+        checks["optional_input_defaults"] = dict(density=1, line_capture=1, all_new_factors=1)
     for label, change in [
         ("old_model5", ("iIntraGranularBubbleBehavior", 5)),
         ("old_model6", ("iIntraGranularBubbleBehavior", 6)),
         ("invalid_density", ("iDislocationDensity", 2)),
+        ("invalid_line_capture", ("iCoarseningLineCapture", 2)),
     ]:
         with tempfile.TemporaryDirectory(prefix="coarsening-invalid-") as temporary:
             work = Path(temporary)

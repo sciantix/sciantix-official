@@ -1,6 +1,6 @@
 """#COARSENING: self-contained 38-case regression using published ramp data.
 
-Barani2020 is read only as published Table4 data. There is no Barani solver.
+The merit comparison reads the published Barani 2020 Table 4 predictions.
 """
 
 from pathlib import Path
@@ -61,7 +61,7 @@ def environment(steps, tolerance):
     return env
 
 
-def prepare(folder, sample, model, scales=None, density=1):
+def prepare(folder, sample, model, scales=None, density=1, *, line_capture=1):
     folder.mkdir(parents=True, exist_ok=True)
     for p in (HERE / "inputs" / sample).iterdir():
         shutil.copyfile(p, folder / p.name)
@@ -71,6 +71,7 @@ def prepare(folder, sample, model, scales=None, density=1):
         4 if model == "coarsening" else 1,
     )
     settings = setting(settings, "iDislocationDensity", density)
+    settings = setting(settings, "iCoarseningLineCapture", line_capture)
     (folder / "input_settings.txt").write_text(settings)
     lines = (HERE / "input_scaling_factors.txt").read_text().splitlines()
     if scales is not None:
@@ -155,7 +156,7 @@ def summarize(path, history, model):
     return dict(states=states, onset_h=onset, max_balance=balance)
 
 
-def run(binary, sample, model, steps, tolerance, scales=None, density=1):
+def run(binary, sample, model, steps, tolerance, scales=None, density=1, *, line_capture=1):
     identifier = hashlib.sha256(
         json.dumps(
             [
@@ -166,6 +167,7 @@ def run(binary, sample, model, steps, tolerance, scales=None, density=1):
                 tolerance,
                 scales,
                 density,
+                line_capture,
                 sha(HERE / "input_settings.txt"),
                 sha(HERE / "input_scaling_factors.txt"),
                 *[sha(p) for p in sorted((HERE / "inputs" / sample).iterdir())],
@@ -180,7 +182,7 @@ def run(binary, sample, model, steps, tolerance, scales=None, density=1):
         result = json.loads(target.read_text())
         assert sha(HERE / result["trace"]) == result["output_sha256"]
         return result
-    prepare(folder, sample, model, scales, density)
+    prepare(folder, sample, model, scales, density, line_capture=line_capture)
     with tempfile.TemporaryDirectory(prefix="white-coarsening-") as temporary:
         work = Path(temporary)
         for p in folder.glob("input*"):

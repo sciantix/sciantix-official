@@ -28,3 +28,4 @@
 0 # iNonSym
 0 # iGrainBoundaryResolution
 1 # iDislocationDensity
+1 # iCoarseningLineCapture

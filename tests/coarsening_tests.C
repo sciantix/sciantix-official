@@ -106,11 +106,21 @@ int main(int argc, char** argv)
         invalidPacking = true;
     }
     require(invalidPacking, "Invalid Carnahan-Starling packing is rejected without clipping");
-    const double capture = captureDiffusivity(cold, p);
+    const double capture = observe(eos, cold, p).lineCapture;
     require(capture > 0. && std::isfinite(capture), "Positive finite line supply without an activation gate");
     auto scaled = p;
-    scaled.lineDiffusivityMultiplier *= 2.;
-    close(captureDiffusivity(cold, scaled) / capture, 2., 1e-14, "Independent gas mobility scale");
+    scaled.lineCaptureMultiplier *= 2.;
+    close(observe(eos, cold, scaled).lineCapture / capture, 2., 1e-14, "Independent line capture scale");
+    auto stationaryCell         = p;
+    stationaryCell.densityModel = Model::Barani2020;
+    auto cellState              = cold;
+    cellState.temperature       = 2000.;
+    cellState.fissionRate       = 1e19;
+    // Independent quadrature at rho = 4e13 m^-2, a = 5b and delta = 50b.
+    close(observe(eos, cellState, stationaryCell).lineCapture / 0.0057650305822767155,
+          1.,
+          1e-12,
+          "Two-region cylindrical diffusion cell");
     scaled = p;
     scaled.vacancyDiffusivityMultiplier *= 2.;
     close(vacancyDiffusivity(2080., scaled) / vacancyDiffusivity(2080., p),
@@ -136,7 +146,7 @@ int main(int argc, char** argv)
     returning.gas[2][0]                                = 1e22;
     returning.vacancies                                = 1e24;
     auto noGrowth                                      = p;
-    noGrowth.K = noGrowth.lineDiffusivityMultiplier = noGrowth.vacancyDiffusivityMultiplier = 0.;
+    noGrowth.K = noGrowth.lineCaptureMultiplier = noGrowth.vacancyDiffusivityMultiplier = 0.;
     evolve(returning, 1000., cold, cold, noGrowth);
     require(average(returning)[2] < 1e22, "Gas re-solution remains active in cold dislocation bubbles");
     require(returning.largeNumber < 1e19 && returning.vacancies < 1e24,

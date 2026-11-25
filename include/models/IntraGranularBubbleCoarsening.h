@@ -13,10 +13,16 @@ namespace coarsening
     {
         double temperature = 1200., fissionRate = 0., stress = 0., grainRadius = 5e-6, burnup = 0.;
     };
+    enum class LineCaptureModel
+    {
+        Barani2020   = 0,
+        Nicodemo2026 = 1
+    };
     struct Parameters
     {
-        dislocation_density::Model densityModel = dislocation_density::Model::Nicodemo2026;
-        double                     K = 1600000, lineDiffusivityMultiplier = 3, vacancyDiffusivityMultiplier = 30;
+        dislocation_density::Model densityModel     = dislocation_density::Model::Nicodemo2026;
+        LineCaptureModel           lineCaptureModel = LineCaptureModel::Nicodemo2026;
+        double                     K = 1600000, lineCaptureMultiplier = 1, vacancyDiffusivityMultiplier = 30;
         double                     vacancyActivationTemperature = 1500.;
         double                     relativeTolerance            = 2e-5;
     };
@@ -43,7 +49,6 @@ namespace coarsening
     double                gasCoVolume(double temperature);  // omega(T)=B2=4*vHS (m^3/atom)
     double                bubbleVolume(double atoms, double vacancies, double temperature);  // n*omega(T)+nv*Omega
     double                diffusivity(const Environment&);
-    double                captureDiffusivity(const Environment&, const Parameters&);
     double                vacancyDiffusivity(double temperature, const Parameters&);
     double                resolution(double radius, double fissionRate);
     double                vacancyRate(double nv, double atoms, double number, const Environment&, const Parameters&);

@@ -62,16 +62,26 @@ Inline comments are read to the end of the line without a length limit.
 Use `iIntraGranularBubbleBehavior=4` with `iDiffusionSolver=2`. The complete
 [White settings file](../regression/White_Coarsening/input_settings.txt) is a
 working configuration for stable Xe/Kr in UO2. The model fixes Carnahan–Starling
-pressure and `Vd=nd*omega(T)+nv*Omega`, with `omega(T)=2*pi*dHS(T)^3/3`;
-there are no alternative coarsening pressure, volume or transport switches.
-The selected constants are `K=1.6e6 m^-1`, line-capture `D=3 Dbulk`, and
-vacancy `Dv=30 Dvbulk`, with vacancy uptake above 1500 K. The three trailing
-coarsening scaling factors multiply these selected defaults.
+pressure and `Vd=nd*omega(T)+nv*Omega`, with `omega(T)=2*pi*dHS(T)^3/3`.
+The default uses cylindrical radial line capture with a fast-region outer
+radius of `50b = 19.25 nm` and direct capture at `R_d + 0.21 nm`.
+The selected constants are `K=1.6e6 m^-1` and
+`Dv=30 Dvbulk`, with vacancy uptake at and above 1500 K when the bubble
+pressure exceeds equilibrium. The three trailing coarsening scaling factors
+default to one.
 
-After the four optional NUS entries (indices 25–28), index 29 is
-`iDislocationDensity`: 1 selects the Nicodemo 2026 density correlation and is the
-CLI default for model 4; 0 is the constant-density control. This selector changes
-only the dislocation density. See the [model context](../context/COARSENING.md)
+After the four optional NUS entries (indices 25–28), two optional selectors
+apply to model 4:
+
+| Index | Setting | `0` | `1` (CLI default for model 4) |
+| ---: | --- | --- | --- |
+| 29 | `iDislocationDensity` | Constant Barani (2020) density | Nicodemo (2026) density fit |
+| 30 | `iCoarseningLineCapture` | Barani (2020) Eq. (6) | Nicodemo (2026) cylindrical cell |
+
+Keep the density entry when specifying the line-capture entry. The two
+selectors are independent. `sf_coarsening_D` multiplies the selected line
+coefficient. Callers supplying the options array directly must set index 30
+to `1` for the cylindrical cell. See the [model context](../context/COARSENING.md)
 for physical assumptions, supported combinations and numerical refinement.
 
 ---
@@ -166,7 +176,7 @@ It is optional: when absent, every factor defaults to 1.0.
 
 For model 4, three optional factors follow the nine native values:
 `sf_coarsening_K`, `sf_coarsening_D`, and `sf_coarsening_Dv`, all defaulting to 1.
-They scale site density, line-capture gas mobility, and vacancy mobility,
+They scale site density, the radial line-capture coefficient, and vacancy mobility,
 respectively. They do not select a different pressure or volume law. The native
 resolution, trapping, nucleation and diffusivity scaling factors must equal 1
 for model 4. A complete example is provided in the

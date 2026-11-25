@@ -1,18 +1,15 @@
-"""#COARSENING: White data, original SCIANTIX and published Barani endpoints."""
+"""#COARSENING: compare the selected configuration with legacy and published results."""
 
-from pathlib import Path
-import json
 import numpy as np
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 import run as campaign
 
 HERE = campaign.HERE
 ROOT = campaign.ROOT
-NEW, LEGACY, BARANI, MEASURED = "#2379b5", "#888888", "#c44e52", "#222222"
+NEW, LEGACY, BARANI, VACANCIES = "#2379b5", "#888888", "#c44e52", "#c44e52"
 MODEL_LABELS = {
     "coarsening": "Nicodemo 2026",
     "legacy": "SCIANTIX single-size",
@@ -48,18 +45,6 @@ def save(fig, path):
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path.with_suffix(".png"), dpi=300, bbox_inches="tight")
     plt.close(fig)
-
-
-def ordered_legend(ax):
-    handles, labels = ax.get_legend_handles_labels()
-    priority = {
-        MODEL_LABELS[k]: i
-        for i, k in enumerate(("legacy", "Barani_table4", "coarsening"))
-    }
-    order = sorted(
-        range(len(labels)), key=lambda i: (priority.get(labels[i], len(priority)), i)
-    )
-    return [handles[i] for i in order], [labels[i] for i in order]
 
 
 def figure7_history(result, observation, folder, zoom=False):
@@ -121,7 +106,7 @@ def figure7_history(result, observation, folder, zoom=False):
     nAxis.plot(
         x,
         vacancies,
-        color=BARANI,
+        color=VACANCIES,
         lw=1.5,
         ls="--",
         label="Vacancies per bubble at dislocations",
@@ -146,7 +131,12 @@ def figure7_history(result, observation, folder, zoom=False):
 
     aR.plot(x, radius, color=NEW, lw=1.5, label="Calculated bubble radius")
     sAxis.plot(
-        x, swelling, color=BARANI, lw=1.5, ls="--", label="Calculated gaseous swelling"
+        x,
+        swelling,
+        color=VACANCIES,
+        lw=1.5,
+        ls="--",
+        label="Calculated gaseous swelling",
     )
     reference_time = min(end, right)
     aR.scatter(
@@ -162,7 +152,7 @@ def figure7_history(result, observation, folder, zoom=False):
         reference_time,
         measured_swelling,
         marker="o",
-        color=BARANI,
+        color=VACANCIES,
         zorder=5,
         s=28,
         label="Experimental gaseous swelling",
@@ -209,6 +199,36 @@ def figure7_history(result, observation, folder, zoom=False):
     save(fig, folder / filename)
 
 
+def plot_radii(figdir, by, measured, published, samples):
+    fig, axes = plt.subplots(1, 2, figsize=(10.8, 3.8), layout="constrained")
+    for ax, phase, title in zip(
+        axes, ("pre", "end"), ("Before the first ramp", "End of history")
+    ):
+        radii = [
+            [1e9 * by[model][s]["states"][phase][key] for s in samples]
+            for model, key in (
+                ("legacy", "R"),
+                ("coarsening", "Rb"),
+                ("coarsening", "R"),
+            )
+        ]
+        labels = ["Legacy", "Nicodemo 2026\nbulk", "Nicodemo 2026\ndislocations"]
+        if phase == "end":
+            radii.append([float(published[s]["radius_published_nm"]) for s in samples])
+            radii.append([float(measured[s]["radius_exp_nm"]) for s in samples])
+            labels.extend(["Barani 2020", "White SEM"])
+        ax.boxplot(radii, whis=(0, 100))
+        ax.set(
+            xticks=range(1, len(labels) + 1),
+            xticklabels=labels,
+            ylim=(0, None),
+            ylabel="Mean radius per case (nm)",
+            title=title,
+        )
+        ax.grid(axis="y", alpha=0.15)
+    save(fig, figdir / "8_radii_before_after")
+
+
 def plot_all(results, observations):
     figdir = HERE / "figures"
     figdir.mkdir(exist_ok=True)
@@ -245,27 +265,31 @@ def plot_all(results, observations):
         key, obs, published, scale, title = c
         x = np.array([float(measured[s][obs]) for s in samples])
         all_y = []
-        for model, color, label in [
-            ("legacy", LEGACY, MODEL_LABELS["legacy"]),
-            ("coarsening", NEW, MODEL_LABELS["coarsening"]),
-        ]:
-            y = np.array([by[model][s]["states"]["end"][key] * scale for s in samples])
-            all_y.extend(y)
-            ax.scatter(x, y, c=color, s=19, alpha=0.75, label=label)
-            ratio = y / x
-            metrics[model][key] = dict(
-                MAPE_pct=float(100 * np.mean(abs(ratio - 1))),
-                RMSE_log10=float(np.sqrt(np.mean(np.log10(ratio) ** 2))),
-                within2=int(np.sum((ratio >= 0.5) & (ratio <= 2))),
-            )
-        if published:
-            y = np.array([float(pub[s][published]) for s in samples])
+        for model, color, marker in (
+            ("legacy", LEGACY, "o"),
+            ("Barani_table4", BARANI, "x"),
+            ("coarsening", NEW, "o"),
+        ):
+            if model == "Barani_table4":
+                if not published:
+                    continue
+                y = np.array([float(pub[s][published]) for s in samples])
+            else:
+                y = np.array(
+                    [by[model][s]["states"]["end"][key] * scale for s in samples]
+                )
             all_y.extend(y)
             ax.scatter(
-                x, y, c=BARANI, marker="x", s=22, label=MODEL_LABELS["Barani_table4"]
+                x,
+                y,
+                c=color,
+                marker=marker,
+                s=20,
+                alpha=0.75,
+                label=MODEL_LABELS[model],
             )
             ratio = y / x
-            metrics["Barani_table4"][key] = dict(
+            metrics[model][key] = dict(
                 MAPE_pct=float(100 * np.mean(abs(ratio - 1))),
                 RMSE_log10=float(np.sqrt(np.mean(np.log10(ratio) ** 2))),
                 within2=int(np.sum((ratio >= 0.5) & (ratio <= 2))),
@@ -273,7 +297,8 @@ def plot_all(results, observations):
         lo = min(min(all_y), x.min()) / 1.5
         hi = max(max(all_y), x.max()) * 1.5
         for f, style in [(1, "--"), (0.5, ":"), (2, ":")]:
-            ax.plot([lo, hi], [f * lo, f * hi], c=".55", ls=style, lw=0.9)
+            label = {1: "Parity", 0.5: "Factor of two"}.get(f)
+            ax.plot([lo, hi], [f * lo, f * hi], c=".55", ls=style, lw=0.9, label=label)
         ax.set(
             xscale="log",
             yscale="log",
@@ -289,7 +314,7 @@ def plot_all(results, observations):
     for ax, c in zip(axes.flat, config):
         panel(ax, c)
     fig.legend(
-        *ordered_legend(axes[0, 0]),
+        *axes[0, 0].get_legend_handles_labels(),
         loc="outside upper center",
         ncol=3,
         frameon=False,
@@ -299,7 +324,7 @@ def plot_all(results, observations):
     for ax, c in zip(axes, config[:3]):
         panel(ax, c)
     fig.legend(
-        *ordered_legend(axes[0]),
+        *axes[0].get_legend_handles_labels(),
         loc="outside upper center",
         ncol=3,
         frameon=False,
@@ -308,7 +333,7 @@ def plot_all(results, observations):
     for i, c in enumerate(config, 1):
         fig, ax = plt.subplots(figsize=(4.6, 4.5), layout="constrained")
         panel(ax, c)
-        ax.legend(*ordered_legend(ax), loc="best", fontsize=8)
+        ax.legend(loc="best", fontsize=8)
         save(fig, figdir / f"{i + 1}_merit_{c[0]}")
     campaign.save(HERE / "metrics.json", metrics)
     # Percent produced locally, not an integral rod release fraction.
@@ -336,7 +361,7 @@ def plot_all(results, observations):
         ax.set_axisbelow(True)
     axes[-1].set_xticks(range(38), samples, rotation=65, ha="right", fontsize=8)
     fig.legend(
-        *ordered_legend(axes[0]),
+        *axes[0].get_legend_handles_labels(),
         loc="outside upper center",
         ncol=5,
         frameon=False,
@@ -375,9 +400,7 @@ def plot_all(results, observations):
                 )
             )
         ax.set(
-            ylim=(0, 100),
-            ylabel="Gas / local produced (%)",
-            title=MODEL_LABELS[model] + " — end of history",
+            ylim=(0, 100), ylabel="Gas / local produced (%)", title=MODEL_LABELS[model]
         )
         ax.grid(axis="y", alpha=0.15)
         ax.set_axisbelow(True)
@@ -385,13 +408,14 @@ def plot_all(results, observations):
         range(len(samples)), samples, rotation=65, ha="right", fontsize=9
     )
     fig.legend(
-        *ordered_legend(axes[0]),
+        *axes[0].get_legend_handles_labels(),
         loc="outside upper center",
         ncol=5,
         frameon=False,
     )
     save(fig, figdir / "7_gas_end_all_cases")
     campaign.write_csv(HERE / "inventories_end_all_cases.csv", end_inventory)
+    plot_radii(figdir, by, measured, pub, samples)
     zoomed = []
     for sample in samples:
         r = by["coarsening"][sample]
@@ -402,21 +426,25 @@ def plot_all(results, observations):
     lines = [
         "# White coarsening regression — Nicodemo 2026",
         "",
-        "38 ramp histories using experimental data reported by Barani 2020. Same fixed inputs and physical yield for the new model and legacy controls. "
-        "Red crosses are published Barani Table4 predictions, not measurements or simulated Barani configurations. "
-        "No published Barani intergranular values are available in this table.",
+        "The merit figures compare Nicodemo 2026, SCIANTIX single-size and the published Barani 2020 predictions against White measurements for 38 ramp histories. "
+        "Barani 2020 supplies radius, density and intragranular swelling endpoints. The table does not supply intergranular swelling or gas inventories.",
+        "",
+        "The regression template sets `iCoarseningLineCapture=1` for the Nicodemo cylindrical cell. "
+        "The verification also exercises `0`, the Barani Eq. (6) line coefficient within the same coarsening solver.",
         "",
         "The selected Nicodemo 2026 model uses Carnahan–Starling pressure for dislocation bubbles, "
         "with the same pressure driving vacancy uptake. The volume is V=n*omega(T)+nv*Omega, "
         "where omega(T)=2*pi*dHS(T)^3/3 is the additive hard-sphere gas co-volume; "
         "K=1.6e+06 m^-1 is constant, with nu_d=K*positive full density generation during irradiation, excluding cooling rebound. "
-        "Fresh Nd starts at zero. Bulk-based line supply (D_capture=3 D_bulk) and direct trapping are not temperature-gated. "
+        "Fresh Nd starts at zero. A stationary cylindrical cell supplies the line capture, with near-core and bulk "
+        "resistances in series. Direct trapping uses the bulk diffusivity and the capture radius R_d + 0.21 nm. "
+        "Both paths remain active throughout the history. The model retains three-dimensional coalescence. "
         "Atomic re-solution has no phi; effective number disappearance and coalescence reduce Nd. "
         "Vacancy uptake requires T>=1500 K and positive CS overpressure; Dv is 30 times the bulk vacancy diffusivity, with an explicitly calibrated effective prefactor. "
         "The density uses the frozen Veshchunov-White refit documented in context/dislocation_density. Parameters are globally selected closures, not independently measured constants. "
         "The effective hard-sphere diameter is that of Xe for the combined stable Xe/Kr inventory.",
-        "The line-supply factor and vacancy mobility are calibrated globally on the 38 histories. "
-        "Pre-ramp agreement and gas partitions are diagnostics; numerical verification is not a claim of physical validation.",
+        "The fast region extends to 50b (19.25 nm) as a model assumption. The vacancy mobility uses the calibrated effective "
+        "prefactor. Pre-ramp agreement and gas partitions are diagnostics.",
         "",
         "The temperature dependence of this reference co-volume also enters geometric overlap and coalescence. "
         "It increases on cooling without creating gas or vacancies; mechanical equilibrium is not imposed.",
@@ -448,6 +476,8 @@ def plot_all(results, observations):
         "means across 38 locations are arithmetic diagnostics, not integral rod FGR.",
         "",
         "![Inventories](figures/6_gas_before_after.png)",
+        "",
+        "[Radii before and after](figures/8_radii_before_after.png)",
         "",
         "![Current 4005-A history](figures/Detailed_ramps/4005-A.png)",
         "",
@@ -504,13 +534,19 @@ def plot_all(results, observations):
         HERE / "manifest.json",
         dict(
             official_base="2344575b7d246d02205f503b541b74f914f5f6b3",
-            physical_model="Exploratory Nicodemo2026 density-driven nucleation, constant K1.6e+06, ungated Dcapture=3Dbulk, CS/co-volume, reciprocal Eq9 geometry, Dv=30Dvbulk with 1500K vacancy gate, y=.27",
+            physical_model="Nicodemo 2026 with density-driven nucleation, cylindrical radial line capture, Carnahan–Starling and gas co-volume, and vacancy uptake above 1500 K",
             site_closure=dict(
                 K_per_m=1600000,
                 initial="Nd=0 for fresh full histories; no automatic seed",
                 source="K*positive density generation during irradiation, excluding cooling rebound",
                 number_loss="coalescence and alpha_d*phi_d*Nd; phi only in number loss, proportional vacancy return",
-                capture="ungated calibrated matrix supply L=3; no chi activation",
+                capture=dict(
+                    line="Stationary cylindrical diffusion cell with two radial resistances in series",
+                    core_radius_m=1.925e-9,
+                    fast_region_radius_b=50,
+                    fast_region_radius_m=19.25e-9,
+                    direct="4*pi*Dbulk*(Rd + 0.21 nm)*Nd",
+                ),
             ),
             pressure_eos=dict(
                 name="Carnahan-Starling",

@@ -18,7 +18,7 @@ cap is gone and comments can be as long as they need to be.
 """
 
 #COARSENING: optional trailing density selector; existing positions stay unchanged.
-EXPECTED_OPTIONS = 30
+EXPECTED_OPTIONS = 31
 
 # (default value, option name, available models)
 SETTINGS = [
@@ -97,6 +97,8 @@ SETTINGS = [
      '(iDiffusionSolver = 4 only)'),
     (1, 'iDislocationDensity',
      '0= fixed Barani (2020) density only, 1= Nicodemo (2026) fit; coarsening model4 only'),
+    (1, 'iCoarseningLineCapture',
+     '0= Barani (2020) Eq. (6), 1= Nicodemo (2026) cylindrical cell; coarsening model4 only'),
 ]
 
 if len(SETTINGS) != EXPECTED_OPTIONS:

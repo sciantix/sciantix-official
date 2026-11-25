@@ -193,12 +193,16 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[27] = ReadOneSetting("iNonSym", input_settings, input_check);
     Sciantix_options[28] = ReadOneSetting("iGrainBoundaryResolution", input_settings, input_check);
 
-    // #COARSENING: optional trailing density selector; old input files remain valid.
+    // #COARSENING: optional trailing selectors; old input files remain valid.
     Sciantix_options[29] = Sciantix_options[3] == 4 ? 1 : 0;
+    Sciantix_options[30] = 1;
     input_settings.clear();
     input_settings >> std::ws;
     if (input_settings.peek() != std::char_traits<char>::eof())
         Sciantix_options[29] = ReadOneSetting("iDislocationDensity", input_settings, input_check);
+    input_settings >> std::ws;
+    if (input_settings.peek() != std::char_traits<char>::eof())
+        Sciantix_options[30] = ReadOneSetting("iCoarseningLineCapture", input_settings, input_check);
 
     visualization = Sciantix_options[25];
     animation     = Sciantix_options[26];

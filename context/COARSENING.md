@@ -1,13 +1,12 @@
 # Selected intragranular coarsening model - Nicodemo 2026
 
 The additional model is `iIntraGranularBubbleBehavior=4`. Its selected defaults
-are K=1.6e6 m^-1, line-capture D=3 Dbulk, vacancy Dv=30 Dvbulk, and a 1500 K
-vacancy-uptake threshold. The standard input structure retains multiplicative
-scaling factors for K and the two mobilities. There are no Hart, pipe,
-capture-activation or alternative EOS selectors. Original SCIANTIX options and
-their gold outputs remain unchanged. Barani 2020 supplies published comparison
-values, not an executable historical reconstruction. Calibration is not
-independent validation. See [the file map](IMPLEMENTATION.md) for the diff from
+are K=1.6e6 m^-1, Dv=30 Dvbulk and a 1500 K vacancy-uptake threshold.
+Gas trapping uses radial line capture and a direct capture radius of
+R_d + 0.21 nm. The original three-dimensional coalescence applies.
+The optional scaling factors for K, line capture and vacancy mobility retain
+their input positions and default to one. Barani 2020 supplies published
+comparison values. See [the file map](IMPLEMENTATION.md) for the diff from
 official SCIANTIX main at `2344575`.
 
 New routines are marked `#COARSENING`. The solver, vacancy root, nucleation,
@@ -80,11 +79,32 @@ Nd is never reset to K*rho after number loss.
 
 ## Gas capture and vacancy kinetics
 
-The selected line-supply closure is D_capture=L*D_bulk with **L=3**.
-Only beta_line=2*pi*rho*D_capture/[ln(1/sqrt(pi*rho)/(5b))-0.6] uses this effective coefficient; b=0.385nm.
-Radial diffusion and direct bubble trapping retain D_bulk. There is no chi(T).
-L is an explicitly calibrated transport factor, not a volume-weighted pipe fraction or an independently derived homogenization.
-K, L and the vacancy multiplier are global across all38 cases. They were selected from endpoint log errors with pre-ramp diagnostics; this is calibration, not independent validation or proof of a global optimum.
+For `iCoarseningLineCapture=1` (default), the line-capture coefficient is the ratio of a uniform source to the mean
+concentration in the stationary cylindrical cell. The core is absorbing and
+the outer boundary is reflecting. The diffusion resistances of the inner
+annulus and the surrounding matrix add in series.
+
+```text
+L = 1/sqrt(pi*rho)
+a = 5*b = 1.925 nm
+delta = min(50*b, L), with 50*b = 19.25 nm
+G(u,v) = log(v/u) - (v^2-u^2) + (v^4-u^4)/4
+beta_line = 2*pi*rho*(1-(a/L)^2) /
+            (G(a/L,delta/L)/D_d + G(delta/L,1)/D_bulk)
+beta_d = 4*pi*D_bulk*(R_d + 0.21 nm)*N_d
+```
+
+The inner annulus uses the Murphy Xe diffusivity
+`D_d=7.74e-6 exp[-1.21e-19 J/(kB*T)]`. Its application to radial transport
+up to 50b is a modeling assumption. The outer annulus uses the SCIANTIX
+bulk gas diffusivity, which also governs direct trapping.
+
+`iCoarseningLineCapture=0` uses Eq. (6) of [Barani et al. (2020)](https://doi.org/10.1016/j.jnucmat.2020.152195),
+`beta_line = 2*pi*rho*D_d/(log(L/a) - 3/5)`, with `D_d` from Table 1.
+Both choices use the density selected by `iDislocationDensity`.
+The optional `sf_coarsening_D` multiplies the selected line-capture coefficient only.
+The gas balance adds both trapping paths whenever dislocation bubbles are
+present, throughout the irradiation and ramp.
 
 Vacancy diffusivity uses the bulk law with an explicit effective prefactor:
 
@@ -108,7 +128,6 @@ with x=R/delta and the corrected geometry
 printed in Barani2020 Eq.9. It recovers the isolated-sphere flux
 `4*pi*Dv*R*(P-Peq)/(kB*T)` as x tends to zero; the kernel test checks that
 independent diffusion limit. The numerator is factored near x=1 for stability.
-K and both mobility multipliers are unchanged to isolate this correction.
 
 ## Consistent CS pressure and reference volume
 
@@ -136,9 +155,10 @@ a mixture-specific EOS. Only this pressure/volume closure is executable.
 
 ## Scaling, numerics and validation
 
-Optional input setting 29 is iDislocationDensity. Existing density options
-and the three trailing scaling factors remain: index9 K, index10 complete
-line-capture diffusivity, index11 complete vacancy diffusivity. Native nine-
+Optional input settings 29 and 30 are `iDislocationDensity` and
+`iCoarseningLineCapture`. The three trailing scaling factors remain:
+index9 K, index10 complete
+line-capture coefficient, index11 complete vacancy diffusivity. Native nine-
 factor files remain valid. The factors multiply the selected defaults,
 not unit bulk mobilities.
 
@@ -156,8 +176,9 @@ per interval. Kernel and outer-step refinement, conservation, ytilde bounds,
 scaling controls and separate-process restart are checked. Original legacy
 gold comparisons are kept independently of new-model endpoint references.
 
-The 38-case regression compares published White observations and Barani2020
-Table4 predictions. Calibration is not independent validation. A comparison
+The 38-case merit figures compare the selected closure, the SCIANTIX
+single-size control and the published Barani 2020 Table 4 predictions
+against White measurements. A comparison
 with pre-ramp information was also performed; those observations are not
 distributed. The present ungated-capture model does not reproduce the former
 pre-ramp gas partition. The regression records that discrepancy instead of

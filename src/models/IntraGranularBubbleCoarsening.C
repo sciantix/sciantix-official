@@ -66,11 +66,39 @@ namespace coarsening
                5.64e-25 * std::sqrt(e.fissionRate) * std::exp(-1.91e-19 / (kB * e.temperature)) + 8e-40 * e.fissionRate;
     }
     // #COARSENING
-    double captureDiffusivity(const Environment& e, const Parameters& p)
+    static double lineCaptureRate(const Environment& e, double rho, LineCaptureModel model)
     {
-        // #COARSENING: calibrated matrix supply to dislocation lines.
-        // This multiplier acts only on beta_line, not radial or direct trapping.
-        return p.lineDiffusivityMultiplier * diffusivity(e);
+        constexpr double burgersMagnitude = .385e-9;
+        constexpr double coreRadius       = 5 * burgersMagnitude;
+        constexpr double fastRegionRadius = 50 * burgersMagnitude;
+        const double     cellRadius       = 1 / std::sqrt(pi * rho);
+        if (cellRadius <= coreRadius)
+            throw std::runtime_error("Dislocation core exceeds its radial capture cell");
+
+        const double nearCore = 7.74e-6 * std::exp(-1.21e-19 / (kB * e.temperature));
+        if (model == LineCaptureModel::Barani2020)
+        {
+            // Barani et al. (2020), Eq. (6) and Table 1.
+            const double geometry = std::log(cellRadius / coreRadius) - 3. / 5.;
+            if (geometry <= 0.)
+                throw std::runtime_error("Barani line capture requires log(cell radius / core radius) > 3/5");
+            return 2 * pi * rho * nearCore / geometry;
+        }
+
+        const double core      = coreRadius / cellRadius;
+        const double interface = std::min(fastRegionRadius / cellRadius, 1.);
+        const double bulk      = diffusivity(e);
+
+        // Cylindrical cell with uniform production, an absorbing core and a
+        // reflecting outer boundary. Integrate (1 - r^2)^2 / r in each region
+        // using the radius normalized by the cell radius.
+        const auto geometry = [](double lo, double hi)
+        {
+            const double lo2 = lo * lo, hi2 = hi * hi;
+            return std::log(hi / lo) - (hi2 - lo2) + (hi2 * hi2 - lo2 * lo2) / 4;
+        };
+        const double resistance = geometry(core, interface) / nearCore + geometry(interface, 1.) / bulk;
+        return 2 * pi * rho * (1 - core * core) / resistance;
     }
     // #COARSENING
     double vacancyDiffusivity(double T, const Parameters& p)
@@ -121,13 +149,8 @@ namespace coarsening
             o.packingFraction     = gasCoVolume(e.temperature) * m[2] / (4 * o.largeSwelling);
             o.equilibriumPressure = 1.4 / o.largeRadius - e.stress;
         }
-        if (o.rho > 0.)
-        {
-            const double denominator = std::log(1 / std::sqrt(pi * o.rho) / (5 * .385e-9)) - .6;
-            if (denominator <= 0.)
-                throw std::runtime_error("Line capture outside dilute-network domain");
-            o.lineCapture = 2 * pi * o.rho * captureDiffusivity(e, p) / denominator;
-        }
+        if (o.rho > 0. && p.lineCaptureMultiplier > 0.)
+            o.lineCapture = p.lineCaptureMultiplier * lineCaptureRate(e, o.rho, p.lineCaptureModel);
         return o;
     }
 }  // namespace coarsening
