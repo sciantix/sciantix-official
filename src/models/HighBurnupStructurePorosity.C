@@ -458,9 +458,9 @@ void Simulation::HighBurnupStructurePorosity()
             // author: E.Cappellari, POLIMI-CEA 2026: times sf_hbs_pore_nucleation_rate (default 1).
             const double pore_nucleation_prefactor =
                 1.0e18 * scaling_factors["HBS pore nucleation rate"].getValue();  // pores/m3 per unit alpha
-            double       dalpha                    = sciantix_variable["Restructured volume fraction"].getIncrement();
-            double       dt                        = physics_variable["Time step"].getFinalValue();
-            double       pore_nucleation_rate      = 0.0;
+            double dalpha               = sciantix_variable["Restructured volume fraction"].getIncrement();
+            double dt                   = physics_variable["Time step"].getFinalValue();
+            double pore_nucleation_rate = 0.0;
             if (dt > 0.0 && dalpha > 0.0)
                 pore_nucleation_rate = pore_nucleation_prefactor * dalpha / dt;
 
