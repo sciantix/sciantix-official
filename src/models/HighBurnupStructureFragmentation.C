@@ -647,8 +647,8 @@ void Simulation::HighBurnupStructureFragmentation()
                 // at the pore wall) from NEA/NSC/R(2024)1 Eq. 7.2; b = a / sqrt(2), the Burgers vector 1/2 <110> of the
                 // fluorite, with a = 4 / sqrt(3) (r_U4+ + r_O2-) of UO2 (NEA/NSC/R(2024)1 2.2, Table 2.3). 30 N/m at
                 // 903 K; J19 Table 4 takes 55 N/m, the fit of Gao et al. (2013) to HBS porosity data, about 2 G b.
-                const double burgers = 4.0 / std::sqrt(3.0) * (0.9972e-10 + 1.372e-10) / std::sqrt(2.0);  // (m)
-                const double c_dp    = 82.52e9 * (1.009549 - 1.182e-5 * T - 6.671e-8 * T * T) * burgers;
+                const double burgers    = 4.0 / std::sqrt(3.0) * (0.9972e-10 + 1.372e-10) / std::sqrt(2.0);  // (m)
+                const double c_dp       = 82.52e9 * (1.009549 - 1.182e-5 * T - 6.671e-8 * T * T) * burgers;
                 const double class_span = 4.0;  // [N] nodes at ln R = ln R_median +/- 4 s
                 const double gamma      = fuel_.getSurfaceTension();
 
@@ -676,8 +676,8 @@ void Simulation::HighBurnupStructureFragmentation()
                 const double var_unvented =
                     std::max((var_retained + n_retained * n_retained) / retention2_old - n * n, 0.0);
 
-                // Pressure closure [?] (README 3.2): at the current state (T, P_h) every class is at the same fraction f
-                // of the way from the equilibrium P_h + 2 gamma / R_i (pore fed by vacancies) to the punching limit
+                // Pressure closure [?] (README 3.2): at the current state (T, P_h) every class is at the same fraction
+                // f of the way from the equilibrium P_h + 2 gamma / R_i (pore fed by vacancies) to the punching limit
                 // P_h + (2 gamma + c_dp) / R_i (J19 Eq. 21):
                 //     p_i = P_h + (2 gamma + f c_dp) / R_i,     n_i = EoS^-1(p_i, V_i, T),
                 // on the radii of the log-normal
@@ -692,8 +692,8 @@ void Simulation::HighBurnupStructureFragmentation()
                 // pore_pressure, linear above the cap, 0 for p <= 0 [N]. y = eta Z(eta) is increasing and convex with
                 // eta + 4 eta^2 <= eta Z(eta) (the virial coefficients of Z are positive): Newton from the root of
                 // eta + 4 eta^2 = y, on the right of the root, converges monotonically
-                const double z_cap = hard_sphere_Z(eta_cap);
-                auto         gas_at    = [&](double p, double volume, double& dn_dp)
+                const double z_cap  = hard_sphere_Z(eta_cap);
+                auto         gas_at = [&](double p, double volume, double& dn_dp)
                 {
                     dn_dp = 0.0;
                     if (p <= 0.0)
@@ -755,7 +755,7 @@ void Simulation::HighBurnupStructureFragmentation()
                 };
 
                 std::vector<double> r(HBFF_N_CLASSES), v(HBFF_N_CLASSES), n_class(HBFF_N_CLASSES);
-                double              r_median = 0.0;
+                double              r_median  = 0.0;
                 auto                set_radii = [&](double s)  // radii and volumes of the classes of width s
                 {
                     double volume_norm = 0.0;
