@@ -203,10 +203,10 @@ def analyse(folder, index):
              f"# run: xi = {factors['xi']:g}, s = {factors['s']:g}, R_V = {R_V:g} um (mmm_inputs/index.txt); "
              f"{len(np.unique(p['cube']))} cubes of {', '.join(f'{v:g}' for v in side)} um, {len(p['s_hat'])} pores, "
              f"porosity of the cubes {np.mean(p['xi']):.4f}",
-             ("# MMM at unit pressure in every pore, s_hat = (sigma + h) / (1 - h): zero macroscopic stress (D5.2)"
+             ("# MMM at unit pressure in every pore, s_hat = (sigma + p_m) / (1 - p_m): zero mean of the matrix (D5.2)"
               if load == "unit" else
               "# MMM with the pressure p_k of its class in every pore (pk cubes), s_hat on the own pressure of the pore, "
-              f"at zero macroscopic stress (plot_bubbles.py); eta_bar = {factors['eta_bar']:g}"),
+              f"at zero mean of the matrix (plot_bubbles.py); eta_bar = {factors['eta_bar']:g}"),
              f"# u = ln(R / R_V); share = share of the pore volume of the cubes; pairs with sigma_R = "
              f"{SIGMA_R_MMM / 1e6:g} MPa of D5.2 (on NFIR: calibration_nfir.txt); ln_p_rel = ln(p_k / p_ref), p_ref = volume mean of the pressures",
              f"# {'R_um':>10s}{'u':>10s}{'share':>10s}{'pores':>8s}{'mu':>10s}{'sig':>10s}{'mean':>9s}{'q05':>8s}"

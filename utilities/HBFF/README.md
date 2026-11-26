@@ -33,7 +33,7 @@ cubes of random pores that have the size distribution SCIANTIX sees, with its sc
 | $\hat s$ of run NFIR as SCIANTIX needs it (log-normal per class) | [TBC, FUTURE] done (`mmm_surrogate.py <run_NFIR>` prints the classes); the open-loop replay of the anneal ($\sigma_R$ ≈ 219–224 MPa) was removed on 17/11 (section 9.8) |
 | Latin hypercube: geometry | 20 cubes written at unit pressure (`.geo`) and 20 with the class pressures; **gmsh running on Pleiades (10/11)**; nothing solved yet |
 | surrogate over the 20 runs (unit and pk), its metrics | done 17/11 (section 9.9) |
-| surrogate in the C++ (closed loop), $\sigma_R$ on NFIR | done 17/11: option 4 reads `input_hbs_shat.txt`; $\sigma_R$ = 237 MPa (unit), 222 MPa (pk), cases `test_UO2HBS_frag_mmm_unit/_pk` (section 9.10); 18/11: closure $a=3$ with the unit surrogate, no new MMM run: $\sigma_R$ = 188 MPa and the closest release curve so far (case `_mmm_unit_a3`, removed 24/11 with the gas closure). **24/11: these $\sigma_R$ belong to the gas closure with $P_h$ = 70 MPa; with the current NFIR case (pressure closure, $P_h=0$, nucleation × 0.12) both MMM cases release nothing, and its ξ = 0.255 is outside the 20 runs (ξ ≤ 0.18: the surrogate is clipped) (section 3.4): $\sigma_R$ to recalibrate** |
+| surrogate in the C++ (closed loop), $\sigma_R$ on NFIR | done 17/11: option 4 reads `input_hbs_shat.txt`; $\sigma_R$ = 237 MPa (unit), 222 MPa (pk), cases `test_UO2HBS_frag_mmm_unit/_pk` (section 9.10); 18/11: closure $a=3$ with the unit surrogate, no new MMM run: $\sigma_R$ = 188 MPa and the closest release curve so far (case `_mmm_unit_a3`, removed 24/11 with the gas closure). **24/11: these $\sigma_R$ belong to the gas closure with $P_h$ = 70 MPa; with the current NFIR case (pressure closure, $P_h=0$, nucleation × 0.12) both MMM cases release nothing, and its ξ = 0.255 is outside the 20 runs (ξ ≤ 0.18: the surrogate is clipped) (section 3.4): $\sigma_R$ to recalibrate**. 26/11: surrogates refitted with $p_m$; `calibrate_sigma_r.py` finds no release in its whole scan (150–350 MPa) and stops at the lower edge, 150.3 MPa, now in both cases (a placeholder, not a calibration) |
 | $\sigma_R$ on a second test (Hiernaut 2008) | not started |
 
 **Decisions taken.**
@@ -215,13 +215,13 @@ times it, above the confining stress $-P_h$:
 
 $$\hat s_i\Bigl(p_i-\frac{2\gamma}{R_i}-P_h\Bigr)\ \ge\ \sigma_R+P_h,\qquad \gamma=1.1\ \text{N/m}$$
 
-$\hat s$ is the stress at the pore per unit net pressure **at zero macroscopic stress**. $\hat s$ and $\sigma_R$ come
+$\hat s$ is the stress at the pore per unit net pressure **at zero stress** (zero mean of the matrix, as D5.2). $\hat s$ and $\sigma_R$ come
 as a pair: the stress measure and the strength calibrated with it.
 
 | pair | $\hat s$ | $\sigma_R$ | $\mathrm dP_{cr}/\mathrm dP_h=1+1/\hat s$ | status |
 |---|---|---|---|---|
 | mean field, J19 Eq. 22 **[P]** | $\xi/(1-\xi)$ = 0.12 at ξ = 0.11, the same for all the pores | 21 MPa | ≈ 9.5 | in the code |
-| MMM **[P]** | per pore; run NFIR: mean 1.18–1.28 per class, 5th–95th percentile 0.89–1.77; over the hypercube: surrogate of (ξ, s, u), or (ξ, s, $\bar\eta$, u) with the class pressures | 275 MPa in D5.2 (monodisperse); on the NFIR release, closed loop: 237 MPa (unit), 222 MPa (pk) (section 9.10) | ≈ 1.8 | in the code with `input_hbs_shat.txt` in the folder of the case (17/11) |
+| MMM **[P]** | per pore, with $p_m$ (26/11); run NFIR: mean 0.93–1.02 per class, 5th–95th percentile 0.72–1.42 (with $h$: 1.18–1.28, 0.89–1.77); over the hypercube: surrogate of (ξ, s, u), or (ξ, s, $\bar\eta$, u) with the class pressures | 275 MPa in D5.2 (monodisperse), 288 MPa the same way on our cubes; on the NFIR release, closed loop: 237 MPa (unit), 222 MPa (pk) with $h$ and the gas closure (section 9.10), to recalibrate | ≈ 2.0 | in the code with `input_hbs_shat.txt` in the folder of the case (17/11) |
 
 The two pairs put the first ruptures at nearly the same pressure without confinement (J19: every class at 165 MPa;
 MMM with 275 MPa: FGR 5 % at 168 MPa, 50 % at 225 MPa, 90 % at 281 MPa, `mmm_surrogate.py`) and differ by a factor 5 in
@@ -304,10 +304,12 @@ NFIR case with the mean-field pair (J19), release of the transient in % of the g
 With the closure at the current state, $P_h=0$ and nucleation × 0.12 the release of the anneal is 28.1 % against
 29.8 % measured, but it starts about 230 K before the measured one (rms distance of the curve 7.4 points), and 2.6 %
 of the pores break in the base irradiation from 71 MWd/kgUO2 (f ≈ 1: the classes sit at the punching limit $Gb/R$).
-The two MMM cases (`_mmm_unit`, `_mmm_pk`) keep the $\sigma_R$ calibrated on 17/11 with $P_h$ = 70 MPa and the gas
-closure (237 and 222 MPa) and the surrogate of the 20 runs (ξ ≤ 0.18), clipped at the ξ = 0.255 of the state: they
-release nothing (D ≤ 0.001). Their $\sigma_R$ has to be calibrated again (`calibrate_sigma_r.py`, section 9.10), on
-runs that cover the ξ of the state; not done.
+The two MMM cases (`_mmm_unit`, `_mmm_pk`) carry since 26/11 the surrogates of the 20 runs refitted with $p_m$
+(ξ ≤ 0.18, clipped at the ξ = 0.255 of the state) and $\sigma_R$ = 150.3 MPa, the lower edge of the scan of
+`calibrate_sigma_r.py`: no $\sigma_R$ of the scan (150–350 MPa) releases anything (release 0.1 % unit, 0 pk), so it is
+a placeholder (until 26/11: 237 and 222 MPa of 17/11, $P_h$ = 70 MPa, gas closure, $h$; release 0). Their $\sigma_R$
+has to be calibrated again (section 9.10), with a scan that reaches lower values and on runs that cover the ξ of the
+state; not done.
 
 ### 3.5 Limitations (short register)
 
@@ -475,13 +477,15 @@ the loads of the pk runs solved on 12/11.
   solved again (same meshes).
 
 **From the MMM stress to ŝ.** MMM solves at zero macroscopic *strain*, so the cube is in compression. Per unit
-pressure, with $\langle\sigma_h\rangle$ the mean hydrostatic stress of the matrix (`sig_hydro.txt`) and ξ the porosity
-of the cube, $h=\xi-(1-\xi)\langle\sigma_h\rangle$ (0.253 for `side30_seed01`), and
+pressure, with $\langle\sigma_h\rangle$ the mean hydrostatic stress of the matrix (`sig_hydro.txt`; the pores are
+boundary conditions), $p_m=-\langle\sigma_h\rangle$ (0.158 for `side30_seed01`), and
 
-$$\sigma=\frac{\sigma_I^{max}}{p},\qquad \hat s=\frac{\sigma+h}{1-h}\quad\text{(unit runs, the rescaling of D5.2)}$$
+$$\sigma=\frac{\sigma_I^{max}}{p},\qquad \hat s=\frac{\sigma+p_m}{1-p_m}\quad\text{(unit runs, the rescaling of D5.2: zero mean of the matrix)}$$
 
-For the pk runs `plot_bubbles.py` uses $\hat s=\sigma+h\,p_{ref}(1+\hat s_1)/p$ with $p_{ref}=\sum Vp/\sum V$: exact
-when the pressures are equal, otherwise it adds the maxima of the two runs as if they were at the same point. A pore
+For the pk runs `plot_bubbles.py` uses $\hat s=\sigma+p_m\,p_{ref}(1+\hat s_1)/p$ with $p_{ref}=\sum Vp/\sum V$:
+exact when the pressures are equal, otherwise it adds the maxima of the two runs as if they were at the same point (an
+upper bound: +0–2 % median, +12 % at most against the exact `-eh` run on 4 cubes of 10 µm). Until 26/11 the
+rescaling used $h=\xi+(1-\xi)\,p_m$ (matrix and pores); since 26/11 $p_m$, as D5.2 (decided with the MMM side). A pore
 breaks at the load $x_c=p_{ref}/(\hat s\,p)$ ($1/\hat s$ at one pressure), and FGR($x$) = volume of the broken pores /
 volume of all the pores is a function of $x=p_{ref}/\sigma_R$ only. [TBC]
 
@@ -645,6 +649,12 @@ gives the mean within $2D/\bar Z$; the RVE is the side at which that is 5 %, wit
 below 5 % of the pore volume and the FGR levels outside 5–95 % (below 5 %: the tail of the first pores) are reported
 but kept out of the verdicts (the FGR range was 10–90 % until 11/11/2026).
 
+**26/11: ŝ with $p_m$.** Since 26/11 ŝ is rescaled with the mean of the matrix $p_m$ (as D5.2, section 4) instead of
+$h$. Regenerated with $p_m$: the tables of 9.5 (run NFIR), the `pores.csv` of the hypercube and the surrogates (9.9),
+$\sigma_R$ (9.10). The other subsections keep the values of their date, with $h$; for a run at one pressure the two are
+related exactly by $\hat s_{p_m}=(1-\xi)\,\hat s_h-\xi$ (ξ = 0.113 on NFIR: 1.28 → 1.02, 1.18 → 0.93), so the
+relative differences between meshes and cubes of 9.2–9.4 barely move.
+
 ### 9.1 First campaign: cubes of 10 µm, uniform mesh 0.3 µm (26–29/10, `results/archive/test_rve_side10_mesh0.3`)
 
 - A 10 µm cube holds 66 pores: none of class 1.70 µm (0.4 expected; 7.8 % of the pore volume) nor of 0.219 µm;
@@ -772,25 +782,28 @@ hypercube** (decision 4, Section 10): the 0.106 mesh has 2.6 × the vertices.
 
 | class R (µm) | pores per cube | share of volume | ŝ mean ± 2D/√n | D between cubes | S between pores | error of one cube | RVE side (95 %) |
 |---|---|---|---|---|---|---|---|
-| 0.219 | 11 | 0.02 % | 1.246 ± 0.056 | 0.089 | 0.262 | 14.2 % | 60 µm (47–90) |
-| 0.311 | 113 | 0.5 % | 1.259 ± 0.014 | 0.023 | 0.260 | 3.6 % | 24 (19–36) |
-| 0.436 | 452 | 5.2 % | 1.281 ± 0.006 | 0.010 | 0.255 | 1.5 % | 14 (11–20) |
-| 0.610 | 715 | 22.3 % | 1.271 ± 0.005 | 0.009 | 0.252 | 1.3 % | 13 (10–19) |
-| 0.852 | 452 | 38.4 % | 1.246 ± 0.005 | 0.008 | 0.230 | 1.4 % | 13 (10–19) |
-| 1.192 | 113 | 26.2 % | 1.218 ± 0.010 | 0.016 | 0.207 | 2.6 % | 19 (15–29) |
-| 1.702 | 11 | 7.4 % | 1.181 ± 0.047 | 0.075 | 0.180 | 12.7 % | 56 (43–83) |
+| 0.219 | 11 | 0.02 % | 0.992 ± 0.050 | 0.079 | 0.233 | 15.9 % | 65 µm (50–97) |
+| 0.311 | 113 | 0.5 % | 1.003 ± 0.013 | 0.020 | 0.230 | 4.0 % | 26 (20–39) |
+| 0.436 | 452 | 5.2 % | 1.023 ± 0.006 | 0.009 | 0.226 | 1.7 % | 15 (11–22) |
+| 0.610 | 715 | 22.3 % | 1.014 ± 0.005 | 0.008 | 0.223 | 1.5 % | 13 (10–20) |
+| 0.852 | 452 | 38.4 % | 0.992 ± 0.005 | 0.007 | 0.204 | 1.5 % | 14 (11–20) |
+| 1.192 | 113 | 26.2 % | 0.967 ± 0.009 | 0.014 | 0.184 | 2.9 % | 21 (16–31) |
+| 1.702 | 11 | 7.4 % | 0.935 ± 0.042 | 0.066 | 0.160 | 14.2 % | 60 (47–90) |
 
-| FGR level | $x_c=p/\sigma_R$ (mean ± 2D/√n) | p at $\sigma_R$ = 275 MPa | error of one cube | RVE side (95 %) |
+| FGR level | $x_c=p/\sigma_R$ (mean ± 2D/√n) | p at the fitted $\sigma_R$ = 288 MPa | error of one cube | RVE side (95 %) |
 |---|---|---|---|---|
-| 1 % | 0.514 ± 0.011 | 141 MPa | 7.0 % | 38 µm (29–56) |
-| 1.5 % | 0.531 ± 0.007 | 146 | 4.2 % | 27 (21–40) |
-| 2 % | 0.544 ± 0.007 | 150 | 3.9 % | 26 (20–38) |
-| 5 % | 0.596 ± 0.007 | 164 | 3.5 % | 24 (19–36) |
-| 10 % | 0.645 ± 0.005 | 177 | 2.6 % | 19 (15–29) |
-| 20 % | 0.705 ± 0.005 | 194 | 2.1 % | 17 (13–25) |
-| 40 % | 0.797 ± 0.004 | 219 | 1.5 % | 13 (10–20) |
-| 80 % | 0.956 ± 0.005 | 263 | 1.8 % | 15 (12–22) |
-| 95 % | 1.057 ± 0.003 | 291 | 0.9 % | 9 (7–14) |
+| 1 % | 0.621 ± 0.015 | 179 MPa | 7.5 % | 39 µm (31–59) |
+| 1.5 % | 0.642 ± 0.009 | 185 | 4.5 % | 28 (22–42) |
+| 2 % | 0.659 ± 0.009 | 190 | 4.2 % | 27 (21–40) |
+| 5 % | 0.727 ± 0.009 | 210 | 3.8 % | 25 (20–38) |
+| 10 % | 0.792 ± 0.007 | 228 | 2.8 % | 21 (16–31) |
+| 20 % | 0.874 ± 0.006 | 252 | 2.3 % | 18 (14–27) |
+| 40 % | 1.000 ± 0.005 | 288 | 1.7 % | 14 (11–22) |
+| 80 % | 1.228 ± 0.008 | 354 | 2.0 % | 16 (13–24) |
+| 95 % | 1.377 ± 0.004 | 397 | 1.0 % | 10 (8–15) |
+
+26/11, with $p_m$: $\sigma_R$ fitted as D5.2 on the NFIR anneal 288.2 MPa (rms 2.9 points; one cube 284.5–297.6 MPa),
+356.0 MPa with $h$ until 26/11, 275 MPa in D5.2.
 
 The levels below 5 % are outside the verdict (the tail of the first pores).
 
@@ -809,16 +822,17 @@ The levels below 5 % are outside the verdict (the tail of the first pores).
 > cube on the load of every FGR level (grey band: below 5 %, one cube is an RVE), labelled with the side of the RVE;
 > hollow markers are the levels below 5 %, outside the verdict.
 
-- **On the FGR curve one cube of 30 µm is an RVE** from FGR 1.3 % upwards (9.2 % with the upper bound of the
-  interval): RVE side 24 µm (19–36) for the levels 5–95 %, set by the 5 % level (error of one cube 3.5 %). The best
-  estimate is below the 30 µm of the cubes; the upper bound of its interval is not. From 10 % upwards the RVE side is
-  below 20 µm.
+- **On the FGR curve one cube of 30 µm is an RVE** from FGR 1.4 % upwards (11.8 % with the upper bound of the
+  interval): RVE side 25 µm (20–38) for the levels 5–95 %, set by the 5 % level (error of one cube 3.8 %). The best
+  estimate is below the 30 µm of the cubes; the upper bound of its interval is not. From 20 % upwards the RVE side is
+  below 20 µm. (With $h$, until 26/11: 1.3 %, 24 µm, 3.5 %.)
 - **On the class means it is not**, because of the two classes with 11 pores per cube: class 1.70 µm (7.4 % of the
-  volume) needs 56 µm (43–83), i.e. the mean of 7 cubes of 30 µm for 5 %. The five central classes are within 1.3–3.6 %
+  volume) needs 60 µm (47–90), i.e. the mean of 9 cubes of 30 µm for 5 % (with $h$: 56 µm, 7 cubes; with $p_m$ ŝ is
+  smaller by about ξ, so the same spread is a larger relative error). The five central classes are within 1.5–4.0 %
   with one cube.
 - $A\times$ pore density is 0.6–1.9 (1 for independent pores): the pores of a class are close to independent, which
   supports α = 1; only one side was run, so α is assumed, not measured.
-- With `mmm_surrogate.py` (bootstrap over the cubes): one cube gives μ of ln ŝ within 0.11 and σ within 0.07 on the
+- With `mmm_surrogate.py` (bootstrap over the cubes, 17/11, with $h$): one cube gives μ of ln ŝ within 0.11 and σ within 0.07 on the
   main classes (0.036 and 0.023 with ten), and the critical load of every FGR level within 1.2–1.9 %.
 
 ### 9.6 ŝ per class and which pores break first (`break_order.txt`, `mmm_surrogate.py <run_NFIR>`)
@@ -924,7 +938,9 @@ times the measured gas density), not a validation.
 
 20 runs × 1 cube of 30 µm (graded mesh 0.15 µm, `R_FINE` 0.45, δ = 0.15), solved for both loads by 12/11; 138
 classes with ≥ 3 pores per load. `mmm_surrogate.py --fit` predicts every run with the surrogate fitted on the other 19
-(leave one run out) and compares the load $x=p_{ref}/\sigma_R$ at FGR 5–90 % and the largest difference of the FGR curve:
+(leave one run out) and compares the load $x=p_{ref}/\sigma_R$ at FGR 5–90 % and the largest difference of the FGR curve.
+Refitted on 26/11 with $p_m$ (`analyse_lhs.sh`): unit error of x rms 1.68 %, worst −5.3 % (R01), FGR curve 3.4 / 9.1
+points; pk 6.55 %, worst +31.1 % (R05), FGR curve 7.2 / 14.7 points (R17). The table below is the fit of 17/11 (with $h$):
 
 | | unit (ξ, s, u) | pk (ξ, s, $\bar\eta$, u) |
 |---|---|---|
@@ -968,6 +984,11 @@ The leave-one-run-out numbers are those of 12/11 (same rms at every level): the 
 > error against the std the Gaussian process predicts.
 
 ### 9.10 SCIANTIX with the ŝ of MMM, closed loop: $\sigma_R$ on the NFIR anneal (`calibration_nfir.txt`, 17/11)
+
+26/11: `calibration_nfir.txt` is rewritten with the surrogates refitted with $p_m$, on the current NFIR case (pressure
+closure, $P_h$ = 0, nucleation × 0.12, ξ = 0.255 outside the runs: every row of the heat-up clipped). No $\sigma_R$ of the
+scan releases gas (unit 0.12 % at 150 MPa, pk 0; J19 28.1 %): the least rms stops at the lower edge, 150.3 MPa. The
+table below is that of 17/11 ($h$, gas closure, $P_h$ = 70 MPa).
 
 Option 4 reads the surrogate of section 9.9 (`input_hbs_shat.txt`, exported by `mmm_surrogate.py --fit`) and the
 venting acts back on the state: closed loop. `calibrate_sigma_r.py` runs SCIANTIX on the inputs of the J19 case of NFIR
