@@ -585,8 +585,9 @@ def section_measured(st):
         print(f"{q['name']:52s}{q['R'] * 1e6:6.3f}{q['v'] * 1e30:6.0f}{q['T']:5.0f}{q['eta']:7.3f}{q['p'] / 1e6:6.0f}"
               f"{q['p_soave'] / 1e6 if np.isfinite(q['p_soave']) else np.nan:6.0f}{f_txt(q['p'], q['R'], q['T']):>21s}{f_txt(q['p_soave'], q['R'], q['T']):>21s}"
               f"{(q['p'] - 2.0 * GAMMA / q['R']) * q['R']:7.0f}")
+    f_b = f"{overpressure_fraction(p_b, R_b, st['Ph'], st['T']):.2f} at P_h = {st['Ph'] / 1e6:.0f}"
     print(f"{'SCIANTIX NFIR, end of base (mean pore)':52s}{R_b * 1e6:6.3f}{st['V'] / st['n'] * 1e30:6.0f}{st['T']:5.0f}"
-          f"{st['n'] * xe_volume(st['T']) / st['V']:7.3f}{p_b / 1e6:6.0f}{'':6s}{f'{overpressure_fraction(p_b, R_b, st['Ph'], st['T']):.2f} at P_h = {st['Ph'] / 1e6:.0f}':>21s}"
+          f"{st['n'] * xe_volume(st['T']) / st['V']:7.3f}{p_b / 1e6:6.0f}{'':6s}{f_b:>21s}"
           f"   classes: f = {d['f']:.3f}")
     b1, b2 = [q for q in pores if q["short"] == "Dowek B rim"]
     n1, n2 = sphere_volume(b1["R"]) / b1["v"], sphere_volume(b2["R"]) / b2["v"]
