@@ -97,6 +97,10 @@ MMM_FACTORS = {"xi": (0.02, 0.18), "s": (0.05, 0.42), "eta": (0.045, 0.23)} #TBC
 # MMM_RUNS + MMM_APPENDED levels with xi up to MMM_XI_MAX. The runs of the hypercube do not change.
 # 15 runs to 0.30 keep the width of the xi levels (0.008); 0.29: J19 percolation, every class open above.
 MMM_APPENDED, MMM_XI_MAX = 15, 0.30
+# Pairs (xi, s) of the appended levels that Merope places (Merope/mmm_files/placement_map.py): the RSA of Merope stops
+# above xi = 0.24 for the narrow widths (26/11/2026), so the levels are paired only on the pairs placed with every seed
+MMM_PLACEMENT = os.path.join(DATA_DIR, "merope_placement.txt")
+MMM_PAIRINGS = 100000  # random pairings tried by mmm_appended()
 MMM_PH_REL = 0.0  # P_h / p_bar of the runs
 MMM_RUN_DIR = "mmm_inputs"
 MMM_STATE = "NFIR, end of base irradiation" # geometry before the transient
@@ -705,15 +709,14 @@ def mmm_design(n_runs=MMM_RUNS):
     return [mmm_case(f"R{run:0{digits}d}", f"Latin hypercube, run {run + 1} of {n_runs}", R_V=R_V, T=T, Ph_rel=MMM_PH_REL,
                      **dict(zip(MMM_FACTORS, x))) for run, x in enumerate(qmc.scale(u, lo, hi))]
 
-def mmm_appended(cases, n_new=MMM_APPENDED):
-    """Runs appended to the Latin hypercube `cases`, in the box of MMM_FACTORS with xi up to MMM_XI_MAX.
+def mmm_appended_levels(cases, n_new=MMM_APPENDED):
+    """Levels of the runs appended to the Latin hypercube `cases`, in the box of MMM_FACTORS with xi up to MMM_XI_MAX.
     With N = len(cases) + n_new levels per factor, every factor of the box is cut in N strata; each stratum holds at
     most one run of the hypercube, and the new runs take the centres of the empty ones (in xi, those above the end of
-    MMM_FACTORS), so that old and new runs together are a Latin hypercube of N levels. The pairing of the levels of the
-    new runs maximises their smallest distance in (xi, s), the factors of the geometry, to every other run (random
-    search, seed MMM_SEED)."""
-    if n_new == 0:
-        return []
+    MMM_FACTORS), so that old and new runs together are a Latin hypercube of N levels.
+    Returns the box (dict of the ranges), the runs of the hypercube in the unit box (len(cases) x 3) and, per factor
+    (xi, s, eta_bar), the n_new empty levels in the unit box, ascending. Used by mmm_appended() and by
+    Merope/mmm_files/placement_map.py."""
     box = dict(MMM_FACTORS, xi=(MMM_FACTORS["xi"][0], MMM_XI_MAX))
     lo, hi = np.array(list(box.values())).T
     N = len(cases) + n_new
@@ -724,16 +727,68 @@ def mmm_appended(cases, n_new=MMM_APPENDED):
         if len(set(strata)) != len(cases) or strata.min() < 0 or strata.max() >= N:
             raise SystemExit(f"{name}: two runs of the hypercube in one of {N} strata (or outside the box): the union is "
                              f"no Latin hypercube of {N} levels; change MMM_APPENDED or MMM_XI_MAX")
-        empty.append(np.setdiff1d(np.arange(N), strata))
+        empty.append((np.setdiff1d(np.arange(N), strata) + 0.5) / N)
+    return box, u_old, empty
+
+def mmm_appended(cases, n_new=MMM_APPENDED):
+    """Runs appended to the Latin hypercube `cases` on the empty levels of mmm_appended_levels(), so that old and new
+    runs together are a Latin hypercube of N = len(cases) + n_new levels. The xi levels go in ascending order (the
+    first appended run has the smallest xi); each takes an s level among those whose pair (xi, s) Merope places with
+    every seed (MMM_PLACEMENT, written by Merope/mmm_files/placement_map.py), chosen to maximise the smallest distance
+    in (xi, s), the factors of the geometry, between a new run and every other run: MMM_PAIRINGS random pairings (seed
+    MMM_SEED), xi levels with the fewest placed pairs first, then swaps of two s levels while the distance grows.
+    The eta_bar levels, which do not change the geometry, are a random permutation (same generator)."""
+    if n_new == 0:
+        return []
+    box, u_old, empty = mmm_appended_levels(cases, n_new)
+    lo, hi = np.array(list(box.values())).T
+    N = len(cases) + n_new
+    if not os.path.exists(MMM_PLACEMENT):
+        raise SystemExit(f"{MMM_PLACEMENT} not found: python3 placement_map.py in Merope/mmm_files writes it")
+    placement = np.atleast_2d(np.loadtxt(MMM_PLACEMENT))
+    xi_lv, s_lv = lo[0] + empty[0] * (hi[0] - lo[0]), lo[1] + empty[1] * (hi[1] - lo[1])
+    i = np.argmin(np.abs(placement[:, :1] - xi_lv), axis=1)
+    j = np.argmin(np.abs(placement[:, 1:2] - s_lv), axis=1)
+    if (len(placement) != n_new**2 or len(set(zip(i, j))) != n_new**2
+            or np.abs(placement[:, 0] - xi_lv[i]).max() > 1e-5 or np.abs(placement[:, 1] - s_lv[j]).max() > 1e-5):
+        raise SystemExit(f"{MMM_PLACEMENT} is not the map of these {n_new} appended levels (design changed?): "
+                         "python3 placement_map.py in Merope/mmm_files writes it again")
+    ok = np.zeros((n_new, n_new), bool)
+    ok[i, j] = np.all(placement[:, 3:-1] == 1, axis=1)  # placed with every seed
+
+    def gap(s_of_xi):  # smallest distance in (xi, s) between a new run and every other run
+        new = np.column_stack([empty[0], empty[1][s_of_xi]])
+        d = np.linalg.norm(new[:, None] - np.vstack([u_old[:, :2], new])[None], axis=-1)
+        d[np.arange(n_new), len(cases) + np.arange(n_new)] = np.inf
+        return d.min()
+
     rng = np.random.default_rng(MMM_SEED)
+    order = np.argsort(ok.sum(1))  # the most constrained xi levels first
     best, best_gap = None, -1.0
-    for _ in range(20000):
-        u_new = np.column_stack([(rng.permutation(e) + 0.5) / N for e in empty])
-        points = np.vstack([u_old, u_new])[:, :2]  # xi, s
-        gap = np.linalg.norm(points[len(cases):, None] - points[None], axis=-1)
-        gap[np.arange(n_new), len(cases) + np.arange(n_new)] = np.inf
-        if gap.min() > best_gap:
-            best, best_gap = u_new, gap.min()
+    for _ in range(MMM_PAIRINGS):
+        s_of_xi, used = -np.ones(n_new, int), set()
+        for a in order:
+            free = [b for b in np.flatnonzero(ok[a]) if b not in used]
+            if not free:
+                break
+            s_of_xi[a] = rng.choice(free)
+            used.add(s_of_xi[a])
+        else:
+            if gap(s_of_xi) > best_gap:
+                best, best_gap = s_of_xi.copy(), gap(s_of_xi)
+    if best is None:
+        raise SystemExit(f"no pairing of the {n_new} appended levels has every run placed by Merope ({MMM_PLACEMENT}): "
+                         "lower MMM_XI_MAX or MMM_APPENDED")
+    improved = True
+    while improved:
+        improved = False
+        for a in range(n_new):
+            for b in range(a + 1, n_new):
+                swap = best.copy()
+                swap[a], swap[b] = swap[b], swap[a]
+                if ok[a, swap[a]] and ok[b, swap[b]] and gap(swap) > best_gap + 1e-12:
+                    best, best_gap, improved = swap, gap(swap), True
+    best = np.column_stack([empty[0], empty[1][best], rng.permutation(empty[2])])
     u_all = np.vstack([u_old, best])
     assert all(np.array_equal(np.sort(np.floor(u_all[:, j] * N)), np.arange(N)) for j in range(len(box)))
     R_V, T = cases[0]["R_V"], cases[0]["T"]

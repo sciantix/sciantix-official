@@ -27,7 +27,7 @@ cubes of random pores that have the size distribution SCIANTIX sees, with its sc
 | step | state |
 |---|---|
 | option 4 in the C++ and the NFIR regression case | done; its Python transcription agreed to $2\times10^{-7}$ over 10 429 rows and was removed on 17/11 (the gold of the case is the check); 24/11: the gas per class follows the **pressure closure** at the current state (section 3.2) instead of $n_i\propto R_i^2$, and the NFIR case has $P_h=0$ and the pore nucleation rate × 0.12 (section 3.1); 25/11: punching limit $c_{dp}=Gb$ of NEA |
-| design of the MMM runs: 3 factors, Latin hypercube of 20 runs + the reference run NFIR | done (`mmm_inputs/`); 25/11: 15 runs appended up to ξ = 0.30 (section 4), no MMM result yet |
+| design of the MMM runs: 3 factors, Latin hypercube of 20 runs + the reference run NFIR | done (`mmm_inputs/`); 25/11: 15 runs appended up to ξ = 0.30 (section 4); 26/11: paired again on the (ξ, s) that Mérope can place, no MMM result yet |
 | polydisperse MMM (`test-polybubble`): one pressure per pore, search radius per pore, AMG, split mesh | done |
 | tests of the RVE on run NFIR: cube size, mesh rule, mesh size, search distance δ | done: 10 cubes of 30 µm, three mesh rules, four mesh sizes, two δ |
 | $\hat s$ of run NFIR as SCIANTIX needs it (log-normal per class) | [TBC, FUTURE] done (`mmm_surrogate.py <run_NFIR>` prints the classes); the open-loop replay of the anneal ($\sigma_R$ ≈ 219–224 MPa) was removed on 17/11 (section 9.8) |
@@ -432,7 +432,18 @@ the measured gas density ($\bar\eta$ = 0.1555 at 903 K, $\bar p$ = 160 MPa). The
 that keep $\bar V$ and $\bar n$. All the runs take the $R_V$ and the temperature of the reference. 25/11: 15 runs
 appended (R20–R34, `MMM_APPENDED`, `MMM_XI_MAX` = 0.30, `mmm_appended()`) in the empty strata of each factor, with ξ up
 to 0.30, which covers the NFIR state of SCIANTIX (0.255): with the 20 they form a Latin hypercube of 35 levels; their
-run files are written, no MMM result yet (not in the table below). `index.txt`:
+run files are written, no MMM result yet (not in the table below).
+
+**Placement of the dense runs (26/11).** Three runs of the first pairing (ξ 0.248, 0.272, 0.296 with s 0.066, 0.108,
+0.235) could not be placed: the RSA of Mérope stops ("The grid has been too much subdivided") when the excluded volume
+$\sum_k\xi_k\,((R_k+d_{min}/2)/R_k)^3$ goes above its jamming limit, which is lower for the narrow widths.
+`placement_map.py` (`Merope/mmm_files`) tries every pair (ξ, s) of the 15 × 15 appended levels with the call of
+`generate()`, seeds 1 and 2 (`data/merope_placement.txt`, 7.5 min with 4 processes): up to ξ = 0.240 every s is
+placed; above, the narrowest s placed by both seeds is 0.108, 0.140, 0.182, 0.214, 0.235, 0.288, 0.362 for ξ = 0.248
+… 0.296 (excluded volume 0.43–0.49; the porosity lost by RSA stays below 0.5 %). `mmm_appended()` pairs the same levels
+only on these pairs: the runs are still a Latin hypercube of 35 levels, R20 … R34 have ξ ascending (0.184 … 0.296), and
+the smallest distance in (ξ, s) to the other runs is the one of the first pairing (0.128 in the unit box). R28, R31,
+R33, R34 sit on the limit: placed with seeds 1 and 2, an extra seed there may fail. `index.txt`:
 
 | run | ξ | s | $\bar\eta$ | $\bar p$ (MPa) | | run | ξ | s | $\bar\eta$ | $\bar p$ (MPa) |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -1043,7 +1054,7 @@ and the porosity of the case is an open point (item 9).
 | 8 | **Fragment size** | keep $d=2R_{WS}/D$, or use the MMM geometry | SCIANTIX's $d$ corresponds to a cracked zone ≈ $R_{WS}$; broken pores are grouped | redo `npoint.py` with δ = 0.15; test $k_i$ = gap/R from `pores.csv` (no free parameter) |
 | 9 | **Porosity of the NFIR case** (24/11) | (a) keep $P_h=0$ + nucleation × 0.12 and extend the runs in ξ; (b) revise the porosity model (gas and vacancies of the pores); (c) an in-pile $P_h$ | with $P_h=0$ SCIANTIX gives ξ = 0.255 (0.305 without the factor) against 0.114 measured, and η = 0.055 against 0.155: 2.2 times the pore volume with a third of the gas density; the release of the anneal is close (28.1 against 29.8 %) but starts ≈ 230 K early | to discuss with the authors of the porosity model; meanwhile (a): R20–R34 written (section 4) |
 
-Order proposed: finish the meshes → line `To check` of `run_gmsh.sh` (if not 0, `inverted_elements.py` on the flagged cubes; the dense runs R14, R00, R18, R19 are the likely ones) → split + unit runs on the cluster
+Order proposed: finish the meshes → line `To check` of `run_gmsh.sh` (if not 0, `inverted_elements.py` on the flagged cubes; the dense runs R14, R00, R18, R19 and R20–R34 are the likely ones) → split + unit runs on the cluster
 (≈ 20 × 27 core-h; the wall mesh goes from 0.23 to 1.65 times that of NFIR with the number of pores) → pk runs →
 `break_order.py` and `mmm_surrogate.py` per run → surrogate → C++.
 
@@ -1086,6 +1097,7 @@ It needs mfem-mgis@master. Edit the scripts in `mm-opera-hpc/polydispersebubble/
 ```bash
 cd ~/mmm/Merope/mmm_files
 python3 test_rve.py                                   # cubes of the RVE tests (settings at its top) → test_rve_side30_mesh0.15_graded_rfine0.45/
+python3 placement_map.py                              # only after a change of the design: pairs (ξ, s) Mérope places → HBFF/data/merope_placement.txt, then pore_distribution.py
 python3 merope_pore_pressure.py [R05 R13] [--seeds 3] # cubes of the hypercube → lhs_side30_mesh0.15_graded_rfine0.45/unit/
 python3 ~/mmm/build/polydispersebubble/set_pressures.py lhs_side30_mesh0.15_graded_rfine0.45/unit   # → pk/
 bash run_gmsh.sh <folder>                             # meshes; skips those already done (FORCE=1 to redo)
@@ -1197,6 +1209,7 @@ Found while writing this report (10/11/2026). "Fixed" = changed in the working t
 | 32 | The NFIR case raised $P_h$ linearly to 70 MPa in the base irradiation with no datum for the disc, and the $\sigma_R$ of the MMM cases (17/11) were calibrated with it | `regression/hbs_nfir/*/input_history.txt` | the confinement held the base irradiation below the threshold; it was a free parameter of the case | fixed 24/11: $P_h=0$ in the six NFIR cases, with the pore nucleation rate × 0.12 of section 3.1 (the athermal factor tried the same day was removed); the $\sigma_R$ of `_mmm_unit` and `_mmm_pk` are stale (section 3.4) |
 | 33 | The pressure closure built at the reference state of option 2 ($T_{ss}$, $P_{h,ss}$, 24/11 afternoon) kept in the transient the gas of the last in-pile state: the release of the anneal depended on $P_h$ of the base irradiation | `HighBurnupStructureFragmentation.C`, `pore_distribution.py` | NFIR with the ramp to 70 MPa: nothing released (35.9 % with the closure at the current state) | fixed 24/11 evening: closure at the current (T, $P_h$); the tracking of the reference state is back to option 2 only |
 | 34 | $c_{dp}$ = 55 N/m was called the punching limit, but it is the fit of Gao 2013 to HBS porosity data, about $2Gb$ (J19 §2.3.2): f = 1 was not the theoretical limit $Gb/R$ | `HighBurnupStructureFragmentation.C`, `pore_distribution.py` | none on the results ($c_{dp}$ enters only through $f c_{dp}$); the values of f and the line f = 1 of the figures | fixed 25/11: $c_{dp}=G(T)\,b$ of NEA/NSC/R(2024)1 (section 3.2) |
+| 35 | Three of the runs appended on 25/11 (ξ 0.248, 0.272, 0.296 with s 0.066, 0.108, 0.235, then R22, R20, R23) were above the jamming limit of the RSA of Mérope | `pore_distribution.py` (`mmm_appended()`) | `merope_pore_pressure.py` stops at the first of them ("The grid has been too much subdivided"), no cube | fixed 26/11: map of the pairs (ξ, s) placed with seeds 1 and 2 (`Merope/mmm_files/placement_map.py`, `data/merope_placement.txt`), the same levels paired only on placed pairs (section 4); R20–R34 rewritten (none was meshed), NFIR and R00–R19 identical |
 
 ---
 
