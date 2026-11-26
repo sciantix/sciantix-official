@@ -16,3 +16,4 @@
 # scaling factor - helium production rate
 1.0
 # scaling factor - dummy
+0.12 # sf_hbs_pore_nucleation_rate (NFIR disc: mean pore radius and pore density)

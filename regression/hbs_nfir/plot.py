@@ -31,7 +31,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 
 sys.path.insert(0, os.path.join(SCRIPT_DIR, "..", "..", "utilities", "HBFF"))
-from pore_distribution import build, radius_of, read_output, state_of_row  # pore classes of option 4
+from pore_distribution import classes_of_row, read_output, state_of_row  # pore classes of option 4
 
 
 CASES = ["test_UO2HBS_frag_jernkvist", "test_UO2HBS_frag_kulacsy", "test_UO2HBS_frag_lefm", "test_UO2HBS_frag_j19damage"]
@@ -108,7 +108,7 @@ def main(FIG_DIR, CASE):
         phi = 100.0 * col("HBS_porosity")[i]
         if classes is not None:
             st = state_of_row(classes, i)
-            cl = build(radius_of(st["V"]), st["n"], st["var"], st["T"])
+            cl = classes_of_row(classes, i)
             share, _ = np.histogram(2e6 * cl["R"], bins=edges, weights=100.0 * st["Np"] * cl["w"] * cl["V"])
             ax.step(centers, share, where="mid", ls="--", color=c, label=lab + " (classes)")
             print("%s: classes with sigma_lnR %.3f, median diameter %.3f um, porosity %.1f %%" % (lab, cl["sigma"], 2e6 * cl["R_median"], phi))

@@ -41,7 +41,7 @@ from scipy.optimize import brentq, minimize_scalar
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 sys.path.insert(0, HERE)
-from pore_distribution import build, radius_of, read_output, state_of_row, transient_start, xe_volume  # noqa: E402
+from pore_distribution import classes_of_row, read_output, state_of_row, transient_start, xe_volume  # noqa: E402
 
 SCIANTIX = os.path.join(ROOT, "build", "sciantix.x")
 NFIR = os.path.join(ROOT, "regression", "hbs_nfir")
@@ -170,7 +170,7 @@ def main():
         out = 0
         for k in rows:
             st = state_of_row(o, k)
-            state = {"xi": st["xi"], "s": build(radius_of(st["V"]), st["n"], st["var"], st["T"])["sigma"],
+            state = {"xi": st["xi"], "s": classes_of_row(o, k)["sigma"],
                      "eta_bar": st["n"] * xe_volume(st["T"]) / st["V"]}
             out += any(not lower[q] <= state[q] <= upper[q] for q in names if q in state)
         clipped[load] = 100.0 * out / max(len(rows), 1)

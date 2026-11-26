@@ -1,5 +1,5 @@
 # HBFF — fine fragmentation of the high-burnup structure: model, micromechanics runs and results
-#### E. Cappellari, POLIMI-CEA 2026 — technical report of the folder, state of 10/11/2026
+#### E. Cappellari, POLIMI-CEA 2026 — technical report of the folder, state of 25/11/2026
 
 This is the only document of the work. It covers the SCIANTIX model (`iHighBurnupStructureFragmentation = 4`), the
 micromechanics chain that feeds it (Mérope → gmsh → MMM), the numerical choices, the results obtained so far and the
@@ -26,14 +26,14 @@ cubes of random pores that have the size distribution SCIANTIX sees, with its sc
 
 | step | state |
 |---|---|
-| option 4 in the C++ and the NFIR regression case | done; its Python transcription agreed to $2\times10^{-7}$ over 10 429 rows and was removed on 17/11 (the gold of the case is the check) |
-| design of the MMM runs: 3 factors, Latin hypercube of 20 runs + the reference run NFIR | done (`mmm_inputs/`) |
+| option 4 in the C++ and the NFIR regression case | done; its Python transcription agreed to $2\times10^{-7}$ over 10 429 rows and was removed on 17/11 (the gold of the case is the check); 24/11: the gas per class follows the **pressure closure** at the current state (section 3.2) instead of $n_i\propto R_i^2$, and the NFIR case has $P_h=0$ and the pore nucleation rate × 0.12 (section 3.1); 25/11: punching limit $c_{dp}=Gb$ of NEA |
+| design of the MMM runs: 3 factors, Latin hypercube of 20 runs + the reference run NFIR | done (`mmm_inputs/`); 25/11: 15 runs appended up to ξ = 0.30 (section 4), no MMM result yet |
 | polydisperse MMM (`test-polybubble`): one pressure per pore, search radius per pore, AMG, split mesh | done |
 | tests of the RVE on run NFIR: cube size, mesh rule, mesh size, search distance δ | done: 10 cubes of 30 µm, three mesh rules, four mesh sizes, two δ |
 | $\hat s$ of run NFIR as SCIANTIX needs it (log-normal per class) | [TBC, FUTURE] done (`mmm_surrogate.py <run_NFIR>` prints the classes); the open-loop replay of the anneal ($\sigma_R$ ≈ 219–224 MPa) was removed on 17/11 (section 9.8) |
 | Latin hypercube: geometry | 20 cubes written at unit pressure (`.geo`) and 20 with the class pressures; **gmsh running on Pleiades (10/11)**; nothing solved yet |
 | surrogate over the 20 runs (unit and pk), its metrics | done 17/11 (section 9.9) |
-| surrogate in the C++ (closed loop), $\sigma_R$ on NFIR | done 17/11: option 4 reads `input_hbs_shat.txt`; $\sigma_R$ = 237 MPa (unit), 222 MPa (pk), cases `test_UO2HBS_frag_mmm_unit/_pk` (section 9.10); 18/11: closure $a=3$ with the unit surrogate, no new MMM run: $\sigma_R$ = 188 MPa and the closest release curve so far (case `_mmm_unit_a3`) |
+| surrogate in the C++ (closed loop), $\sigma_R$ on NFIR | done 17/11: option 4 reads `input_hbs_shat.txt`; $\sigma_R$ = 237 MPa (unit), 222 MPa (pk), cases `test_UO2HBS_frag_mmm_unit/_pk` (section 9.10); 18/11: closure $a=3$ with the unit surrogate, no new MMM run: $\sigma_R$ = 188 MPa and the closest release curve so far (case `_mmm_unit_a3`, removed 24/11 with the gas closure). **24/11: these $\sigma_R$ belong to the gas closure with $P_h$ = 70 MPa; with the current NFIR case (pressure closure, $P_h=0$, nucleation × 0.12) both MMM cases release nothing, and its ξ = 0.255 is outside the 20 runs (ξ ≤ 0.18: the surrogate is clipped) (section 3.4): $\sigma_R$ to recalibrate** |
 | $\sigma_R$ on a second test (Hiernaut 2008) | not started |
 
 **Decisions taken.**
@@ -46,7 +46,12 @@ cubes of random pores that have the size distribution SCIANTIX sees, with its sc
 | mesh graded next to the pores (0.15 → 0.45 µm), finer next to the pores below 0.45 µm (`graded_rfine0.45`) | same class means (≤ 0.10 %) and FGR (≤ 0.27 %) as the uniform 0.15 µm mesh at 1/3 of the cost (275 against 811 core-hours for 10 cubes); the uniform mesh needs twice the memory | 
 | mesh size 0.15 µm next to the pores (16/11) | against the 0.106 µm mesh the class means of the verdict move by ≤ 1.15 % and $x_c$ of the FGR by ≤ 1 %; against h → 0 the error is ≈ 2–3.5 %, always an overestimate of ŝ and nearly the same in every class, so it mostly rescales $\sigma_R$, not the shape of the FGR curve; the 0.106 µm mesh has 2.6 × the vertices (section 9.4) |
 | search distance δ = 0.15 µm = distMin/2 (`-dl 0.15`) instead of 0.3 µm | with δ = distMin, 5 % of the pores took their maximum on the wall of a neighbour |
+| matrix: E, ν of NEA/NSC/R(2024)1 (Eqs. 7.1, 7.4) at T = 903.15 K (NFIR) and porosity 0, i.e. E = 205.0 GPa, ν = 0.3116, instead of 150 GPa and 0.3 (23/11) | the pores are meshed, so the porosity in the formula would count them twice (E 143 GPa, ν 0.275 at ξ = 0.114); σ does not depend on E, it does on ν: the results of section 9 are at ν = 0.3, the effect of 0.3116 is not measured yet (section 7) |
 | [TBC] statistical outputs only (class means, log-normal per class, FGR), never the identity of single pores | mesh noise per pore ≈ 1 % median, 4 % at the 95th percentile: 15 % of the first pores to break change with the mesh, the statistics do not | 
+| **pressure closure** of the gas per class (24/11; D1 of section 3.6): at every state (T, $P_h$) every class at the same fraction f of the way from equilibrium to the punching limit, $p_i=P_h+(2\gamma+f c_{dp})/R_i$ | bounded by construction (no class runs to the cap, as with $a=2$: 54–7647 MPa on run NFIR), between $a=2$ and $a=3$ ($a_{loc}$ 2.1–2.35), and the load is exactly $f c_{dp}/R$ at every state: one load shape for MMM (section 4). Built at the reference state of option 2 instead (24/11 afternoon), the anneal kept the gas of the base irradiation and its release depended on $P_h$ there (section 3.2); $a=2$ and $a=3$ stay as brackets in `pore_distribution.py` |
+| level f from $\bar n$, no cap (D2); width s from Var(n) (D3) | the three moments of SCIANTIX hold on the classes; f > 1 (more gas than punching allows) is kept, the data are there too (section 3.6) |
+| punching limit $c_{dp}=G(T)\,b$ (25/11; D4): G of dense UO2 from NEA/NSC/R(2024)1 Eq. 7.2, $b=a/\sqrt2$ with $a$ of NEA §2.2; 30.1 N/m at 903 K, instead of 55 N/m (J19) | 55 N/m is the fit of Gao 2013 to HBS porosity data, about $2Gb$ (J19 §2.3.2); $Gb$ is the theoretical limit (Greenwood 1959). $c_{dp}$ enters only through $f c_{dp}$: results and MMM loads unchanged, f multiplied by 55/$Gb$ ≈ 1.8 (section 3.2) |
+| NFIR case at $P_h=0$ in the base irradiation (a free disc) and pore nucleation rate × 0.12 (24/11; `sf_hbs_pore_nucleation_rate`, read by name, default 1) | the ramp to 70 MPa had no datum for the disc; × 0.12 brings the pore density (9.5 vs 6.9 × 10¹⁶ m⁻³) and $R_V$ (0.86 vs 0.73 µm) near those of the disc, while the porosity stays 2.2 times the measured one (0.255 vs 0.114) and the gas density 0.35 times (η 0.055 vs 0.155): a limit of the porosity model, open (section 10, item 9). The athermal factor of $D_{gb}^v$ (× 0.04) tried the same day was removed |
 
 Open questions in Section 10.
 
@@ -70,6 +75,7 @@ Three repositories and one results folder, all under `~/mmm`.
 │   │                             calibration_nfir.txt/png
 │   ├── data/                     measured pores (Noirot 2014, Dowek 2021)
 │   ├── figures/                  classes_*.png, mmm_*.png (png are git-ignored in this repository)
+│   ├── figures_old/              the figures before the pressure closure (24/11), for the comparison
 │   ├── abstract_MRS_HBFF/, presentation/      abstract and slides (not updated with this report)
 │   └── archive/                  options 1, 2, 3 and their comparison
 ├── Merope/mmm_files/                      (fork of Mérope; geometry and mesh)
@@ -143,11 +149,16 @@ stress come from `input_history.txt` (4th column, MPa, negative in compression):
 | `HBS broken fraction - class i`, `HBS gas retention fraction` (and its second moment) | $\beta_i$, $S$, $S_2$ | state of the 81 classes |
 
 Regression case `regression/hbs_nfir/test_UO2HBS_frag_j19damage`: the NFIR disc (103 GWd/tHM), base irradiation
-(903 K, $2\times10^{19}$ fiss/(m³ s), 38 000 h, confining stress rising linearly from 0 to 70 MPa — no datum for the
-disc, an unknown of the case), unloading, then the measured anneal to 1200 °C at $P_h=0$, with formation model 1
-(Barani 2020) and porosity model 3. Gates:
+(903 K, $2\times10^{19}$ fiss/(m³ s), 38 000 h, $P_h=0$ since 24/11, the disc being free: until then a confining
+stress rising linearly from 0 to 70 MPa, with no datum for the disc), unloading, then the measured anneal to 1200 °C
+at $P_h=0$, with formation model 1 (Barani 2020) and porosity model 3. Since 24/11 `input_scaling_factors.txt` of the
+six NFIR cases also has `0.12 # sf_hbs_pore_nucleation_rate` (optional entry, read by name, default 1; it multiplies
+the pore nucleation rate of porosity models 2 and 3). With $P_h=0$ and the nominal rate the base irradiation ends
+with ξ = 0.305 and $6.6\times10^{17}$ pores/m³ of $R_V$ = 0.48 µm, and with option 4 every pore breaks from 78
+MWd/kgUO2; with × 0.12 the pore density and $R_V$ come near those of the disc, the porosity and the gas density do not
+(section 3.4). Gates:
 
-1. gold files: `python3 -m regression.runner --hbs_nfir.j19damage` (and `--hbs_nfir.mmm_unit`, `--hbs_nfir.mmm_pk`: the same inputs with the ŝ of MMM, section 9.10; `--hbs_nfir.mmm_unit_a3`: unit with $a=3$. The runner selects by substring, so `--hbs_nfir.mmm_unit` also runs `_mmm_unit_a3`). Without `input_hbs_shat.txt` the J19 case is identical byte by byte to its gold of before the MMM criterion (checked 17/11);
+1. gold files: `python3 -m regression.runner --hbs_nfir.j19damage` (and `--hbs_nfir.mmm_unit`, `--hbs_nfir.mmm_pk`: the same inputs with the ŝ of MMM, section 9.10). Without `input_hbs_shat.txt` the J19 case is identical byte by byte to its gold of before the MMM criterion (checked 17/11);
 2. until 17/11, a transcription: `pore_distribution.py` replayed the case and compared C++ and Python at every step (agreement $2\times10^{-7}$). Removed on 17/11 so that the equations of option 4 are written once, in the C++; `pore_distribution.py` now checks only its `STATES` against `output.txt` (it also rewrites `mmm_inputs/`: see the warning in section 11.4);
 3. options 1, 2, 3 do not use the classes: their outputs are identical byte by byte with and without option 4.
 
@@ -163,15 +174,40 @@ v_{Xe}=\frac{\pi}{6}d_{Xe}^3,\quad d_{Xe}=4.45\times10^{-10}\bigl[0.8542-0.03996
 **Pore classes.** SCIANTIX carries the mean pore volume $\bar V$ (radius $R_V$), the mean gas per pore $\bar n$ and
 its variance. The radius is log-normal (Kulacsy 2015) on 81 nodes $x_i\in[-4,4]$ **[N]**:
 
-$$w_i=\frac{e^{-x_i^2/2}}{\sum_je^{-x_j^2/2}},\qquad R_i=R_V\frac{e^{s x_i}}{\bigl(\sum_jw_je^{3sx_j}\bigr)^{1/3}},\qquad
-n_i=\bar n\,\frac{R_i^{a}}{\sum_jw_jR_j^{a}},\quad a=2\ \textbf{[?]}$$
+$$w_i=\frac{e^{-x_i^2/2}}{\sum_je^{-x_j^2/2}},\qquad R_i=R_V\frac{e^{s x_i}}{\bigl(\sum_jw_je^{3sx_j}\bigr)^{1/3}},
+\qquad V_i=\tfrac43\pi R_i^3$$
 
-$\sum w_iV_i=\bar V$ and $\sum w_in_i=\bar n$ by construction; the width $s$ is the root of
-$\sum w_i(n_i-\bar n)^2=\mathrm{Var}(n)$. The closure exponent $a$ is not fixed by the moments: $a=2$ is a gas
-density $\propto1/R$ (the shape of the punching overpressure), $a=3$ a uniform pressure. Each class has its pressure
-$p_i=p_g(n_i,V_i,T)$. In the C++ $a=2\times$`sf_hbs_closure_exponent`, an optional line `1.5 # sf_hbs_closure_exponent`
-after the nine entries of `input_scaling_factors.txt` (read by name, default 1; 1.5 gives $a=3$, 18/11). CV$_n$ on the
-nodes depends on $a\,s$ only, so $a$ also sets the width: $s(a{=}3)=\tfrac23\,s(a{=}2)$.
+so that $\sum w_iV_i=\bar V$ for any width $s$. How the gas varies with the size inside one population is not fixed
+by the moments: a closure is needed **[?]**. Since 24/11 it is the **pressure closure**. The pressure of a pore lies
+between the equilibrium $P_h+2\gamma/R$ (pore fed by vacancies) and the punching limit $P_h+(2\gamma+c_{dp})/R$
+(Greenwood 1959, J19 Eq. 21: above it the pore grows by punching dislocation loops). At every state ($T$, $P_h$),
+in-pile and in a transient, every class is at the same fraction $f$ of the way:
+
+$$p_i=P_h+\frac{2\gamma+f\,c_{dp}}{R_i},\qquad n_i=\mathrm{EoS}^{-1}(p_i,V_i,T),\qquad
+\sum_iw_in_i=\bar n,\quad \sum_iw_i(n_i-\bar n)^2=\mathrm{Var}(n)\ \Rightarrow\ (f,\ s)$$
+
+- **$c_{dp}=G(T)\,b$** (since 25/11; until then 55 N/m, J19 Table 4): G of dense UO2 (Pu = 0, x = 0, porosity 0: the
+  matrix at the pore wall) from NEA/NSC/R(2024)1 Eq. 7.2; $b=a/\sqrt2$, the Burgers vector ½⟨110⟩ of the fluorite,
+  with $a=\frac{4}{\sqrt3}(r_{U^{4+}}+r_{O^{2-}})$ = 5.471 Å (NEA §2.2, Table 2.3: 0.9972 and 1.372 Å), b = 0.387 nm:
+  30.1 N/m at 903 K, 27.0 N/m at 1474 K. J19 takes 55 N/m, the fit of Gao 2013 to HBS porosity data, about $2Gb$
+  (J19 §2.3.2: the estimated HBS pore pressures are about twice $Gb/r$). $c_{dp}$ enters only through $f\,c_{dp}$: it
+  rescales f and moves the line f = 1, nothing else (25/11: NFIR golds and MMM loads unchanged).
+- **f** is not bounded: $f=0$ is the equilibrium, $f=1$ the punching limit, $f>1$ more gas than punching allows (the
+  data are there, section 3.6). Below $f_{min}=\max_i[-(P_hR_i+2\gamma)/c_{dp}]$ the smallest class has no gas.
+- The net pressure on the wall of a class is exactly $f\,c_{dp}/R_i$ at every state: one MMM load shape (section 4).
+  In a transient the classes are rebuilt at every step from the current moments, T and $P_h$, so the gas profile
+  across the classes adapts at once to T and $P_h$. Until the evening of 24/11 they were built at the reference state
+  of option 2 (K15: the step before the first fall of the fission rate) and kept their $n_i$ in the transient: the
+  release of the anneal then depended on $P_h$ of the base irradiation (NFIR with the ramp to 70 MPa: nothing
+  released; 35.9 % with the same inputs and the closure at the current state).
+- **Local exponent** $d\ln n_i/d\ln R_i$ is not imposed: 2.1–2.35 on the NFIR state at $P_h=0$, between the gas closure
+  $n_i\propto R_i^2$ (the C++ until 24/11, which runs the small classes to the cap of η) and $a=3$ (one pressure).
+- **Numerics [N]** (C++): $f$ by Newton in its bracket (the mean gas is increasing and concave in $f$), from the $f$ of
+  the previous width; $s$ by regula falsi (Illinois); the EoS inverted by Newton from the right of the root, where it
+  converges monotonically; the moments hold to $10^{-13}$. The NFIR case runs in 15 s (10 s with $a=2$).
+- `pore_distribution.py` writes the same closure in Python (`build()` at the T, $P_h$ of the state, with the same
+  $c_{dp}(T)$; `build_gas()` is the gas closure, kept as a bracket): on 101 rows of the NFIR transient the classes it
+  rebuilds from `output.txt` break at the same rows as in the C++ (checked 24/11).
 
 **Rupture criterion.** Class $i$ breaks when the largest first principal stress at the pore wall exceeds the rupture
 stress (OperaHPC D5.2). The net pressure on the solid is $p_i-2\gamma/R_i-P_h$ and the elastic stress is $\hat s_i$
@@ -224,7 +260,8 @@ $d=\min(2R_{WS}/D,\ 500\ \mu\text{m})$. It is a spacing of cracks, a fragment si
 | symbol | value | tag | source |
 |---|---|---|---|
 | $\hat s$, $\sigma_R$ | $\xi/(1-\xi)$, 21 MPa; with `input_hbs_shat.txt` the MMM surrogate and its $\sigma_R$ | [P] | J19 Eq. 22, Table 4; MMM: sections 9.9, 9.10 |
-| closure exponent $a$ | 2; 3 with `sf_hbs_closure_exponent` 1.5 | [?] | 2: gas density ∝ 1/R; 3: one pressure (section 9.10) |
+| closure of the gas per class | pressure closure; $f$, $s$ from $\bar n$, Var(n) | [?] [R] | sections 3.2, 3.6 (until 24/11: $n_i\propto R_i^a$, $a=2$, or 3 with `sf_hbs_closure_exponent` 1.5, both removed) |
+| $c_{dp}$ | $G(T)\,b$: 30.1 N/m at 903 K, 27.0 N/m at 1474 K | [P] | Greenwood 1959 (J19 §2.3.2); G: NEA/NSC/R(2024)1 Eq. 7.2, dense UO2; $b=a/\sqrt2$, a: NEA §2.2, Table 2.3 (K15 uses $Gb$ ≈ 31 N/m at 903 K; until 25/11 55 N/m, J19 Table 4, the fit of Gao 2013) |
 | $\xi_{perc}$ | 0.29 | [P] | J19 §2.3.2 |
 | $\tau$ | 2 s | [?] | J19 Table 3 (borrowed) |
 | $\gamma$ | 1.1 N/m | [R] | `SetMatrix.C`, UO2HBS |
@@ -235,29 +272,134 @@ $d=\min(2R_{WS}/D,\ 500\ \mu\text{m})$. It is a spacing of cracks, a fragment si
 
 ### 3.4 State of the NFIR case and result with the mean-field pair
 
-Read from the gold output (`STATES` of `pore_distribution.py`, agreement $4\times10^{-4}$):
+Read from the gold output (`STATES` of `pore_distribution.py`, agreement $1.2\times10^{-4}$; since 24/11: $P_h=0$,
+nucleation × 0.12, pressure closure at the current state; f with $c_{dp}=Gb$):
 
-| state | ξ | $R_V$ (µm) | $\bar n$ | CV$_n$ | s | T (K) | $P_h$ (MPa) |
-|---|---|---|---|---|---|---|---|
-| SCIANTIX, end of base irradiation | 0.130 | 0.40 | $1.20\times10^{9}$ | 0.51 | 0.24 | 903 | 70 |
-| SCIANTIX, anneal at 1200 °C | 0.123 | 0.38 | $1.15\times10^{9}$ | 0.53 | 0.25 | 1474 | 0 |
-| NFIR disc as irradiated, measured | 0.114 | 0.73 | | | 0.36 | | |
+| state | ξ | $R_V$ (µm) | $\bar n$ | CV$_n$ | $\bar\eta$ | s | f | T (K) | $P_h$ (MPa) |
+|---|---|---|---|---|---|---|---|---|---|
+| SCIANTIX, end of base irradiation | 0.255 | 0.86 | $6.24\times10^{9}$ | 0.55 | 0.055 | 0.235 | 1.03 | 903 | 0 |
+| SCIANTIX, anneal at 1200 °C | 0.249 | 0.86 | $6.37\times10^{9}$ | 0.54 | 0.052 | 0.234 | 1.95 | 1474 | 0 |
+| SCIANTIX, end of base, nucleation × 1 | 0.305 | 0.48 | $8.97\times10^{8}$ | 0.53 | 0.046 | 0.23 | 0.42 | 903 | 0 |
+| NFIR disc as irradiated, measured | 0.114 | 0.73 | | | 0.155 | 0.36 | 4.57 | 903 | |
 
-The modelled pores have 0.55 times the measured radius, two thirds of the measured width and 0.7 times the measured
-gas density. With the mean-field pair and no fitted parameter, the anneal ends at $D$ = 70.9 %, $G$ = 52.2 %, release
-of the transient 41.9 % of the gas produced, against 29.8 % of Kr-85 measured; the model releases from room
-temperature while the measured release starts at about 880 °C.
+f of every state is at its own T and $P_h$ (the anneal at 1474 K, where $Gb$ = 27.0 N/m); f of the disc is the
+pressure closure at the measured s and gas density (3.82 for its mean pore, section 3.6). The row nucleation × 1 is
+the same case without the factor (`STATE_NUCLEATION_X1`, from a run with option 4 off, not checked against a gold).
+Until 24/11 ($P_h$ = 70 MPa, nominal factors) the end of base was ξ 0.130, $R_V$ 0.40 µm, s 0.24: the modelled pores
+had 0.55 times the measured radius. Now they have 1.18 times the radius, 1.37 times the pore density ($9.5\times10^{16}$
+against $6.9\times10^{16}$ m⁻³), 0.65 times the width, 2.2 times the porosity and 0.35 times the gas density of the disc.
+
+NFIR case with the mean-field pair (J19), release of the transient in % of the gas produced, T at 10 % and 50 % of it:
+
+| state of the code | D at the end of base | D, G at the end | release | T 10 % / 50 % (K) |
+|---|---|---|---|---|
+| until 24/11: $P_h$ to 70 MPa, nominal factors, $a=2$ (gold of the commit 10e194c3) | 0.000 | 0.674, 0.497 | 39.1 % | 784 / 1167 |
+| $P_h=0$, factors 0.12 / 0.04, $a=2$ (24/11, not kept) | 0.258 (from 51 MWd/kgUO2) | 0.773, 0.638 | 41.0 % | 974 / 1199 |
+| $P_h=0$, factors 0.12 / 0.04, pressure closure at the reference state (24/11, not kept) | 0.060 (from 83 MWd/kgUO2) | 0.773, 0.607 | 46.6 % | 1050 / 1266 |
+| $P_h$ to 70 MPa, nominal factors, pressure closure at the reference state (24/11, not kept) | 0.000 | 0.000, 0.000 | 0 % | |
+| $P_h$ to 70 MPa, nominal factors, pressure closure at the current state (24/11, not kept) | | 0.637 | 35.9 % | 1079 / 1297 |
+| **$P_h=0$, nucleation × 0.12, pressure closure at the current state (gold of 24/11; $c_{dp}=Gb$ since 25/11, same output)** | 0.026 (from 71 MWd/kgUO2) | 0.560, 0.363 | 28.1 % | 1065 / 1282 |
+| measured, Kr-85 | | | 29.8 % | 1293 / 1426 |
+
+With the closure at the current state, $P_h=0$ and nucleation × 0.12 the release of the anneal is 28.1 % against
+29.8 % measured, but it starts about 230 K before the measured one (rms distance of the curve 7.4 points), and 2.6 %
+of the pores break in the base irradiation from 71 MWd/kgUO2 (f ≈ 1: the classes sit at the punching limit $Gb/R$).
+The two MMM cases (`_mmm_unit`, `_mmm_pk`) keep the $\sigma_R$ calibrated on 17/11 with $P_h$ = 70 MPa and the gas
+closure (237 and 222 MPa) and the surrogate of the 20 runs (ξ ≤ 0.18), clipped at the ξ = 0.255 of the state: they
+release nothing (D ≤ 0.001). Their $\sigma_R$ has to be calibrated again (`calibrate_sigma_r.py`, section 9.10), on
+runs that cover the ξ of the state; not done.
 
 ### 3.5 Limitations (short register)
 
-- the closure $n_i\propto R_i^a$ is a choice, not a measurement; it sets which classes break and how much gas they hold
-  (and the width $s$); with the unit ŝ, $a=3$ fits the NFIR release better than $a=2$ (section 9.10), on one test;
+- the pressure closure is a choice, not a measurement; it sets which classes break and how much gas they hold (and the
+  width $s$); the only pair of bubbles in one population (Dowek 2021) has a gas far less dependent on R than any
+  closure (section 3.6);
+- the MMM pair: $\sigma_R$ calibrated with the gas closure at $P_h$ = 70 MPa, surrogate fitted up to ξ = 0.18 while
+  the NFIR state is at 0.255: the MMM cases release nothing (section 3.4);
 - hard-sphere EoS without attraction: pressure overestimated at low temperature (5 times at 20 °C at the NFIR density, equal at 1190 °C);
 - $\hat s$ in the code is the mean field; the MMM runs are unconfined and the same $\hat s$ is used under confinement;
 - no cascade: after a rupture the pressure of the broken pore is not removed from the load of its neighbours;
-- the criterion acts on the modelled pore state, not on the measured one (table above);
+- the criterion acts on the modelled pore state, not on the measured one: on NFIR 2.2 times the porosity and 0.35
+  times the gas density of the disc (section 3.4);
 - $\sigma_R$ of either pair has no direct physical meaning (it absorbs toughness and the spherical idealisation);
 - $\tau$ borrowed, no heating-rate dependence; $d$ is a crack spacing with no lower bound.
+
+### 3.6 Pressure of the classes: the decision of 24/11 and the measured pores
+
+SCIANTIX carries $\bar V$, $\bar n$ and Var(n); the pressure of each class needs how n and V vary together, so a
+closure cannot be avoided. Three choices are involved (printed by `section_closure()` and `section_measured()` of
+`pore_distribution.py`; figures `classes_closure.png`, `classes_pressure_measured.png`):
+
+| # | decision | options | taken 24/11 |
+|---|---|---|---|
+| D1 | **shape**: how p (or n) varies with R inside one population | gas closure $a=2$ (the C++ until 24/11), $a=3$ (tested 18/11), pressure closure | **pressure closure** |
+| D2 | **level**: where the mean pore sits between equilibrium and punching | f from $\bar n$ of SCIANTIX; or a level fixed from the data (e.g. punching, as K15 and J19) | **f from $\bar n$, no cap** |
+| D3 | **width**: s of ln R | from Var(n) of SCIANTIX through the closure; or the measured size distribution (s ≈ 0.36) | **s from Var(n)** |
+| D4 | **bound**: $c_{dp}$ of the punching limit | 55 N/m (J19, fit of Gao 2013 to HBS data); $Gb$ (theory, Greenwood 1959) | **$G(T)\,b$ of NEA (25/11)**: it changes f only |
+
+**Closures at the same moments** (SCIANTIX NFIR, end of base, 903 K, $P_h=0$; `classes_closure.png`):
+
+| closure | s | f | p of the classes (MPa) | $d\ln n_i/d\ln R_i$ |
+|---|---|---|---|---|
+| pressure closure | 0.235 | 1.03 | 16–108 | 2.10–2.35 |
+| $a=2$ | 0.257 | | 13–209 | 2 |
+| $a=3$ | 0.171 | | 36 | 3 |
+
+**Measured pores** (`measured_pores()`: the NFIR disc, Noirot 2014; D21 Table 1 at the rim or on a disc, R = D/2;
+D21 Table 5, the two single bubbles of sample B at the rim). p at the temperature of the irradiation with the hard
+spheres (HS) and, where D21 gives it, with Soave; $f=(p-P_h-2\gamma/R)R/c_{dp}$, $c_{dp}=G(T)\,b$ at the T of the
+pore, at $P_h$ = 0 / 30 / 70 MPa (the $P_h$ of the irradiation is not known for any of them); $c_{dp,1}$ the $c_{dp}$
+that would give f = 1 at $P_h=0$:
+
+| pore | R (µm) | v (Å³/atom) | T (K) | η | p HS (MPa) | p Soave | f (HS) | f (Soave) | $c_{dp,1}$ (N/m) |
+|---|---|---|---|---|---|---|---|---|---|
+| NFIR disc, fit (Noirot 2014) | 0.732 | 152 | 903 | 0.155 | 160 | | 3.82 / 3.09 / 2.12 | | 115 |
+| Noirot 2008, rim, 105 GWd/t | 0.250 | 149 | 650 | 0.166 | 123 | | 0.92 / 0.68 / 0.36 | | 29 |
+| Horvath 2007, rim, 300 GWd/t | 1.000 | 191 | 650 | 0.130 | 82 | | 2.55 / 1.59 / 0.30 | | 79 |
+| Noirot 2009, disc, 103 GWd/t | 0.850 | 149 | 903 | 0.158 | 165 | | 4.57 / 3.73 / 2.60 | | 138 |
+| Dowek 2021, B rim, bubble 1 | 0.585 | 102 | 653 | 0.244 | 264 | 180 | 4.91 / 4.34 / 3.59 | 3.32 / 2.75 / 2.00 | 152 |
+| Dowek 2021, B rim, bubble 2 | 0.655 | 134 | 653 | 0.185 | 151 | 90 | 3.12 / 2.49 / 1.64 | 1.83 / 1.19 / 0.35 | 97 |
+| SCIANTIX NFIR, end of base | 0.863 | 432 | 903 | 0.055 | 36 | | 0.96 (mean pore), 1.03 (classes) at $P_h=0$ | | |
+| the same, nucleation × 1 | 0.480 | 517 | 903 | 0.046 | | | 0.42 (classes) at $P_h=0$ | | |
+
+- **Level (D2, D4).** At $P_h=0$ the measured pores sit at f ≈ 2.5–4.9 (0.9 for the small pores of Noirot 2008),
+  about 90–165 MPa at 900 K for R = 0.7–1 µm; SCIANTIX is at f = 1.03 (0.42 without the nucleation factor), below
+  all of them but Noirot 2008. The gap is the gas (η 0.055 against 0.155 for the disc it models), a matter of the
+  porosity model, not of the closure. The measured pores are above the theoretical punching limit: f = 1 for every
+  measured pore would need $c_{dp}$ = 29–152 N/m against $Gb$ ≈ 30 N/m (NEA, 903 K; 31 in K15); J19 notes the same
+  (estimated HBS pore pressures about twice $Gb/r$) and takes 55 N/m from the fit of Gao 2013.
+- **Pressures at room temperature are not used**: they depend on the EoS of the paper. Hiernaut 2008 (30 MPa at RT) is
+  consistent with the hard spheres (87 MPa at 920 K, they give 90); the 11 MPa at RT of Noirot 2014 comes from a
+  real-gas EoS: the same molar volume (9 × 10⁻⁵ m³/mol) gives 61 MPa at RT and 165 MPa at 903 K with the hard spheres.
+  Only volumes per gas atom, or pressures at the irradiation temperature, enter the table.
+- **Shape (D1): the only pair in one population** (Dowek B rim, 653 K). The two bubbles hold almost the same gas
+  (8.25 and 8.81 × 10⁹ atoms) for volumes 1.40 times apart: $d\ln n/d\ln R$ = 0.57. The pressure closure predicts 2.54
+  from the smaller bubble ($P_h=0$; 2.67 at 70 MPa), $a=2$ gives 2, $a=3$ gives 3: every closure drops p less than
+  measured. Two bubbles without an uncertainty are not decisive.
+- **Width (D3).** The disc has s = 0.36 (K15: 0.356); every closure with the Var(n) of SCIANTIX is narrower (0.235 for
+  the pressure closure). The pressure closure at the measured width needs CV$_n$ = 1.06 (the disc, `section_nfir_data()`)
+  against 0.55 from SCIANTIX. Var(n) is a model output, not a measurement: either it is too low, or the gas is less
+  tied to the size than any closure assumes.
+- **Why the pressure closure (D1).** It is bounded by construction (with $a=2$ the small classes of run NFIR reach
+  7647 MPa, η at the cap in runs R04 and R05; no measured population is near the cap, η 0.13–0.24), it lies between
+  $a=2$ and $a=3$, and it gives one MMM load shape for every state (section 4). Against it: $a_{loc}$ 2.1–2.35,
+  far from the 0.57 of the Dowek pair. $a=2$ (closest to the pair) is the bracket for a sensitivity run on the second
+  test (Hiernaut 2008).
+- **Open.** A set of single-bubble measurements (Dowek's method, or SIMS on single pores) covering small and large pores
+  of one population is the only thing that can choose between $a_{loc}$ ≈ 0.6 (the pair) and 2.2–3 (the closures);
+  the bound itself (the measured pores are at 2.5–5 times $Gb/R$ at $P_h=0$); a sensitivity with f fixed at 1
+  (punching, as K15/J19).
+
+![closures](figures/classes_closure.png)
+
+> `classes_closure.png`: left, the pressure of the classes of the SCIANTIX NFIR state for the three closures, between
+> the equilibrium and the punching limit ($c_{dp}=Gb$); right, the local exponent $d\ln n_i/d\ln R_i$.
+
+![measured](figures/classes_pressure_measured.png)
+
+> `classes_pressure_measured.png`: f of the measured pores (bar: $P_h$ from 70 to 0 MPa, dot at 30 MPa; open dots:
+> the Soave pressure of D21) and of the SCIANTIX state (square: nucleation × 0.12, triangle: × 1); grey band,
+> between equilibrium and punching, $c_{dp}=G(T)\,b$ of NEA at the T of each pore.
 
 ---
 
@@ -265,19 +407,32 @@ temperature while the measured release starts at about 880 °C.
 
 **Reduction.** A cube is scale-free in length and linear in the load, so $R_V$ and the mean pressure $\bar p$ only set
 the scales. With $p^*=p\,v_{Xe}/k_BT$ the EoS has no explicit temperature, and in $x_i=R_i/R_V$ the classes depend on
-three numbers (with $a$ fixed and no confinement):
+three numbers (no confinement):
 
 | factor | sets | range | SCIANTIX cases | NFIR disc |
 |---|---|---|---|---|
-| ξ | porosity, distances between the pores | 0.02–0.18 | up to 0.133 (NFIR), 0.165–0.196 (`regression/hbs`) | 0.114 |
-| s (from CV$_n$) | $R_k/R_V$ and $\xi_k/\xi$ | 0.05–0.42 | 0.05–0.42 | 0.36 (K15: 0.356) |
-| $\bar\eta=\bar n v_{Xe}/\bar V$ | with s, the pressures $p_k/\bar p$ | 0.045–0.23 | 0.034–0.228 | 0.144–0.183 |
+| ξ | porosity, distances between the pores | 0.02–0.18 (R20–R34: up to 0.30) | 0.255 (NFIR since 24/11; 0.305 without the nucleation factor), 0.165–0.196 (`regression/hbs`) | 0.114 |
+| s | $R_k/R_V$ and $\xi_k/\xi$ | 0.05–0.42 | 0.05–0.42 | 0.36 (K15: 0.356) |
+| $\bar\eta=\bar n v_{Xe}/\bar V$ | until 24/11, with s, the pressures $p_k/\bar p$; with the pressure closure only f, the scale of the load | 0.045–0.23 | 0.034–0.228 | 0.144–0.183 |
+
+**Since 24/11 (pressure closure)** the load of a class is $f\,c_{dp}/R_k$ at every state, in-pile and in a transient
+(section 3.2): the shape $R_V/R_k$ in every run, whatever $\bar\eta$, which only sets f (0.75–9.2 over the 35 runs,
+4.57 for run NFIR, `index.txt`, with $c_{dp}=Gb$ = 30.15 N/m at 903 K; the loads are the same as with the 55 N/m used
+until 25/11). The ŝ of a pk run therefore depends on (ξ, s) only, and $\bar\eta$ is no longer a factor of the
+surrogate; it stays in the design so that the 20 cubes, whose geometry is (ξ, s), are the ones already meshed (radii,
+porosities and confinement of the run files unchanged to the last digit; only the load column changed). The unit runs
+are no longer the load of any state: they give $\hat s_1$, the factor of the geometry (the RVE tests of section 9),
+and enter the zero-stress correction of the pk runs. Not done yet: the pk runs solved so far (12/11) have the old load
+$p_k$ of the gas closure.
 
 **Runs.** `pore_distribution.py` writes a Latin hypercube of 20 runs (`scipy.stats.qmc.LatinHypercube`,
 `optimization="random-cd"`, seed 1; each factor takes 20 equally spaced levels) plus the reference run **NFIR**: the
 log-normal fit of the pores measured on the disc before the anneal (ξ = 0.1138, s = 0.3636, $R_V$ = 0.732 µm) with
 the measured gas density ($\bar\eta$ = 0.1555 at 903 K, $\bar p$ = 160 MPa). The 81 nodes are grouped in **7 classes**
-that keep $\bar V$ and $\bar n$. All the runs take the $R_V$ and the temperature of the reference. `index.txt`:
+that keep $\bar V$ and $\bar n$. All the runs take the $R_V$ and the temperature of the reference. 25/11: 15 runs
+appended (R20–R34, `MMM_APPENDED`, `MMM_XI_MAX` = 0.30, `mmm_appended()`) in the empty strata of each factor, with ξ up
+to 0.30, which covers the NFIR state of SCIANTIX (0.255): with the 20 they form a Latin hypercube of 35 levels; their
+run files are written, no MMM result yet (not in the table below). `index.txt`:
 
 | run | ξ | s | $\bar\eta$ | $\bar p$ (MPa) | | run | ξ | s | $\bar\eta$ | $\bar p$ (MPa) |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -294,15 +449,19 @@ that keep $\bar V$ and $\bar n$. All the runs take the $R_V$ and the temperature
 | R09 | 0.072 | 0.318 | 0.142 | 138 | | | | | | |
 
 Classes of run NFIR (`run_NFIR.txt`): radii 0.219, 0.311, 0.436, 0.610, 0.852, 1.192, 1.702 µm; shares of the pore
-volume 0.02, 0.47, 5.1, 22.2, 38.2, 26.2, 7.8 %; class pressures 7647, 1647, 601, 281, 152, 90, 54 MPa (closure
-$a=2$: the small classes are far above the mean). In runs R04 and R05 the smallest class is at the cap η = 0.65.
+volume 0.02, 0.47, 5.1, 22.2, 38.2, 26.2, 7.8 %; load (pressure closure, f = 4.57 with $c_{dp}=Gb$) 630, 444, 316,
+226, 162, 116, 81 MPa. Until 24/11 the run files held the gas pressures of the closure $a=2$, 7647, 1647, 601, 281, 152, 90,
+54 MPa (the small classes far above the mean; in runs R04 and R05 the smallest class at the cap η = 0.65): those are
+the loads of the pk runs solved on 12/11.
 
 **Two loads per cube** (docstring of `merope_pore_pressure.py`, `set_pressures.py`):
 
 - `unit/`: pressure 1 in every pore. It gives $\hat s_1$, the factor of the geometry alone. All the RVE tests of
   section 9 are unit runs.
 - `pk/`: the pressure $p_k$ of its class in every pore, on the same mesh (no Mérope, no gmsh: `mesh_case.txt` names
-  the unit cube). It gives the factor with the load of the neighbours, the original plan of 22/10 ("plan B").
+  the unit cube). It gives the factor with the load of the neighbours, the original plan of 22/10 ("plan B"). Since
+  24/11 $p_k=f\,c_{dp}/R_k$ (the shape $R_V/R_k$); the pk cubes have to be set again with `set_pressures.py` and
+  solved again (same meshes).
 
 **From the MMM stress to ŝ.** MMM solves at zero macroscopic *strain*, so the cube is in compression. Per unit
 pressure, with $\langle\sigma_h\rangle$ the mean hydrostatic stress of the matrix (`sig_hydro.txt`) and ξ the porosity
@@ -397,9 +556,13 @@ more than once.)
 
 Careful description in `mm-opera-hpc/polydispersebubble/POLYDISPERSE.md`. In short:
 
-- **Problem**: linear elasticity of the matrix (E = 150 GPa written as 150e-3 N/µm², ν = 0.3; with pressure loads
-  only and one material σ does not depend on E), periodic cube, **zero macroscopic strain**, one uniform pressure
+- **Problem**: linear elasticity of the matrix, periodic cube, **zero macroscopic strain**, one uniform pressure
   boundary condition per pore (`pref × p_i`, $p_i$ = 6th column of the bubble file).
+- **Elastic constants** (23/11): E and ν of UO₂ from NEA/NSC/R(2024)1 Eqs. 7.1 and 7.4 at T = 903.15 K (NFIR), Pu = 0,
+  O/M = 2 and **porosity 0** (the pores are meshed: the porosity in the formula would count them twice):
+  **E = 205.0 GPa, ν = 0.3116**, constants in `Bubble.cxx`, printed at every run. Until 22/11 E = 150 GPa, ν = 0.3:
+  all the results of section 9 are at ν = 0.3. σ does not depend on E (pressure loads, one material), it does on ν;
+  the strain of `-eh` depends on both (`stress_free_strain.py` uses the same values).
 - **Discretisation**: MFEM through mfem-mgis, H1 elements of order 2 on the P2 tetrahedra, 3 unknowns per node; law
   from MFront (`Elasticity.mfront`).
 - **Linear solver**: one Newton iteration (the problem is linear); `HyprePCG`, relative tolerance $10^{-10}$, at most
@@ -663,9 +826,9 @@ these classes are the reference that the surrogate predicts, section 9.9):
 | 1.192 | 0.488 | 0.262 | 1130 | 0.184 | 0.160 | 1.218 | 0.959 | 1.180 | 1.607 |
 | 1.702 | 0.844 | 0.074 | 110 | 0.156 | 0.145 | 1.181 | 0.958 | 1.149 | 1.554 |
 
-![s_hat per class](figures/mmm_shat_NFIR.png)
+![s_hat per class](figures_old/mmm_shat_NFIR.png)
 
-> `shat_NFIR.png` (`mmm_surrogate.py`): top left, μ and σ of ln ŝ of every class against u = ln(R/R_V) (bars: 2
+> `mmm_shat_NFIR.png` (`mmm_surrogate.py`; drawn before 24/11, moved to `figures_old/` on 24/11): top left, μ and σ of ln ŝ of every class against u = ln(R/R_V) (bars: 2
 > standard deviations over the cubes, by bootstrap); top right, the FGR of the cubes against the FGR rebuilt from the
 > seven log-normals (what SCIANTIX sees); bottom left, the error of a run made of 1 to 10 cubes on the critical load
 > of the FGR levels and on μ of the classes; bottom right, the rupture at $P_h$ = 0 with the MMM classes
@@ -735,9 +898,9 @@ state (open loop). Release of the transient in % of the gas produced; measured K
 | MMM table | 275 (D5.2) | 0.354 | 0.205 | 16.3 % |
 | MMM table | 300 | 0.288 | 0.156 | 12.4 % |
 
-![replay](figures/classes_fgr_nfir_mmm.png)
+![replay](figures_old/classes_fgr_nfir_mmm.png)
 
-> `classes_fgr_nfir_mmm.png` (`pore_distribution.py`, `section_mmm_replay`): left, D and G on the heat-up for the
+> `classes_fgr_nfir_mmm.png` (`pore_distribution.py`, `section_mmm_replay`; in `figures_old/` since 24/11): left, D and G on the heat-up for the
 > C++ (J19 mean field) and for the MMM table at 275 MPa and at the fitted $\sigma_R$; right, the release of the
 > anneal against the Kr-85 measured (Noirot 2014). This copy was drawn on 30/10 with the δ = 0.3 table (fit ≈ 221
 > MPa); the numbers of the table above are those of the δ = 0.15 table (219 MPa), computed without redrawing it.
@@ -826,7 +989,8 @@ the transient in % of the gas produced; measured: 29.8 % at the end, 10 % of it 
   (unit) and 3.5 % (pk) against 16.3 % open loop with the table of run NFIR.
 - One test, one parameter: the calibrated $\sigma_R$ is a fit, not a validation (decision 7). It also absorbs the
   modelled pore state (0.7 times the measured gas density, L11) and the gas balance of item 11.
-- **Closure $a=3$ with the unit ŝ** (18/11, `calibrate_sigma_r_a3.py`, `mmm_outputs/calibration_nfir_a3.txt`). With
+- **Closure $a=3$ with the unit ŝ** (18/11, `calibrate_sigma_r_a3.py`, `calibration_nfir_a3.txt`; both in `archive/`
+  since 24/11, when the gas closure and `sf_hbs_closure_exponent` were removed from the C++). With
   $a=3$ every class has the same gas density, hence the same pressure: the load of the unit runs. The unit surrogate
   is then the exact ŝ, $P_h$ a rescaling up to $2\gamma/R$, and a pk run would only be the unit run times $p$: no new
   MMM run. Unit with $a=2$ is a hybrid (the class pressures in the criterion, one pressure for the neighbours in ŝ);
@@ -838,8 +1002,10 @@ the transient in % of the gas produced; measured: 29.8 % at the end, 10 % of it 
   $1/R$ shape of the punching overpressure) that $a=3$ lacks. One test does not choose $a$ (decision 1).
 
 The regression cases `regression/hbs_nfir/test_UO2HBS_frag_mmm_unit` and `_mmm_pk` hold these $\sigma_R$ (least rms)
-and their gold (17/11, made again on 18/11: section 12, item 30); `_mmm_unit_a3` holds the $\sigma_R$ of $a=3$
-(the inputs of the J19 case with `1.5 # sf_hbs_closure_exponent`).
+and their gold (17/11, made again on 18/11: section 12, item 30; on 24/11 with $P_h=0$ and the pressure closure, with
+the same $\sigma_R$, which no longer fits: section 3.4). `_mmm_unit_a3` (the $\sigma_R$ of $a=3$) was removed on 24/11.
+
+**All the numbers of this section are of the gas closure with $P_h$ = 70 MPa** (before 24/11).
 
 ![calibration](mmm_outputs/calibration_nfir.png)
 
@@ -847,9 +1013,9 @@ and their gold (17/11, made again on 18/11: section 12, item 30); `_mmm_unit_a3`
 > calibrated $\sigma_R$, Kr-85 measured) and D, G on the heat-up; bottom, the rms distance of the release curve and the
 > final release against $\sigma_R$ (scan and search points).
 
-![calibration a = 3](mmm_outputs/calibration_nfir_a3.png)
+![calibration a = 3](archive/calibration_nfir_a3.png)
 
-> `calibration_nfir_a3.png` (`calibrate_sigma_r_a3.py`): the same with unit and $a=3$, against the regression cases
+> `archive/calibration_nfir_a3.png` (`calibrate_sigma_r_a3.py`): the same with unit and $a=3$, against the regression cases
 > unit and pk with $a=2$ at their $\sigma_R$ (dashed lines, squares).
 
 ---
@@ -859,11 +1025,15 @@ and their gold (17/11, made again on 18/11: section 12, item 30); `_mmm_unit_a3`
 Status of the hypercube on 17/11/2026: R00–R19 are solved for both loads (one cube of seed 1 each, by 12/11),
 reduced and fitted from their `pores.csv` (section 9.9); the surrogate is in the C++ and $\sigma_R$ is calibrated on the
 NFIR anneal in closed loop (section 9.10). Next: a second test for $\sigma_R$ (decision 7); more pk runs only if
-$a=2$ is kept (decision 1, open since 18/11).
+$a=2$ is kept (decision 1, open since 18/11). **24/11:** decision 1 is taken with the pressure closure (sections 3.2,
+3.6); the pk runs have to be solved again with the load $f\,c_{dp}/R_k$, and $\sigma_R$ recalibrated. **24/11
+evening:** the closure is built at every state, so the load is pk also in a transient. **25/11:** $c_{dp}=Gb$ of NEA
+(f only); the NFIR state of SCIANTIX (ξ = 0.255) is outside the 20 runs: 15 runs appended up to ξ = 0.30 (section 4),
+and the porosity of the case is an open point (item 9).
 
 | # | decision | options | what the results say | recommendation |
 |---|---|---|---|---|
-| 1 | **Load of the hypercube runs** | (a) unit only: ŝ depends on (ξ, s), 2 factors; (b) unit + pk ("plan B"): ŝ with the class pressures, 3 factors (ξ, s, $\bar\eta$) | The pk cubes cost one more MMM job on the same split (≈ 22 core-h each), no mesh. With $a=2$ the class pressures of run NFIR span 54–7647 MPa: the neighbours' load is far from uniform, so (a) may miss a first-order effect. Both loads solved (12/11) and fitted: unit 1.7 % rms on x (noise 0.85 %), pk 6.0 % (four inputs on 20 runs, learning curve still falling); the superposition of the two maxima stays approximate (item 7). 18/11: the choice is the closure $a$. Unit is the exact ŝ for $a=3$ (one pressure), pk the consistent one for $a=2$; on NFIR $a=3$ + unit gives rms 2.5 points against 4.4 for $a=2$ + pk, $\sigma_R$ 188 against 222 MPa (section 9.10) | 17/11: go on with both into the C++, pk as a trial of the whole chain. **To discuss (18/11):** $a=3$ + unit (3 inputs, 1.7 %, no pk run, $P_h$ exact up to $2\gamma/R$) or $a=2$ + pk (4 inputs, more runs, approximate superposition); run both pairs on the second test (decision 7) before new pk runs (by doubling the hypercube, decision 2) |
+| 1 | **Load of the hypercube runs** | (a) unit only: ŝ depends on (ξ, s), 2 factors; (b) unit + pk ("plan B"): ŝ with the class pressures, 3 factors (ξ, s, $\bar\eta$) | The pk cubes cost one more MMM job on the same split (≈ 22 core-h each), no mesh. With $a=2$ the class pressures of run NFIR span 54–7647 MPa: the neighbours' load is far from uniform, so (a) may miss a first-order effect. Both loads solved (12/11) and fitted: unit 1.7 % rms on x (noise 0.85 %), pk 6.0 % (four inputs on 20 runs, learning curve still falling); the superposition of the two maxima stays approximate (item 7). 18/11: the choice is the closure $a$. Unit is the exact ŝ for $a=3$ (one pressure), pk the consistent one for $a=2$; on NFIR $a=3$ + unit gives rms 2.5 points against 4.4 for $a=2$ + pk, $\sigma_R$ 188 against 222 MPa (section 9.10) | 17/11: go on with both into the C++, pk as a trial of the whole chain. **To discuss (18/11):** $a=3$ + unit (3 inputs, 1.7 %, no pk run, $P_h$ exact up to $2\gamma/R$) or $a=2$ + pk (4 inputs, more runs, approximate superposition); run both pairs on the second test (decision 7) before new pk runs (by doubling the hypercube, decision 2). **Taken 24/11: pressure closure, pk load** (the shape $R_V/R_k$): since the evening of 24/11 (closure at every state) the load is exactly pk in-pile and in a transient; ŝ of (ξ, s, u), $\bar\eta$ out of the surrogate, the unit runs for the geometry and the zero-stress correction only (section 4). Pk runs to solve again on the same meshes |
 | 2 | **Cubes per run** | 1 cube per run (20 cubes) or more seeds for the wide runs | FGR 5–95 %: one 30 µm cube gives ≈ 2–6 % (the 1.4–4.3 % estimated for 10–90 % by scaling run NFIR with the number of pores, times 3.5/2.6 for the 5 % level; not recomputed run by run): just above 5 % at the 5 % level for the runs with the fewest pores (R01, R17, R13). The largest class with ≥ 5 % of the volume needs more for 5 %: R13 11 cubes, R05 7, R09 6, R11 5, NFIR/R04 4, R00/R03 3 | 1 cube per run, pass the per-class noise ($2D$, from the number of pores of the class) to the fit; add seeds only where the surrogate shows it needs them. Densify by doubling the hypercube (new runs appended), **not** by raising `MMM_RUNS`, which rewrites the whole design |
 | 3 | **δ** | keep 0.15 µm, or 0.05 µm | residual at 0.15: ≤ 6 % on class 1.70, ≤ 0.5–1 % on the FGR | keep 0.15 for the hypercube (chosen 10/11); δ only needs a new MMM job on the same split if it is revisited. In dense runs 38 % of the pores have a gap < 0.35 µm (17 % in NFIR): keep δ < distMin/2 |
 | 4 | **Error of the 0.15 µm mesh** | (a) accept; (b) fourth mesh at 0.106 µm on seed 1 (6.36 M vertices, split 38.7 GB, MMM with 2 cores per process); (c) change the quantity (stress on the wall, or an average over a small volume, instead of the maximum over Gauss points) | (b) done 16/11 (section 9.4): from 0.15 to 0.106 µm the classes of the verdict move by ≤ 1.15 %, $x_c$ of the FGR by ≤ 1 %; against h → 0 ≈ 2–3.5 % (Richardson on the large classes, orders 1.0–1.9; not possible on 0.436 and on the classes of 11 pores), always an overestimate and nearly the same in every class | **taken 16/11: (a)**, 0.15 µm for the hypercube, the common bias goes into $\sigma_R$; (c) only if absolute values of ŝ must be quoted to better than ≈ 3 % |
@@ -871,6 +1041,7 @@ $a=2$ is kept (decision 1, open since 18/11).
 | 6 | **Surrogate** | Gaussian process of μ and σ of ln ŝ on (ξ, s, u) [+ $\bar\eta$ with plan B], tabulated on a regular grid for a linear interpolation in the C++ | on run NFIR μ varies by 0.07 and σ by 0.06 over the classes: a smooth, weak dependence on u; the 7 log-normals reproduce the FGR within 4.4 points | **taken 17/11**: the Gaussian process is evaluated in the C++ (no grid: SCIANTIX uses the model the metrics of section 9.9 describe), from `input_hbs_shat.txt` written by `mmm_surrogate.py --fit`, with test points checked at reading; the criterion is written only in the C++ (the Python transcription was removed on 17/11) |
 | 7 | **$\sigma_R$** | 275 (D5.2) or recalibrated | closed loop on NFIR (17/11, section 9.10): 236.8 MPa (unit, rms 7.6 points), 222.2 MPa (pk, rms 4.4); pk gets the shape, unit starts 450 K early | a second test before any claim: Hiernaut 2008 (digitised in `regression/hbs_hiernaut`, no option 4 case yet), the inner and outer parts with their ξ |
 | 8 | **Fragment size** | keep $d=2R_{WS}/D$, or use the MMM geometry | SCIANTIX's $d$ corresponds to a cracked zone ≈ $R_{WS}$; broken pores are grouped | redo `npoint.py` with δ = 0.15; test $k_i$ = gap/R from `pores.csv` (no free parameter) |
+| 9 | **Porosity of the NFIR case** (24/11) | (a) keep $P_h=0$ + nucleation × 0.12 and extend the runs in ξ; (b) revise the porosity model (gas and vacancies of the pores); (c) an in-pile $P_h$ | with $P_h=0$ SCIANTIX gives ξ = 0.255 (0.305 without the factor) against 0.114 measured, and η = 0.055 against 0.155: 2.2 times the pore volume with a third of the gas density; the release of the anneal is close (28.1 against 29.8 %) but starts ≈ 230 K early | to discuss with the authors of the porosity model; meanwhile (a): R20–R34 written (section 4) |
 
 Order proposed: finish the meshes → line `To check` of `run_gmsh.sh` (if not 0, `inverted_elements.py` on the flagged cubes; the dense runs R14, R00, R18, R19 are the likely ones) → split + unit runs on the cluster
 (≈ 20 × 27 core-h; the wall mesh goes from 0.23 to 1.65 times that of NFIR with the number of pores) → pk runs →
@@ -947,15 +1118,15 @@ inverted elements (`inverted_elements.py`), then `-v 1` and `-li 20000`.
 cd ~/mmm/sciantix-official && ./utilities/HBFF/runHBFF.sh     # build, NFIR cases against their gold, STATES against output.txt, figures
 python3 utilities/HBFF/mmm_surrogate.py --fit LHS RUN_NFIR     # metrics (9.9) and mmm_outputs/surrogate_<load>_sciantix.txt (≈ 3.5 min)
 python3 utilities/HBFF/calibrate_sigma_r.py                    # sigma_R on NFIR (9.10, ≈ 3 min with 4 runs at a time; needs build/sciantix.x)
-python3 utilities/HBFF/calibrate_sigma_r_a3.py                 # the same with a = 3, unit only (9.10): case _mmm_unit_a3, calibration_nfir_a3.*
-python3 -m regression.runner --hbs_nfir.mmm_unit --hbs_nfir.mmm_pk --mode-gold 1   # their gold, after a check (mmm_unit also selects mmm_unit_a3)
+python3 -m regression.runner --hbs_nfir.mmm_unit --hbs_nfir.mmm_pk --mode-gold 1   # their gold, after a check
 ```
 `LHS` is the tree of the hypercube (`unit/` and `pk/`, with `run_<id>/pores.csv`; `analyse_lhs.sh` calls `--fit` on
 it), `RUN_NFIR` the run folder of the RVE test (its classes are the test of the surrogate).
-`calibrate_sigma_r.py` writes the calibrated `input_hbs_shat.txt` into the two MMM cases, `calibrate_sigma_r_a3.py`
-into `_mmm_unit_a3` (with the line of `sf_hbs_closure_exponent`); their gold is left to the runner. The runner always uses `build/sciantix.x`: build first.
+`calibrate_sigma_r.py` writes the calibrated `input_hbs_shat.txt` into the two MMM cases; their gold is left to the
+runner (`archive/calibrate_sigma_r_a3.py` was the same for $a=3$, removed from the C++ on 24/11). The runner always uses `build/sciantix.x`: build first.
 **Warning:** `pore_distribution.py` (called by `runHBFF.sh`) rewrites `mmm_inputs/` at every run. With the same
-settings the files are identical; if `MMM_RUNS`, `MMM_SEED`, `MMM_CLASSES` or `MMM_FACTORS` change, the design of all
+settings the files are identical (24/11: the pressure closure changed only the load column, radii and porosities
+are the same to the last digit, so the cubes still match; the pk cubes need `set_pressures.py` again); if `MMM_RUNS`, `MMM_SEED`, `MMM_CLASSES` or `MMM_FACTORS` change, the design of all
 the runs changes and the cubes already made no longer match (`merope_pore_pressure.py` and `set_pressures.py` detect
 it and stop).
 
@@ -1022,6 +1193,10 @@ Found while writing this report (10/11/2026). "Fixed" = changed in the working t
 | 28 | `regression/hbs_nfir/plot.py` imports `read_output` from `pore_distribution.py`, which on 16/11 had been moved inside `main()` | `regression/hbs_nfir/plot.py` l. 34 | `plot.py`, the last step of `runHBFF.sh`, stopped at the import | fixed 17/11: `read_output` is a function again |
 | 29 | `mmm_surrogate.py` wrote a table per run (`mmm_outputs/shat_<run>.txt`, rounded to 6 digits) that only its own `--fit` read back | `mmm_surrogate.py`, `analyse_lhs.sh` | 41 files to keep in step with the `pores.csv` of the runs | removed 17/11: `--fit LHS RUN_NFIR` reads the `pores.csv` (same classes, differences ≤ 5e-6 = the rounding; metrics of 9.9 unchanged to the last digit printed). The MMM regression cases keep the surrogate fitted on the tables (μ, σ at their test points within 4e-6 and 2e-5): they change at the next `calibrate_sigma_r.py` |
 | 30 | The gold of `test_UO2HBS_frag_mmm_unit` and `_mmm_pk` (17/11) did not match the C++ of the commit: a clean build of HEAD (18/11) gives D up to 5e-5 (unit) and 6e-3 (pk) apart, relative, during the transient, the same final release to 1e-7; `_j19damage` matched | `regression/hbs_nfir/test_UO2HBS_frag_mmm_*/output_gold.txt` | the runner failed on both cases after a fresh build; the gold had been made with an older `build/sciantix.x` | fixed 18/11: gold made again with the current build, identical to the build of HEAD without the switch of $a$; $\sigma_R$ of 9.10 not recalibrated |
+| 31 | The run files of the pk load (since 19/11) held the net pressure $p_k-2\gamma/R_k-P_h$ cut at the punching limit $c_{dp}/R_k$, while the C++ broke the classes with the uncut gas pressure of $a=2$ (up to 7647 MPa on run NFIR) | `pore_distribution.py` (`wall_load`), `HighBurnupStructureFragmentation.C` | the ŝ of the pk runs and the load of the criterion were not the same state | fixed 24/11 by the pressure closure: in-pile both are $f\,c_{dp}/R_k$ (sections 3.2, 4); `wall_load` removed |
+| 32 | The NFIR case raised $P_h$ linearly to 70 MPa in the base irradiation with no datum for the disc, and the $\sigma_R$ of the MMM cases (17/11) were calibrated with it | `regression/hbs_nfir/*/input_history.txt` | the confinement held the base irradiation below the threshold; it was a free parameter of the case | fixed 24/11: $P_h=0$ in the six NFIR cases, with the pore nucleation rate × 0.12 of section 3.1 (the athermal factor tried the same day was removed); the $\sigma_R$ of `_mmm_unit` and `_mmm_pk` are stale (section 3.4) |
+| 33 | The pressure closure built at the reference state of option 2 ($T_{ss}$, $P_{h,ss}$, 24/11 afternoon) kept in the transient the gas of the last in-pile state: the release of the anneal depended on $P_h$ of the base irradiation | `HighBurnupStructureFragmentation.C`, `pore_distribution.py` | NFIR with the ramp to 70 MPa: nothing released (35.9 % with the closure at the current state) | fixed 24/11 evening: closure at the current (T, $P_h$); the tracking of the reference state is back to option 2 only |
+| 34 | $c_{dp}$ = 55 N/m was called the punching limit, but it is the fit of Gao 2013 to HBS porosity data, about $2Gb$ (J19 §2.3.2): f = 1 was not the theoretical limit $Gb/R$ | `HighBurnupStructureFragmentation.C`, `pore_distribution.py` | none on the results ($c_{dp}$ enters only through $f c_{dp}$); the values of f and the line f = 1 of the figures | fixed 25/11: $c_{dp}=G(T)\,b$ of NEA/NSC/R(2024)1 (section 3.2) |
 
 ---
 
@@ -1212,7 +1387,7 @@ Additional facts used by the regression cases (NEA/CSNI/R(2016)16):
 | $\sigma_f$ (micro-mechanics) | 200 MPa | Gencturk 2025 |
 | $\sigma^{cr}_{gb}$ bulk | 55 MPa | J20 |
 | local $G_{gb}$ | $4\times10^{-3}$ J/m² (bulk 2 J/m²) | J19, J20 |
-| $c_{dp}$ (punching) | 55 N/m | J19 (from Gao 2013) |
+| $c_{dp}$ (punching) | 55 N/m (J19, fit of Gao 2013); $Gb$ = 30.1 N/m at 903 K (G, a of NEA; option 4 since 25/11) | J19; NEA/NSC/R(2024)1 |
 | $Gb/r$ | 55 MPa at 0.5 µm ($G=70$ GPa, $b=0.39$ nm) | J19 |
 | $\Delta P_0$ at formation | 40 MPa | J19 |
 | $\xi$ percolation | 0.29 (J19), 0.25–0.30 (percolation), 0.18 (SCIANTIX) | J19, code |

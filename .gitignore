@@ -110,3 +110,6 @@ out/
 # ...and the controlled comparison of the four formation options, written there by
 # utilities/runHBS.sh and shown in the Beamer deck.
 !regression/hbs/figures/formation_options.png
+# IFA-650 option-4 regression outputs: 150-240 MB each, above the GitHub limit; kept local only
+regression/hbs_ifa650/*/output.txt
+regression/hbs_ifa650/*/output_gold.txt

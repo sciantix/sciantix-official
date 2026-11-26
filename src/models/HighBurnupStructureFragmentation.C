@@ -74,8 +74,11 @@
 //   L14 [?] the IFA-650 cases are one rim point with a transient taken from another test: no radial or axial
 //           structure, no cladding strain, no real T and P_h traces.
 //   L15 [?] no heating-rate dependence except the relaxation time of option 4; only the HBS is fragmented.
-//   L16 [?] option 4: the closure exponent a is not determined by the SCIANTIX moments and sets which classes break
-//           (a = 2; 2 x sf_hbs_closure_exponent, optional entry of input_scaling_factors.txt);
+//   L16 [?] option 4: how gas and size vary together across the classes is not determined by the SCIANTIX moments
+//           and sets which classes break: the pressure closure puts every class at the same fraction f of the way from
+//           equilibrium to the punching limit c_dp / R, c_dp = G b (NEA), at every state (T, P_h), so that in a
+//           transient the gas profile across the classes adapts at once to T and P_h; one pair of
+//           bubbles in one population (Dowek 2021) has a gas far less dependent on R than any closure;
 //           without input_hbs_shat.txt the stress concentration factor is the mean-field one of J19 (porosity only,
 //           no dependence on the class and no scatter); with it, the s_hat of MMM is a surrogate of RVE runs at zero
 //           macroscopic stress (P_h enters through the net pressure only), its inputs are clipped to the range of
@@ -639,8 +642,13 @@ void Simulation::HighBurnupStructureFragmentation()
                 const double sigma_r     = mmm.active ? mmm.sigma_r : 21.0e6;
                 const double xi_perc     = 0.29;  // (/) [P] J19, percolation of the HBS pores: every class open above
                 const double tau_rupture = 2.0;   // (s) [?]
-                // (/) [?] gas per class n_i ~ R_i^a: a = 2 times sf_hbs_closure_exponent of input_scaling_factors.txt
-                const double a_closure  = 2.0 * scaling_factors["HBS closure exponent"].getValue();
+                // (N/m) [P] punching limit of the overpressure of a pore, c_dp / R with c_dp = G b (Greenwood et al.,
+                // J. Nucl. Mater. 1 (1959) 305; J19 2.3.2): G of dense UO2 at T (Pu = 0, x = 0, porosity 0: the matrix
+                // at the pore wall) from NEA/NSC/R(2024)1 Eq. 7.2; b = a / sqrt(2), the Burgers vector 1/2 <110> of the
+                // fluorite, with a = 4 / sqrt(3) (r_U4+ + r_O2-) of UO2 (NEA/NSC/R(2024)1 2.2, Table 2.3). 30 N/m at
+                // 903 K; J19 Table 4 takes 55 N/m, the fit of Gao et al. (2013) to HBS porosity data, about 2 G b.
+                const double burgers = 4.0 / std::sqrt(3.0) * (0.9972e-10 + 1.372e-10) / std::sqrt(2.0);  // (m)
+                const double c_dp    = 82.52e9 * (1.009549 - 1.182e-5 * T - 6.671e-8 * T * T) * burgers;
                 const double class_span = 4.0;  // [N] nodes at ln R = ln R_median +/- 4 s
                 const double gamma      = fuel_.getSurfaceTension();
 
@@ -668,49 +676,162 @@ void Simulation::HighBurnupStructureFragmentation()
                 const double var_unvented =
                     std::max((var_retained + n_retained * n_retained) / retention2_old - n * n, 0.0);
 
-                // [N] width s: the root of sum_i w_i (n_i - n)^2 = Var(n) on the nodes, so that V, n and Var(n) hold on
-                // the classes. CV^2 of n on the nodes, sum w e^(2 a s x) / (sum w e^(a s x))^2 - 1, grows with s:
-                // bisection between 0 and an upper bound doubled from the value of the continuous log-normal.
-                auto cv2_on_nodes = [&](double s)
+                // Pressure closure [?] (README 3.2): at the current state (T, P_h) every class is at the same fraction f
+                // of the way from the equilibrium P_h + 2 gamma / R_i (pore fed by vacancies) to the punching limit
+                // P_h + (2 gamma + c_dp) / R_i (J19 Eq. 21):
+                //     p_i = P_h + (2 gamma + f c_dp) / R_i,     n_i = EoS^-1(p_i, V_i, T),
+                // on the radii of the log-normal
+                //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),
+                // so that sum_i w_i V_i = V for any s. f and s are the roots of sum_i w_i n_i = n and
+                // sum_i w_i (n_i - n)^2 = Var(n): the three moments hold on the classes. f is not bounded (f > 1: more
+                // gas than punching allows; f = 0: equilibrium). The net pressure of a class is exactly f c_dp / R_i.
+                const double kT    = boltzmann_constant * T;
+                const double y_cap = eta_cap * hard_sphere_Z(eta_cap);
+
+                // Xe atoms of a pore of volume `volume` at the pressure p and T, and dn/dp: the inverse of
+                // pore_pressure, linear above the cap, 0 for p <= 0 [N]. y = eta Z(eta) is increasing and convex with
+                // eta + 4 eta^2 <= eta Z(eta) (the virial coefficients of Z are positive): Newton from the root of
+                // eta + 4 eta^2 = y, on the right of the root, converges monotonically
+                const double z_cap = hard_sphere_Z(eta_cap);
+                auto         gas_at    = [&](double p, double volume, double& dn_dp)
                 {
-                    double m1 = 0.0, m2 = 0.0;
+                    dn_dp = 0.0;
+                    if (p <= 0.0)
+                        return 0.0;
+                    const double y = p * xe_volume / kT;
+                    if (y >= y_cap)
+                    {
+                        dn_dp = volume / (kT * z_cap);
+                        return p * dn_dp;
+                    }
+                    double eta   = std::min((std::sqrt(1.0 + 16.0 * y) - 1.0) / 8.0, eta_cap);
+                    double slope = 1.0;  // d(eta Z) / d eta
+                    for (int it = 0; it < 50; ++it)
+                    {
+                        const double om  = 1.0 - eta;
+                        const double om3 = om * om * om;
+                        const double num = 1.0 + eta + eta * eta - eta * eta * eta;
+                        const double z   = num / om3;
+                        slope = z + eta * ((1.0 + 2.0 * eta - 3.0 * eta * eta) * om + 3.0 * num) / (om3 * om);
+                        const double step = (eta * z - y) / slope;
+                        eta -= step;
+                        if (step <= 1.0e-15 * eta)
+                            break;
+                    }
+                    dn_dp = volume / (kT * slope);
+                    return eta * volume / xe_volume;
+                };
+
+                // root of an increasing function F with F(lo) < 0 <= F(hi) [N]: regula falsi with the Illinois
+                // modification, until |F| <= 1e-13 or the bracket is at round-off
+                auto increasing_root = [](auto&& F, double lo, double hi)
+                {
+                    double F_lo = F(lo), F_hi = F(hi), root = hi;
+                    int    side = 0;
+                    for (int it = 0; it < 200 && F_hi > 0.0; ++it)
+                    {
+                        root               = (lo * F_hi - hi * F_lo) / (F_hi - F_lo);
+                        const double F_mid = F(root);
+                        if (std::abs(F_mid) <= 1.0e-13 || hi - lo <= 1.0e-15 * (std::abs(lo) + std::abs(hi)))
+                            break;
+                        if (F_mid < 0.0)
+                        {
+                            lo   = root;
+                            F_lo = F_mid;
+                            if (side == -1)
+                                F_hi *= 0.5;
+                            side = -1;
+                        }
+                        else
+                        {
+                            hi   = root;
+                            F_hi = F_mid;
+                            if (side == 1)
+                                F_lo *= 0.5;
+                            side = 1;
+                        }
+                    }
+                    return root;
+                };
+
+                std::vector<double> r(HBFF_N_CLASSES), v(HBFF_N_CLASSES), n_class(HBFF_N_CLASSES);
+                double              r_median = 0.0;
+                auto                set_radii = [&](double s)  // radii and volumes of the classes of width s
+                {
+                    double volume_norm = 0.0;
+                    for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                        volume_norm += w[i] * std::exp(3.0 * s * x[i]);
+                    r_median = std::cbrt(3.0 * V / (4.0 * M_PI) / volume_norm);
                     for (int i = 0; i < HBFF_N_CLASSES; ++i)
                     {
-                        const double e = std::exp(a_closure * s * x[i]);
-                        m1 += w[i] * e;
-                        m2 += w[i] * e * e;
+                        r[i] = r_median * std::exp(s * x[i]);
+                        v[i] = 4.0 / 3.0 * M_PI * r[i] * r[i] * r[i];
                     }
-                    return m2 / (m1 * m1) - 1.0;
                 };
+                // gas of the classes at the fraction f: returns F(f) = sum_i w_i n_i / n - 1, and dF/df in F_slope
+                double F_slope = 0.0;
+                auto   set_gas = [&](double f)
+                {
+                    double mean = 0.0, slope = 0.0, dn_dp = 0.0;
+                    for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                    {
+                        n_class[i] = gas_at(Ph + (2.0 * gamma + f * c_dp) / r[i], v[i], dn_dp);
+                        mean += w[i] * n_class[i];
+                        slope += w[i] * dn_dp * c_dp / r[i];
+                    }
+                    F_slope = slope / n;
+                    return mean / n - 1.0;
+                };
+                // f of the mean gas on the current radii, n_class left at the root. F is increasing and concave in f:
+                // Newton from the f of the previous width, kept inside the bracket (f_lo, f_hi) found on the way (f_lo:
+                // below it every class has p <= 0 and no gas; f_hi: the smallest f seen with F > 0)
+                double f_closure = 1.0;
+                auto   solve_f   = [&]()
+                {
+                    double f_lo = 0.0, f_hi = HUGE_VAL;
+                    for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                        f_lo = std::min(f_lo, -(Ph * r[i] + 2.0 * gamma) / c_dp);
+                    double f = f_closure > f_lo ? f_closure : f_lo + 1.0;
+                    double F = set_gas(f);
+                    for (int it = 0; it < 200 && std::abs(F) > 1.0e-13; ++it)
+                    {
+                        if (F < 0.0)
+                            f_lo = f;
+                        else
+                            f_hi = f;
+                        if (f_hi < HUGE_VAL && f_hi - f_lo <= 1.0e-15 * (std::abs(f_lo) + std::abs(f_hi)))
+                            break;
+                        double f_new = F_slope > 0.0 ? f - F / F_slope : f_lo + 2.0 * (f - f_lo) + 1.0;
+                        if (!(f_new > f_lo && f_new < f_hi))
+                            f_new = f_hi < HUGE_VAL ? 0.5 * (f_lo + f_hi) : f_lo + 2.0 * (f - f_lo) + 1.0;
+                        f = f_new;
+                        F = set_gas(f);
+                    }
+                    f_closure = f;
+                };
+
+                // [N] s: the root of the relative excess of the variance, which grows from -1 at s = 0; the upper end
+                // starts from the width of the continuous log-normal with n ~ R^3 and is doubled until it brackets the root
                 const double cv2   = var_unvented / (n * n);
                 double       sigma = 0.0;
                 if (cv2 > 0.0)
                 {
-                    double s_lo = 0.0, s_hi = std::sqrt(std::log(1.0 + cv2)) / a_closure;
-                    for (int it = 0; it < 20 && cv2_on_nodes(s_hi) < cv2; ++it)
-                        s_hi *= 2.0;
-                    for (int it = 0; it < 60; ++it)
+                    auto excess = [&](double s)
                     {
-                        const double mid = 0.5 * (s_lo + s_hi);
-                        if (cv2_on_nodes(mid) < cv2)
-                            s_lo = mid;
-                        else
-                            s_hi = mid;
-                    }
-                    sigma = 0.5 * (s_lo + s_hi);
+                        set_radii(s);
+                        solve_f();
+                        double m2 = 0.0;
+                        for (int i = 0; i < HBFF_N_CLASSES; ++i)
+                            m2 += w[i] * (n_class[i] - n) * (n_class[i] - n);
+                        return m2 / (n * n) / cv2 - 1.0;
+                    };
+                    double s_hi = std::sqrt(std::log(1.0 + cv2)) / 3.0;
+                    for (int it = 0; it < 20 && excess(s_hi) < 0.0; ++it)
+                        s_hi *= 2.0;
+                    sigma = increasing_root(excess, 0.0, s_hi);
                 }
-
-                // Radius and gas of the classes:
-                //     R_i = R_V exp(s x_i) / (sum_j w_j exp(3 s x_j))^(1/3),   R_V = (3 V / 4 pi)^(1/3),
-                // so that sum_i w_i V_i = V for any width s, and
-                //     n_i = n R_i^a / sum_j w_j R_j^a,   a = 2 x sf_hbs_closure_exponent [?]
-                double volume_norm = 0.0, gas_norm = 0.0;
-                for (int i = 0; i < HBFF_N_CLASSES; ++i)
-                {
-                    volume_norm += w[i] * std::exp(3.0 * sigma * x[i]);
-                    gas_norm += w[i] * std::exp(a_closure * sigma * x[i]);
-                }
-                const double r_median = std::cbrt(3.0 * V / (4.0 * M_PI) / volume_norm);
+                set_radii(sigma);
+                solve_f();
 
                 // Progressive rupture [?]: each class relaxes towards b*_i with the time constant tau_rupture
                 const double relax = 1.0 - std::exp(-physics_variable["Time step"].getFinalValue() / tau_rupture);
@@ -772,10 +893,9 @@ void Simulation::HighBurnupStructureFragmentation()
                 double gas_broken = 0.0, kept_old = 0.0, kept_new = 0.0, kept2_old = 0.0, kept2_new = 0.0;
                 for (int i = 0; i < HBFF_N_CLASSES; ++i)
                 {
-                    const double r_i = r_median * std::exp(sigma * x[i]);
-                    const double v_i = 4.0 / 3.0 * M_PI * std::pow(r_i, 3.0);
-                    const double n_i = n * std::exp(a_closure * sigma * x[i]) / gas_norm;
-                    const double p_i = pore_pressure(n_i, v_i);  // [R] hard-sphere EoS on (n_i, V_i)
+                    const double r_i = r[i];
+                    const double n_i = n_class[i];
+                    const double p_i = pore_pressure(n_i, v[i]);  // [R] hard-sphere EoS on (n_i, V_i), at T
 
                     // Rupture of class i: first principal stress at the pore wall above the rupture stress (OHP 2.2.2),
                     //     s_hat (p_i - 2 gamma / R_i - P_h) >= sigma_R + P_h.
