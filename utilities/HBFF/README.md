@@ -407,63 +407,72 @@ that would give f = 1 at $P_h=0$:
 
 ## 4. Design of the MMM runs
 
-**Reduction.** A cube is scale-free in length and linear in the load, so $R_V$ and the mean pressure $\bar p$ only set
-the scales. With $p^*=p\,v_{Xe}/k_BT$ the EoS has no explicit temperature, and in $x_i=R_i/R_V$ the classes depend on
-three numbers (no confinement):
+**Reduction.** A cube is scale-free in length and linear in the load, so $R_V$ and the scale of the load only set
+the scales. In $x_i=R_i/R_V$ the classes of a run depend on two numbers (no confinement):
 
 | factor | sets | range | SCIANTIX cases | NFIR disc |
 |---|---|---|---|---|
-| ξ | porosity, distances between the pores | 0.02–0.18 (R20–R34: up to 0.30) | 0.255 (NFIR since 24/11; 0.305 without the nucleation factor), 0.165–0.196 (`regression/hbs`) | 0.114 |
+| ξ | porosity, distances between the pores | 0.02–0.30 (R00–R19 up to 0.18) | 0.255 (NFIR since 24/11; 0.305 without the nucleation factor), 0.165–0.196 (`regression/hbs`) | 0.114 |
 | s | $R_k/R_V$ and $\xi_k/\xi$ | 0.05–0.42 | 0.05–0.42 | 0.36 (K15: 0.356) |
-| $\bar\eta=\bar n v_{Xe}/\bar V$ | until 24/11, with s, the pressures $p_k/\bar p$; with the pressure closure only f, the scale of the load | 0.045–0.23 | 0.034–0.228 | 0.144–0.183 |
 
-**Since 24/11 (pressure closure)** the load of a class is $f\,c_{dp}/R_k$ at every state, in-pile and in a transient
-(section 3.2): the shape $R_V/R_k$ in every run, whatever $\bar\eta$, which only sets f (0.75–9.2 over the 35 runs,
-4.57 for run NFIR, `index.txt`, with $c_{dp}=Gb$ = 30.15 N/m at 903 K; the loads are the same as with the 55 N/m used
-until 25/11). The ŝ of a pk run therefore depends on (ξ, s) only, and $\bar\eta$ is no longer a factor of the
-surrogate; it stays in the design so that the 20 cubes, whose geometry is (ξ, s), are the ones already meshed (radii,
-porosities and confinement of the run files unchanged to the last digit; only the load column changed). The unit runs
-are no longer the load of any state: they give $\hat s_1$, the factor of the geometry (the RVE tests of section 9),
-and enter the zero-stress correction of the pk runs. Not done yet: the pk runs solved so far (12/11) have the old load
-$p_k$ of the gas closure.
+**Load (pressure closure, since 24/11).** The load of a class is $f\,c_{dp}/R_k$ at every state, in-pile and in a
+transient (section 3.2): the shape $R_V/R_k$ in every run. The gas of the state, $\bar\eta=\bar n v_{Xe}/\bar V$
+(0.034–0.228 in SCIANTIX, 0.144–0.183 on the NFIR disc), only sets f (4.57 for the NFIR disc at 903 K, with
+$c_{dp}=Gb$ = 30.15 N/m). **Since 27/11 the run files take f = 1**, the load $c_{dp}/R_k$ (the punching limit
+$Gb/R$), the same load per radius in every run: the problem is linear, so the stresses of a state are f times those
+of the run, and ŝ, $x_c/p_{ref}$ and the FGR against $x=p_{ref}/\sigma_R$ do not change (`plot_bubbles.py` normalises
+with the $p_{ref}$ of the cube). The runs need no gas, and the design is a Latin hypercube in (ξ, s). Until 27/11
+$\bar\eta$ was a third factor (0.045–0.23), first because with the gas closure $a=2$ it set the pressures
+$p_k/\bar p$ with s, then only to keep the 20 meshed cubes; radii and porosities never depended on it. The unit runs
+are not the load of any state: they give $\hat s_1$, the factor of the geometry (the RVE tests of section 9). Not
+done yet: the pk runs solved so far (12/11) have the old load $p_k$ of the gas closure.
 
-**Runs.** `pore_distribution.py` writes a Latin hypercube of 20 runs (`scipy.stats.qmc.LatinHypercube`,
-`optimization="random-cd"`, seed 1; each factor takes 20 equally spaced levels) plus the reference run **NFIR**: the
-log-normal fit of the pores measured on the disc before the anneal (ξ = 0.1138, s = 0.3636, $R_V$ = 0.732 µm) with
-the measured gas density ($\bar\eta$ = 0.1555 at 903 K, $\bar p$ = 160 MPa). The 81 nodes are grouped in **7 classes**
-that keep $\bar V$ and $\bar n$. All the runs take the $R_V$ and the temperature of the reference. 25/11: 15 runs
-appended (R20–R34, `MMM_APPENDED`, `MMM_XI_MAX` = 0.30, `mmm_appended()`) in the empty strata of each factor, with ξ up
-to 0.30, which covers the NFIR state of SCIANTIX (0.255): with the 20 they form a Latin hypercube of 35 levels; their
-run files are written, no MMM result yet (not in the table below).
+**Runs.** `pore_distribution.py` reads the design, `data/mmm_design.txt` (id, origin, ξ and s exact, strata on the 35
+levels), and writes one run file per run plus the reference run **NFIR**: the log-normal fit of the pores measured on
+the disc before the anneal (ξ = 0.1138, s = 0.3636, $R_V$ = 0.732 µm). The 81 nodes are grouped in **7 classes**
+that keep $\bar V$. All the runs take the $R_V$ and the temperature of the reference (T sets $c_{dp}=G(T)\,b$).
+The 35 runs are a Latin hypercube of 35 levels in ξ 0.02–0.30 and s 0.05–0.42, made in two steps (header of the file):
+- R00–R19: a Latin hypercube of 20 runs in ξ 0.02–0.18 (`scipy.stats.qmc.LatinHypercube`, `optimization="random-cd"`,
+  seed 1, with the third factor $\bar\eta$);
+- R20–R34 (25–26/11): appended in the strata of the 35 levels left empty, ξ ascending up to 0.30, which covers the NFIR
+  state of SCIANTIX (0.255).
+
+The code that made them (`mmm_design()`, `mmm_appended()` of `pore_distribution.py`, `placement_map.py` of
+`Merope/mmm_files`) was removed on 27/11; its last versions are in sciantix-official `fd8d16b9` and Merope `512b0a1`.
+`lhs_from_cubes.py` (`Merope/mmm_files`) checks a tree of cubes against the design: the classes of the copy of every
+run file (geometry and load) and the Latin hypercube (`<folder>/lhs_design.txt`).
 
 **Placement of the dense runs (26/11).** Three runs of the first pairing (ξ 0.248, 0.272, 0.296 with s 0.066, 0.108,
 0.235) could not be placed: the RSA of Mérope stops ("The grid has been too much subdivided") when the excluded volume
-$\sum_k\xi_k\,((R_k+d_{min}/2)/R_k)^3$ goes above its jamming limit, which is lower for the narrow widths.
-`placement_map.py` (`Merope/mmm_files`) tries every pair (ξ, s) of the 15 × 15 appended levels with the call of
-`generate()`, seeds 1 and 2 (`data/merope_placement.txt`, 7.5 min with 4 processes): up to ξ = 0.240 every s is
-placed; above, the narrowest s placed by both seeds is 0.108, 0.140, 0.182, 0.214, 0.235, 0.288, 0.362 for ξ = 0.248
-… 0.296 (excluded volume 0.43–0.49; the porosity lost by RSA stays below 0.5 %). `mmm_appended()` pairs the same levels
-only on these pairs: the runs are still a Latin hypercube of 35 levels, R20 … R34 have ξ ascending (0.184 … 0.296), and
-the smallest distance in (ξ, s) to the other runs is the one of the first pairing (0.128 in the unit box). R28, R31,
-R33, R34 sit on the limit: placed with seeds 1 and 2, an extra seed there may fail. `index.txt`:
+$\sum_k\xi_k\,((R_k+d_{min}/2)/R_k)^3$ goes above its jamming limit, which is lower for the narrow widths. A map of
+every pair (ξ, s) of the 15 × 15 appended levels, seeds 1 and 2 (7.5 min with 4 processes), placed every s up to
+ξ = 0.240; above, the narrowest s placed by both seeds is 0.108, 0.140, 0.182, 0.214, 0.235, 0.288, 0.362 for
+ξ = 0.248 … 0.296 (excluded volume 0.43–0.49; the porosity lost by RSA stays below 0.5 %). The appended levels were
+paired only on these pairs, to the largest smallest distance in (ξ, s) the placement allows (0.128 = √20/35 in the
+unit box). **27/11:** the random search of that pairing gave two pairings on two PCs (the order of the ξ levels with
+equal counts of placed pairs depended on numpy); the cubes and meshes of R20 … R34 were made with the one of the other
+PC, which is the one of `data/mmm_design.txt`. R30 and R33 sit on the limit: placed with seeds 1 and 2, an extra seed
+there may fail. The runs (`data/mmm_design.txt`, `index.txt`):
 
-| run | ξ | s | $\bar\eta$ | $\bar p$ (MPa) | | run | ξ | s | $\bar\eta$ | $\bar p$ (MPa) |
+| run | ξ | s | | run | ξ | s | | run | ξ | s |
 |---|---|---|---|---|---|---|---|---|---|---|
-| NFIR | 0.1138 | 0.364 | 0.156 | 160 | | R10 | 0.080 | 0.078 | 0.068 | 48 |
-| R00 | 0.168 | 0.374 | 0.133 | 124 | | R11 | 0.104 | 0.392 | 0.077 | 56 |
-| R01 | 0.024 | 0.170 | 0.114 | 98 | | R12 | 0.112 | 0.133 | 0.096 | 76 |
-| R02 | 0.120 | 0.226 | 0.198 | 248 | | R13 | 0.040 | 0.355 | 0.105 | 86 |
-| R03 | 0.144 | 0.300 | 0.059 | 40 | | R14 | 0.176 | 0.189 | 0.179 | 206 |
-| R04 | 0.136 | 0.337 | 0.225 | 324 | | R15 | 0.096 | 0.152 | 0.216 | 297 |
-| R05 | 0.064 | 0.411 | 0.170 | 187 | | R16 | 0.048 | 0.207 | 0.050 | 32 |
-| R06 | 0.056 | 0.096 | 0.188 | 227 | | R17 | 0.032 | 0.281 | 0.207 | 272 |
-| R07 | 0.088 | 0.263 | 0.151 | 153 | | R18 | 0.160 | 0.244 | 0.087 | 66 |
-| R08 | 0.128 | 0.115 | 0.124 | 110 | | R19 | 0.152 | 0.059 | 0.161 | 170 |
-| R09 | 0.072 | 0.318 | 0.142 | 138 | | | | | | |
+| NFIR | 0.114 | 0.364 | | R11 | 0.104 | 0.392 | | R23 | 0.208 | 0.214 |
+| R00 | 0.168 | 0.374 | | R12 | 0.112 | 0.133 | | R24 | 0.216 | 0.161 |
+| R01 | 0.024 | 0.170 | | R13 | 0.040 | 0.355 | | R25 | 0.224 | 0.383 |
+| R02 | 0.120 | 0.226 | | R14 | 0.176 | 0.189 | | R26 | 0.232 | 0.087 |
+| R03 | 0.144 | 0.300 | | R15 | 0.096 | 0.152 | | R27 | 0.240 | 0.256 |
+| R04 | 0.136 | 0.337 | | R16 | 0.048 | 0.207 | | R28 | 0.248 | 0.140 |
+| R05 | 0.064 | 0.411 | | R17 | 0.032 | 0.281 | | R29 | 0.256 | 0.309 |
+| R06 | 0.056 | 0.096 | | R18 | 0.160 | 0.244 | | R30 | 0.264 | 0.182 |
+| R07 | 0.088 | 0.263 | | R19 | 0.152 | 0.059 | | R31 | 0.272 | 0.235 |
+| R08 | 0.128 | 0.115 | | R20 | 0.184 | 0.108 | | R32 | 0.280 | 0.362 |
+| R09 | 0.072 | 0.318 | | R21 | 0.192 | 0.330 | | R33 | 0.288 | 0.288 |
+| R10 | 0.080 | 0.078 | | R22 | 0.200 | 0.066 | | R34 | 0.296 | 0.404 |
 
 Classes of run NFIR (`run_NFIR.txt`): radii 0.219, 0.311, 0.436, 0.610, 0.852, 1.192, 1.702 µm; shares of the pore
-volume 0.02, 0.47, 5.1, 22.2, 38.2, 26.2, 7.8 %; load (pressure closure, f = 4.57 with $c_{dp}=Gb$) 630, 444, 316,
-226, 162, 116, 81 MPa. Until 24/11 the run files held the gas pressures of the closure $a=2$, 7647, 1647, 601, 281, 152, 90,
+volume 0.02, 0.47, 5.1, 22.2, 38.2, 26.2, 7.8 %; load of MMM (f = 1 since 27/11, $c_{dp}/R$) 138, 97, 69, 49, 35, 25,
+18 MPa; the state of NFIR (pressure closure, f = 4.57 with $c_{dp}=Gb$) is 4.57 times it, 630, 444, 316, 226, 162,
+116, 81 MPa. Until 24/11 the run files held the gas pressures of the closure $a=2$, 7647, 1647, 601, 281, 152, 90,
 54 MPa (the small classes far above the mean; in runs R04 and R05 the smallest class at the cap η = 0.65): those are
 the loads of the pk runs solved on 12/11.
 
@@ -473,8 +482,9 @@ the loads of the pk runs solved on 12/11.
   section 9 are unit runs.
 - `pk/`: the pressure $p_k$ of its class in every pore, on the same mesh (no Mérope, no gmsh: `mesh_case.txt` names
   the unit cube). It gives the factor with the load of the neighbours, the original plan of 22/10 ("plan B"). Since
-  24/11 $p_k=f\,c_{dp}/R_k$ (the shape $R_V/R_k$); the pk cubes have to be set again with `set_pressures.py` and
-  solved again (same meshes).
+  24/11 $p_k=f\,c_{dp}/R_k$ (the shape $R_V/R_k$), since 27/11 at f = 1, $p_k=c_{dp}/R_k$; the pk cubes have to be
+  set again with `set_pressures.py` from the current run files (copied into every `unit/run_<id>/`) and solved again
+  (same meshes).
 
 **From the MMM stress to ŝ.** MMM solves at zero macroscopic *strain*, so the cube is in compression. Per unit
 pressure, with $\langle\sigma_h\rangle$ the mean hydrostatic stress of the matrix (`sig_hydro.txt`; the pores are
@@ -1061,7 +1071,10 @@ $a=2$ is kept (decision 1, open since 18/11). **24/11:** decision 1 is taken wit
 3.6); the pk runs have to be solved again with the load $f\,c_{dp}/R_k$, and $\sigma_R$ recalibrated. **24/11
 evening:** the closure is built at every state, so the load is pk also in a transient. **25/11:** $c_{dp}=Gb$ of NEA
 (f only); the NFIR state of SCIANTIX (ξ = 0.255) is outside the 20 runs: 15 runs appended up to ξ = 0.30 (section 4),
-and the porosity of the case is an open point (item 9).
+and the porosity of the case is an open point (item 9). **27/11:** run files at f = 1 ($c_{dp}/R_k$) and the pairing
+of R20–R34 fixed to the one of the cubes; the design is a file, `data/mmm_design.txt`, in (ξ, s) only (section 4,
+$\bar\eta$ dropped); pk at zero strain and in the
+stress-free state $\varepsilon = p_{hyd}(1-\xi)/(3K_{MT})$ for all 35 runs.
 
 | # | decision | options | what the results say | recommendation |
 |---|---|---|---|---|
@@ -1118,7 +1131,7 @@ It needs mfem-mgis@master. Edit the scripts in `mm-opera-hpc/polydispersebubble/
 ```bash
 cd ~/mmm/Merope/mmm_files
 python3 test_rve.py                                   # cubes of the RVE tests (settings at its top) → test_rve_side30_mesh0.15_graded_rfine0.45/
-python3 placement_map.py                              # only after a change of the design: pairs (ξ, s) Mérope places → HBFF/data/merope_placement.txt, then pore_distribution.py
+python3 lhs_from_cubes.py                             # checks the cubes against HBFF/data/mmm_design.txt (classes of every run, Latin hypercube) → <folder>/lhs_design.txt
 python3 merope_pore_pressure.py [R05 R13] [--seeds 3] # cubes of the hypercube → lhs_side30_mesh0.15_graded_rfine0.45/unit/
 python3 ~/mmm/build/polydispersebubble/set_pressures.py lhs_side30_mesh0.15_graded_rfine0.45/unit   # → pk/
 bash run_gmsh.sh <folder>                             # meshes; skips those already done (FORCE=1 to redo)
@@ -1159,8 +1172,8 @@ it), `RUN_NFIR` the run folder of the RVE test (its classes are the test of the 
 runner (`archive/calibrate_sigma_r_a3.py` was the same for $a=3$, removed from the C++ on 24/11). The runner always uses `build/sciantix.x`: build first.
 **Warning:** `pore_distribution.py` (called by `runHBFF.sh`) rewrites `mmm_inputs/` at every run. With the same
 settings the files are identical (24/11: the pressure closure changed only the load column, radii and porosities
-are the same to the last digit, so the cubes still match; the pk cubes need `set_pressures.py` again); if `MMM_RUNS`, `MMM_SEED`, `MMM_CLASSES` or `MMM_FACTORS` change, the design of all
-the runs changes and the cubes already made no longer match (`merope_pore_pressure.py` and `set_pressures.py` detect
+are the same to the last digit, so the cubes still match; the pk cubes need `set_pressures.py` again); if
+`data/mmm_design.txt` or `MMM_CLASSES` change, the design of the runs changes and the cubes already made no longer match (`merope_pore_pressure.py` and `set_pressures.py` detect
 it and stop).
 
 ### 11.5 Cluster runs
@@ -1230,7 +1243,8 @@ Found while writing this report (10/11/2026). "Fixed" = changed in the working t
 | 32 | The NFIR case raised $P_h$ linearly to 70 MPa in the base irradiation with no datum for the disc, and the $\sigma_R$ of the MMM cases (17/11) were calibrated with it | `regression/hbs_nfir/*/input_history.txt` | the confinement held the base irradiation below the threshold; it was a free parameter of the case | fixed 24/11: $P_h=0$ in the six NFIR cases, with the pore nucleation rate × 0.12 of section 3.1 (the athermal factor tried the same day was removed); the $\sigma_R$ of `_mmm_unit` and `_mmm_pk` are stale (section 3.4) |
 | 33 | The pressure closure built at the reference state of option 2 ($T_{ss}$, $P_{h,ss}$, 24/11 afternoon) kept in the transient the gas of the last in-pile state: the release of the anneal depended on $P_h$ of the base irradiation | `HighBurnupStructureFragmentation.C`, `pore_distribution.py` | NFIR with the ramp to 70 MPa: nothing released (35.9 % with the closure at the current state) | fixed 24/11 evening: closure at the current (T, $P_h$); the tracking of the reference state is back to option 2 only |
 | 34 | $c_{dp}$ = 55 N/m was called the punching limit, but it is the fit of Gao 2013 to HBS porosity data, about $2Gb$ (J19 §2.3.2): f = 1 was not the theoretical limit $Gb/R$ | `HighBurnupStructureFragmentation.C`, `pore_distribution.py` | none on the results ($c_{dp}$ enters only through $f c_{dp}$); the values of f and the line f = 1 of the figures | fixed 25/11: $c_{dp}=G(T)\,b$ of NEA/NSC/R(2024)1 (section 3.2) |
-| 35 | Three of the runs appended on 25/11 (ξ 0.248, 0.272, 0.296 with s 0.066, 0.108, 0.235, then R22, R20, R23) were above the jamming limit of the RSA of Mérope | `pore_distribution.py` (`mmm_appended()`) | `merope_pore_pressure.py` stops at the first of them ("The grid has been too much subdivided"), no cube | fixed 26/11: map of the pairs (ξ, s) placed with seeds 1 and 2 (`Merope/mmm_files/placement_map.py`, `data/merope_placement.txt`), the same levels paired only on placed pairs (section 4); R20–R34 rewritten (none was meshed), NFIR and R00–R19 identical |
+| 35 | Three of the runs appended on 25/11 (ξ 0.248, 0.272, 0.296 with s 0.066, 0.108, 0.235, then R22, R20, R23) were above the jamming limit of the RSA of Mérope | `pore_distribution.py` (`mmm_appended()`) | `merope_pore_pressure.py` stops at the first of them ("The grid has been too much subdivided"), no cube | fixed 26/11: map of the pairs (ξ, s) placed with seeds 1 and 2 (`Merope/mmm_files/placement_map.py`, `data/merope_placement.txt`, both removed 27/11 with the pairing in `data/mmm_design.txt`), the same levels paired only on placed pairs (section 4); R20–R34 rewritten (none was meshed), NFIR and R00–R19 identical |
+| 36 | The pairing of R20–R34 was not the same on two PCs (R20 s 0.140 here, 0.108 on the PC of the cubes) | `pore_distribution.py` (`mmm_appended()`) | `np.argsort` of the counts of placed pairs has ties, their order depended on numpy; the cubes and meshes were made with the other pairing, `mmm_inputs/` held this one | fixed 27/11: the design of the cubes (strata from the run files of the cubes, `lhs_from_cubes.py`) is a file, `data/mmm_design.txt`, read by `pore_distribution.py`, and the code of the search removed; R20–R34 rewritten as the cubes (both pairings are Latin, placed, smallest distance 0.128) |
 
 ---
 

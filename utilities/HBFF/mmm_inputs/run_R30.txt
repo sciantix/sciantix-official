@@ -1,14 +1,13 @@
-# MMM input, run R30 (appended run 11 of 15: with the 20 of the hypercube a Latin hypercube of 35 levels, xi up to 0.3)
-# xi = 0.264, s = 0.3301 (CV_n = 0.9047), eta_bar = 0.1269, f = 3.145, P_h / p_bar = 0
-# scale: R_V = 0.732 um, T = 903.15 K, p_bar = 114.97 MPa
-# pressure_MPa = load of MMM, the in-pile net pressure of the pressure closure f c_dp / R (c_dp = G b = 30.15 N/m)
-# gas pressure p of the classes (MPa): 386.3142 281.2488 206.4937 152.1689 112.3807 82.9825 59.8909
+# MMM input, run R30 (appended, mmm_design.txt)
+# xi = 0.264, s = 0.1821
+# scale: R_V = 0.732 um, T = 903.15 K
+# pressure_MPa = load of MMM, c_dp / R (c_dp = G b = 30.15 N/m): the in-pile net pressure of the pressure closure at f = 1 (punching limit); a state of the closure is f times it
 # one row per pore class; the porosities sum to xi
 #  radius_um      porosity  pressure_MPa  confinement_MPa
-    0.248631  6.435880e-05      381.3746           0.0000
-    0.341749  1.631460e-03      277.4593           0.0000
-    0.464759  1.633384e-02      204.0229           0.0000
-    0.630139  6.444515e-02      150.4771           0.0000
-    0.853390  1.011221e-01      111.1117           0.0000
-    1.157085  6.332104e-02       81.9487           0.0000
-    1.597839  1.708209e-02       59.3436           0.0000
+    0.418885  3.077697e-04       71.9837           0.0000
+    0.499347  5.089313e-03       60.3847           0.0000
+    0.591386  3.365243e-02       50.9868           0.0000
+    0.699343  8.809515e-02       43.1160           0.0000
+    0.826713  9.193243e-02       36.4732           0.0000
+    0.978181  3.825695e-02       30.8255           0.0000
+    1.167635  6.665956e-03       25.8239           0.0000

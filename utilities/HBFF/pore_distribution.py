@@ -23,12 +23,12 @@ This script
 3.  writes the inputs of the runs of MMM (mmm_inputs/run_*.txt):
         -   radius R,
         -   porosity xi = N_p sum_i w_i V_i = N_p V, where N_p is the pore density,
-        -   and load of every pore class: the in-pile net pressure on the wall of the pressure closure, f c_dp / R
+        -   and load of every pore class: the in-pile net pressure on the wall of the pressure closure at the
+            punching limit, c_dp / R (f = 1; a state of the closure is f times it)
         -   and the confining pressure (currently neglected).
-    one file per run of the Latin hypercube in the three factors of the RVE
+    one file per run of data/mmm_design.txt, a Latin hypercube in the two factors of the geometry of the RVE
         -   porosity,
-        -   width of the radii,
-        -   packing fraction (it only sets f, the scale of the load)
+        -   width of the radii
 
 4.  draws the rupture and release figures of the NFIR case of option 4 from its output.txt (NFIR_CASE).
 Reference papers that will be cited in the following:
@@ -52,7 +52,6 @@ from matplotlib.colors import LinearSegmentedColormap, Normalize
 from scipy.interpolate import RegularGridInterpolator
 from scipy.optimize import brentq, least_squares
 from scipy.special import ndtr  # standard normal cdf
-from scipy.stats import qmc
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FIG_DIR = os.path.join(HERE, "figures")
@@ -85,23 +84,15 @@ N_CLASSES, SPAN = 81, 4.0  # nodes at ln R = ln R_median +/- 4 s
 A_CLOSURE = 2.0
 # Design of the MMM runs
 MMM_CLASSES = 7  # classes of an input
-MMM_RUNS, MMM_SEED = 20, 1  # runs of the Latin hypercube and its seed
-# Ranges of the factors.
-#   xi   up to xi_sat of HighBurnupStructurePorosity.C.
-#        Below 0.02 the cube of Merope/merope_pore_pressure.py holds fewer than two pores of each class at the ends.
+# The runs: id, origin, xi, s of each (a Latin hypercube of 35 levels in (xi, s); how it was made in its header)
+MMM_DESIGN = os.path.join(DATA_DIR, "mmm_design.txt")
+# Box of the runs of MMM_DESIGN.
+#   xi   0.02 to 0.30: R00-R19 up to 0.18 (xi_sat of HighBurnupStructurePorosity.C), R20-R34 up to 0.30 (SCIANTIX NFIR
+#        0.255; 0.29: J19 percolation, every class open above). Below 0.02 the cube of Merope/merope_pore_pressure.py
+#        holds fewer than two pores of each class at the ends.
 #   s    SCIANTIX 0.05 to 0.42 (CV_n 0.10 to 1.00); NFIR disc 0.36; K15 0.356
-#   eta  SCIANTIX 0.034 to 0.228, 0.048 to 0.228 for xi >= 0.02; NFIR disc 0.14 (1474 K) to 0.18 (293 K)
-MMM_FACTORS = {"xi": (0.02, 0.18), "s": (0.05, 0.42), "eta": (0.045, 0.23)} #TBC
-# Runs appended to the hypercube (0: none), R20 on: xi from the end of MMM_FACTORS up to MMM_XI_MAX, s and eta_bar in
-# the strata the hypercube leaves empty, so that the 20 runs and the appended ones together are a Latin hypercube of
-# MMM_RUNS + MMM_APPENDED levels with xi up to MMM_XI_MAX. The runs of the hypercube do not change.
-# 15 runs to 0.30 keep the width of the xi levels (0.008); 0.29: J19 percolation, every class open above.
-MMM_APPENDED, MMM_XI_MAX = 15, 0.30
-# Pairs (xi, s) of the appended levels that Merope places (Merope/mmm_files/placement_map.py): the RSA of Merope stops
-# above xi = 0.24 for the narrow widths (26/11/2026), so the levels are paired only on the pairs placed with every seed
-MMM_PLACEMENT = os.path.join(DATA_DIR, "merope_placement.txt")
-MMM_PAIRINGS = 100000  # random pairings tried by mmm_appended()
-MMM_PH_REL = 0.0  # P_h / p_bar of the runs
+MMM_FACTORS = {"xi": (0.02, 0.30), "s": (0.05, 0.42)}
+MMM_PH = 0.0  # (Pa) confining pressure of the runs (with P_h != 0, P_h R_V / c_dp would be a third factor)
 MMM_RUN_DIR = "mmm_inputs"
 MMM_STATE = "NFIR, end of base irradiation" # geometry before the transient
 
@@ -111,9 +102,9 @@ MMM_STATE = "NFIR, end of base irradiation" # geometry before the transient
 # V (m3), n (atoms per pore), var (Var(n)), xi (/), Np (pores/m3), T (K), Ph (Pa, positive in compression).
 # These states are copied by hand: states_agree() compares them with output.txt, update them if the output changes.
 # They do NOT enter the MMM runs (mmm_inputs/run_*.txt), except for T of MMM_STATE, an input of the history that sets
-# the scale p_bar only: the run NFIR is the measured disc (nfir_disc(), NFIR_GAS_VOLUME) and the hypercube is the fixed
-# box MMM_FACTORS around R_V of the disc. A change of the SCIANTIX output moves the SCIANTIX points of the figures,
-# not the runs; check only that the new states still fall inside MMM_FACTORS.
+# c_dp = G(T) b of the load c_dp / R only: the run NFIR is the measured disc (nfir_disc()) and the hypercube is the fixed
+# MMM_DESIGN in the box MMM_FACTORS, at R_V of the disc. A change of the SCIANTIX output moves the SCIANTIX points of the
+# figures, not the runs; check only that the new states still fall inside MMM_FACTORS.
 
 STATES = {
     "NFIR, end of base irradiation": {"T": 903.15, "Ph": 0.0, "xi": 0.2549, "Np": 9.461e16, "V": 2.694e-18, "n": 6.241e9, "var": 1.175e19},
@@ -466,7 +457,6 @@ def section_nfir_data():
         eta_disc = xe_volume(st["T"]) / NFIR_GAS_VOLUME
         print(f"{'SCIANTIX, ' + name.removeprefix('NFIR, '):34s}{xi:8.4f}{radius_of(st['V']) * 1e6:10.4f}{d['sigma']:8.4f}{cv:8.4f}{eta:9.4f}"
               f"{d['f']:8.3f}   (disc at {st['T']:.0f} K: eta_bar = {eta_disc:.4f})")
-        assert inside("eta", eta_disc), name
 
 def section_distributions(st, d, m):
     """Radius pdf, pressure per class and gas per class."""
@@ -649,198 +639,95 @@ def normalised(a_, cv_n_, eta_bar, T_=1000.0, R_V_=0.35e-6):
 # p - 2 gamma / R - P_h. With the pressure closure, at every state (in-pile and in a transient), the load of a class
 # is exactly
 #     L_k = f c_dp / R_k,
-# the same shape R_V / R_k for every f: the load of the pk runs. An RVE is scale-free in length and linear in the load,
-# so radius, porosity and load of the classes, each relative to its mean, depend on two factors:
+# the same shape R_V / R_k for every f. An RVE is scale-free in length and linear in the load, so radius, porosity
+# and load of the classes, each relative to its mean, depend on two factors:
 #   xi       porosity: the distance between the pores
 #   s        width of the radius distribution (sigma of ln R): R_k / R_V and the shares of the porosity xi_k / xi
-# The third factor of the design, eta_bar (mean packing fraction of the gas), only sets f, the scale of the load: it no
-# longer changes s_hat. It is kept so that the 20 cubes of the hypercube (xi, s) stay the ones already meshed.
+# The pk runs take f = 1 (since 27/11/2026), L_k = c_dp / R_k, the punching limit G b / R: the same load per radius in
+# every run, and the stresses of a state of the closure are f times those of its run. The gas of a state (mean packing
+# fraction eta_bar) only sets that f, so the runs need no gas: the design is a Latin hypercube in (xi, s), MMM_DESIGN
+# (until 27/11 a third factor eta_bar, which only set f).
 # The unit runs (the same pressure 1 in every class) are not the load of any state of the pressure closure.
-# Confinement: the runs have P_h = 0.
-# Reference: the NFIR disc before the anneal. The run NFIR is the log-normal fit of its measured pores with the measured gas density; the runs of the hypercube take its R_V and the T of MMM_STATE, the end of the base irradiation, which only sets p_bar.
+# Confinement: the runs have P_h = MMM_PH = 0.
+# Reference: the NFIR disc before the anneal. The run NFIR is the log-normal fit of its measured pores; the runs of the hypercube take its R_V and the T of MMM_STATE, the end of the base irradiation, which only sets c_dp of the load.
 # The side of the cube, the repulsion distance and the mesh size of Merope/merope_pore_pressure.py are in um.
 # The 81 nodes are grouped in classes (bins of x centred on 0, +/-1, +/-2, ...). 
 # The run files written here are read by Merope/merope_pore_pressure.py.
 
 def reduced_classes(d, T, n_classes=MMM_CLASSES):
-    """Grouping of the nodes in n_classes classes: a list of dicts with the x range, the number fraction w, R, V, n, p
-    and the share of the porosity w V / <V>."""
+    """Grouping of the nodes in n_classes classes: a list of dicts with the x range, the number fraction w, R, V, the
+    share of the porosity w V / <V> and, when d holds the gas (build()), n and p."""
     half = (n_classes - 1) // 2
     edges = (-np.inf,) + tuple(j + 0.5 for j in range(-half, half)) + (np.inf,)
-    m = moments(d)
+    V_mean = np.sum(d["w"] * d["V"])
     out = []
     for lo, hi in zip(edges[:-1], edges[1:]):
         share = ((X > lo + 1e-9) & (X < hi - 1e-9)) + 0.5 * (np.isclose(X, lo) | np.isclose(X, hi))  # edge nodes in halves
         wk = np.sum(d["w"] * share)
         Vk = np.sum(d["w"] * share * d["V"]) / wk
-        nk = np.sum(d["w"] * share * d["n"]) / wk
-        out.append({"x_lo": max(lo, -SPAN), "x_hi": min(hi, SPAN), "w": wk, "V": Vk, "R": radius_of(Vk), "n": nk,
-                    "p": float(pore_pressure(nk, Vk, T)), "xi_share": wk * Vk / m["V"]})
+        out.append({"x_lo": max(lo, -SPAN), "x_hi": min(hi, SPAN), "w": wk, "V": Vk, "R": radius_of(Vk),
+                    "xi_share": wk * Vk / V_mean})
+        if "n" in d:
+            nk = np.sum(d["w"] * share * d["n"]) / wk
+            out[-1].update(n=nk, p=float(pore_pressure(nk, Vk, T)))
     w = np.array([c["w"] for c in out])
     assert abs(np.sum(w) - 1.0) < 1e-12 and abs(sum(c["xi_share"] for c in out) - 1.0) < 1e-12
-    assert abs(np.sum(w * np.array([c["n"] for c in out])) / m["n"] - 1.0) < 1e-12
+    if "n" in d:
+        assert abs(np.sum(w * np.array([c["n"] for c in out])) / moments(d)["n"] - 1.0) < 1e-12
     return out
 
-def packing_max(reduced, T):
-    """Largest packing fraction of the classes of a run."""
-    return max(k["n"] * xe_volume(T) / k["V"] for k in reduced)
+def mmm_case(tag, origin, xi, s, R_V, T):
+    """A run from its two factors (porosity xi, width s) and the scale R_V (m), T (K): the 81 radius classes of width
+    s (classes(), the geometry of build() for any gas)."""
+    R, V, w = classes(R_V, s)
+    return {"id": tag, "origin": origin, "xi": xi, "R_V": R_V, "T": T,
+            "classes": {"R": R, "V": V, "w": w, "sigma": s, "R_median": R[N_CLASSES // 2]}}
 
-def mmm_case(tag, origin, xi, s, eta, Ph_rel, R_V, T):
-    """A run from its three factors (porosity xi, width s, mean packing fraction eta), from the confinement
-    Ph_rel = P_h / p_bar and from the scale R_V (m), T (K): the parameters, CV_n, p_bar and P_h (Pa), and the 81 classes
-    of the pressure closure in-pile at T, P_h with the width s (f from the mean gas)."""
-    V = sphere_volume(R_V)
-    n = eta * V / xe_volume(T)
-    p_bar = float(pore_pressure(n, V, T))
-    d = build(R_V, n, None, T, Ph=Ph_rel * p_bar, s=s)
-    cv = np.sqrt(np.sum(d["w"] * (d["n"] - n) ** 2)) / n
-    return {"id": tag, "origin": origin, "xi": xi, "eta": eta, "R_V": R_V, "T": T, "f": d["f"], "cv": cv, "p_bar": p_bar,
-            "Ph": Ph_rel * p_bar, "classes": d}
-
-def mmm_design(n_runs=MMM_RUNS):
-    """Latin hypercube of n_runs runs in the box of MMM_FACTORS. 
-    The levels of the factors are paired by permutations that lower the centred discrepancy of
-    the points (scipy.stats.qmc, optimization 'random-cd')."""
-    lo, hi = np.array(list(MMM_FACTORS.values())).T
-    u = qmc.LatinHypercube(d=len(MMM_FACTORS), scramble=False, optimization="random-cd", rng=MMM_SEED).random(n_runs)
-    assert all(np.allclose(np.sort(u[:, j]), (np.arange(n_runs) + 0.5) / n_runs) for j in range(u.shape[1]))
+def mmm_cases():
+    """The runs of MMM_DESIGN, in its order, at R_V of the NFIR disc and T of MMM_STATE."""
     R_V, T = nfir_disc()["R_V"], STATES[MMM_STATE]["T"]
-    digits = len(str(n_runs - 1))
-    return [mmm_case(f"R{run:0{digits}d}", f"Latin hypercube, run {run + 1} of {n_runs}", R_V=R_V, T=T, Ph_rel=MMM_PH_REL,
-                     **dict(zip(MMM_FACTORS, x))) for run, x in enumerate(qmc.scale(u, lo, hi))]
-
-def mmm_appended_levels(cases, n_new=MMM_APPENDED):
-    """Levels of the runs appended to the Latin hypercube `cases`, in the box of MMM_FACTORS with xi up to MMM_XI_MAX.
-    With N = len(cases) + n_new levels per factor, every factor of the box is cut in N strata; each stratum holds at
-    most one run of the hypercube, and the new runs take the centres of the empty ones (in xi, those above the end of
-    MMM_FACTORS), so that old and new runs together are a Latin hypercube of N levels.
-    Returns the box (dict of the ranges), the runs of the hypercube in the unit box (len(cases) x 3) and, per factor
-    (xi, s, eta_bar), the n_new empty levels in the unit box, ascending. Used by mmm_appended() and by
-    Merope/mmm_files/placement_map.py."""
-    box = dict(MMM_FACTORS, xi=(MMM_FACTORS["xi"][0], MMM_XI_MAX))
-    lo, hi = np.array(list(box.values())).T
-    N = len(cases) + n_new
-    u_old = (np.array([[c["xi"], c["classes"]["sigma"], c["eta"]] for c in cases]) - lo) / (hi - lo)
-    empty = []
-    for j, name in enumerate(box):
-        strata = np.floor(u_old[:, j] * N).astype(int)
-        if len(set(strata)) != len(cases) or strata.min() < 0 or strata.max() >= N:
-            raise SystemExit(f"{name}: two runs of the hypercube in one of {N} strata (or outside the box): the union is "
-                             f"no Latin hypercube of {N} levels; change MMM_APPENDED or MMM_XI_MAX")
-        empty.append((np.setdiff1d(np.arange(N), strata) + 0.5) / N)
-    return box, u_old, empty
-
-def mmm_appended(cases, n_new=MMM_APPENDED):
-    """Runs appended to the Latin hypercube `cases` on the empty levels of mmm_appended_levels(), so that old and new
-    runs together are a Latin hypercube of N = len(cases) + n_new levels. The xi levels go in ascending order (the
-    first appended run has the smallest xi); each takes an s level among those whose pair (xi, s) Merope places with
-    every seed (MMM_PLACEMENT, written by Merope/mmm_files/placement_map.py), chosen to maximise the smallest distance
-    in (xi, s), the factors of the geometry, between a new run and every other run: MMM_PAIRINGS random pairings (seed
-    MMM_SEED), xi levels with the fewest placed pairs first, then swaps of two s levels while the distance grows.
-    The eta_bar levels, which do not change the geometry, are a random permutation (same generator)."""
-    if n_new == 0:
-        return []
-    box, u_old, empty = mmm_appended_levels(cases, n_new)
-    lo, hi = np.array(list(box.values())).T
-    N = len(cases) + n_new
-    if not os.path.exists(MMM_PLACEMENT):
-        raise SystemExit(f"{MMM_PLACEMENT} not found: python3 placement_map.py in Merope/mmm_files writes it")
-    placement = np.atleast_2d(np.loadtxt(MMM_PLACEMENT))
-    xi_lv, s_lv = lo[0] + empty[0] * (hi[0] - lo[0]), lo[1] + empty[1] * (hi[1] - lo[1])
-    i = np.argmin(np.abs(placement[:, :1] - xi_lv), axis=1)
-    j = np.argmin(np.abs(placement[:, 1:2] - s_lv), axis=1)
-    if (len(placement) != n_new**2 or len(set(zip(i, j))) != n_new**2
-            or np.abs(placement[:, 0] - xi_lv[i]).max() > 1e-5 or np.abs(placement[:, 1] - s_lv[j]).max() > 1e-5):
-        raise SystemExit(f"{MMM_PLACEMENT} is not the map of these {n_new} appended levels (design changed?): "
-                         "python3 placement_map.py in Merope/mmm_files writes it again")
-    ok = np.zeros((n_new, n_new), bool)
-    ok[i, j] = np.all(placement[:, 3:-1] == 1, axis=1)  # placed with every seed
-
-    def gap(s_of_xi):  # smallest distance in (xi, s) between a new run and every other run
-        new = np.column_stack([empty[0], empty[1][s_of_xi]])
-        d = np.linalg.norm(new[:, None] - np.vstack([u_old[:, :2], new])[None], axis=-1)
-        d[np.arange(n_new), len(cases) + np.arange(n_new)] = np.inf
-        return d.min()
-
-    rng = np.random.default_rng(MMM_SEED)
-    order = np.argsort(ok.sum(1))  # the most constrained xi levels first
-    best, best_gap = None, -1.0
-    for _ in range(MMM_PAIRINGS):
-        s_of_xi, used = -np.ones(n_new, int), set()
-        for a in order:
-            free = [b for b in np.flatnonzero(ok[a]) if b not in used]
-            if not free:
-                break
-            s_of_xi[a] = rng.choice(free)
-            used.add(s_of_xi[a])
-        else:
-            if gap(s_of_xi) > best_gap:
-                best, best_gap = s_of_xi.copy(), gap(s_of_xi)
-    if best is None:
-        raise SystemExit(f"no pairing of the {n_new} appended levels has every run placed by Merope ({MMM_PLACEMENT}): "
-                         "lower MMM_XI_MAX or MMM_APPENDED")
-    improved = True
-    while improved:
-        improved = False
-        for a in range(n_new):
-            for b in range(a + 1, n_new):
-                swap = best.copy()
-                swap[a], swap[b] = swap[b], swap[a]
-                if ok[a, swap[a]] and ok[b, swap[b]] and gap(swap) > best_gap + 1e-12:
-                    best, best_gap, improved = swap, gap(swap), True
-    best = np.column_stack([empty[0], empty[1][best], rng.permutation(empty[2])])
-    u_all = np.vstack([u_old, best])
-    assert all(np.array_equal(np.sort(np.floor(u_all[:, j] * N)), np.arange(N)) for j in range(len(box)))
-    R_V, T = cases[0]["R_V"], cases[0]["T"]
-    digits = len(str(N - 1))
-    return [mmm_case(f"R{len(cases) + k:0{digits}d}",
-                     f"appended run {k + 1} of {n_new}: with the {len(cases)} of the hypercube a Latin hypercube of {N} "
-                     f"levels, xi up to {MMM_XI_MAX:g}", R_V=R_V, T=T, Ph_rel=MMM_PH_REL, **dict(zip(box, x)))
-            for k, x in enumerate(lo + best * (hi - lo))]
+    with open(MMM_DESIGN) as f:
+        rows = [line.split() for line in f if line.strip() and not line.startswith("#")]
+    return [mmm_case(run, f"{origin}, {os.path.basename(MMM_DESIGN)}", float(xi), float(s), R_V, T)
+            for run, origin, xi, s, *_ in rows]
 
 def mmm_reference():
     """The reference run NFIR: the NFIR disc before the anneal."""
     disc, T = nfir_disc(), STATES[MMM_STATE]["T"]
-    return mmm_case("NFIR", "NFIR disc before the anneal, log-normal fit of the measured pores", disc["xi"], disc["s"], xe_volume(T) / NFIR_GAS_VOLUME, MMM_PH_REL, disc["R_V"], T)
+    return mmm_case("NFIR", "NFIR disc before the anneal, log-normal fit of the measured pores", disc["xi"], disc["s"], disc["R_V"], T)
 
 def mmm_run_files(cases, n_classes=MMM_CLASSES):
     """One text file per run in MMM_RUN_DIR, with one row per pore class: radius (um), porosity of the class,
-    load (MPa: the in-pile net pressure of the pressure closure, f c_dp / R; the gas pressures in a comment line),
-    confining pressure (MPa), the input of Merope/merope_pore_pressure.py; and index.txt with the factors of every run."""
+    load (MPa: the in-pile net pressure of the pressure closure at f = 1, c_dp / R), confining pressure (MPa), the
+    input of Merope/merope_pore_pressure.py; and index.txt with the factors of every run."""
     folder = os.path.join(HERE, MMM_RUN_DIR)
     os.makedirs(folder, exist_ok=True)
     for old in os.listdir(folder):  # the runs of a previous design
         if old == "index.txt" or (old.startswith("run_") and old.endswith(".txt")):
             os.remove(os.path.join(folder, old))
-    ranges = ", ".join(f"{name} {lo:g}-{hi:g}" for name, (lo, hi) in zip(("xi", "s", "eta_bar"), MMM_FACTORS.values()))
-    n_new = sum(c["origin"].startswith("appended") for c in cases)
-    appended = (f" + {n_new} runs appended ({cases[-n_new]['id']}-{cases[-1]['id']}), xi up to {MMM_XI_MAX:g}: together a "
-                f"Latin hypercube of {len(cases)} levels" if n_new else "")
-    index = [f"Latin hypercube of {len(cases) - n_new} runs (seed {MMM_SEED}) in {ranges}{appended};",
-             f"{n_classes} pore classes each, pressure closure; reference: NFIR disc before the anneal (sets R_V and T)",
-             f"load of a class: f c_dp / R (in-pile net pressure p - 2 gamma / R - P_h of the pressure closure; gamma = {GAMMA:g} N/m, "
-             f"c_dp = G b = {c_dp(cases[0]['T']):.2f} N/m at {cases[0]['T']:g} K): the shape R_V / R in every run, eta_bar only sets f",
-             f"# {'run':6s}{'xi':>8s}{'s':>8s}{'CV_n':>8s}{'eta_bar':>9s}{'eta_max':>9s}{'f':>8s}{'Ph/p_bar':>10s}{'R_V_um':>9s}{'T_K':>9s}{'p_bar_MPa':>11s}{'Ph_MPa':>9s}  file"]
+    T = cases[0]["T"]
+    ranges = ", ".join(f"{name} {lo:g}-{hi:g}" for name, (lo, hi) in MMM_FACTORS.items())
+    index = [f"Latin hypercube of {len(cases)} levels in {ranges} (data/{os.path.basename(MMM_DESIGN)});",
+             f"{n_classes} pore classes each; reference: NFIR disc before the anneal (sets R_V and T)",
+             (f"load of a class: c_dp / R (in-pile net pressure p - 2 gamma / R - P_h of the pressure closure at the punching "
+              f"limit, f = 1; c_dp = G b = {c_dp(T):.2f} N/m at {T:g} K) in every run: a state of the closure is f times it"),
+             f"# {'run':6s}{'xi':>8s}{'s':>8s}{'R_V_um':>9s}{'T_K':>9s}{'Ph_MPa':>9s}  file"]
     for c in [mmm_reference()] + cases:
-        d, xi, p_bar, Ph = c["classes"], c["xi"], c["p_bar"], c["Ph"]
+        d, xi = c["classes"], c["xi"]
         file = f"run_{c['id']}.txt"
         reduced = reduced_classes(d, c["T"], n_classes)
-        R_k, p_k = np.array([k["R"] for k in reduced]), np.array([k["p"] for k in reduced])
-        load = c["f"] * c_dp(c["T"]) / R_k
-        if c["f"] <= 0.0:
-            raise SystemExit(f"run {c['id']}: f = {c['f']:.3f}, the gas is below the equilibrium: no positive load")
+        load = c_dp(c["T"]) / np.array([k["R"] for k in reduced])  # f = 1
         lines = [f"# MMM input, run {c['id']} ({c['origin']})",
-                 f"# xi = {xi:g}, s = {d['sigma']:.4g} (CV_n = {c['cv']:.4g}), eta_bar = {c['eta']:.4g}, f = {c['f']:.4g}, P_h / p_bar = {Ph / p_bar:.4g}",
-                 f"# scale: R_V = {c['R_V'] * 1e6:.4g} um, T = {c['T']:g} K, p_bar = {p_bar / 1e6:.5g} MPa",
-                 f"# pressure_MPa = load of MMM, the in-pile net pressure of the pressure closure f c_dp / R (c_dp = G b = {c_dp(c['T']):.2f} N/m)",
-                 "# gas pressure p of the classes (MPa): " + " ".join(f"{p / 1e6:.4f}" for p in p_k),
+                 f"# xi = {xi:g}, s = {d['sigma']:.4g}",
+                 f"# scale: R_V = {c['R_V'] * 1e6:.4g} um, T = {c['T']:g} K",
+                 (f"# pressure_MPa = load of MMM, c_dp / R (c_dp = G b = {c_dp(c['T']):.2f} N/m): the in-pile net pressure of "
+                  "the pressure closure at f = 1 (punching limit); a state of the closure is f times it"),
                  "# one row per pore class; the porosities sum to xi",
                  f"# {'radius_um':>10s}{'porosity':>14s}{'pressure_MPa':>14s}{'confinement_MPa':>17s}"]
-        lines += [f"{k['R'] * 1e6:12.6f}{xi * k['xi_share']:14.6e}{q / 1e6:14.4f}{Ph / 1e6:17.4f}" for k, q in zip(reduced, load)]
+        lines += [f"{k['R'] * 1e6:12.6f}{xi * k['xi_share']:14.6e}{q / 1e6:14.4f}{MMM_PH / 1e6:17.4f}" for k, q in zip(reduced, load)]
         with open(os.path.join(folder, file), "w") as fh:
             fh.write("\n".join(lines) + "\n")
-        index.append(f"  {c['id']:6s}{xi:8.4f}{d['sigma']:8.4f}{c['cv']:8.4f}{c['eta']:9.4f}{packing_max(reduced, c['T']):9.4f}{c['f']:8.3f}{Ph / p_bar:10.3f}"
-                     f"{c['R_V'] * 1e6:9.4f}{c['T']:9.1f}{p_bar / 1e6:11.2f}{Ph / 1e6:9.2f}  {file}")
+        index.append(f"  {c['id']:6s}{xi:8.4f}{d['sigma']:8.4f}{c['R_V'] * 1e6:9.4f}{c['T']:9.1f}{MMM_PH / 1e6:9.2f}  {file}")
     with open(os.path.join(folder, "index.txt"), "w") as fh:
         fh.write("\n".join(index) + "\n")
     print(f"wrote {len(cases) + 1} run files in {MMM_RUN_DIR}/ for Merope/merope_pore_pressure.py "
@@ -849,46 +736,37 @@ def mmm_run_files(cases, n_classes=MMM_CLASSES):
     disc = nfir_disc()
     R_V, T = cases[0]["R_V"], cases[0]["T"]
 
-    blue, orange = LinearSegmentedColormap.from_list("blue", SEQ_BLUE), LinearSegmentedColormap.from_list("orange", SEQ_ORANGE)
-    by_s, by_eta = Normalize(*MMM_FACTORS["s"]), Normalize(*MMM_FACTORS["eta"])
-    fig, ax = plt.subplots(1, 3, figsize=(14.5, 4.3))
+    blue = LinearSegmentedColormap.from_list("blue", SEQ_BLUE)
+    by_s = Normalize(*MMM_FACTORS["s"])
+    fig, ax = plt.subplots(1, 2, figsize=(10.5, 4.3))
     D = np.linspace(0.0, 6.0e-6, 301)[1:]  # (m) pore diameter
     cumulative = lambda xi, R_V_, s: 100.0 * np.cumsum(porosity_per_bin(xi, R_V_, s, np.append(0.0, D)))
     for c in cases:
         s, reduced = c["classes"]["sigma"], reduced_classes(c["classes"], T, n_classes)
         R_k = np.array([k["R"] for k in reduced])
-        load = c["f"] * c_dp(T) / R_k / 1e6
         ax[0].plot(D * 1e6, cumulative(1.0, R_V, s), color=blue(by_s(s)), lw=1.2)
         ax[1].plot(R_k * 1e6, [c["xi"] * k["xi_share"] for k in reduced], "o-", color=blue(by_s(s)), lw=1.0, ms=4.5, mec="white", mew=0.5)
-        ax[2].plot(R_k * 1e6, load, "-", color=orange(by_eta(c["eta"])), lw=1.0)
-        ax[2].plot(R_k * 1e6, load, "o", color=orange(by_eta(c["eta"])), ms=4.5, mec="white", mew=0.5)
-    R = np.geomspace(0.15e-6, 2.5e-6, 50)
-    ax[2].plot(R * 1e6, c_dp(T) / R / 1e6, "k--", lw=1, label=rf"$Gb/R$, {c_dp(T):.1f} N/m: f = 1 (NEA)")
     ax[0].plot(disc["edges"][1:] * 1e6, 100.0 * np.cumsum(disc["bars"]) / disc["bars"].sum(), "o", color="k", ms=4, mec="white", mew=0.5, zorder=4,
                label="NFIR disc, as irradiated")
     ax[0].plot(D * 1e6, cumulative(disc["xi"] / disc["bars"].sum(), disc["R_V"], disc["s"]), color=BROWN, lw=1.5, ls="--", zorder=3,
-               label=f"Log-normal fit of the NFIR disc")
+               label="Log-normal fit of the NFIR disc")
     ax[0].set(xlabel="Pore diameter (um)", ylabel="Cumulative share of the porosity (%)", xlim=(0.0, 6.0),
               title=f"Radius distributions, $R_V$ = {R_V * 1e6:.2f} um")
     ax[1].set(xlabel="radius of the class (um)", ylabel="Porosity of the class", xscale="log", yscale="log",
-              title=f"{n_classes} pore classes of every run")
-    ax[2].set(xlabel="radius of the class (um)", ylabel="load of MMM (MPa)", xscale="log", yscale="log",
-              title=r"Load: $f\,c_{dp}/R$ (pressure closure, in-pile, $P_h$ = 0)")
-    ax[2].legend(frameon=False, loc="lower left", fontsize=9)
+              title=rf"{n_classes} pore classes of every run, load $c_{{dp}}/R$ = {c_dp(T):.1f} N/m / R")
     fig.colorbar(ScalarMappable(by_s, blue), ax=ax[1], label="s")
-    fig.colorbar(ScalarMappable(by_eta, orange), ax=ax[2], label=r"$\bar \eta$")
     for ax_ in ax:
         ax_.grid(True, color=GRID)
         ax_.title.set_fontsize(10)
-    for ax_ in ax[1:]:  # decimal labels on the logarithmic axis of the radii
-        ax_.set_xticks((0.2, 0.5, 1.0, 2.0), labels=("0.2", "0.5", "1", "2"))
-        ax_.tick_params(axis="x", which="minor", labelbottom=False)
+    ax[1].set_xticks((0.2, 0.5, 1.0, 2.0), labels=("0.2", "0.5", "1", "2"))  # decimal labels on the logarithmic axis
+    ax[1].tick_params(axis="x", which="minor", labelbottom=False)
     ax[0].legend(frameon=False, loc="lower right")
     savefig(fig, "mmm_runs.png")
 
-def gas_volume_figure(cases, n_classes=MMM_CLASSES):
-    """Volume per gas atom of the pores, V / n = v_Xe(T) / eta, against the measured average volume per fission-gas atom in the HBS bubbles."""
-    T, A3 = cases[0]["T"], 1.0e30  # A^3 per m3
+def gas_volume_figure(n_classes=MMM_CLASSES):
+    """Volume per gas atom of the pores, V / n = v_Xe(T) / eta, of the NFIR disc and of the SCIANTIX classes, against
+    the measured average volume per fission-gas atom in the HBS bubbles."""
+    T, A3 = STATES[MMM_STATE]["T"], 1.0e30  # A^3 per m3
 
     # Noirot 2008 data
     data = gas_volume_data() # (A^3/at)
@@ -903,20 +781,13 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
     measured = np.concatenate([v for _, v in data.values()] + [[r["v"] * A3 for r in rim],
                               [d["v"] * A3 for d in dowek if d["position"] == "1R" and d["kind"] == "mean"]])
 
-    # LHS ranges
-    eta_lo, eta_hi = MMM_FACTORS["eta"]
-    band = (xe_volume(T) / eta_hi * A3, xe_volume(T) / eta_lo * A3)
-
-    # EXP , SCIANTIX with and without the nucleation factor
-    st, st1 = STATES[MMM_STATE], STATE_NUCLEATION_X1
-    columns = [("Exp.\nNFIR", GREEN, "D", mmm_reference()["classes"]),
+    # EXP (the disc with its measured gas, pressure closure at T), SCIANTIX with and without the nucleation factor
+    disc, st, st1 = nfir_disc(), STATES[MMM_STATE], STATE_NUCLEATION_X1
+    columns = [("Exp.\nNFIR", GREEN, "D", build(disc["R_V"], sphere_volume(disc["R_V"]) / NFIR_GAS_VOLUME, None, T, s=disc["s"])),
                ("SCIANTIX\nnucl.\nx0.12", ORANGE, "s", build(radius_of(st["V"]), st["n"], st["var"], st["T"], Ph=st["Ph"])),
                ("SCIANTIX\nnucl.\nx1", ORANGE, "^", build(radius_of(st1["V"]), st1["n"], st1["var"], st1["T"], Ph=st1["Ph"]))]
-    columns += [(c["id"][1:], BLUE, "o", c["classes"]) for c in cases]
 
-    fig, ax = plt.subplots(1, 2, figsize=(15.0, 7.0), sharey=True, gridspec_kw={"width_ratios": (1.4, 2.0)})
-    ax[0].axhspan(*band, color=BLUE, alpha=0.12, lw=0, label=rf"MMM input, $\bar\eta$ = {eta_lo:g} to {eta_hi:g}")
-    ax[1].axhspan(*band, color=BLUE, alpha=0.12, lw=0)
+    fig, ax = plt.subplots(1, 2, figsize=(13.0, 7.0), sharey=True, gridspec_kw={"width_ratios": (1.4, 1.0)})
 
     for (label, (bu, v)), marker in zip(data.items(), ("o", "^", "-")):
         if marker == "-": 
@@ -937,7 +808,7 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
     ax[0].plot(NFIR_BURNUP, st1["V"] / st1["n"] * A3, "^", color=ORANGE, ms=8, mec="white", mew=1.0, zorder=4,
                label="SCIANTIX, NFIR case, nucleation x1 (end of base)")
     ax[1].axhspan(measured.min(), measured.max(), color=GREY, alpha=0.2, lw=0, label="measured, all series")
-    xs = np.r_[0.0, 2.6, 5.2, 7.4 + np.arange(len(cases))]
+    xs = np.r_[0.0, 2.6, 5.2]
     for x, (name, color, marker, d) in zip(xs, columns):
         reduced, m = reduced_classes(d, T, n_classes), moments(d)
         v = np.array([k["V"] / k["n"] for k in reduced]) * A3
@@ -947,17 +818,16 @@ def gas_volume_figure(cases, n_classes=MMM_CLASSES):
         ax[1].plot(x, m["V"] / m["n"] * A3, "_", color="k", ms=14, mew=1.6, zorder=4)
     ax[1].scatter([], [], s=60, color=GREY, edgecolors="white", label="class, area ~ share of the gas")
     ax[1].plot([], [], "_", color="k", ms=14, mew=1.6, label="mean V / n")
-    ax[1].axvline(0.5 * (xs[2] + xs[3]), color=GREY, lw=0.8)
     ax[1].set_xticks(xs, labels=[c[0] for c in columns])
-    ax[1].set_xlabel("MMM run")
+    ax[1].set_xlim(-1.3, xs[-1] + 1.3)
     ax[0].set(xlabel="local burnup (GWd/tHM)", ylabel=r"volume per gas atom  ($\AA^3$/atom)", yscale="log", ylim=(20.0, 1000.0))
     ax[0].set_yticks((20, 50, 100, 200, 500, 1000), labels=("20", "50", "100", "200", "500", "1000"))
     ax[0].tick_params(axis="y", which="minor", labelleft=False)
     for ax_ in ax:
         ax_.grid(True, color=GRID)
     ax[0].legend(frameon=False, loc="upper left")
-    ax[1].legend(frameon=False,ncol=3, loc="lower left")
-    fig.suptitle(f"Volume per gas atom: measured and imposed for MMM calculations with {n_classes} classes and at T = {T:.0f} K")
+    ax[1].legend(frameon=False, ncol=1, loc="lower left")
+    fig.suptitle(f"Volume per gas atom: measured and of the {n_classes} classes of the pressure closure at T = {T:.0f} K")
     savefig(fig, "mmm_gas_volume.png")
 
 def pore_radius_figure(cases, n_classes=MMM_CLASSES):
@@ -1000,7 +870,7 @@ def pore_radius_figure(cases, n_classes=MMM_CLASSES):
         share = np.array([k["xi_share"] for k in red])
         ax[1].scatter(np.full(n_classes, x), R_k, s=8.0 + 160.0 * share, marker=marker, color=color, edgecolors="white",
                       linewidths=0.5, zorder=3)
-        ax[1].plot(x, moments(d)["R_V"] * um, "_", color="k", ms=14, mew=1.6, zorder=4)
+        ax[1].plot(x, np.cbrt(np.sum(d["w"] * d["R"] ** 3)) * um, "_", color="k", ms=14, mew=1.6, zorder=4)
     ax[1].scatter([], [], s=60, color=GREY, edgecolors="white", label="class, area ~ share of the porosity")
     ax[1].plot([], [], "_", color="k", ms=14, mew=1.6, label="$R_V$")
     ax[1].axvline(0.5 * (xs[2] + xs[3]), color=GREY, lw=0.8)
@@ -1143,7 +1013,6 @@ def fgr_figure(o):
 # Main
 def main():
     assert MMM_CLASSES % 2 == 1 and 3 <= MMM_CLASSES <= 9, "MMM_CLASSES is odd, from 3 to 9"
-    assert MMM_RUNS >= 2, "MMM_RUNS is at least 2"
     plt.switch_backend("Agg")  # the figures go to files
     st, R_V, d, m = section_inputs()
     section_nfir_data()
@@ -1152,10 +1021,9 @@ def main():
     section_closure(st, R_V) # plot
     section_measured(st) # plot
     print("\n== inputs for MMM ==")
-    cases = mmm_design(MMM_RUNS)
-    cases += mmm_appended(cases, MMM_APPENDED)
+    cases = mmm_cases()
     mmm_run_files(cases, MMM_CLASSES)
-    gas_volume_figure(cases, MMM_CLASSES)
+    gas_volume_figure(MMM_CLASSES)
     pore_radius_figure(cases, MMM_CLASSES)
     output = os.path.join(NFIR_CASE, "output.txt")
     if not os.path.exists(output):

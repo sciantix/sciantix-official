@@ -1,0 +1,44 @@
+# Design of the MMM runs (read by pore_distribution.py, which writes mmm_inputs/run_<id>.txt from it): 35 runs, a Latin
+# hypercube of 35 levels in the two factors of the geometry, xi 0.02-0.3 and s 0.05-0.42
+# (stratum k = floor((x - lo) / (hi - lo) 35))
+# R00-R19: Latin hypercube of 20 runs in xi 0.02-0.18, s 0.05-0.42 (scipy.stats.qmc.LatinHypercube, scramble off,
+#          optimization random-cd, seed 1; a third factor eta_bar 0.045-0.23, which only set the scale f of the load)
+# R20-R34: appended on the strata left empty, xi ascending up to 0.30, every pair (xi, s) placed by Merope with seeds 1
+#          and 2, the pairing of the cubes (27/11/2026)
+# xi and s exact (shortest repr of the float). The code that made them: pore_distribution.py before 27/11/2026 (README)
+# run      origin                    xi                     s  k_xi  k_s
+  R00   hypercube                 0.168   0.37374999999999997    18   30
+  R01   hypercube                 0.024               0.17025     0   11
+  R02   hypercube   0.12000000000000001               0.22575    12   16
+  R03   hypercube   0.14400000000000002               0.29975    15   23
+  R04   hypercube   0.13599999999999998               0.33675    14   27
+  R05   hypercube                 0.064               0.41075     5   34
+  R06   hypercube   0.05600000000000001               0.09625     4    4
+  R07   hypercube   0.08800000000000001               0.26275     8   20
+  R08   hypercube                 0.128               0.11475    13    6
+  R09   hypercube   0.07200000000000001               0.31825     6   25
+  R10   hypercube                  0.08               0.07775     7    2
+  R11   hypercube   0.10400000000000001               0.39225    10   32
+  R12   hypercube                 0.112               0.13325    11    7
+  R13   hypercube                  0.04   0.35524999999999995     2   28
+  R14   hypercube                 0.176   0.18874999999999997    19   13
+  R15   hypercube                 0.096               0.15175     9    9
+  R16   hypercube                 0.048               0.20725     3   14
+  R17   hypercube                 0.032               0.28125     1   21
+  R18   hypercube                  0.16   0.24425000000000002    17   18
+  R19   hypercube                 0.152  0.059250000000000004    16    0
+  R20    appended   0.18399999999999997   0.10814285714285715    20    5
+  R21    appended   0.19199999999999998    0.3301428571428571    21   26
+  R22    appended   0.19999999999999998   0.06585714285714286    22    1
+  R23    appended   0.20799999999999996   0.21385714285714286    23   15
+  R24    appended   0.21599999999999997                 0.161    24   10
+  R25    appended   0.22399999999999995                 0.383    25   31
+  R26    appended   0.23199999999999996                 0.087    26    3
+  R27    appended   0.23999999999999996   0.25614285714285717    27   19
+  R28    appended   0.24799999999999997   0.13985714285714285    28    8
+  R29    appended                 0.256                 0.309    29   24
+  R30    appended   0.26399999999999996   0.18214285714285716    30   12
+  R31    appended                 0.272                 0.235    31   17
+  R32    appended                  0.28    0.3618571428571428    32   29
+  R33    appended                 0.288   0.28785714285714287    33   22
+  R34    appended                 0.296   0.40414285714285714    34   33
